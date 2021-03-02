@@ -7,7 +7,6 @@
 2. Create `.env.development` & `.env.production` by duplicating from `.env.example`, then edit both files as needed
 
     ```bash
-    $ cd server
     $ cp .env.example.development .env.development
     $ cp .env.example.production .env.production
     $ code .env.development # edit as needed
