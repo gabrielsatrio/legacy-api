@@ -6,6 +6,7 @@ import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
+import helmet from 'helmet';
 import http from 'http';
 import https from 'https';
 import { join } from 'path';
@@ -54,9 +55,10 @@ export default class apolloServer {
       } as any)
     );
 
-    app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
-
+    app.use(helmet());
     app.use(compression());
+
+    app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
