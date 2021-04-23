@@ -55,7 +55,6 @@ export default class apolloServer {
       } as any)
     );
 
-    // app.use(helmet());
     app.use(
       helmet({
         contentSecurityPolicy: isProd ? undefined : false
