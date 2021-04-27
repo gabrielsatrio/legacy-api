@@ -10,6 +10,7 @@ import {
 } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
+import config from '../../config';
 import { User } from '../../entities/User';
 import { redis } from '../../redis';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -18,7 +19,7 @@ import { setErrors } from '../../utils/setErrors';
 import { LoginInput } from './types/LoginInput';
 import { RegisterInput } from './types/RegisterInput';
 
-const FORGET_PASSWORD_PREFIX = process.env.FORGET_PASSWORD_PREFIX;
+const FORGET_PASSWORD_PREFIX = config.token.prefix;
 
 @ObjectType()
 class FieldError {
@@ -111,10 +112,10 @@ export class AuthResolver {
   async logout(@Ctx() { req, res }: Context): Promise<boolean> {
     return new Promise((resolve) =>
       req.session.destroy((err: unknown) => {
-        const cookieName = process.env.COOKIE_NAME;
+        const cookieName = config.cookie.name;
         if (cookieName) {
           res.clearCookie(cookieName, {
-            domain: process.env.COOKIE_DOMAIN,
+            domain: config.cookie.domain,
             path: '/'
           });
         }
@@ -147,7 +148,7 @@ export class AuthResolver {
 
     await sendEmail(
       email,
-      `<a href="${process.env.FRONTEND_URL}}/change-password/${token}">Reset Password</a>`
+      `<a href="${config.client.url}}/change-password/${token}">Reset Password</a>`
     );
 
     return true;

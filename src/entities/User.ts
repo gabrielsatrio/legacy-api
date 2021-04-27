@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-@Entity('USER')
+@Entity('APP_USER')
 @ObjectType()
 export class User extends BaseEntity {
   @Field()
@@ -47,6 +47,14 @@ export class User extends BaseEntity {
   @Index()
   @Column({ name: 'IS_ACTIVE', default: true })
   isActive!: boolean;
+
+  @Field()
+  @Column({ name: 'DEFAULT_SITE' })
+  defaultSite!: string;
+
+  @Field()
+  @Column({ name: 'DEFAULT_DEPT' })
+  defaultDept!: string;
 
   @Field()
   @CreateDateColumn({ name: 'CREATED_AT' })

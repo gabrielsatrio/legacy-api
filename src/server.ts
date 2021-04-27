@@ -12,11 +12,11 @@ import https from 'https';
 import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
+import config from './config';
 import { redis } from './redis';
 import { createUserLoader } from './utils/createUserLoader';
 
-const env = process.env.NODE_ENV || 'development';
-const isProd = env === 'production';
+const isProd = config.env === 'production';
 let server: http.Server | https.Server;
 
 export default class apolloServer {
@@ -28,7 +28,7 @@ export default class apolloServer {
     app.use(
       cors({
         credentials: true,
-        origin: process.env.FRONTEND_URL
+        origin: config.client.url
       })
     );
 
@@ -41,15 +41,15 @@ export default class apolloServer {
           disableTTL: true,
           disableTouch: true
         }),
-        name: process.env.COOKIE_NAME,
-        secret: process.env.SESSION_SECRET,
+        name: config.cookie.name,
+        secret: config.session.secret,
         resave: false,
         saveUninitialized: false,
         cookie: {
           httpOnly: true,
           secure: false, // use "isProd" as value, so that cookie can works for https only
           sameSite: 'lax', // csrf
-          domain: isProd ? process.env.COOKIE_DOMAIN : undefined,
+          domain: isProd ? config.cookie.domain : undefined,
           maxAge: 1000 * 60 * 60 * 24 * 365 * 10 // 10 years
         }
       } as any)
@@ -87,12 +87,12 @@ export default class apolloServer {
     // Add subscription support
     apolloServer.installSubscriptionHandlers(server);
 
-    server.listen(process.env.PORT, () =>
+    server.listen(config.server.port, () =>
       console.log(
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
         chalk.yellow.bold(
-          `http://localhost:${process.env.PORT}${apolloServer.graphqlPath}`
+          `http://localhost:${config.server.port}${apolloServer.graphqlPath}`
         )
       )
     );
