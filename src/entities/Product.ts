@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
 
@@ -12,7 +12,7 @@ import {
 @ObjectType()
 export class Product extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn({ name: 'ID' })
+  @PrimaryColumn({ name: 'ID' })
   readonly id!: number;
 
   @Field()
