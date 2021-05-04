@@ -29,20 +29,20 @@ export class MachineInput implements Partial<Machine> {
 
   @Field({ nullable: true })
   @MaxLength(50)
-  controller!: string;
+  controller?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)
-  launchMethod!: string;
+  launchMethod?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)
-  image!: string;
+  image?: string;
 
   @Field()
   isActive!: boolean;
 
   @Field({ nullable: true })
   @MaxLength(500)
-  remarks!: string;
+  remarks?: string;
 }
