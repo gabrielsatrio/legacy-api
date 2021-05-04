@@ -34,7 +34,7 @@ export class MachineResolver {
   async createMachine(
     @Arg('input') input: MachineInput,
     @Ctx() { req }: Context
-  ): Promise<Machine> {
+  ): Promise<Machine | undefined> {
     const {
       machineId,
       machineName,
@@ -73,7 +73,7 @@ export class MachineResolver {
     ]);
 
     const outMachineId = result[0];
-    const data = Machine.findOneOrFail(outMachineId);
+    const data = Machine.findOne(outMachineId);
     return data;
   }
 
@@ -128,7 +128,7 @@ export class MachineResolver {
     ]);
 
     const outMachineId = result[0];
-    const data = Machine.findOneOrFail(outMachineId);
+    const data = Machine.findOne(outMachineId);
     return data;
   }
 
