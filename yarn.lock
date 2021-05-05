@@ -512,6 +512,14 @@
   dependencies:
     "@types/node" "*"
 
+"@types/oracledb@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/oracledb/-/oracledb-5.1.0.tgz#4d0356ff88bfaa56b7969c8c43d66794cf1af069"
+  integrity sha512-t5TyGUDTBp6hEGrtFHg9oWfvrXOvDYinzgt/GfhbOffu3Fz+zd45+D/AZj0hJfKcs50xfkz9kNzVTMaHBBNxmQ==
+  dependencies:
+    "@types/node" "*"
+    dotenv "^8.2.0"
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"

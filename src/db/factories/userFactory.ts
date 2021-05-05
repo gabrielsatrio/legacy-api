@@ -20,5 +20,5 @@ export const userFactory = {
   },
 
   deleteAll: async (): Promise<void> =>
-    await getRepository(User).query('TRUNCATE "user" CASCADE')
+    await getRepository(User).query('TRUNCATE "USER" CASCADE')
 };

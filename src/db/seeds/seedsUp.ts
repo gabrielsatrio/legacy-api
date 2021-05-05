@@ -1,4 +1,4 @@
-import initializeDatabase from '../initializeDatabase';
+import db from '..';
 import { userSeeds } from './userSeeds';
 
 const seed = async (): Promise<any> => {
@@ -7,7 +7,7 @@ const seed = async (): Promise<any> => {
 
 const run = async (): Promise<any> => {
   console.log('Connecting to DB');
-  const connection = await initializeDatabase({ migrationsRun: false });
+  const connection = await db.initialize({ migrationsRun: false });
 
   console.log('Seeding DB');
   await seed();

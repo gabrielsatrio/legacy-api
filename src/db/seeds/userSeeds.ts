@@ -16,7 +16,9 @@ export const userSeeds = async (): Promise<any> => {
     lastName: 'Doe',
     password: await argon2.hash('123456'),
     email: 'john.doe@example.com',
-    role: 'ADMIN'
+    role: 'ADMIN',
+    defaultSite: '*',
+    defaultDept: '*'
   };
 
   firstName = chance.first();
@@ -29,7 +31,9 @@ export const userSeeds = async (): Promise<any> => {
     lastName,
     password: await argon2.hash('123456'),
     email: chance.email({ domain: 'example.com' }),
-    role: 'EDITOR'
+    role: 'EDITOR',
+    defaultSite: '*',
+    defaultDept: '*'
   };
 
   firstName = chance.first();
@@ -42,7 +46,9 @@ export const userSeeds = async (): Promise<any> => {
     lastName,
     password: await argon2.hash('123456'),
     email: chance.email({ domain: 'example.com' }),
-    role: 'VIEWER'
+    role: 'VIEWER',
+    defaultSite: '*',
+    defaultDept: '*'
   };
 
   users.push(admin, editor, viewer);
