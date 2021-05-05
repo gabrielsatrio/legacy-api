@@ -4,7 +4,11 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "extends": ["plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint", "plugin:prettier/recommended"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
   "plugins": [],
   "env": {
     "browser": true,
@@ -24,7 +28,8 @@
         "singleQuote": true,
         "printWidth": 80,
         "useTabs": false,
-        "tabWidth": 2
+        "tabWidth": 2,
+        "endOfLine": "auto"
       }
     ],
     "quotes": [
