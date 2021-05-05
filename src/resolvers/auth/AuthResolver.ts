@@ -13,7 +13,6 @@ import { Context } from 'vm';
 import config from '../../config';
 import { User } from '../../entities/User';
 import { redis } from '../../redis';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/sendEmail';
 import { setErrors } from '../../utils/setErrors';
 import { LoginInput } from './types/LoginInput';
@@ -61,17 +60,6 @@ export class AuthResolver {
 
       user = await User.create({ ...input, password: hashedPassword }).save();
     } catch (err) {
-      if (err.code === '23505') {
-        const regExp = /\(([^)]+)\)/;
-        const field = regExp.exec(err.detail)?.[1];
-        if (typeof field !== 'undefined') {
-          return setErrors(
-            field,
-            `${capitalizeFirstLetter(field)} already exists`
-          );
-        }
-      }
-
       return setErrors('general', err.message);
     }
 
