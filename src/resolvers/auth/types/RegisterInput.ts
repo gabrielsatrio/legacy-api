@@ -39,4 +39,10 @@ export class RegisterInput implements Partial<User> {
 
   @Field()
   role!: string;
+
+  @Field()
+  defaultSite!: string;
+
+  @Field()
+  defaultDept!: string;
 }
