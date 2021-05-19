@@ -1,18 +1,11 @@
 import argon2 from 'argon2';
-import {
-  Arg,
-  Ctx,
-  Field,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver
-} from 'type-graphql';
+import { Arg, Ctx, Mutation, ObjectType, Query, Resolver } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import config from '../../config';
 import { User } from '../../entities/User';
 import { redis } from '../../redis';
+import DataResponse from '../../types/DataResponse';
 import { sendEmail } from '../../utils/sendEmail';
 import { setErrors } from '../../utils/setErrors';
 import { LoginInput } from './types/LoginInput';
@@ -21,22 +14,7 @@ import { RegisterInput } from './types/RegisterInput';
 const FORGET_PASSWORD_PREFIX = config.token.prefix;
 
 @ObjectType()
-class FieldError {
-  @Field()
-  field!: string;
-
-  @Field()
-  message!: string;
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => User, { nullable: true })
-  user?: User;
-}
+class UserResponse extends DataResponse(User) {}
 
 @Resolver(User)
 export class AuthResolver {
@@ -60,12 +38,12 @@ export class AuthResolver {
 
       user = await User.create({ ...input, password: hashedPassword }).save();
     } catch (err) {
-      return setErrors('general', err.message);
+      return setErrors(err.message);
     }
 
     req.session.userId = user.id;
 
-    return { user };
+    return { data: user };
   }
 
   @Mutation(() => UserResponse)
@@ -79,21 +57,21 @@ export class AuthResolver {
       user = await User.findOne({ username: input.username });
 
       if (!user) {
-        return setErrors('username', `Username doesn't exists`);
+        return setErrors(`Username doesn't exists`, 'username');
       }
 
       const valid = await argon2.verify(user.password, input.password);
 
       if (!valid) {
-        return setErrors('password', 'Incorrect password');
+        return setErrors('Incorrect password', 'password');
       }
 
       req.session.userId = user.id;
     } catch (err) {
-      return setErrors('general', err.message);
+      return setErrors(err.message);
     }
 
-    return { user };
+    return { data: user };
   }
 
   @Mutation(() => Boolean)
@@ -152,21 +130,21 @@ export class AuthResolver {
 
     if (newPassword.length < 3) {
       return setErrors(
-        'newPassword',
-        'Password must be longer than or equal to 3 characters'
+        'Password must be longer than or equal to 3 characters',
+        'newPassword'
       );
     }
 
     const userId = +redis.get(tokenKey);
 
     if (!userId) {
-      return setErrors('newPassword', 'Token expired');
+      return setErrors('Token expired', 'newPassword');
     }
 
     const user = await User.findOne(userId);
 
     if (!user) {
-      return setErrors('newPassword', 'User no longer exists');
+      return setErrors('User no longer exists', 'newPassword');
     }
 
     await User.update(
@@ -179,6 +157,6 @@ export class AuthResolver {
     await redis.del(tokenKey);
     req.session.userId = user.id;
 
-    return { user };
+    return { data: user };
   }
 }
