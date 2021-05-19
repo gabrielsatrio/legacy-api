@@ -3,6 +3,7 @@ import {
   Arg,
   Ctx,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   UseMiddleware
@@ -11,7 +12,12 @@ import { getConnection } from 'typeorm';
 import { Machine } from '../../entities/Machine';
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from '../../types/Context';
+import DataResponse from '../../types/DataResponse';
+import { setErrors } from '../../utils/setErrors';
 import { MachineInput } from './types/MachineInput';
+
+@ObjectType()
+class MachineResponse extends DataResponse(Machine) {}
 
 @Resolver(Machine)
 export class MachineResolver {
@@ -29,12 +35,13 @@ export class MachineResolver {
     return await Machine.findOne(machineId);
   }
 
-  @Mutation(() => Machine)
+  @Mutation(() => MachineResponse)
   @UseMiddleware(isAuth)
   async createMachine(
     @Arg('input') input: MachineInput,
     @Ctx() { req }: Context
-  ): Promise<Machine | undefined> {
+  ): Promise<MachineResponse | undefined> {
+    let result;
     const {
       machineId,
       machineName,
@@ -56,34 +63,40 @@ export class MachineResolver {
       END;
     `;
 
-    const result = await getConnection().query(sql, [
-      machineId,
-      machineName,
-      machineType,
-      makerId,
-      yearMade,
-      serialNo,
-      controller,
-      launchMethod,
-      image,
-      isActive ? 1 : 0,
-      remarks,
-      createdBy,
-      { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-    ]);
+    try {
+      result = await getConnection().query(sql, [
+        machineId,
+        machineName,
+        machineType,
+        makerId,
+        yearMade,
+        serialNo,
+        controller,
+        launchMethod,
+        image,
+        isActive ? 1 : 0,
+        remarks,
+        createdBy,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+    } catch (err) {
+      return setErrors(err.message);
+    }
 
-    const outMachineId = result[0];
+    const outMachineId = result[0] as string;
     const data = Machine.findOne(outMachineId);
-    return data;
+
+    return { data };
   }
 
-  @Mutation(() => Machine, { nullable: true })
+  @Mutation(() => MachineResponse, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMachine(
     @Arg('machineId') machineId: string,
     @Arg('input') input: MachineInput,
     @Ctx() { req }: Context
-  ): Promise<Machine | undefined> {
+  ): Promise<MachineResponse | undefined> {
+    let result;
     const {
       machineName,
       machineType,
@@ -112,24 +125,29 @@ export class MachineResolver {
       END;
     `;
 
-    const result = await getConnection().query(sql, [
-      machineId,
-      machineName,
-      machineType,
-      makerId,
-      yearMade,
-      serialNo,
-      controller,
-      launchMethod,
-      image,
-      isActive ? 1 : 0,
-      remarks,
-      { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-    ]);
+    try {
+      result = await getConnection().query(sql, [
+        machineId,
+        machineName,
+        machineType,
+        makerId,
+        yearMade,
+        serialNo,
+        controller,
+        launchMethod,
+        image,
+        isActive ? 1 : 0,
+        remarks,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+    } catch (err) {
+      return setErrors(err.message);
+    }
 
     const outMachineId = result[0];
     const data = Machine.findOne(outMachineId);
-    return data;
+
+    return { data };
   }
 
   @Mutation(() => Boolean)

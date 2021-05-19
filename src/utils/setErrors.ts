@@ -1,8 +1,21 @@
+import { capitalizeFirstLetter } from './capitalizeFirstLetter';
+
 export const setErrors = (
-  field: string,
-  message: string
-): Record<string, [{ field: string; message: string }]> => {
+  message: string,
+  field?: string
+): Record<
+  string,
+  [{ message: string; field: string | null; code: string | null }]
+> => {
+  let code = null;
+  let errorMessage = message;
+  if (message.substr(0, 4) === 'ORA-') {
+    code = message.substr(0, 9);
+    errorMessage = capitalizeFirstLetter(
+      message.substring(11, message.indexOf('\n'))
+    );
+  }
   return {
-    errors: [{ field, message }]
+    errors: [{ message: errorMessage, field: field || null, code }]
   };
 };
