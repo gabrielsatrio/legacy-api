@@ -12,6 +12,7 @@ import { getConnection } from 'typeorm';
 import { Machine } from '../../entities/Machine';
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from '../../types/Context';
+import DataDeleteResponse from '../../types/DataDeleteResponse';
 import DataResponse from '../../types/DataResponse';
 import { setErrors } from '../../utils/setErrors';
 import { MachineInput } from './types/MachineInput';
@@ -19,12 +20,15 @@ import { MachineInput } from './types/MachineInput';
 @ObjectType()
 class MachineResponse extends DataResponse(Machine) {}
 
+@ObjectType()
+class MachineDeleteResponse extends DataDeleteResponse() {}
+
 @Resolver(Machine)
 export class MachineResolver {
   @Query(() => [Machine])
   @UseMiddleware(isAuth)
   async getMachines(): Promise<Machine[] | undefined> {
-    return await Machine.find();
+    return Machine.find({ relations: ['details'] });
   }
 
   @Query(() => Machine, { nullable: true })
@@ -150,14 +154,26 @@ export class MachineResolver {
     return { data };
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => MachineDeleteResponse)
   @UseMiddleware(isAuth)
-  async deleteMachine(@Arg('machineId') machineId: string): Promise<boolean> {
+  async deleteMachine(
+    @Arg('machineId') machineId: string,
+    @Ctx() { req }: Context
+  ): Promise<MachineDeleteResponse> {
+    const machine = await Machine.findOne({
+      machineId,
+      createdBy: req.session.userId
+    });
+
+    if (!machine) {
+      return setErrors('Data does not exist.');
+    }
+
     try {
       await Machine.delete(machineId);
-      return true;
+      return { data: { isDeleted: true } };
     } catch (err) {
-      return false;
+      return setErrors(err.message);
     }
   }
 }

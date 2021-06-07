@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { MachineDetail } from './MachineDetail';
 
 @Entity('ROB_MACHINE')
 @ObjectType()
@@ -66,4 +69,9 @@ export class Machine extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'UPDATED_AT' })
   updatedAt!: Date;
+
+  @Field(() => [MachineDetail])
+  @OneToMany(() => MachineDetail, (detail) => detail.machine)
+  @JoinColumn({ name: 'MACHINE_ID' })
+  details!: MachineDetail[];
 }
