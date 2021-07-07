@@ -12,7 +12,9 @@ export const setErrors = (
   if (message.substr(0, 4) === 'ORA-') {
     code = message.substr(0, 9);
     errorMessage = capitalizeFirstLetter(
-      message.substring(11, message.indexOf('\n'))
+      message.indexOf('\n') > 0
+        ? message.substring(11, message.indexOf('\n'))
+        : message.substr(11, message.length)
     );
   }
   return {

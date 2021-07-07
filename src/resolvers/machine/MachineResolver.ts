@@ -9,7 +9,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { Machine } from '../../entities/Machine';
+import { Machine } from '../../entities/APM/Machine';
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from '../../types/Context';
 import DataDeleteResponse from '../../types/DataDeleteResponse';
@@ -28,15 +28,19 @@ export class MachineResolver {
   @Query(() => [Machine])
   @UseMiddleware(isAuth)
   async getMachines(): Promise<Machine[] | undefined> {
-    return Machine.find({ relations: ['details'] });
+    return Machine.find({ relations: ['category', 'location'] });
   }
 
   @Query(() => Machine, { nullable: true })
   @UseMiddleware(isAuth)
   async getMachine(
-    @Arg('machineId') machineId: string
+    @Arg('machineId') machineId: string,
+    @Arg('contract') contract: string
   ): Promise<Machine | undefined> {
-    return await Machine.findOne(machineId);
+    return await Machine.findOne(
+      { machineId, contract },
+      { relations: ['category', 'location'] }
+    );
   }
 
   @Mutation(() => MachineResponse)
@@ -46,111 +50,205 @@ export class MachineResolver {
     @Ctx() { req }: Context
   ): Promise<MachineResponse | undefined> {
     let result;
-    const {
-      machineId,
-      machineName,
-      machineType,
-      makerId,
-      yearMade,
-      serialNo,
-      controller,
-      launchMethod,
-      image,
-      isActive,
-      remarks
-    } = input;
     const createdBy: string = req.session.userId;
-
     const sql = `
       BEGIN
-        Rob_Machine_API.Create__(:machineId, :machineName, :machineType, :makerId, :yearMade, :serialNo, :controller, :launchMethod, :image, :isActive, :remarks, :createdBy, :outMachineId);
+        ROB_APM_Machine_API.Create__(
+          :machineId,
+          :contract,
+          :description,
+          :categoryId,
+          :mType,
+          :makerId,
+          :serialNo,
+          :yearMade,
+          :purchaseDate,
+          :departmentId,
+          :locationNo,
+          :status,
+          :note,
+          :image1,
+          :image2,
+          :controller,
+          :launchMethod,
+          :rapierType,
+          :widthInCm,
+          :totalAccumulator,
+          :totalSelector,
+          :totalHarness,
+          :endCapacity,
+          :gang,
+          :gauge,
+          :feeder,
+          :totalNeedles,
+          :yarnFeederType,
+          :needleSensor,
+          :capacityInM,
+          :capacityInKg,
+          :settingSystem,
+          :totalChamber,
+          :usableWidth,
+          :nominalWidth,
+          :position,
+          :createdBy,
+          :outMachineId);
       END;
     `;
-
     try {
       result = await getConnection().query(sql, [
-        machineId,
-        machineName,
-        machineType,
-        makerId,
-        yearMade,
-        serialNo,
-        controller,
-        launchMethod,
-        image,
-        isActive ? 1 : 0,
-        remarks,
+        input.machineId,
+        input.contract,
+        input.description,
+        input.categoryId,
+        input.mType,
+        input.makerId,
+        input.serialNo,
+        input.yearMade,
+        input.purchaseDate,
+        input.departmentId,
+        input.locationNo,
+        input.status,
+        input.note,
+        input.image1,
+        input.image2,
+        input.controller,
+        input.launchMethod,
+        input.rapierType,
+        input.widthInCm,
+        input.totalAccumulator,
+        input.totalSelector,
+        input.totalHarness,
+        input.endCapacity,
+        input.gang,
+        input.gauge,
+        input.feeder,
+        input.totalNeedles,
+        input.yarnFeederType,
+        input.needleSensor,
+        input.capacityInM,
+        input.capacityInKg,
+        input.settingSystem,
+        input.totalChamber,
+        input.usableWidth,
+        input.nominalWidth,
+        input.position,
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
       return setErrors(err.message);
     }
-
     const outMachineId = result[0] as string;
-    const data = Machine.findOne(outMachineId);
-
+    const data = Machine.findOne({
+      machineId: outMachineId,
+      contract: input.contract
+    });
     return { data };
   }
 
   @Mutation(() => MachineResponse, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMachine(
-    @Arg('machineId') machineId: string,
-    @Arg('input') input: MachineInput,
-    @Ctx() { req }: Context
+    @Arg('input') input: MachineInput
   ): Promise<MachineResponse | undefined> {
     let result;
-    const {
-      machineName,
-      machineType,
-      makerId,
-      yearMade,
-      serialNo,
-      controller,
-      launchMethod,
-      image,
-      isActive,
-      remarks
-    } = input;
-
     const machine = await Machine.findOne({
-      machineId,
-      createdBy: req.session.userId
+      machineId: input.machineId,
+      contract: input.contract
     });
-
     if (!machine) {
       return undefined;
     }
-
     const sql = `
       BEGIN
-        Rob_Machine_API.Update__(:machineId, :machineName, :machineType, :makerId, :yearMade, :serialNo, :controller, :launchMethod, :image, :isActive, :remarks, :outMachineId);
+        Rob_APM_Machine_API.Update__(
+          :machineId,
+          :contract,
+          :description,
+          :categoryId,
+          :mType,
+          :makerId,
+          :serialNo,
+          :yearMade,
+          :purchaseDate,
+          :departmentId,
+          :locationNo,
+          :status,
+          :note,
+          :image1,
+          :image2,
+          :controller,
+          :launchMethod,
+          :rapierType,
+          :widthInCm,
+          :totalAccumulator,
+          :totalSelector,
+          :totalHarness,
+          :endCapacity,
+          :gang,
+          :gauge,
+          :feeder,
+          :totalNeedles,
+          :yarnFeederType,
+          :needleSensor,
+          :capacityInM,
+          :capacityInKg,
+          :settingSystem,
+          :totalChamber,
+          :usableWidth,
+          :nominalWidth,
+          :position,
+          :outMachineId);
       END;
     `;
-
     try {
       result = await getConnection().query(sql, [
-        machineId,
-        machineName,
-        machineType,
-        makerId,
-        yearMade,
-        serialNo,
-        controller,
-        launchMethod,
-        image,
-        isActive ? 1 : 0,
-        remarks,
+        input.machineId,
+        input.contract,
+        input.description,
+        input.categoryId,
+        input.mType,
+        input.makerId,
+        input.serialNo,
+        input.yearMade,
+        input.purchaseDate,
+        input.departmentId,
+        input.locationNo,
+        input.status,
+        input.note,
+        input.image1,
+        input.image2,
+        input.controller,
+        input.launchMethod,
+        input.rapierType,
+        input.widthInCm,
+        input.totalAccumulator,
+        input.totalSelector,
+        input.totalHarness,
+        input.endCapacity,
+        input.gang,
+        input.gauge,
+        input.feeder,
+        input.totalNeedles,
+        input.yarnFeederType,
+        input.needleSensor,
+        input.capacityInM,
+        input.capacityInKg,
+        input.settingSystem,
+        input.totalChamber,
+        input.usableWidth,
+        input.nominalWidth,
+        input.position,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
       return setErrors(err.message);
     }
-
     const outMachineId = result[0];
-    const data = Machine.findOne(outMachineId);
-
+    const data = Machine.findOne({
+      machineId: outMachineId,
+      contract: input.contract
+    });
     return { data };
   }
 
@@ -158,19 +256,20 @@ export class MachineResolver {
   @UseMiddleware(isAuth)
   async deleteMachine(
     @Arg('machineId') machineId: string,
+    @Arg('contract') contract: string,
     @Ctx() { req }: Context
   ): Promise<MachineDeleteResponse> {
+    const createdBy: string = req.session.userId;
     const machine = await Machine.findOne({
       machineId,
-      createdBy: req.session.userId
+      contract,
+      createdBy
     });
-
     if (!machine) {
       return setErrors('Data does not exist.');
     }
-
     try {
-      await Machine.delete(machineId);
+      await Machine.delete({ machineId, contract, createdBy });
       return { data: { isDeleted: true } };
     } catch (err) {
       return setErrors(err.message);
