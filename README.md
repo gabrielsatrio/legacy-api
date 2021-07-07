@@ -2,9 +2,9 @@
 
 ## Installation
 
-1. Make sure Postgres & Redis are running
+1. Make sure **OracleXE** (>= 12c) & **Redis** services are running
 
-2. Create `.env.development` & `.env.production` by duplicating from `.env.example`, then edit both files as needed
+2. Create `.env.development` & `.env.production` by duplicating from `.env.example.*`, then edit both files as needed
 
     ```bash
     $ cp .env.example.development .env.development
@@ -13,30 +13,9 @@
     $ code .env.production # edit as needed
     ```
 
-3. Edit file `dbInit.sql` as needed
-
-4. Do initial database setup
+3. Run server
 
     ```bash
-    $ yarn db:setup
+    $ yarn dev # development
+    $ yarn start # production
     ```
-
-5. Run Migration
-
-    ```bash
-    $ yarn db:migrate
-    ```
-
-6. Seed database with mock data (*Optional*)
-
-    ```bash
-    $ yarn db:seed:up
-    ```
-
-7. Run server
-
-    ```bash
-    $ yarn dev
-    ```
-
-8. Login as `john.doe` (password: `123456`)
