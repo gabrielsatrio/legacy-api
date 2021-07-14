@@ -1,3 +1,5 @@
+import { isAuth } from '@/middleware/isAuth';
+import { Context } from '@/types/Context';
 import {
   Arg,
   Ctx,
@@ -9,8 +11,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { User } from '../../entities/User';
-import { isAuth } from '../../middleware/isAuth';
-import { Context } from '../../types/Context';
 
 @Resolver(User)
 export class UserResolver {

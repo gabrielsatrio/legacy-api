@@ -1,5 +1,5 @@
 import db from '..';
-import { userFactory } from './../factories/userFactory';
+import { userFactory } from '../factories/userFactory';
 
 const run = async (): Promise<any> => {
   console.log('Connecting to DB');

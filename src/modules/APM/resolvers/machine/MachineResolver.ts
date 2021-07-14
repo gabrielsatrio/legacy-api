@@ -1,3 +1,8 @@
+import { isAuth } from '@/middleware/isAuth';
+import { Context } from '@/types/Context';
+import DataDeleteResponse from '@/types/DataDeleteResponse';
+import DataResponse from '@/types/DataResponse';
+import { setErrors } from '@/utils/setErrors';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -9,12 +14,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { Machine } from '../../entities/APM/Machine';
-import { isAuth } from '../../middleware/isAuth';
-import { Context } from '../../types/Context';
-import DataDeleteResponse from '../../types/DataDeleteResponse';
-import DataResponse from '../../types/DataResponse';
-import { setErrors } from '../../utils/setErrors';
+import { Machine } from '../../entities/Machine';
 import { MachineInput } from './types/MachineInput';
 
 @ObjectType()

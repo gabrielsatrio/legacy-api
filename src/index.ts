@@ -1,7 +1,8 @@
 import chalk from 'chalk';
+import 'module-alias/register'; // eslint-disable-line
 import { createConnection } from 'typeorm';
-import config from './config';
-import apolloServer from './server';
+import config from './config/main';
+import apolloServer from './providers/server';
 
 const startup = async () => {
   console.log(chalk.blue.bold('Starting server...\n'));

@@ -1,3 +1,5 @@
+import config from '@/config/main';
+import { createUserLoader } from '@/utils/createUserLoader';
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';
 import compression from 'compression';
@@ -12,9 +14,7 @@ import https from 'https';
 import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
-import config from './config';
 import { redis } from './redis';
-import { createUserLoader } from './utils/createUserLoader';
 
 const isProd = config.env === 'production';
 let server: http.Server | https.Server;
@@ -68,7 +68,9 @@ export default class apolloServer {
 
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
-        resolvers: [join(__dirname, 'resolvers/**/!(*.d).{ts,js}')],
+        resolvers: [
+          join(__dirname, '../modules/**/**/resolvers/**/!(*.d).{ts,js}')
+        ],
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
       }),

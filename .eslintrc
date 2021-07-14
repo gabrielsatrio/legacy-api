@@ -40,5 +40,17 @@
         "allowTemplateLiterals": true
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": [
+        ["@/config", "./src/config"],
+        ["@/middleware", "./src/middleware"],
+        ["@/modules", "./src/modules"],
+        ["@/providers", "./src/providers"],
+        ["@/types", "./src/types"],
+        ["@/utils", "./src/utils"]
+      ]
+    }
   }
 }

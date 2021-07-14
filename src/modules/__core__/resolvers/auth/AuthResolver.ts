@@ -1,13 +1,13 @@
+import config from '@/config/main';
+import { redis } from '@/providers/redis';
+import DataResponse from '@/types/DataResponse';
+import { sendEmail } from '@/utils/sendEmail';
+import { setErrors } from '@/utils/setErrors';
 import argon2 from 'argon2';
 import { Arg, Ctx, Mutation, ObjectType, Query, Resolver } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
-import config from '../../config';
 import { User } from '../../entities/User';
-import { redis } from '../../redis';
-import DataResponse from '../../types/DataResponse';
-import { sendEmail } from '../../utils/sendEmail';
-import { setErrors } from '../../utils/setErrors';
 import { LoginInput } from './types/LoginInput';
 import { RegisterInput } from './types/RegisterInput';
 
