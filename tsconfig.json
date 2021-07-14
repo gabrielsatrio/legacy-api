@@ -26,9 +26,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/config/*": ["src/config/*"],
-      "@/middleware/*": ["src/middleware/*"],
-      "@/modules/*": ["src/modules/*"],
+      "@/configs/*": ["src/configs/*"],
+      "@/middlewares/*": ["src/middlewares/*"],
+      "@/features/*": ["src/features/*"],
       "@/providers/*": ["src/providers/*"],
       "@/types/*": ["src/types/*"],
       "@/utils/*": ["src/utils/*"]
