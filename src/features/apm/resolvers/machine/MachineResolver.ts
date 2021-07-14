@@ -1,4 +1,4 @@
-import { isAuth } from '@/middleware/isAuth';
+import { isAuth } from '@/middlewares/isAuth';
 import { Context } from '@/types/Context';
 import DataDeleteResponse from '@/types/DataDeleteResponse';
 import DataResponse from '@/types/DataResponse';

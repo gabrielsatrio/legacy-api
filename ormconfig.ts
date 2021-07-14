@@ -1,4 +1,4 @@
-import config from '@/config/main';
+import config from '@/configs/main';
 import { join } from 'path';
 
 const { host, logging, password, port, sid, type, username } = config.db;
@@ -12,6 +12,6 @@ export = {
   sid,
   synchronize: false,
   logging,
-  entities: [join(__dirname, 'src/modules/**/entities/!(*.test).{ts,js}')],
+  entities: [join(__dirname, 'src/features/**/entities/!(*.test).{ts,js}')],
   migrations: [join(__dirname, 'src/database/migrations/**/!(*.test).{ts,js}')]
 };

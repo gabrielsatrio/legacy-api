@@ -1,5 +1,5 @@
-import { User } from '@/modules/__core__/entities/User';
 import Chance from 'chance';
+import { User } from 'src/features/core/entities/User';
 import { getRepository } from 'typeorm';
 
 const chance = new Chance();

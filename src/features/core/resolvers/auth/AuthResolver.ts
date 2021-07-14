@@ -1,4 +1,4 @@
-import config from '@/config/main';
+import config from '@/configs/main';
 import { redis } from '@/providers/redis';
 import DataResponse from '@/types/DataResponse';
 import { sendEmail } from '@/utils/sendEmail';

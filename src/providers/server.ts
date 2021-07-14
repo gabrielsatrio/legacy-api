@@ -1,4 +1,4 @@
-import config from '@/config/main';
+import config from '@/configs/main';
 import { createUserLoader } from '@/utils/createUserLoader';
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';
@@ -69,7 +69,7 @@ export default class apolloServer {
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
         resolvers: [
-          join(__dirname, '../modules/**/**/resolvers/**/!(*.d).{ts,js}')
+          join(__dirname, '../features/**/**/resolvers/**/!(*.d).{ts,js}')
         ],
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
