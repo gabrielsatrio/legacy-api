@@ -1,4 +1,4 @@
-import config from '@/configs/main';
+import config from '@/config/main';
 import { join } from 'path';
 
 const { host, logging, password, port, sid, type, username } = config.db;

@@ -85,7 +85,7 @@
     "typescript": "^4.0.3"
   },
   "_moduleAliases": {
-    "@/configs": "src/configs",
+    "@/config": "src/config",
     "@/middlewares": "src/middlewares",
     "@/features": "src/features",
     "@/providers": "src/providers",

@@ -1,4 +1,4 @@
-import config from '@/configs/main';
+import config from '@/config/main';
 import { createUserLoader } from '@/utils/createUserLoader';
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';

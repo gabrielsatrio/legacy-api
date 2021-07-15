@@ -29,7 +29,7 @@ export class MachineInput implements Partial<Machine> {
 
   @Field()
   @Length(1, 15)
-  mType!: string;
+  type!: string;
 
   @Field()
   @MinLength(2)

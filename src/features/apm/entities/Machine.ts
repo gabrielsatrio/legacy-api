@@ -32,8 +32,8 @@ export class Machine extends BaseEntity {
   categoryId!: string;
 
   @Field()
-  @Column({ name: 'M_TYPE' })
-  mType!: string;
+  @Column({ name: 'TYPE' })
+  type!: string;
 
   @Field()
   @Column({ name: 'MAKER_ID' })

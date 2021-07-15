@@ -13,7 +13,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Machine } from '../../entities/Machine';
 import { MachineInput } from './types/MachineInput';
 
@@ -27,8 +27,17 @@ class MachineDeleteResponse extends DataDeleteResponse() {}
 export class MachineResolver {
   @Query(() => [Machine])
   @UseMiddleware(isAuth)
-  async getMachines(): Promise<Machine[] | undefined> {
-    return Machine.find({ relations: ['category', 'location'] });
+  async getMachines(
+    @Arg('contract', () => [String])
+    contract: string[],
+    @Ctx() { req }: Context
+  ): Promise<Machine[] | undefined> {
+    return Machine.find({
+      where: {
+        contract: In(contract || req.session.defaultSite)
+      },
+      relations: ['category', 'location']
+    });
   }
 
   @Query(() => Machine, { nullable: true })
@@ -58,7 +67,7 @@ export class MachineResolver {
           :contract,
           :description,
           :categoryId,
-          :mType,
+          :type,
           :makerId,
           :serialNo,
           :yearMade,
@@ -100,7 +109,7 @@ export class MachineResolver {
         input.contract,
         input.description,
         input.categoryId,
-        input.mType,
+        input.type,
         input.makerId,
         input.serialNo,
         input.yearMade,
@@ -166,7 +175,7 @@ export class MachineResolver {
           :contract,
           :description,
           :categoryId,
-          :mType,
+          :type,
           :makerId,
           :serialNo,
           :yearMade,
@@ -207,7 +216,7 @@ export class MachineResolver {
         input.contract,
         input.description,
         input.categoryId,
-        input.mType,
+        input.type,
         input.makerId,
         input.serialNo,
         input.yearMade,
@@ -266,7 +275,7 @@ export class MachineResolver {
       createdBy
     });
     if (!machine) {
-      return setErrors('Data does not exist.');
+      return setErrors('No data found.');
     }
     try {
       await Machine.delete({ machineId, contract, createdBy });
