@@ -1,5 +1,4 @@
-import config from '@/config/main';
-import { createUserLoader } from '@/utils/createUserLoader';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';
 import compression from 'compression';
@@ -14,6 +13,8 @@ import https from 'https';
 import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
+import config from '../config/main';
+import { createUserLoader } from '../utils/createUserLoader';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
@@ -74,20 +75,22 @@ export default class apolloServer {
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
       }),
+      plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
       context: ({ req, res }) => ({
         req,
         res,
         userLoader: createUserLoader()
-      }),
-      uploads: false // disable apollo upload property
+      })
+      // uploads: false // disable apollo upload property
     });
 
+    await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 
     server = http.createServer(app);
 
     // Add subscription support
-    apolloServer.installSubscriptionHandlers(server);
+    // apolloServer.installSubscriptionHandlers(server);
 
     server.listen(config.server.port, () =>
       console.log(

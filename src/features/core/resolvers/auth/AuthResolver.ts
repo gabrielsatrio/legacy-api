@@ -1,20 +1,17 @@
 import config from '@/config/main';
 import { redis } from '@/providers/redis';
-import DataResponse from '@/types/DataResponse';
 import { sendEmail } from '@/utils/sendEmail';
 import { setErrors } from '@/utils/setErrors';
 import argon2 from 'argon2';
-import { Arg, Ctx, Mutation, ObjectType, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import { User } from '../../entities/User';
+import { UserResponse } from '../user/types/UserResponse';
 import { LoginInput } from './types/LoginInput';
 import { RegisterInput } from './types/RegisterInput';
 
 const FORGET_PASSWORD_PREFIX = config.token.prefix;
-
-@ObjectType()
-class UserResponse extends DataResponse(User) {}
 
 @Resolver(User)
 export class AuthResolver {
@@ -40,7 +37,7 @@ export class AuthResolver {
     }
     req.session.userId = user.id;
     req.session.defaultSite = user.defaultSite;
-    return { data: user };
+    return { success: true, data: user };
   }
 
   @Mutation(() => UserResponse)
@@ -63,7 +60,7 @@ export class AuthResolver {
     } catch (err) {
       return setErrors(err.message);
     }
-    return { data: user };
+    return { success: true, data: user };
   }
 
   @Mutation(() => Boolean)
@@ -104,7 +101,7 @@ export class AuthResolver {
       email,
       `<a href="${config.client.url}}/change-password/${token}">Reset Password</a>`
     );
-    return true;
+    return true; //TODO: Replace it with DataResponse.
   }
 
   @Mutation(() => UserResponse)
@@ -137,6 +134,6 @@ export class AuthResolver {
     await redis.del(tokenKey);
     req.session.userId = user.id;
     req.session.defaultSite = user.defaultSite;
-    return { data: user };
+    return { success: true, data: user };
   }
 }

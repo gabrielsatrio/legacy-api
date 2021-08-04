@@ -1,5 +1,5 @@
 # Create a first-stage to build the app
-FROM node:14
+FROM node:14 as build
 
 # Create an app folder
 RUN mkdir /app
@@ -37,15 +37,23 @@ WORKDIR /app
 # Copy the built artifacts from the build stage
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
+COPY --from=build /app/ormconfig.ts ormconfig.ts
+COPY --from=build /app/.env.development .env.development
+COPY --from=build /app/.env.production .env.production
+COPY --from=build /app/dist dist
 
 # Install all dependencies
 RUN yarn
 
 # Set environment variables
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 # Expose port
 EXPOSE 4000
 
 # Set the startup command
-CMD node dist/index.js
+RUN yarn start
+
+# CMD node dist/src/index.js
+# ENTRYPOINT ["tail"]
+# CMD ["-f","/dev/null"]
