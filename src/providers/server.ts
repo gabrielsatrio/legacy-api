@@ -26,6 +26,16 @@ export default class apolloServer {
 
     const RedisStore = connectRedis(session);
 
+    app.use(express.json());
+
+    app.use(
+      helmet({
+        // TODO: fix it!
+        // contentSecurityPolicy: isProd ? undefined : false
+        contentSecurityPolicy: false
+      })
+    );
+
     app.use(
       cors({
         credentials: true,
@@ -56,11 +66,6 @@ export default class apolloServer {
       } as any)
     );
 
-    app.use(
-      helmet({
-        contentSecurityPolicy: isProd ? undefined : false
-      })
-    );
     app.use(compression());
 
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
@@ -80,7 +85,8 @@ export default class apolloServer {
         req,
         res,
         userLoader: createUserLoader()
-      })
+      }),
+      introspection: !isProd
       // uploads: false // disable apollo upload property
     });
 
@@ -97,7 +103,9 @@ export default class apolloServer {
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
         chalk.yellow.bold(
-          `http://localhost:${config.server.port}${apolloServer.graphqlPath}`
+          `http://${isProd ? 'ais.ateja.co.id' : 'localhost'}:${
+            config.server.port
+          }${apolloServer.graphqlPath}`
         )
       )
     );

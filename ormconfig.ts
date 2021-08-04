@@ -2,6 +2,7 @@ import config from '@/config/main';
 import { join } from 'path';
 
 const { host, logging, password, port, sid, type, username } = config.db;
+const sourcePath = config.env === 'production' ? 'dist/src' : 'src';
 
 export = {
   type,
@@ -12,6 +13,10 @@ export = {
   sid,
   synchronize: false,
   logging,
-  entities: [join(__dirname, 'src/features/**/entities/!(*.test).{ts,js}')],
-  migrations: [join(__dirname, 'src/database/migrations/**/!(*.test).{ts,js}')]
+  entities: [
+    join(__dirname, sourcePath, 'features/**/entities/!(*.test).{ts,js}')
+  ],
+  migrations: [
+    join(__dirname, sourcePath, 'database/migrations/**/!(*.test).{ts,js}')
+  ]
 };

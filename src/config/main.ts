@@ -31,7 +31,7 @@ export default {
     url: process.env.REDIS_URL
   },
   server: {
-    port: process.env.PORT
+    port: process.env.PORT || 4000
   },
   session: {
     secret: process.env.SESSION_SECRET
