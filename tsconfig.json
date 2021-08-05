@@ -35,5 +35,5 @@
     }
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "ormconfig.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

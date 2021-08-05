@@ -103,7 +103,7 @@ export default class apolloServer {
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
         chalk.yellow.bold(
-          `http://${isProd ? 'ais.ateja.co.id' : 'localhost'}:${
+          `http://${isProd ? 'api.ateja.co.id' : 'localhost'}:${
             config.server.port
           }${apolloServer.graphqlPath}`
         )

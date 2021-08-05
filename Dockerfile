@@ -48,6 +48,9 @@ ENV LD_LIBRARY_PATH /usr/lib/instantclient
 ENV TNS_ADMIN /usr/lib/instantclient
 ENV ORACLE_HOME /usr/lib/instantclient
 
+# Install PM2
+RUN npm i -g pm2
+
 # Create an app folder
 RUN mkdir /app
 
@@ -55,13 +58,11 @@ RUN mkdir /app
 WORKDIR /app
 
 # Copy the built artifacts from the build stage
+COPY --from=build /app/dist dist
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
+COPY --from=build /app/ormconfig.js ormconfig.js
 COPY --from=build /app/.env.production .env.production
-COPY --from=build /app/dist dist
-
-# Move ormconfig.* to /app
-RUN mv /app/dist/ormconfig.* /app/
 
 # Install all dependencies
 RUN yarn
@@ -73,4 +74,8 @@ ENV NODE_ENV production
 EXPOSE 4000
 
 # Set the startup command
-CMD yarn start
+CMD ["pm2-runtime", "dist/index.js"]
+
+# Debug mode only
+# ENTRYPOINT ["tail"]
+# CMD ["-f","/dev/null"]
