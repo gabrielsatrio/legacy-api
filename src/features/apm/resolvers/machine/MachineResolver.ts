@@ -1,34 +1,35 @@
 import { isAuth } from '@/middlewares/isAuth';
 import { Context } from '@/types/Context';
-import DataDeleteResponse from '@/types/DataDeleteResponse';
-import DataResponse from '@/types/DataResponse';
 import { setErrors } from '@/utils/setErrors';
 import oracledb from 'oracledb';
 import {
   Arg,
   Ctx,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Machine } from '../../entities/Machine';
 import { MachineInput } from './types/MachineInput';
-
-@ObjectType()
-class MachineResponse extends DataResponse(Machine) {}
-
-@ObjectType()
-class MachineDeleteResponse extends DataDeleteResponse() {}
+import { MachineResponse } from './types/MachineResponse';
 
 @Resolver(Machine)
 export class MachineResolver {
   @Query(() => [Machine])
   @UseMiddleware(isAuth)
-  async getMachines(): Promise<Machine[] | undefined> {
-    return Machine.find({ relations: ['category', 'location'] });
+  async getAllMachines(
+    @Arg('contract', () => [String])
+    contract: string[],
+    @Ctx() { req }: Context
+  ): Promise<Machine[] | undefined> {
+    return Machine.find({
+      where: {
+        contract: In(contract || req.session.defaultSite)
+      },
+      relations: ['category', 'location']
+    });
   }
 
   @Query(() => Machine, { nullable: true })
@@ -58,7 +59,7 @@ export class MachineResolver {
           :contract,
           :description,
           :categoryId,
-          :mType,
+          :type,
           :makerId,
           :serialNo,
           :yearMade,
@@ -100,7 +101,7 @@ export class MachineResolver {
         input.contract,
         input.description,
         input.categoryId,
-        input.mType,
+        input.type,
         input.makerId,
         input.serialNo,
         input.yearMade,
@@ -143,7 +144,7 @@ export class MachineResolver {
       machineId: outMachineId,
       contract: input.contract
     });
-    return { data };
+    return { success: true, data };
   }
 
   @Mutation(() => MachineResponse, { nullable: true })
@@ -166,7 +167,7 @@ export class MachineResolver {
           :contract,
           :description,
           :categoryId,
-          :mType,
+          :type,
           :makerId,
           :serialNo,
           :yearMade,
@@ -207,7 +208,7 @@ export class MachineResolver {
         input.contract,
         input.description,
         input.categoryId,
-        input.mType,
+        input.type,
         input.makerId,
         input.serialNo,
         input.yearMade,
@@ -249,28 +250,26 @@ export class MachineResolver {
       machineId: outMachineId,
       contract: input.contract
     });
-    return { data };
+    return { success: true, data };
   }
 
-  @Mutation(() => MachineDeleteResponse)
+  @Mutation(() => MachineResponse)
   @UseMiddleware(isAuth)
   async deleteMachine(
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string,
     @Ctx() { req }: Context
-  ): Promise<MachineDeleteResponse> {
+  ): Promise<MachineResponse> {
     const createdBy: string = req.session.userId;
     const machine = await Machine.findOne({
       machineId,
       contract,
       createdBy
     });
-    if (!machine) {
-      return setErrors('Data does not exist.');
-    }
+    if (!machine) return setErrors('No data found.');
     try {
       await Machine.delete({ machineId, contract, createdBy });
-      return { data: { isDeleted: true } };
+      return { success: true };
     } catch (err) {
       return setErrors(err.message);
     }

@@ -2,8 +2,8 @@
   "name": "ais-server",
   "version": "1.0.0",
   "description": "AIS - Server",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "author": "ATJDEV Team",
   "license": "ATJ",
   "private": true,
@@ -14,8 +14,10 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
+    "build:docker": "./scripts/docker-build.sh",
     "dev": "cross-env NODE_ENV=development ts-node-dev --poll --respawn --transpile-only src/index.ts",
-    "start": "cross-env NODE_ENV=production ./node_modules/pm2/bin/pm2 start dist/index.js -i max",
+    "start": "cross-env NODE_ENV=production pm2 start index.js --name \"ais-server\" -i max",
+    "start:alt": "cross-env NODE_ENV=production node index.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "db:migrate": "yarn typeorm migration:run",
     "db:revert": "yarn typeorm migration:revert",
@@ -26,10 +28,12 @@
     "typeorm": "yarn development ./node_modules/typeorm/cli.js",
     "development": "DOTENV_CONFIG_PATH=./.env.development ts-node -P ./tsconfig.json -r dotenv/config",
     "gen-env": "gen-env-types .env.development -o src/types/env.d.ts -e . && rm -fr .env.example",
-    "deploy": "./deploy.sh"
+    "deploy": "./scripts/deploy.sh",
+    "deploy:docker": "./scripts/deploy-docker.sh",
+    "deploy:docker:full": "./scripts/deploy-docker-full.sh"
   },
   "dependencies": {
-    "apollo-server-express": "^2.23.0",
+    "apollo-server-express": "^3.1.1",
     "argon2": "^0.27.0",
     "chalk": "^4.1.0",
     "class-validator": "^0.13.1",
@@ -40,16 +44,16 @@
     "dataloader": "^2.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "graphql-upload": "^11.0.0",
     "helmet": "^4.4.1",
     "ioredis": "^4.17.3",
     "module-alias": "^2.2.2",
     "nodemailer": "^6.4.16",
     "oracledb": "^5.1.0",
-    "pm2": "^4.5.1",
+    "pm2": "^5.1.0",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.0.0",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.28",
     "uuid": "^8.3.1"
   },
@@ -83,14 +87,6 @@
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0-pre.63",
     "typescript": "^4.0.3"
-  },
-  "_moduleAliases": {
-    "@/configs": "src/configs",
-    "@/middlewares": "src/middlewares",
-    "@/features": "src/features",
-    "@/providers": "src/providers",
-    "@/types": "src/types",
-    "@/utils": "src/utils"
   },
   "husky": {
     "hooks": {

@@ -1,8 +1,17 @@
 import chalk from 'chalk';
-import 'module-alias/register'; // eslint-disable-line
+import moduleAlias from 'module-alias';
 import { createConnection } from 'typeorm';
-import config from './configs/main';
+import config from './config/main';
 import apolloServer from './providers/server';
+
+moduleAlias.addAliases({
+  '@/config': `${__dirname}/config`,
+  '@/middlewares': `${__dirname}/middlewares`,
+  '@/features': `${__dirname}/features`,
+  '@/providers': `${__dirname}/providers`,
+  '@/types': `${__dirname}/types`,
+  '@/utils': `${__dirname}/utils`
+});
 
 const startup = async () => {
   console.log(chalk.blue.bold('Starting server...\n'));

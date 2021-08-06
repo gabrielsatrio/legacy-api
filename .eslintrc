@@ -44,7 +44,7 @@
   "settings": {
     "import/resolver": {
       "alias": [
-        ["@/configs", "./src/configs"],
+        ["@/config", "./src/config"],
         ["@/middlewares", "./src/middlewares"],
         ["@/features", "./src/features"],
         ["@/providers", "./src/providers"],

@@ -1,5 +1,4 @@
-import config from '@/configs/main';
-import { createUserLoader } from '@/utils/createUserLoader';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';
 import compression from 'compression';
@@ -14,6 +13,8 @@ import https from 'https';
 import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
+import config from '../config/main';
+import { createUserLoader } from '../utils/createUserLoader';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
@@ -24,6 +25,16 @@ export default class apolloServer {
     const app = express();
 
     const RedisStore = connectRedis(session);
+
+    app.use(express.json());
+
+    app.use(
+      helmet({
+        // TODO: fix it!
+        // contentSecurityPolicy: isProd ? undefined : false
+        contentSecurityPolicy: false
+      })
+    );
 
     app.use(
       cors({
@@ -55,11 +66,6 @@ export default class apolloServer {
       } as any)
     );
 
-    app.use(
-      helmet({
-        contentSecurityPolicy: isProd ? undefined : false
-      })
-    );
     app.use(compression());
 
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
@@ -74,27 +80,32 @@ export default class apolloServer {
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
       }),
+      plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
       context: ({ req, res }) => ({
         req,
         res,
         userLoader: createUserLoader()
       }),
-      uploads: false // disable apollo upload property
+      introspection: !isProd
+      // uploads: false // disable apollo upload property
     });
 
+    await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 
     server = http.createServer(app);
 
     // Add subscription support
-    apolloServer.installSubscriptionHandlers(server);
+    // apolloServer.installSubscriptionHandlers(server);
 
     server.listen(config.server.port, () =>
       console.log(
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
         chalk.yellow.bold(
-          `http://localhost:${config.server.port}${apolloServer.graphqlPath}`
+          `http://${isProd ? 'api.ateja.co.id' : 'localhost'}:${
+            config.server.port
+          }${apolloServer.graphqlPath}`
         )
       )
     );
