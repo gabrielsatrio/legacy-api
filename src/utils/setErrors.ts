@@ -5,7 +5,7 @@ export const setErrors = (
   field?: string
 ): Record<
   string,
-  [{ message: string; field: string | null; code: string | null }]
+  boolean | [{ message: string; field: string | null; code: string | null }]
 > => {
   let code = null;
   let errorMessage = message;
@@ -18,6 +18,7 @@ export const setErrors = (
     );
   }
   return {
+    success: false,
     errors: [{ message: errorMessage, field: field || null, code }]
   };
 };
