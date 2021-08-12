@@ -72,7 +72,7 @@ ENV NODE_ENV production
 EXPOSE 4000
 
 # Set the startup command
-CMD ["pm2-runtime", "index.js"]
+CMD ["pm2-runtime", "--name", "ais-server", "-i", "max", "index.js"]
 
 # Debug mode only
 # ENTRYPOINT ["tail"]
