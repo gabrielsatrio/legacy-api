@@ -11,7 +11,7 @@ const {
   type,
   username
 } = config.default.db;
-const sourcePath = config.default.env === 'production' ? 'dist' : 'src';
+const sourcePath = config.default.env === 'production' ? '.' : 'src';
 
 module.exports = {
   type,
