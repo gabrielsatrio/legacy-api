@@ -23,7 +23,7 @@ module.exports = {
   synchronize: false,
   logging,
   entities: [
-    join(__dirname, sourcePath, 'features/**/entities/!(*.test).{ts,js}')
+    join(__dirname, sourcePath, 'modules/**/entities/!(*.test).{ts,js}')
   ],
   migrations: [
     join(__dirname, sourcePath, 'database/migrations/**/!(*.test).{ts,js}')

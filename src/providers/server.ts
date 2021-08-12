@@ -14,7 +14,7 @@ import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import config from '../config/main';
-import { createUserLoader } from '../utils/createUserLoader';
+import { createUserLoader } from '../utils/create-user-loader';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
@@ -74,9 +74,7 @@ export default class apolloServer {
 
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
-        resolvers: [
-          join(__dirname, '../features/**/**/resolvers/**/!(*.d).{ts,js}')
-        ],
+        resolvers: [join(__dirname, '../modules/**/!(*.d).resolver.{ts,js}')],
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
       }),
