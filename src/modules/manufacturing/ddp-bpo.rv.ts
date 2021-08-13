@@ -1,15 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Context } from '@/types/context';
 import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
 import { BPOResponse } from './ddp-bpo.dr';
 import { BPOInput } from './ddp-bpo.in';
@@ -21,12 +13,11 @@ export class BPOResolver {
   @UseMiddleware(isAuth)
   async getAllBPOs(
     @Arg('contract', () => [String])
-    contract: string[],
-    @Ctx() { req }: Context
+    contract: string[]
   ): Promise<DDPBPO[] | undefined> {
     return await DDPBPO.find({
       relations: ['dyestuffsUses', 'auxiliariesUses'],
-      where: { contract: In(contract || req.session.defaultSite) }
+      where: { contract: In(contract) }
     });
   }
 
@@ -36,13 +27,12 @@ export class BPOResolver {
     @Arg('contract', () => [String])
     contract: string[],
     @Arg('idNo') idNo: string,
-    @Arg('kuCount') kuCount: number,
-    @Ctx() { req }: Context
+    @Arg('kuCount') kuCount: number
   ): Promise<DDPBPO | undefined> {
     return await DDPBPO.findOne({
       relations: ['dyestuffsUses', 'auxiliariesUses'],
       where: {
-        contract: In(contract || req.session.defaultSite),
+        contract: In(contract),
         idNo,
         kuCount
       }

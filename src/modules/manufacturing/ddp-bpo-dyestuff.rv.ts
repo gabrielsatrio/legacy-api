@@ -1,15 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Context } from '@/types/context';
 import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
 import { BPODyestuffResponse } from './ddp-bpo-dyestuff.dr';
 import { BPODyestuffInput } from './ddp-bpo-dyestuff.in';
@@ -23,11 +15,10 @@ export class BPODyestuffResolver {
     @Arg('contract', () => [String])
     contract: string[],
     @Arg('idNo') idNo: string,
-    @Arg('kuCount') kuCount: number,
-    @Ctx() { req }: Context
+    @Arg('kuCount') kuCount: number
   ): Promise<BPODyestuff[] | undefined> {
     return await BPODyestuff.find({
-      contract: In(contract || req.session.defaultSite),
+      contract: In(contract),
       idNo,
       kuCount
     });
