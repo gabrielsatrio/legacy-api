@@ -11,9 +11,9 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { MachineInput } from './apm-mach-rob.input';
-import { MachineResponse } from './apm-mach-rob.response';
-import { Machine } from './entities/apm-mach-rob';
+import { MachineResponse } from './apm-machine.dr';
+import { MachineInput } from './apm-machine.in';
+import { Machine } from './entities/apm-machine';
 
 @Resolver(Machine)
 export class MachineResolver {

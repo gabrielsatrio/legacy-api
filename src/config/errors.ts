@@ -1,1 +1,3 @@
-export const NO_DATA_FOUND = 'No data found.';
+export const error = {
+  NO_DATA_FOUND: 'No data found.'
+};
