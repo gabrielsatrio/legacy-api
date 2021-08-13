@@ -268,6 +268,182 @@ mutation deleteDye2{
 }
 
 ```
+#### **Material**
+berisi head dan detail, lakukan masing-masing crud pada head dan detail\
+pastikan depedency master-detail sesuai
+
+```
+query getMaterials{
+  getMaterials(contract:["AMI","ATD"]){
+    idNo,
+    contract,
+    partNo,
+    jenisCelup,
+    lotCelup,
+    hasilCounterMeter
+  }
+}
+
+query getMaterialID{
+  getMaterialById(contract:["AMI","ATD"], idNo:"270721/III/131"){
+    idNo,
+    contract,
+    partNo,
+    jenisCelup,
+    lotCelup,
+    hasilCounterMeter
+  }
+}
+
+query getMaterialSO{
+  getMaterialByOrderNo(contract:["AMI","ATD"], orderNo:"1373447"){
+    idNo,
+    contract,
+    partNo,
+    jenisCelup,
+    lotCelup,
+    hasilCounterMeter
+  }
+}
+
+mutation addMaterial{
+  createMaterial(input:{
+    contract:"AMI",
+    jenisCelup:"Piece Dye",
+    idNo:"290321/II/121",
+    tanggal:"06/27/2021 14:22:00",
+    partNo:"FD-ZORROVINO-V-090",
+    mediaCelup:null,
+    hasilCounterMeter:0,
+    orderNo:null,
+    noMesin:"Jet III",
+    jmlMediaCelup: null,
+    tara:1,
+    bruto:1,
+    netto:1,
+    note: null,
+    lotCelup:"III/121"
+  }){
+    success,
+    data{
+      contract,
+      idNo,
+      tanggal,
+      note
+    },
+    errors{
+      message
+    }
+  }
+}
+
+
+mutation updateMaterial{
+  UpdateMaterial(input:{
+    contract:"AMI",
+    jenisCelup:"Piece Dye",
+    idNo:"290321/II/121",
+    tanggal:"06/27/2021 14:22:00",
+    partNo:"FD-ZORROVINO-V-090",
+    mediaCelup:null,
+    hasilCounterMeter:0,
+    orderNo:null,
+    noMesin:"Jet III",
+    jmlMediaCelup: null,
+    tara:1,
+    bruto:1,
+    netto:1,
+    note: "dzulumat",
+    lotCelup:"III/121"
+  }){
+    success,
+    data{
+      contract,
+      idNo,
+      tanggal,
+      note
+    },
+    errors{
+      message
+    }
+  }
+}
+
+mutation deteleMaterial{
+  deleteMaterial(contract:"AMI",idNo:"290321/II/121"){
+    success,
+    errors{
+      message
+    }
+  }
+}
+
+#######material use
+
+query materialUse{
+  getMaterialUseByKey(contract:"AMI",idNo:"290321/II/121"){
+    idNo,
+    partNo,
+    length,
+    lotBatchNo
+  }
+}
+
+mutation addMaterialUse{
+  createMaterialUse(input:{
+    contract:"AMI",
+    idNo:"290321/II/121",
+    lotBatchNo:"AM/KS09/210319-61",
+    partNo:"FP-MIRABELLEKNIT-XX-0",
+    length:160,
+    orderNo:null,
+    tubeDyeing:"Tube Kiri",
+    no:1
+  }){
+    success,
+    data{
+      idNo,
+      partNo,
+      length,
+      lotBatchNo
+    },errors{
+      ,message
+    }
+  }
+}
+
+mutation updateMaterialUse{
+  updateMaterialUse(input:{
+    contract:"AMI",
+    idNo:"290321/II/121",
+    lotBatchNo:"AM/KS09/210319-61",
+    partNo:"FP-MIRABELLEKNIT-XX-0",
+    length:170,
+    orderNo:null,
+    tubeDyeing:"Tube Kiri",
+    no:1
+  }){
+    success,
+    data{
+      idNo,
+      partNo,
+      length,
+      lotBatchNo
+    },errors{
+      ,message
+    }
+  }
+}
+
+mutation deleteMaterialUse{
+  deleteMaterialUse(contract:"AMI",idNo:"290321/II/121", no:1){
+    success,
+    errors{
+      message
+    }
+  }
+}
+```
 
 ## SPT
 
