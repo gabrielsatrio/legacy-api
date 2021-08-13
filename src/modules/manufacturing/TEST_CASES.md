@@ -444,6 +444,23 @@ mutation deleteMaterialUse{
   }
 }
 ```
+#### **Mesin**
+query saja
+```
+query getMesin {
+  getDDPMachine(contract:["AMI"]){
+    mesin,
+    contract
+  }
+}
+
+query getMesinByMesin{
+ getDDPMachineByMesin(contract:["AMI"], mesin:"Jet I"){
+  mesin,
+  contract
+	}
+}
+```
 
 ## SPT
 
