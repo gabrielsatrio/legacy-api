@@ -1,0 +1,4 @@
+# SCOPES
+
+* Authentication
+* Administration

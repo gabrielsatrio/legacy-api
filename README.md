@@ -31,7 +31,7 @@
     > yarn build:docker
     ```
 
-3. Check if the services can be accessed and have no issues (http://localhost:4000).
+3. Check if there are any errors in the docker logs before deploying to the production server.
 
 4. Deploy to the server.
 

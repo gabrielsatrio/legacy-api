@@ -11,7 +11,7 @@ WORKDIR /app
 # This is an optimization step, as this layer will be cached,
 # meaning that if we don't change the package.json file,
 # this step doesn't need to be performed again
-COPY package.json .
+COPY package.json yarn.lock ./
 
 # Install all dependencies
 RUN yarn
@@ -58,14 +58,12 @@ RUN mkdir /app
 WORKDIR /app
 
 # Copy the built artifacts from the build stage
-COPY --from=build /app/dist dist
+COPY --from=build /app/dist .
+COPY --from=build /app/node_modules node_modules
 COPY --from=build /app/.env.production .env.production
 COPY --from=build /app/ormconfig.js ormconfig.js
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
-
-# Install all dependencies
-RUN yarn
 
 # Set environment variables
 ENV NODE_ENV production
@@ -74,7 +72,7 @@ ENV NODE_ENV production
 EXPOSE 4000
 
 # Set the startup command
-CMD ["pm2-runtime", "dist/index.js"]
+CMD ["pm2-runtime", "--name", "ais-server", "-i", "max", "index.js"]
 
 # Debug mode only
 # ENTRYPOINT ["tail"]

@@ -1,0 +1,5 @@
+# SCOPES
+
+* Payroll
+* Leave
+* Medical
