@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Filename**
-> - Lowercase w/ hypen
+> - Lowercase with hypens
 > - Max Length: 27 chars (excluding the extension)
 > - Format: [IFS|PROJECT_CODE]-[TABLE/VIEW_NAME].[SEQ].[vw].ts
 >
@@ -43,6 +43,21 @@ root
 |   CHANGELOG.md                                    [CHANGELOG]
 |   README.md
 ```
+
+# Git Branch Naming
+
+Use lowercase with hypens
+
+* `main`
+* `develop`
+* `feature/`[PROJECT_NAME]</br>
+  e.g. feature/apm
+* `bugfix/`[ISSUE_NAME]</br>
+  e.g. bugfix/more-gray-shades
+* `hotfix/`[ISSUE_NAME]</br>
+  e.g. hotfix/increase-scaling-threshold
+* `release/`[APP_VERSION]</br>
+  e.g. release/v1.0.0
 
 # References
 
