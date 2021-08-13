@@ -9,8 +9,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { MachineCategory } from './apm-mach-category-rob';
-import { MachineLocation } from './apm-mach-location-rob';
+import { MachineCategory } from './apm-machine-category';
+import { MachineLocation } from './apm-machine-location';
 
 @Entity('ROB_APM_MACHINE')
 @ObjectType()

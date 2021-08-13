@@ -12,7 +12,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { User } from './entities/user';
-import { UserResponse } from './user.response';
+import { UserResponse } from './user.dr';
 
 @Resolver(User)
 export class UserResolver {

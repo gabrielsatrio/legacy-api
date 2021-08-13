@@ -74,7 +74,7 @@ export default class apolloServer {
 
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
-        resolvers: [join(__dirname, '../modules/**/!(*.d).resolver.{ts,js}')],
+        resolvers: [join(__dirname, '../modules/**/!(*.d).rv.{ts,js}')],
         authChecker: ({ context: { req } }) => !!req.session.userId,
         validate: true
       }),

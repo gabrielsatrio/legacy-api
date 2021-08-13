@@ -7,7 +7,7 @@ import {
   MinLength
 } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { Machine } from './entities/apm-mach-rob';
+import { Machine } from './entities/apm-machine';
 
 @InputType()
 export class MachineInput implements Partial<Machine> {

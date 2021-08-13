@@ -7,9 +7,9 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import { User } from './entities/user';
-import { LoginInput } from './login.input';
-import { RegisterInput } from './register.input';
-import { UserResponse } from './user.response';
+import { LoginInput } from './login.in';
+import { RegisterInput } from './register.in';
+import { UserResponse } from './user.dr';
 
 const FORGET_PASSWORD_PREFIX = config.token.prefix;
 
