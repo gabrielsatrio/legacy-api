@@ -6,10 +6,9 @@ import { getConnection, In } from 'typeorm';
 import { ResepResponse } from './ddp-master-resep.dr';
 import { MasterResepInput } from './ddp-master-resep.in';
 import { MasterResep } from './entities/ddp-master-resep';
-import { MaterialUse } from './entities/ddp-material-use';
 
-@Resolver(MaterialUse)
-export class MaterialUseResolver {
+@Resolver(MasterResep)
+export class MasterResepResolver {
   @Query(() => [MasterResep], { nullable: true })
   @UseMiddleware(isAuth)
   async getMasterResep(
