@@ -4,14 +4,14 @@
 
 1. Make sure **OracleXE** (>= 12c) & **Redis** services are running.
 
-2. Create `.env.development`, `.env.testing ` & `.env.production` by duplicating from `.env.example.*`, then edit both files as needed.
+2. Create `.env.development`, `.env.test ` & `.env.production` by duplicating from `.env.example.*`, then edit both files as needed.
 
     ```bash
     > cp .env.example.development .env.development
-    > cp .env.example.testing .env.testing
+    > cp .env.example.test .env.test
     > cp .env.example.production .env.production
     > code .env.development # edit as needed
-    > code .env.testing # edit as needed
+    > code .env.test # edit as needed
     > code .env.production # edit as needed
     ```
 
@@ -25,7 +25,7 @@
 
 ## Deployment
 
-1. Make sure all of the parameters inside `.env.production`/`.env.testing` file are valid.
+1. Make sure all of the parameters inside `.env.production`/`.env.test` file are valid.
 
 2. Build and create docker image.
 

@@ -24,6 +24,7 @@ yarn-error.log*
 .env.local
 .env.dev*
 .env.test*
+.env.stage*
 .env.prod*
 .env.*.local
 uploads

@@ -18,7 +18,7 @@ import { createUserLoader } from '../utils/create-user-loader';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
-const isTest = config.env === 'testing';
+const isTest = config.env === 'test';
 let server: http.Server | https.Server;
 
 export default class apolloServer {

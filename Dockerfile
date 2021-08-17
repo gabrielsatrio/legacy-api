@@ -29,7 +29,7 @@ RUN yarn build
 FROM node:14-alpine
 
 # ARG variable
-ARG ENV=testing
+ARG ENV=test
 
 # Install Instantclient Basic Light Oracle and dependencies
 RUN apk --no-cache add libaio libnsl libc6-compat curl && \
@@ -51,7 +51,7 @@ ENV LD_LIBRARY_PATH /usr/lib/instantclient
 ENV TNS_ADMIN /usr/lib/instantclient
 ENV ORACLE_HOME /usr/lib/instantclient
 
-# Install PM2
+# Install pm2 package
 RUN npm i -g pm2
 
 # Create an app folder
@@ -63,19 +63,19 @@ WORKDIR /app
 # Copy the built artifacts from the build stage
 COPY --from=build /app/dist .
 COPY --from=build /app/node_modules node_modules
-COPY --from=build /app/.env.testing .env.testing
+COPY --from=build /app/.env.test .env.test
 COPY --from=build /app/.env.production .env.production
 COPY --from=build /app/ormconfig.js ormconfig.js
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
 
 # Configure based on the argument ENV
-RUN if [ $ENV = "testing" ] ; \
+RUN if [ $ENV = "test" ] ; \
   then \
   rm -fr .env.production ; \
   elif [ $ENV = "production" ] ; \
   then \
-  rm -fr .env.testing ; \
+  rm -fr .env.test ; \
   fi
 
 # Set environment variables

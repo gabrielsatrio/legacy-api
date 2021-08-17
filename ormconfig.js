@@ -6,7 +6,7 @@ const {
   env,
   db: { host, logging, password, port, sid, type, username }
 } = config.default;
-const sourcePath = env === 'production' || env === 'testing' ? '.' : 'src';
+const sourcePath = env === 'production' || env === 'test' ? '.' : 'src';
 
 module.exports = {
   type,
