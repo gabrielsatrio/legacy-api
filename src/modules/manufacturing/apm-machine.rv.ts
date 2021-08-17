@@ -21,12 +21,11 @@ export class MachineResolver {
   @UseMiddleware(isAuth)
   async getAllMachines(
     @Arg('contract', () => [String])
-    contract: string[],
-    @Ctx() { req }: Context
+    contract: string[]
   ): Promise<Machine[] | undefined> {
     return Machine.find({
       where: {
-        contract: In(contract || req.session.defaultSite)
+        contract: In(contract)
       },
       relations: ['category', 'location']
     });

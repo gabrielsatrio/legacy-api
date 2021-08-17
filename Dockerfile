@@ -28,6 +28,9 @@ RUN yarn build
 # and run the application
 FROM node:14-alpine
 
+# ARG variable
+ARG ENV=testing
+
 # Install Instantclient Basic Light Oracle and dependencies
 RUN apk --no-cache add libaio libnsl libc6-compat curl && \
   cd /tmp && \
@@ -60,19 +63,29 @@ WORKDIR /app
 # Copy the built artifacts from the build stage
 COPY --from=build /app/dist .
 COPY --from=build /app/node_modules node_modules
+COPY --from=build /app/.env.testing .env.testing
 COPY --from=build /app/.env.production .env.production
 COPY --from=build /app/ormconfig.js ormconfig.js
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
 
+# Configure based on the argument ENV
+RUN if [ $ENV = "testing" ] ; \
+  then \
+  rm -fr .env.production ; \
+  elif [ $ENV = "production" ] ; \
+  then \
+  rm -fr .env.testing ; \
+  fi
+
 # Set environment variables
-ENV NODE_ENV production
+ENV NODE_ENV $ENV
 
 # Expose port
 EXPOSE 4000
 
 # Set the startup command
-CMD ["pm2-runtime", "--name", "ais-server", "-i", "max", "index.js"]
+CMD ["pm2-runtime", "--name", "ezio-api", "-i", "max", "index.js"]
 
 # Debug mode only
 # ENTRYPOINT ["tail"]
