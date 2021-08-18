@@ -21,11 +21,12 @@ yarn-error.log*
 # misc
 .DS_Store
 .env
+.env.local
 .env.dev*
+.env.test*
+.env.stage*
 .env.prod*
-.env.testing*
-.env.staging*
-.env.local*
+.env.*.local
 uploads
 images
 deploy.sh
