@@ -1,10 +1,9 @@
 #!/bin/bash
 
+read -p "* What is the IP Address or hostname of the server? " HOSTNAME
 read -p "* Which version should the app to be deploy? : " VERSION
 
 echo ""
-
-HOSTNAME="api-test.ateja.co.id"
 
 docker save -o ~/docker/images/ezio-api-test-$VERSION.tar atjdev/ezio-api-test:$VERSION
 scp ~/docker/images/ezio-api-test-$VERSION.tar root@$HOSTNAME:~/docker/images/

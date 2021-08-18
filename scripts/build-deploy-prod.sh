@@ -1,10 +1,9 @@
 #!/bin/bash
 
+read -p "* What is the IP Address or hostname of the server? " HOSTNAME
 read -p "* What should the app version be? " VERSION
 
 echo ""
-
-HOSTNAME="api.ateja.co.id"
 
 docker build --build-arg ENV=production -t atjdev/ezio-api:$VERSION .
 docker save -o ~/docker/images/ezio-api-$VERSION.tar atjdev/ezio-api:$VERSION
