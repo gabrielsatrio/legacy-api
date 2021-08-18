@@ -71,12 +71,12 @@ export class MappingKuansResolver {
       .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
       .getOne();
 
-    return { sucess: true, data };
+    return { success: true, data };
   }
 
   @Mutation(() => MappingResponse)
   @UseMiddleware(isAuth)
-  async UpdateMappingKuans(
+  async updateMappingKuans(
     @Arg('input') input: MappingKuansInput
   ): Promise<MappingResponse | undefined> {
     const machine = await MappingKuans.findOne({
@@ -120,15 +120,15 @@ export class MappingKuansResolver {
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
 
-    // const data = await MappingKuans.findOne({
-    //   contract: outContract,
-    //   partNo: outPartNo
-    // });
+    const data = await MappingKuans.findOne({
+      contract: outContract,
+      partNo: outPartNo
+    });
 
-    const data = await MappingKuans.createQueryBuilder('MK')
-      .where('MK.CONTRACT = :contract', { contract: outContract })
-      .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
-      .getOne();
+    // const data = await MappingKuans.createQueryBuilder('MK')
+    //   .where('MK.CONTRACT = :contract', { contract: outContract })
+    //   .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
+    //   .getOne();
     return { success: true, data };
   }
 
