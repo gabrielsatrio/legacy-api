@@ -17,6 +17,11 @@ export class MappingKuansResolver {
     return await MappingKuans.find({
       contract: In(contract)
     });
+    // return await MappingKuans.createQueryBuilder('M')
+    //   .where('M.CONTRACT IN(:...contract)', {
+    //     contract: contract
+    //   })
+    //   .getRawMany();
   }
 
   @Query(() => [MappingKuans], { nullable: true })
@@ -85,7 +90,7 @@ export class MappingKuansResolver {
     });
 
     if (!machine) {
-      return undefined;
+      return setErrors('No data found.');
     }
 
     const sql = `

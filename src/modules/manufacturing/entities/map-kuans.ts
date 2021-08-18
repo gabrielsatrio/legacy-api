@@ -51,4 +51,8 @@ export class MappingKuans extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'OLD_PART_NO' })
   oldPartNo?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ID_TABLE' })
+  idTable?: string;
 }
