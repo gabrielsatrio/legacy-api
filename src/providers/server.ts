@@ -31,9 +31,7 @@ export default class apolloServer {
 
     app.use(
       helmet({
-        // TODO: fix it!
-        // contentSecurityPolicy: isProd ? undefined : false
-        contentSecurityPolicy: false
+        contentSecurityPolicy: isProd || isTest ? undefined : false
       })
     );
 
