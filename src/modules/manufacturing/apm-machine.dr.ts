@@ -1,6 +1,6 @@
 import DataResponse from '@/types/data-response';
 import { ObjectType } from 'type-graphql';
-import { Machine } from './entities/apm-machine';
+import { MachineView } from './entities/apm-machine.vw';
 
 @ObjectType()
-export class MachineResponse extends DataResponse(Machine) {}
+export class MachineResponse extends DataResponse(MachineView) {}
