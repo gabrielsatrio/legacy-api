@@ -30,9 +30,7 @@ export default class apolloServer {
 
     app.use(
       helmet({
-        // TODO: fix it!
-        // contentSecurityPolicy: isProd ? undefined : false
-        contentSecurityPolicy: false
+        contentSecurityPolicy: isProd || isTest ? undefined : false
       })
     );
 
@@ -58,7 +56,7 @@ export default class apolloServer {
         saveUninitialized: false,
         cookie: {
           httpOnly: true,
-          secure: false, // use "isProd" as value, so that cookie can works for https only
+          secure: isProd || isTest,
           sameSite: 'lax', // csrf
           domain: isProd ? config.cookie.domain : undefined,
           maxAge: 1000 * 60 * 60 * 24 * 365 * 10 // 10 years
