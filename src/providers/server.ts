@@ -18,6 +18,7 @@ import { createUserLoader } from '../utils/create-user-loader';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
+const isTest = config.env === 'test';
 let server: http.Server | https.Server;
 
 export default class apolloServer {
@@ -58,7 +59,7 @@ export default class apolloServer {
           httpOnly: true,
           secure: isProd || isTest,
           sameSite: 'lax', // csrf
-          domain: isProd ? config.cookie.domain : undefined,
+          domain: isProd || isTest ? config.cookie.domain : undefined,
           maxAge: 1000 * 60 * 60 * 24 * 365 * 10 // 10 years
         }
       } as any)
@@ -82,7 +83,7 @@ export default class apolloServer {
         res,
         userLoader: createUserLoader()
       }),
-      introspection: !isProd
+      introspection: !isProd && !isTest
       // uploads: false // disable apollo upload property
     });
 
@@ -94,13 +95,13 @@ export default class apolloServer {
     // Add subscription support
     // apolloServer.installSubscriptionHandlers(server);
 
-    server.listen(config.server.port, () =>
+    server.listen(config.api.port, () =>
       console.log(
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
         chalk.yellow.bold(
-          `http://${isProd ? 'api.ateja.co.id' : 'localhost'}:${
-            config.server.port
+          `http${isProd || isTest ? 's' : ''}://${config.api.hostname}${
+            !isProd && !isTest ? `:${config.api.port}` : ''
           }${apolloServer.graphqlPath}`
         )
       )
