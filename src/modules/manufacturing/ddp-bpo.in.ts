@@ -49,4 +49,8 @@ export class BPOInput implements Partial<DDPBPO> {
   @Field()
   @Length(1, 5)
   contract!: string;
+
+  @Field()
+  @Length(1, 50)
+  jenisKu!: string;
 }
