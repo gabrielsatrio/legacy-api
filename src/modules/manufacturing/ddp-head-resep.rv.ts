@@ -16,7 +16,10 @@ export class HeadResepResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<HeadResep[] | undefined> {
-    return await HeadResep.find({ contract: In(contract) });
+    return await HeadResep.find({
+      relations: ['headDyes', 'headAuxs'],
+      where: { contract: In(contract) }
+    });
   }
 
   @Query(() => [HeadResep], { nullable: true })
@@ -26,7 +29,10 @@ export class HeadResepResolver {
     contract: string[],
     @Arg('partNo') partNo: string
   ): Promise<HeadResep[] | undefined> {
-    return await HeadResep.find({ contract: In(contract), partNo: partNo });
+    return await HeadResep.find({
+      relations: ['headDyes', 'headAuxs'],
+      where: { contract: In(contract), partNo: partNo }
+    });
   }
 
   @Mutation(() => HeadResepResponse)
