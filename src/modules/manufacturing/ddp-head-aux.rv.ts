@@ -3,23 +3,23 @@ import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { HeadDyeResponse } from './ddp-head-dye.dr';
-import { HeadDyeInput } from './ddp-head-dye.in';
-import { HeadDye } from './entities/ddp-head-dye';
+import { HeadAuxResponse } from './ddp-head-aux.dr';
+import { HeadAuxInput } from './ddp-head-aux.in';
+import { HeadAux } from './entities/ddp-head-aux';
 
-@Resolver(HeadDye)
-export class HeadDyeResolver {
-  @Mutation(() => HeadDyeResponse)
+@Resolver(HeadAux)
+export class HeadAuxResolver {
+  @Mutation(() => HeadAuxResponse)
   @UseMiddleware(isAuth)
-  async createHeadDye(
-    @Arg('input') input: HeadDyeInput
+  async createHeadAux(
+    @Arg('input') input: HeadAuxInput
     // @Ctx() { req }: Context
-  ): Promise<HeadDyeResponse | undefined> {
+  ): Promise<HeadAuxResponse | undefined> {
     //const createdBy: string = req.session.userId;
 
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
+       CHR_DDP_API.CREATE_RESEP_AUX(:contract, :partNo, :alternate,
         :componentPart,
         :deskripsi,
         :resep,
@@ -55,7 +55,7 @@ export class HeadDyeResolver {
 
     // console.log(outMasterResepId);
 
-    const data = HeadDye.findOne({
+    const data = HeadAux.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -64,12 +64,12 @@ export class HeadDyeResolver {
     return { success: true, data };
   }
 
-  @Mutation(() => HeadDyeResponse, { nullable: true })
+  @Mutation(() => HeadAuxResponse, { nullable: true })
   @UseMiddleware(isAuth)
-  async updateHeadDye(
-    @Arg('input') input: HeadDyeInput
-  ): Promise<HeadDyeResponse | undefined> {
-    const masterResep = await HeadDye.findOne({
+  async updateHeadAux(
+    @Arg('input') input: HeadAuxInput
+  ): Promise<HeadAuxResponse | undefined> {
+    const masterResep = await HeadAux.findOne({
       contract: input.contract,
       partNo: input.partNo,
       alternate: input.alternate,
@@ -82,7 +82,7 @@ export class HeadDyeResolver {
 
     const sql = `
     BEGIN
-    CHR_DDP_API.UPDATE_RESEP_DYE(:contract, :partNo, :alternate,
+    CHR_DDP_API.UPDATE_RESEP_AUX(:contract, :partNo, :alternate,
       :componentPart,
       :deskripsi,
       :resep,
@@ -121,7 +121,7 @@ export class HeadDyeResolver {
 
     // console.log(outMasterResepId);
 
-    const data = HeadDye.findOne({
+    const data = HeadAux.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -130,16 +130,16 @@ export class HeadDyeResolver {
     return { success: true, data };
   }
 
-  @Mutation(() => HeadDyeResponse)
+  @Mutation(() => HeadAuxResponse)
   @UseMiddleware(isAuth)
-  async deleteHeadDye(
+  async deleteHeadAux(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string,
     @Arg('alternate') alternate: number,
     @Arg('no') no: number
-  ): Promise<HeadDyeResponse> {
+  ): Promise<HeadAuxResponse> {
     try {
-      const Resep = await HeadDye.findOne({
+      const Resep = await HeadAux.findOne({
         contract: contract,
         partNo: partNo,
         alternate: alternate,
@@ -150,7 +150,7 @@ export class HeadDyeResolver {
         return setErrors('No data found.');
       }
 
-      await HeadDye.delete({
+      await HeadAux.delete({
         contract: contract,
         partNo: partNo,
         alternate: alternate,
