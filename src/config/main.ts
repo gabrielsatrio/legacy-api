@@ -7,6 +7,10 @@ if (!envFound) {
 }
 
 export default {
+  api: {
+    hostname: process.env.API_HOSTNAME || 'localhost',
+    port: process.env.API_PORT || 4000
+  },
   client: {
     url: process.env.FRONTEND_URL
   },
@@ -29,9 +33,6 @@ export default {
   env: process.env.NODE_ENV || 'development',
   redis: {
     url: process.env.REDIS_URL
-  },
-  server: {
-    port: process.env.PORT || 4000
   },
   session: {
     secret: process.env.SESSION_SECRET
