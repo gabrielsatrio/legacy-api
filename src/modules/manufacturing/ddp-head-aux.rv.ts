@@ -61,6 +61,10 @@ export class HeadAuxResolver {
       alternate: outAlternate,
       no: outNo
     });
+
+    if (!data) {
+      return setErrors('No data founds.');
+    }
     return { success: true, data };
   }
 

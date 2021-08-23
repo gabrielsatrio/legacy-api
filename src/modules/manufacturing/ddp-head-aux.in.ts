@@ -26,6 +26,6 @@ export class HeadAuxInput implements Partial<HeadAux> {
   @Field()
   resep!: number;
 
-  @Field()
-  no!: number;
+  @Field({ nullable: true })
+  no?: number;
 }
