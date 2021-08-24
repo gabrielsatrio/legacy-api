@@ -144,7 +144,20 @@ export class MaterialUseResolver {
         return setErrors('No data found.');
       }
 
-      await MaterialUse.delete({ contract, idNo, no });
+      const sql = `
+      BEGIN
+      CHR_DDP_API.DELETE_MATERIAL_USE(:contract, :idNo, :no);
+      END;
+     `;
+
+      //await MaterialUse.delete({ contract, idNo, no });
+      let result;
+      try {
+        result = await getConnection().query(sql, [contract, idNo, no]);
+      } catch (err) {
+        return setErrors(err.message);
+      }
+
       return { success: true };
     } catch (err) {
       return setErrors(err.message);

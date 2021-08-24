@@ -15,4 +15,8 @@ export class DDPMachine extends BaseEntity {
   @Field()
   @Column({ name: 'TYPE' })
   type!: string;
+
+  @Field()
+  @Column({ name: 'FORMAT_ANGKA' })
+  angka!: string;
 }

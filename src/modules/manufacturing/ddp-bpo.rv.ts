@@ -61,6 +61,7 @@ export class BPOResolver {
         :kuCount,
         :sentToAux,
         :contract,
+        :jenisKu,
       :outContract, :outIdNo, :outKuCount);
     END;
   `;
@@ -83,6 +84,7 @@ export class BPOResolver {
         input.kuCount,
         input.sentToAux,
         input.contract,
+        input.jenisKu,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -134,6 +136,7 @@ export class BPOResolver {
         :kuCount,
         :sentToAux,
         :contract,
+        :jenisKu,
       :outContract, :outIdNo, :outKuCount);
       END;
     `;
@@ -154,6 +157,7 @@ export class BPOResolver {
         input.kuCount,
         input.sentToAux,
         input.contract,
+        input.jenisKu,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
