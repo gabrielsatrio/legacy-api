@@ -41,14 +41,14 @@ export class AssignResolver {
     const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
-        GBR_SPT_API.Create_Assign(:assignId, :assignDate, :type, :createdBy, :outAssignId)
+        GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId)
       END;
     `;
     try {
       result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
-        input.type,
+        input.tipe,
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);

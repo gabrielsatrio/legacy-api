@@ -25,6 +25,6 @@ export class Assign extends BaseEntity {
   updatedAt!: Date;
 
   @Field()
-  @Column({ name: 'TYPE' })
+  @Column({ name: 'TIPE' })
   type!: string;
 }
