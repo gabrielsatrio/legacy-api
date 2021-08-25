@@ -45,7 +45,7 @@ export class AssignDetailResolver {
     //const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
-        GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :outAssignId, :outReqNo)
+        GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :outAssignId, :outReqNo);
       END;
     `;
     try {
