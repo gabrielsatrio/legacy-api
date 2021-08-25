@@ -6,7 +6,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 export class AssignDetail extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ASSIGN_ID' })
-  assignID!: string;
+  assignId!: string;
 
   @Field()
   @PrimaryColumn({ name: 'ASSIGN_DATE' })
@@ -14,5 +14,5 @@ export class AssignDetail extends BaseEntity {
 
   @Field()
   @Column({ name: 'REQ_NO' })
-  type!: string;
+  reqNo!: number;
 }

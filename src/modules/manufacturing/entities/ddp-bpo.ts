@@ -37,21 +37,21 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'LOT_CELUP' })
   lotCelup!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'LIQUID_RATIO' })
-  liquidRatio!: number;
+  liquidRatio?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'VOLUME' })
-  volume!: number;
+  volume?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WEIGHT' })
-  weight!: number;
+  weight?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ALT_RECEIPE' })
-  altReceipe!: string;
+  altReceipe?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'PROGRAM_NO' })
@@ -68,6 +68,14 @@ export class DDPBPO extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
+
+  @Field({ nullable: true })
+  @PrimaryColumn({ name: 'JENIS_KU' })
+  jenisKu!: string;
+
+  @Field({ nullable: true })
+  @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
+  materialLength!: string;
 
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {

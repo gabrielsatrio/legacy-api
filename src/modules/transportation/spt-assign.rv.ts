@@ -39,16 +39,17 @@ export class AssignResolver {
   ): Promise<AssignResponse | undefined> {
     let result;
     const createdBy: string = req.session.userId;
+    console.log('createdBy createAssign ', createdBy);
     const sql = `
       BEGIN
-        GBR_SPT_API.Create_Assign(:assignId, :assignDate, :type, :createdBy, :outAssignId)
+        GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
       END;
     `;
     try {
       result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
-        input.type,
+        input.tipe,
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -56,6 +57,40 @@ export class AssignResolver {
       return setErrors(err.message);
     }
     const outAssignId = result[0] as string;
+    const data = Assign.findOne({
+      assignId: outAssignId
+    });
+    return { success: true, data };
+  }
+
+  @Mutation(() => AssignResponse, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateAssign(
+    @Arg('input') input: AssignInput
+  ): Promise<AssignResponse | undefined> {
+    let result;
+    const assign = await Assign.findOne({
+      assignId: input.assignId
+    });
+    if (!assign) {
+      return undefined;
+    }
+    const sql = `
+    BEGIN
+      GBR_SPT_API.Update_Assign(:assignId, :assignDate,  :tipe, :outAssignId);
+    END;
+  `;
+    try {
+      result = await getConnection().query(sql, [
+        input.assignId,
+        input.assignDate,
+        input.tipe,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+    } catch (err) {
+      return setErrors(err.message);
+    }
+    const outAssignId = result[0];
     const data = Assign.findOne({
       assignId: outAssignId
     });

@@ -45,7 +45,7 @@ export class Requisition extends BaseEntity {
 
   @Field()
   @Column({ name: 'CREATED_BY' })
-  createdBy!: Date;
+  createdBy!: string;
 
   @Field()
   @CreateDateColumn({ name: 'CREATED_AT' })

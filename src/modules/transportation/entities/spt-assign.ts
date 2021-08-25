@@ -13,18 +13,10 @@ export class Assign extends BaseEntity {
   assignDate!: Date;
 
   @Field()
-  @Column({ name: 'CREATED_AT' })
-  createdAt!: Date;
-
-  @Field()
   @Column({ name: 'CREATED_BY' })
-  createdBy!: string;
+  createdBy?: string;
 
   @Field()
-  @Column({ name: 'UPDATED_AT' })
-  updatedAt!: Date;
-
-  @Field()
-  @Column({ name: 'TYPE' })
-  type!: string;
+  @Column({ name: 'TIPE' })
+  tipe!: string;
 }
