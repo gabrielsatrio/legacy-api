@@ -24,7 +24,7 @@ export class MachineResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<MachineView[] | undefined> {
-    return MachineView.find({
+    return await MachineView.find({
       where: {
         contract: In(contract)
       }
