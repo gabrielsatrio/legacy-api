@@ -59,12 +59,12 @@ export class RequisitionResolver {
         input.volume,
         input.contract,
         createdBy,
-        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
       return setErrors(err.message);
     }
-    const outReqNo = result[0] as string;
+    const outReqNo = result[0] as number;
     const data = Requisition.findOne(outReqNo);
     return { success: true, data };
   }
