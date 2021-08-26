@@ -3,15 +3,10 @@ const config = require('@/config/main');
 const { join } = require('path');
 
 const {
-  host,
-  logging,
-  password,
-  port,
-  sid,
-  type,
-  username
-} = config.default.db;
-const sourcePath = config.default.env === 'production' ? '.' : 'src';
+  env,
+  db: { host, logging, password, port, sid, type, username }
+} = config.default;
+const sourcePath = env === 'production' || env === 'test' ? '.' : 'src';
 
 module.exports = {
   type,
@@ -22,6 +17,7 @@ module.exports = {
   sid,
   synchronize: false,
   logging,
+  connectString: `${host}:${port}/${sid}`,
   entities: [
     join(__dirname, sourcePath, 'modules/**/entities/!(*.test).{ts,js}')
   ],
