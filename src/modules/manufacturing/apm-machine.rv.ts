@@ -14,33 +14,30 @@ import { getConnection, In } from 'typeorm';
 import { MachineResponse } from './apm-machine.dr';
 import { MachineInput } from './apm-machine.in';
 import { Machine } from './entities/apm-machine';
+import { MachineView } from './entities/apm-machine.vw';
 
 @Resolver(Machine)
 export class MachineResolver {
-  @Query(() => [Machine])
+  @Query(() => [MachineView])
   @UseMiddleware(isAuth)
   async getAllMachines(
     @Arg('contract', () => [String])
     contract: string[]
-  ): Promise<Machine[] | undefined> {
-    return Machine.find({
+  ): Promise<MachineView[] | undefined> {
+    return await MachineView.find({
       where: {
         contract: In(contract)
-      },
-      relations: ['category', 'location']
+      }
     });
   }
 
-  @Query(() => Machine, { nullable: true })
+  @Query(() => MachineView, { nullable: true })
   @UseMiddleware(isAuth)
   async getMachine(
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string
-  ): Promise<Machine | undefined> {
-    return await Machine.findOne(
-      { machineId, contract },
-      { relations: ['category', 'location'] }
-    );
+  ): Promise<MachineView | undefined> {
+    return await MachineView.findOne({ machineId, contract });
   }
 
   @Mutation(() => MachineResponse)
