@@ -35,20 +35,21 @@ export class AssignResolver {
   @Query(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
   async getMaxAssignId(
-    @Arg('tipe') tipe: string,
-    @Arg('assignDate') assignDate: Date
+    @Arg('tipe') tipe: string
+    //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
     let assignId;
-    const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
+    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
+    const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS ASSIGN_ID FROM DUAL`;
     try {
-      assignId = await getConnection().query(sql, [tipe, assignDate]);
+      assignId = await getConnection().query(sql, [tipe]);
       assignId = assignId[0].ASSIGN_ID;
       console.log('assignId', assignId);
     } catch (err) {
       return setErrors(err.message);
     }
-
-    return await Assign.findOne({ assignId, assignDate });
+    //return assignId;
+    return await Assign.create({ assignId });
   }
 
   @Mutation(() => AssignResponse)
