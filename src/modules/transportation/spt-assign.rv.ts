@@ -26,9 +26,29 @@ export class AssignResolver {
   @Query(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
   async getAssign(
-    @Arg('assignId') assignId: string
+    @Arg('assignId') assignId: string,
+    @Arg('assignDate') assignDate: Date
   ): Promise<Assign | undefined> {
-    return await Assign.findOne(assignId);
+    return await Assign.findOne({ assignId, assignDate });
+  }
+
+  @Query(() => Assign, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getMaxAssignId(
+    @Arg('tipe') tipe: string,
+    @Arg('assignDate') assignDate: Date
+  ): Promise<any | undefined> {
+    let assignId;
+    const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
+    try {
+      assignId = await getConnection().query(sql, [tipe, assignDate]);
+      assignId = assignId[0].ASSIGN_ID;
+      console.log('assignId', assignId);
+    } catch (err) {
+      return setErrors(err.message);
+    }
+
+    return await Assign.findOne({ assignId, assignDate });
   }
 
   @Mutation(() => AssignResponse)
@@ -39,7 +59,6 @@ export class AssignResolver {
   ): Promise<AssignResponse | undefined> {
     let result;
     const createdBy: string = req.session.userId;
-    console.log('createdBy createAssign ', createdBy);
     const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
@@ -58,7 +77,8 @@ export class AssignResolver {
     }
     const outAssignId = result[0] as string;
     const data = Assign.findOne({
-      assignId: outAssignId
+      assignId: outAssignId,
+      assignDate: input.assignDate
     });
     return { success: true, data };
   }
@@ -92,7 +112,8 @@ export class AssignResolver {
     }
     const outAssignId = result[0];
     const data = Assign.findOne({
-      assignId: outAssignId
+      assignId: outAssignId,
+      assignDate: input.assignDate
     });
     return { success: true, data };
   }
@@ -100,12 +121,14 @@ export class AssignResolver {
   @Mutation(() => AssignResponse)
   @UseMiddleware(isAuth)
   async deleteAssign(
-    @Arg('assignId') assignId: string
+    @Arg('assignId') assignId: string,
+    @Arg('assignDate') assignDate: Date
     //@Ctx() { req }: Context
   ): Promise<AssignResponse> {
     //const createdBy: string = req.session.userId;
     const assign = await Assign.findOne({
-      assignId
+      assignId,
+      assignDate
     });
     if (!assign) return setErrors('No data found.');
     try {
