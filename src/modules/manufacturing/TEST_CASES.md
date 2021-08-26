@@ -163,7 +163,6 @@ mutation DeleteUser {
   }
 }
 
-
 ## APM
 
 ### GRAPHQL
