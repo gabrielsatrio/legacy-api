@@ -26,6 +26,6 @@ export class HeadResepInput implements Partial<HeadResep> {
   @MaxLength(300)
   notes?: string;
 
-  @Field()
-  status!: string;
+  @Field({ nullable: true })
+  status?: string;
 }

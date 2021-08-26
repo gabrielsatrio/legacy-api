@@ -37,9 +37,9 @@ export class HeadResep extends BaseEntity {
   @Column({ name: 'NOTES' })
   notes?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'STATUS' })
-  status!: string;
+  status?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'ID_TABLE' })

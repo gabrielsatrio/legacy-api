@@ -56,6 +56,10 @@ export class BPOAuxiliaries extends BaseEntity {
   @Column({ name: 'BERAT_AKTUAL' })
   beratAktual?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'ID_TABLE' })
+  idTable?: string;
+
   @ManyToOne(() => DDPBPO, (dDPBPO) => dDPBPO.auxiliariesUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })

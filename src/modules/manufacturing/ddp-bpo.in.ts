@@ -34,8 +34,8 @@ export class BPOInput implements Partial<DDPBPO> {
   @Field()
   weight!: number;
 
-  @Field()
-  altReceipe?: string;
+  @Field({ nullable: true })
+  altReceipe?: number;
 
   @Field({ nullable: true })
   programNo?: string;
@@ -50,7 +50,7 @@ export class BPOInput implements Partial<DDPBPO> {
   @Length(1, 5)
   contract!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Length(1, 50)
-  jenisKu!: string;
+  jenisKu?: string;
 }

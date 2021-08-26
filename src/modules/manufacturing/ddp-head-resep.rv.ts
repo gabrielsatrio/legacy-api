@@ -6,7 +6,6 @@ import { getConnection, In } from 'typeorm';
 import { HeadResepResponse } from './ddp-head-resep.dr';
 import { HeadResepInput } from './ddp-head-resep.in';
 import { HeadResep } from './entities/ddp-head-resep';
-import { MasterResep } from './entities/ddp-master-resep';
 
 @Resolver(HeadResep)
 export class HeadResepResolver {
@@ -93,7 +92,7 @@ export class HeadResepResolver {
   async updateHeadResep(
     @Arg('input') input: HeadResepInput
   ): Promise<HeadResepResponse | undefined> {
-    const masterResep = await MasterResep.findOne({
+    const masterResep = await HeadResep.findOne({
       contract: input.contract,
       partNo: input.partNo,
       alternate: input.alternate
@@ -139,7 +138,9 @@ export class HeadResepResolver {
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
 
-    // console.log(outMasterResepId);
+    console.log(outContract);
+    console.log(outPartNo);
+    console.log(outAlternate);
 
     const data = HeadResep.findOne({
       contract: outContract,
