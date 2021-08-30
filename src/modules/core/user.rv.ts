@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import {
   Arg,
   Ctx,
@@ -12,7 +12,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { User } from './entities/user';
-import { UserResponse } from './user.dr';
 
 @Resolver(User)
 export class UserResolver {
@@ -49,16 +48,16 @@ export class UserResolver {
     return await User.findOne({ username });
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => User)
   @UseMiddleware(isAuth)
-  async deleteUser(@Arg('id') id: number): Promise<UserResponse> {
-    const user = await User.findOne(id);
-    if (!user) return setErrors('No data found.');
+  async deleteUser(@Arg('id') id: number): Promise<User> {
+    const data = await User.findOne(id);
+    if (!data) throw new Error('No data found.');
     try {
       await User.delete(id);
-      return { success: true };
+      return data;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }
