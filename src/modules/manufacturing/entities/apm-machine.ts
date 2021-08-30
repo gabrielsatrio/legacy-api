@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -43,7 +43,7 @@ export class Machine extends BaseEntity {
   @Column({ name: 'SERIAL_NO' })
   serialNo!: string;
 
-  @Field()
+  @Field(() => Int)
   @Column({ name: 'YEAR_MADE' })
   yearMade!: number;
 
