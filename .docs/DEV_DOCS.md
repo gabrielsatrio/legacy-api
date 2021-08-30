@@ -28,11 +28,9 @@ root
 │                   production-plan.1.vw.ts         [VIEW]
 │                   production-plan.ts              [TABLE]
 │                   production-plan.vw.ts           [VIEW]
-│               apm-machine-category.dr.ts          [DATA_RESPONSE]
 │               apm-machine-category.in.ts          [INPUT_TYPE]
 │               apm-machine-category.rv.ts          [RESOLVER]
 │               ifs-inv-trans-history.rv.ts         [RESOLVER] # No mutation, query only
-│               production-plan.dr.ts               [DATA_RESPONSE]
 │               production-plan.in.ts               [INPUT_TYPE]
 │               production-plan.rv.ts               [RESOLVER]
 │               README.md                           [SCOPES]
