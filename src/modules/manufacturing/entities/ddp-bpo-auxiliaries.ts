@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -48,7 +48,7 @@ export class BPOAuxiliaries extends BaseEntity {
   @Column({ name: 'ORDER_NO' })
   orderNo?: string;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'KU_COUNT' })
   kuCount!: number;
 

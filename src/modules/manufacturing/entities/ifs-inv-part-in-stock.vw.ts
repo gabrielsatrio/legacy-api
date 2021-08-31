@@ -17,10 +17,14 @@ export class InventoryPartInStock extends BaseEntity {
   lotBatchNo!: string;
 
   @Field()
-  @Column({ name: 'LOCATION_NO' })
+  @PrimaryColumn({ name: 'LOCATION_NO' })
   locationNo!: string;
 
   @Field()
   @Column({ name: 'QTY_ONHAND' })
   qtyOnhand!: number;
+
+  @Field()
+  @Column({ name: 'OBJID' })
+  objId!: string;
 }

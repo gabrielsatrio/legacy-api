@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -49,7 +49,7 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'WEIGHT' })
   weight?: number;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ name: 'ALT_RECEIPE' })
   altReceipe?: number;
 

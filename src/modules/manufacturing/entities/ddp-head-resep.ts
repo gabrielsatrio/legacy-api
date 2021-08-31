@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -21,7 +21,7 @@ export class HeadResep extends BaseEntity {
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'ALTERNATE' })
   alternate!: number;
 

@@ -149,12 +149,7 @@ export class MaterialUseResolver {
       END;
      `;
 
-      let result;
-      try {
-        result = await getConnection().query(sql, [contract, idNo, no]);
-      } catch (err) {
-        throw new Error(mapError(err.message));
-      }
+      const result = await getConnection().query(sql, [contract, idNo, no]);
 
       return result;
     } catch (err) {
