@@ -25,6 +25,14 @@ export class AssignView extends BaseEntity {
   destinationId!: string;
 
   @Field()
+  @Column({ name: 'CUSTOMER_NAME' })
+  customerName!: string;
+
+  @Field()
+  @Column({ name: 'DESTINATION_NAME' })
+  destinationName!: string;
+
+  @Field()
   @Column({ name: 'TOTAL_ROLL' })
   totalRoll!: number;
 

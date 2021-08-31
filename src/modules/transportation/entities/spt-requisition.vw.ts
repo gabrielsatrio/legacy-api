@@ -1,20 +1,24 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn
+} from 'typeorm';
 
-@Entity('GBR_SPT_UNASSIGN_V')
+@Entity('GBR_SPT_REQUISITION_V')
 @ObjectType()
-export class UnassignView extends BaseEntity {
+export class RequisitionView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
   reqNo!: number;
 
   @Field()
-  @Column({ name: 'CONTRACT' })
-  contract!: string;
-
-  @Field()
   @Column({ name: 'DESTINATION_ID' })
   destinationId!: string;
+
   @Field()
   @Column({ name: 'DESTINATION_NAME' })
   destinationName!: string;
@@ -42,4 +46,20 @@ export class UnassignView extends BaseEntity {
   @Field()
   @Column({ name: 'VOLUME' })
   volume!: number;
+
+  @Field()
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
+
+  @Field()
+  @CreateDateColumn({ name: 'CREATED_AT' })
+  createdAt?: Date;
+
+  @Field()
+  @UpdateDateColumn({ name: 'UPDATED_AT' })
+  updatedAt?: Date;
 }

@@ -1,9 +1,13 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('GBR_SPT_UNASSIGN_V')
+@Entity('GBR_SPT_ASSIGN_REQUISITION_V')
 @ObjectType()
-export class UnassignView extends BaseEntity {
+export class AssignRequisitionView extends BaseEntity {
+  @Field()
+  @PrimaryColumn({ name: 'ASSIGN_ID' })
+  assignId!: string;
+
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
   reqNo!: number;
@@ -13,23 +17,20 @@ export class UnassignView extends BaseEntity {
   contract!: string;
 
   @Field()
-  @Column({ name: 'DESTINATION_ID' })
-  destinationId!: string;
-  @Field()
-  @Column({ name: 'DESTINATION_NAME' })
-  destinationName!: string;
-
-  @Field()
   @Column({ name: 'CUSTOMER_ID' })
   customerId!: string;
+
+  @Field()
+  @Column({ name: 'DESTINATION_ID' })
+  destinationId!: string;
 
   @Field()
   @Column({ name: 'CUSTOMER_NAME' })
   customerName!: string;
 
   @Field()
-  @Column({ name: 'REQUISITION_DATE' })
-  requisitionDate!: Date;
+  @Column({ name: 'DESTINATION_NAME' })
+  destinationName!: string;
 
   @Field()
   @Column({ name: 'ROLL_QTY' })
@@ -42,4 +43,8 @@ export class UnassignView extends BaseEntity {
   @Field()
   @Column({ name: 'VOLUME' })
   volume!: number;
+
+  @Field()
+  @Column({ name: 'REQUISITION_DATE' })
+  requisitionDate!: Date;
 }

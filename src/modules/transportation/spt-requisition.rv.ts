@@ -12,6 +12,7 @@ import {
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Requisition } from './entities/spt-requisition';
+import { RequisitionView } from './entities/spt-requisition.vw';
 import { RequisitionResponse } from './spt-requisition.dr';
 import { RequisitionInput } from './spt-requisition.in';
 
@@ -24,6 +25,15 @@ export class RequisitionResolver {
   // @Ctx() { req }: Context
   Promise<Requisition[] | undefined> {
     return Requisition.find();
+  }
+
+  @Query(() => [RequisitionView])
+  @UseMiddleware(isAuth)
+  async getAllRequisitionViews(): // @Arg('contract', () => [String])
+  // contract: string[],
+  // @Ctx() { req }: Context
+  Promise<RequisitionView[] | undefined> {
+    return RequisitionView.find();
   }
 
   @Query(() => Requisition, { nullable: true })

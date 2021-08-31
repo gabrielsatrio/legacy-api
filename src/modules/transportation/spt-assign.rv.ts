@@ -49,7 +49,8 @@ export class AssignResolver {
       return setErrors(err.message);
     }
     //return assignId;
-    return await Assign.create({ assignId });
+    return { assignId: assignId };
+    //return Assign.create(assignId);
   }
 
   @Mutation(() => AssignResponse)
