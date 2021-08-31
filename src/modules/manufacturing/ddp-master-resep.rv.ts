@@ -87,7 +87,7 @@ export class MasterResepResolver {
     const masterResep = await MasterResep.findOne(resepId);
 
     if (!masterResep) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -147,7 +147,7 @@ export class MasterResepResolver {
       });
 
       if (!Resep) {
-        throw new Error(mapError('No data found.'));
+        throw new Error('No data found.');
       }
 
       await MasterResep.delete({ seqId: resepId });

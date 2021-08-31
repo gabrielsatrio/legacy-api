@@ -62,7 +62,7 @@ export class HeadAuxResolver {
     });
 
     if (!data) {
-      throw new Error(mapError('No data found.'));
+      throw new Error('No data found.');
     }
     return data;
   }
@@ -80,7 +80,7 @@ export class HeadAuxResolver {
     });
 
     if (!masterResep) {
-      throw new Error(mapError('No data found.'));
+      throw new Error('No data found.');
     }
 
     const sql = `

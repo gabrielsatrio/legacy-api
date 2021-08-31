@@ -80,7 +80,7 @@ export class MaterialUseResolver {
     });
 
     if (!materialUse) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `

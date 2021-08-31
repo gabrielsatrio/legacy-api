@@ -94,7 +94,7 @@ export class BPODyestuffResolver {
     });
 
     if (!BPO) {
-      throw new Error(mapError('No data found.'));
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -164,7 +164,7 @@ export class BPODyestuffResolver {
       });
 
       if (!material) {
-        throw new Error(mapError('No data found.'));
+        throw new Error('No data found.');
       }
 
       await BPODyestuff.delete({ contract, idNo, kuCount, partNo });

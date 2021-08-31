@@ -98,7 +98,7 @@ export class HeadResepResolver {
     });
 
     if (!masterResep) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -164,7 +164,7 @@ export class HeadResepResolver {
       });
 
       if (!Resep) {
-        throw new Error(mapError('No data found.'));
+        throw new Error('No data found.');
       }
 
       await HeadResep.delete({

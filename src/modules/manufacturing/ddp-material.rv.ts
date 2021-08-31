@@ -119,7 +119,7 @@ export class MaterialResolver {
     });
 
     if (!material) {
-      throw new Error(mapError('No data found.'));
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -186,7 +186,7 @@ export class MaterialResolver {
       });
 
       if (!material) {
-        throw new Error(mapError('No data found.'));
+        throw new Error('No data found.');
       }
 
       await Material.delete({ contract, idNo });

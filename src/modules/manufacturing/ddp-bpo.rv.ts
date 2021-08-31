@@ -188,7 +188,7 @@ export class BPOResolver {
       });
 
       if (!material) {
-        throw new Error(mapError('No data found.'));
+        throw new Error('No data found.');
       }
 
       await DDPBPO.delete({ contract, idNo, kuCount });
