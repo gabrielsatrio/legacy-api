@@ -16,11 +16,6 @@ export class MappingKuansResolver {
     return await MappingKuans.find({
       contract: In(contract)
     });
-    // return await MappingKuans.createQueryBuilder('M')
-    //   .where('M.CONTRACT IN(:...contract)', {
-    //     contract: contract
-    //   })
-    //   .getRawMany();
   }
 
   @Query(() => [MappingKuans], { nullable: true })
@@ -129,10 +124,6 @@ export class MappingKuansResolver {
       partNo: outPartNo
     });
 
-    // const data = await MappingKuans.createQueryBuilder('MK')
-    //   .where('MK.CONTRACT = :contract', { contract: outContract })
-    //   .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
-    //   .getOne();
     return data;
   }
 

@@ -12,10 +12,7 @@ export class HeadDyeResolver {
   @UseMiddleware(isAuth)
   async createHeadDye(
     @Arg('input') input: HeadDyeInput
-    // @Ctx() { req }: Context
   ): Promise<HeadDye | undefined> {
-    //const createdBy: string = req.session.userId;
-
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
@@ -51,8 +48,6 @@ export class HeadDyeResolver {
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
-
-    // console.log(outMasterResepId);
 
     const data = HeadDye.findOne({
       contract: outContract,
@@ -117,8 +112,6 @@ export class HeadDyeResolver {
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
-
-    // console.log(outMasterResepId);
 
     const data = HeadDye.findOne({
       contract: outContract,

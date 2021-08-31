@@ -27,10 +27,7 @@ export class BPOAuxiliariesResolver {
   @UseMiddleware(isAuth)
   async createBPOAuxiliaries(
     @Arg('input') input: BPOAuxiliariesInput
-    // @Ctx() { req }: Context
   ): Promise<BPOAuxiliaries | undefined> {
-    //const createdBy: string = req.session.userId;
-
     const sql = `
     BEGIN
        CHR_DDP_API.create_BPO_auxiliaries(

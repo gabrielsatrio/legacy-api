@@ -44,9 +44,6 @@ export class MaterialUse extends BaseEntity {
   @Column({ name: 'LENGTH' })
   length!: number;
 
-  // @ManyToOne(() => Material, (material) => material.materialUses)
-  // material!: Material;
-
   @ManyToOne(() => Material, (material) => material.materialUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })

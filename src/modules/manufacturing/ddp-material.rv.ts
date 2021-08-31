@@ -53,7 +53,6 @@ export class MaterialResolver {
   @UseMiddleware(isAuth)
   async createMaterial(
     @Arg('input') input: MaterialInput
-    // @Ctx() { req }: Context
   ): Promise<Material | undefined> {
     const sql = `
     BEGIN

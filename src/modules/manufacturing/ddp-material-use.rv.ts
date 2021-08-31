@@ -149,7 +149,6 @@ export class MaterialUseResolver {
       END;
      `;
 
-      //await MaterialUse.delete({ contract, idNo, no });
       let result;
       try {
         result = await getConnection().query(sql, [contract, idNo, no]);

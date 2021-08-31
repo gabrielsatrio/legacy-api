@@ -27,10 +27,7 @@ export class BPODyestuffResolver {
   @UseMiddleware(isAuth)
   async createBPODyestuff(
     @Arg('input') input: BPODyestuffInput
-    // @Ctx() { req }: Context
   ): Promise<BPODyestuff | undefined> {
-    //const createdBy: string = req.session.userId;
-
     const sql = `
     BEGIN
        CHR_DDP_API.create_BPO_dyestuff(

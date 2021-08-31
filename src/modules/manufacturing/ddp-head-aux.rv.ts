@@ -12,10 +12,7 @@ export class HeadAuxResolver {
   @UseMiddleware(isAuth)
   async createHeadAux(
     @Arg('input') input: HeadAuxInput
-    // @Ctx() { req }: Context
   ): Promise<HeadAux | undefined> {
-    //const createdBy: string = req.session.userId;
-
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_RESEP_AUX(:contract, :partNo, :alternate,
@@ -51,8 +48,6 @@ export class HeadAuxResolver {
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
-
-    // console.log(outMasterResepId);
 
     const data = HeadAux.findOne({
       contract: outContract,
@@ -121,8 +116,6 @@ export class HeadAuxResolver {
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
-
-    // console.log(outMasterResepId);
 
     const data = HeadAux.findOne({
       contract: outContract,

@@ -75,8 +75,6 @@ export class Material extends BaseEntity {
   @Field({ nullable: true })
   deleteStatus?: string;
 
-  // public uses?: MaterialUse;
-
   @Field(() => [MaterialUse], { nullable: true })
   @OneToMany(() => MaterialUse, (materialUse) => materialUse.material, {
     nullable: true

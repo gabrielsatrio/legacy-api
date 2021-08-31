@@ -37,10 +37,7 @@ export class HeadResepResolver {
   @UseMiddleware(isAuth)
   async createHeadResep(
     @Arg('input') input: HeadResepInput
-    // @Ctx() { req }: Context
   ): Promise<HeadResep | undefined> {
-    //const createdBy: string = req.session.userId;
-
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_HEAD_RESEP(:contract, :partNo, :alternate,
@@ -75,8 +72,6 @@ export class HeadResepResolver {
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
-
-    // console.log(outMasterResepId);
 
     const data = HeadResep.findOne({
       contract: outContract,
@@ -136,10 +131,6 @@ export class HeadResepResolver {
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
-
-    console.log(outContract);
-    console.log(outPartNo);
-    console.log(outAlternate);
 
     const data = HeadResep.findOne({
       contract: outContract,
