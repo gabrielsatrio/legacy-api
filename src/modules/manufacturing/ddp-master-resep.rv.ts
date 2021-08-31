@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { ResepResponse } from './ddp-master-resep.dr';
+import { mapError } from '../../utils/map-error';
 import { MasterResepInput } from './ddp-master-resep.in';
 import { MasterResep } from './entities/ddp-master-resep';
 
@@ -28,12 +27,12 @@ export class MasterResepResolver {
     return await MasterResep.find({ contract: In(contract), partNo: partNo });
   }
 
-  @Mutation(() => ResepResponse)
+  @Mutation(() => MasterResep)
   @UseMiddleware(isAuth)
   async createMasterResep(
     @Arg('input') input: MasterResepInput
     // @Ctx() { req }: Context
-  ): Promise<ResepResponse | undefined> {
+  ): Promise<MasterResep | undefined> {
     //const createdBy: string = req.session.userId;
 
     const sql = `
@@ -68,7 +67,7 @@ export class MasterResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outMasterResepId = result[0] as string;
@@ -76,15 +75,15 @@ export class MasterResepResolver {
     console.log(outMasterResepId);
 
     const data = MasterResep.findOne(outMasterResepId);
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ResepResponse, { nullable: true })
+  @Mutation(() => MasterResep, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMasterResep(
     @Arg('resepId') resepId: number,
     @Arg('input') input: MasterResepInput
-  ): Promise<ResepResponse | undefined> {
+  ): Promise<MasterResep | undefined> {
     const masterResep = await MasterResep.findOne(resepId);
 
     if (!masterResep) {
@@ -126,7 +125,7 @@ export class MasterResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outMasterResepId = result[0] as string;
@@ -134,27 +133,27 @@ export class MasterResepResolver {
     console.log(outMasterResepId);
 
     const data = MasterResep.findOne(outMasterResepId);
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ResepResponse)
+  @Mutation(() => MasterResep)
   @UseMiddleware(isAuth)
   async deleteMasterResep(
     @Arg('resepId') resepId: number
-  ): Promise<ResepResponse> {
+  ): Promise<MasterResep> {
     try {
       const Resep = await MasterResep.findOne({
         seqId: resepId
       });
 
       if (!Resep) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found.'));
       }
 
       await MasterResep.delete({ seqId: resepId });
-      return { success: true };
+      return Resep;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

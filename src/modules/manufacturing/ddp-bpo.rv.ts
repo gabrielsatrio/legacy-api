@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { BPOResponse } from './ddp-bpo.dr';
+import { mapError } from '../../utils/map-error';
 import { BPOInput } from './ddp-bpo.in';
 import { DDPBPO } from './entities/ddp-bpo';
 
@@ -39,11 +38,9 @@ export class BPOResolver {
     });
   }
 
-  @Mutation(() => BPOResponse)
+  @Mutation(() => DDPBPO)
   @UseMiddleware(isAuth)
-  async createBPO(
-    @Arg('input') input: BPOInput
-  ): Promise<BPOResponse | undefined> {
+  async createBPO(@Arg('input') input: BPOInput): Promise<DDPBPO | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.create_BPO(
@@ -90,7 +87,7 @@ export class BPOResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -101,14 +98,12 @@ export class BPOResolver {
       idNo: outIdNo,
       kuCount: outKuCount
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPOResponse)
+  @Mutation(() => DDPBPO, { nullable: true })
   @UseMiddleware(isAuth)
-  async UpdateBPO(
-    @Arg('input') input: BPOInput
-  ): Promise<BPOResponse | undefined> {
+  async UpdateBPO(@Arg('input') input: BPOInput): Promise<DDPBPO | undefined> {
     const BPO = await DDPBPO.findOne({
       contract: input.contract,
       idNo: input.idNo,
@@ -116,7 +111,7 @@ export class BPOResolver {
     });
 
     if (!BPO) {
-      return undefined; //setErrors(errorMessageLibrary(1));
+      throw new Error(mapError('No data found'));
     }
 
     const sql = `
@@ -163,7 +158,7 @@ export class BPOResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -175,16 +170,16 @@ export class BPOResolver {
       idNo: outIdNo,
       kuCount: outKuCount
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPOResponse)
+  @Mutation(() => DDPBPO)
   @UseMiddleware(isAuth)
   async deleteBPO(
     @Arg('contract') contract: string,
     @Arg('idNo') idNo: string,
     @Arg('kuCount') kuCount: number
-  ): Promise<BPOResponse> {
+  ): Promise<DDPBPO> {
     try {
       const material = await DDPBPO.findOne({
         contract,
@@ -193,13 +188,13 @@ export class BPOResolver {
       });
 
       if (!material) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found.'));
       }
 
       await DDPBPO.delete({ contract, idNo, kuCount });
-      return { success: true };
+      return material;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

@@ -1,20 +1,19 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { HeadAuxResponse } from './ddp-head-aux.dr';
+import { mapError } from '../../utils/map-error';
 import { HeadAuxInput } from './ddp-head-aux.in';
 import { HeadAux } from './entities/ddp-head-aux';
 
 @Resolver(HeadAux)
 export class HeadAuxResolver {
-  @Mutation(() => HeadAuxResponse)
+  @Mutation(() => HeadAux)
   @UseMiddleware(isAuth)
   async createHeadAux(
     @Arg('input') input: HeadAuxInput
     // @Ctx() { req }: Context
-  ): Promise<HeadAuxResponse | undefined> {
+  ): Promise<HeadAux | undefined> {
     //const createdBy: string = req.session.userId;
 
     const sql = `
@@ -45,7 +44,7 @@ export class HeadAuxResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -63,16 +62,16 @@ export class HeadAuxResolver {
     });
 
     if (!data) {
-      return setErrors('No data founds.');
+      throw new Error(mapError('No data found.'));
     }
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadAuxResponse, { nullable: true })
+  @Mutation(() => HeadAux, { nullable: true })
   @UseMiddleware(isAuth)
   async updateHeadAux(
     @Arg('input') input: HeadAuxInput
-  ): Promise<HeadAuxResponse | undefined> {
+  ): Promise<HeadAux | undefined> {
     const masterResep = await HeadAux.findOne({
       contract: input.contract,
       partNo: input.partNo,
@@ -81,7 +80,7 @@ export class HeadAuxResolver {
     });
 
     if (!masterResep) {
-      return setErrors('No data found.');
+      throw new Error(mapError('No data found.'));
     }
 
     const sql = `
@@ -115,7 +114,7 @@ export class HeadAuxResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -131,17 +130,17 @@ export class HeadAuxResolver {
       alternate: outAlternate,
       no: outNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadAuxResponse)
+  @Mutation(() => HeadAux)
   @UseMiddleware(isAuth)
   async deleteHeadAux(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string,
     @Arg('alternate') alternate: number,
     @Arg('no') no: number
-  ): Promise<HeadAuxResponse> {
+  ): Promise<HeadAux> {
     try {
       const Resep = await HeadAux.findOne({
         contract: contract,
@@ -151,7 +150,7 @@ export class HeadAuxResolver {
       });
 
       if (!Resep) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found'));
       }
 
       await HeadAux.delete({
@@ -160,9 +159,9 @@ export class HeadAuxResolver {
         alternate: alternate,
         no: no
       });
-      return { success: true };
+      return Resep;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { MaterialUseResponse } from './ddp-material-use.dr';
+import { mapError } from '../../utils/map-error';
 import { MaterialUseInput } from './ddp-material-use.in';
 import { MaterialUse } from './entities/ddp-material-use';
 
@@ -19,11 +18,11 @@ export class MaterialUseResolver {
     return await MaterialUse.find({ contract: In(contract), idNo });
   }
 
-  @Mutation(() => MaterialUseResponse)
+  @Mutation(() => MaterialUse)
   @UseMiddleware(isAuth)
   async createMaterialUse(
     @Arg('input') input: MaterialUseInput
-  ): Promise<MaterialUseResponse | undefined> {
+  ): Promise<MaterialUse | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_MATERIAL_USE(:contract, :idNo, :orderNo,
@@ -54,7 +53,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -66,14 +65,14 @@ export class MaterialUseResolver {
       idNo: outIdNo,
       no: outNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MaterialUseResponse, { nullable: true })
+  @Mutation(() => MaterialUse, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMaterialUse(
     @Arg('input') input: MaterialUseInput
-  ): Promise<MaterialUseResponse | undefined> {
+  ): Promise<MaterialUse | undefined> {
     const materialUse = await MaterialUse.findOne({
       contract: input.contract,
       idNo: input.idNo,
@@ -115,7 +114,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -127,21 +126,21 @@ export class MaterialUseResolver {
       idNo: outIdNo,
       no: outNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MaterialUseResponse)
+  @Mutation(() => MaterialUse)
   @UseMiddleware(isAuth)
   async deleteMaterialUse(
     @Arg('contract') contract: string,
     @Arg('idNo') idNo: string,
     @Arg('no') no: number
-  ): Promise<MaterialUseResponse> {
+  ): Promise<MaterialUse> {
     try {
       const material = await MaterialUse.findOne({ contract, idNo, no });
 
       if (!material) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found'));
       }
 
       const sql = `
@@ -155,12 +154,12 @@ export class MaterialUseResolver {
       try {
         result = await getConnection().query(sql, [contract, idNo, no]);
       } catch (err) {
-        return setErrors(err.message);
+        throw new Error(mapError(err.message));
       }
 
-      return { success: true };
+      return result;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }
