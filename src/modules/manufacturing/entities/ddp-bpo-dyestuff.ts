@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { DDPBPO } from './ddp-bpo';
 
-@Entity('CHR_DDT_DYESTUFF_TAB')
+@Entity('CHR_DDT_DYESTUFF')
 @ObjectType()
 export class BPODyestuff extends BaseEntity {
   @Field()

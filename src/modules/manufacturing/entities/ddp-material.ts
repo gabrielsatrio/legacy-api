@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { MaterialUse } from './ddp-material-use';
 
-@Entity('CHR_DDT_MATERIAL_TAB')
+@Entity('CHR_DDT_MATERIAL')
 @ObjectType()
 export class Material extends BaseEntity {
   @Field()

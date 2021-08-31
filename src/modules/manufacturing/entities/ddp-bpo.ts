@@ -10,7 +10,7 @@ import {
 import { BPOAuxiliaries } from './ddp-bpo-auxiliaries';
 import { BPODyestuff } from './ddp-bpo-dyestuff';
 
-@Entity('CHR_DDT_BPO_TAB')
+@Entity('CHR_DDT_BPO')
 @ObjectType()
 export class DDPBPO extends BaseEntity {
   @Field()
