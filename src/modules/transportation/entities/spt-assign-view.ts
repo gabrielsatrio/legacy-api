@@ -9,7 +9,7 @@ export class AssignView extends BaseEntity {
   assignId!: string;
 
   @Field()
-  @Column({ name: 'REQ_NO' })
+  @PrimaryColumn({ name: 'REQ_NO' })
   reqNo!: number;
 
   @Field()
