@@ -45,7 +45,7 @@ export class AssignDetailResolver {
     //const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
-        GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :outAssignId, :outReqNo);
+        GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
     try {
@@ -53,17 +53,24 @@ export class AssignDetailResolver {
         input.assignId,
         input.assignDate,
         input.reqNo,
+        input.requisitionDate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
     } catch (err) {
       return setErrors(err.message);
     }
     const outAssignId = result[0] as string;
     const outReqNo = result[1] as number;
+    const outAssignDate = result[2] as Date;
+    const outRequisitionDate = result[3] as Date;
     const data = AssignDetail.findOne({
       assignId: outAssignId,
-      reqNo: outReqNo
+      reqNo: outReqNo,
+      assignDate: outAssignDate,
+      requisitionDate: outRequisitionDate
     });
     return { success: true, data };
   }
@@ -72,18 +79,27 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
     @Arg('assignId') assignId: string,
-    @Arg('reqNo') reqNo: number
+    @Arg('reqNo') reqNo: number,
+    @Arg('assignDate') assignDate: Date,
+    @Arg('requisitionDate') requisitionDate: Date
     //@Ctx() { req }: Context
   ): Promise<AssignDetailResponse> {
     //const createdBy: string = req.session.userId;
     const assignDetail = await AssignDetail.findOne({
       assignId: assignId,
-      reqNo: reqNo
+      reqNo: reqNo,
+      assignDate: assignDate,
+      requisitionDate: requisitionDate
     });
 
     if (!assignDetail) return setErrors('No data found.');
     try {
-      await AssignDetail.delete({ assignId: assignId, reqNo: reqNo });
+      await AssignDetail.delete({
+        assignId: assignId,
+        reqNo: reqNo,
+        assignDate: assignDate,
+        requisitionDate: requisitionDate
+      });
       return { success: true };
     } catch (err) {
       return setErrors(err.message);

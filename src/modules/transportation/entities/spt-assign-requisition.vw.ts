@@ -47,4 +47,8 @@ export class AssignRequisitionView extends BaseEntity {
   @Field()
   @Column({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
+
+  @Field()
+  @Column({ name: 'ASSIGN_DATE' })
+  assignDate!: Date;
 }

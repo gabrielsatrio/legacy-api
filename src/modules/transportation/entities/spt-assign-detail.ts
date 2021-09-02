@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('GBR_SPT_ASSIGN_DETAIL_TAB')
 @ObjectType()
@@ -13,6 +13,10 @@ export class AssignDetail extends BaseEntity {
   assignDate!: Date;
 
   @Field()
-  @Column({ name: 'REQ_NO' })
+  @PrimaryColumn({ name: 'REQ_NO' })
   reqNo!: number;
+
+  @Field()
+  @PrimaryColumn({ name: 'REQUISITION_DATE' })
+  requisitionDate!: Date;
 }

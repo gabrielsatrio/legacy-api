@@ -11,4 +11,7 @@ export class AssignDetailInput implements Partial<AssignDetail> {
 
   @Field()
   reqNo!: number;
+
+  @Field()
+  requisitionDate!: Date;
 }

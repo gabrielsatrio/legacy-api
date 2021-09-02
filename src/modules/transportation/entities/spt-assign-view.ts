@@ -45,6 +45,10 @@ export class AssignView extends BaseEntity {
   totalVolume!: number;
 
   @Field()
-  @Column({ name: 'REQUISITION_DATE' })
+  @PrimaryColumn({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
+
+  @Field()
+  @PrimaryColumn({ name: 'ASSIGN_DATE' })
+  assignDate!: Date;
 }
