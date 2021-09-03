@@ -9,9 +9,9 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-@Entity('ATJ_APP_USER')
+@Entity('ATJ_APP_USER_V')
 @ObjectType()
-export class User extends BaseEntity {
+export class UserView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'USERNAME', unique: true })
   username!: string;
@@ -51,4 +51,8 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'UPDATED_AT' })
   updatedAt!: Date;
+
+  @Field()
+  @Column({ name: 'OBJ_ID' })
+  objId!: string;
 }

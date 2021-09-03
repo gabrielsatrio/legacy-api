@@ -1,26 +1,12 @@
-import { IsEmail, MinLength } from 'class-validator';
+import { Length, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { User } from './entities/user';
 
 @InputType()
 export class RegisterInput implements Partial<User> {
   @Field()
-  @MinLength(3, {
-    message: 'Username is too short'
-  })
+  @Length(5)
   username!: string;
-
-  @Field()
-  @MinLength(3, {
-    message: 'First Name is too short'
-  })
-  firstName!: string;
-
-  @Field()
-  @MinLength(3, {
-    message: 'Last Name is too short'
-  })
-  lastName!: string;
 
   @Field()
   @MinLength(3, {
@@ -29,20 +15,14 @@ export class RegisterInput implements Partial<User> {
   password!: string;
 
   @Field()
-  @IsEmail(
-    {},
-    {
-      message: 'Please enter a valid email address'
-    }
-  )
-  email!: string;
+  @Length(3)
+  departmentId!: string;
 
   @Field()
-  role!: string;
+  usernameDb!: 'AT' | 'AG';
 
   @Field()
-  defaultSite!: string;
-
-  @Field()
-  defaultDept!: string;
+  @MinLength(5)
+  @MaxLength(8)
+  ifsUsername!: string;
 }

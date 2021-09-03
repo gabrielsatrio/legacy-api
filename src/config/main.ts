@@ -31,6 +31,11 @@ export default {
     logging: process.env.DATABASE_LOGGING === 'true' ? true : false
   },
   env: process.env.NODE_ENV || 'development',
+  mail: {
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT || (25 as any),
+    sender: process.env.MAIL_SENDER
+  },
   redis: {
     url: process.env.REDIS_URL
   },
