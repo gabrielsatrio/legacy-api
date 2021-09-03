@@ -184,6 +184,6 @@ export class MachineView extends BaseEntity {
   updatedAt!: Date;
 
   @Field()
-  @Column({ name: 'ROW_ID' })
-  rowId!: string;
+  @Column({ name: 'OBJ_ID' })
+  objId!: string;
 }

@@ -1,27 +1,31 @@
+import config from '@/config/main';
+import chalk from 'chalk';
 import nodemailer from 'nodemailer';
+import { mapError } from './map-error';
 
-export const sendEmail = async (to: string, html: string): Promise<void> => {
-  // # Testing purposes only
-  // const testAccount = await nodemailer.createTestAccount();
-  // console.log('testAccount', testAccount);
-
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false,
-    auth: {
-      user: 'mn2qojnwz6j5vinz@ethereal.email',
-      pass: 'nNzfcrFHPEnuMSyKWN'
-    }
-  });
-
-  const info = await transporter.sendMail({
-    from: '"Fred Foo" <foo@example.com>',
-    to,
-    subject: 'Change Password',
-    html
-  });
-
-  console.log('Message sent: %s', info.messageId);
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  content: string
+): Promise<void> => {
+  try {
+    const { mail } = config;
+    const transporter = nodemailer.createTransport({
+      host: mail.host,
+      port: mail.port,
+      secure: false
+    });
+    const info = await transporter.sendMail({
+      from: mail.sender,
+      to,
+      subject,
+      html: content
+    } as any);
+    console.log(
+      chalk.green.bold('Message sent: %s'),
+      chalk.yellow.bold(info.messageId)
+    );
+  } catch (err) {
+    throw new Error(mapError(err));
+  }
 };

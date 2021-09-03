@@ -1,63 +1,34 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
-import {
-  Arg,
-  Ctx,
-  FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
-  Root,
-  UseMiddleware
-} from 'type-graphql';
-import { User } from './entities/user';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { UserView } from './entities/user.vw';
 
-@Resolver(User)
+@Resolver(UserView)
 export class UserResolver {
-  @FieldResolver(() => String)
-  fullName(@Root() user: User): string {
-    return `${user.firstName} ${user.lastName}`;
-  }
-
-  @FieldResolver(() => String)
-  email(@Root() user: User, @Ctx() { req }: Context): string {
-    if (req.session.userId === user.id) {
-      return user.email;
-    }
-    return '';
-  }
-
-  @Query(() => [User])
+  @Query(() => [UserView])
   @UseMiddleware(isAuth)
-  async getAllUsers(): Promise<User[]> {
-    return await User.find();
+  async getAllUsers(): Promise<UserView[]> {
+    return await UserView.find();
   }
 
-  @Query(() => User, { nullable: true })
+  @Query(() => UserView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getUser(@Arg('id') id: number): Promise<User | undefined> {
-    return await User.findOne(id);
-  }
-
-  @Query(() => User, { nullable: true })
-  @UseMiddleware(isAuth)
-  async getUserByUsername(
+  async getUser(
     @Arg('username') username: string
-  ): Promise<User | undefined> {
-    return await User.findOne({ username });
+  ): Promise<UserView | undefined> {
+    return await UserView.findOne(username);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserView)
   @UseMiddleware(isAuth)
-  async deleteUser(@Arg('id') id: number): Promise<User> {
-    const data = await User.findOne(id);
-    if (!data) throw new Error('No data found.');
+  async deleteUser(@Arg('username') username: string): Promise<UserView> {
     try {
-      await User.delete(id);
+      const data = await UserView.findOne(username);
+      if (!data) throw new Error('No data found.');
+      await UserView.delete(username);
       return data;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }
