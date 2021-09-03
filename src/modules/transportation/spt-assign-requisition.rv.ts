@@ -9,13 +9,13 @@ export class AssignRequisitionResolver {
   async getAllAssignRequisitionViews(
     @Arg('assignId', () => String)
     assignId: string,
-    @Arg('requisitionDate', () => Date)
-    requisitionDate: Date
+    @Arg('assignDate', () => Date)
+    assignDate: Date
   ): Promise<AssignRequisitionView[] | undefined> {
     return AssignRequisitionView.find({
       where: {
         assignId: assignId,
-        requisitionDate: requisitionDate
+        assignDate: assignDate
       }
     });
   }
@@ -24,13 +24,11 @@ export class AssignRequisitionResolver {
   @UseMiddleware(isAuth)
   async getAssignRequisitionView(
     @Arg('assignId') assignId: string,
-    @Arg('requisitionDate') requisitionDate: Date,
-    @Arg('reqNo') reqNo: number
+    @Arg('assignDate') assignDate: Date
   ): Promise<AssignRequisitionView | undefined> {
     return await AssignRequisitionView.findOne({
       assignId,
-      requisitionDate,
-      reqNo
+      assignDate
     });
   }
 }
