@@ -42,7 +42,7 @@ export class HeadDye extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'ID_TABLE' })
-  idTable?: string;
+  objId?: string;
 
   @ManyToOne(() => HeadResep, (headResep) => headResep.headDyes)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
