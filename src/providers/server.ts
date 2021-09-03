@@ -74,7 +74,7 @@ export default class apolloServer {
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
         resolvers: [join(__dirname, '../modules/**/!(*.d).rv.{ts,js}')],
-        authChecker: ({ context: { req } }) => !!req.session.userId,
+        authChecker: ({ context: { req } }) => !!req.session.username,
         validate: true
       }),
       plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],

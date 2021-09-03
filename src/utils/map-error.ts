@@ -1,19 +1,20 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { capitalizeFirstLetter } from './capitalize-first-letter';
 
-export const mapError = (message: string): string => {
+export const mapError = (error: any): string => {
   let code = null;
-  let errorMessage = message;
-  if (message.substr(0, 4) === 'ORA-') {
-    code = message.substr(0, 9);
+  let errorMessage = error.message;
+  if (errorMessage.substr(0, 4) === 'ORA-') {
+    code = errorMessage.substr(0, 9);
     switch (code) {
       case 'ORA-00001':
         errorMessage = 'Data already exists.';
         break;
       default:
         errorMessage = capitalizeFirstLetter(
-          message.indexOf('\n') > 0
-            ? message.substring(11, message.indexOf('\n'))
-            : message.substr(11, message.length)
+          errorMessage.indexOf('\n') > 0
+            ? errorMessage.substring(11, errorMessage.indexOf('\n'))
+            : errorMessage.substr(11, errorMessage.length)
         );
     }
   }

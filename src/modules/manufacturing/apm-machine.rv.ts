@@ -39,15 +39,15 @@ export class MachineResolver {
     return await MachineView.findOne({ machineId, contract });
   }
 
-  @Mutation(() => Machine)
+  @Mutation(() => MachineView)
   @UseMiddleware(isAuth)
   async createMachine(
     @Arg('input') input: MachineInput,
     @Ctx() { req }: Context
-  ): Promise<Machine | undefined> {
-    let result;
-    const createdBy: string = req.session.userId;
-    const sql = `
+  ): Promise<MachineView | undefined> {
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
       BEGIN
         ROB_APM_Machine_API.Create__(
           :machineId,
@@ -90,8 +90,7 @@ export class MachineResolver {
           :outMachineId);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.machineId,
         input.contract,
         input.description,
@@ -131,74 +130,73 @@ export class MachineResolver {
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outMachineId = result[0] as string;
+      const data = MachineView.findOne({
+        machineId: outMachineId,
+        contract: input.contract
+      });
+      return data;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
-    const outMachineId = result[0] as string;
-    const data = Machine.findOne({
-      machineId: outMachineId,
-      contract: input.contract
-    });
-    return data;
   }
 
-  @Mutation(() => Machine, { nullable: true })
+  @Mutation(() => MachineView, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMachine(
     @Arg('input') input: MachineInput
-  ): Promise<Machine | undefined> {
-    let result;
-    const machine = await Machine.findOne({
-      machineId: input.machineId,
-      contract: input.contract
-    });
-    if (!machine) {
-      throw new Error('No data found.');
-    }
-    const sql = `
-      BEGIN
-        Rob_APM_Machine_API.Update__(
-          :machineId,
-          :contract,
-          :description,
-          :categoryId,
-          :type,
-          :makerId,
-          :serialNo,
-          :yearMade,
-          :purchaseDate,
-          :departmentId,
-          :locationNo,
-          :status,
-          :note,
-          :image1,
-          :image2,
-          :controller,
-          :launchMethod,
-          :rapierType,
-          :widthInCm,
-          :totalAccumulator,
-          :totalSelector,
-          :totalHarness,
-          :endCapacity,
-          :gang,
-          :gauge,
-          :feeder,
-          :totalNeedles,
-          :yarnFeederType,
-          :needleSensor,
-          :capacityInM,
-          :capacityInKg,
-          :settingSystem,
-          :totalChamber,
-          :usableWidth,
-          :nominalWidth,
-          :position,
-          :outMachineId);
-      END;
-    `;
+  ): Promise<MachineView | undefined> {
     try {
-      result = await getConnection().query(sql, [
+      const machine = await MachineView.findOne({
+        machineId: input.machineId,
+        contract: input.contract
+      });
+      if (!machine) {
+        throw new Error('No data found.');
+      }
+      const sql = `
+      BEGIN
+      Rob_APM_Machine_API.Update__(
+        :machineId,
+        :contract,
+        :description,
+        :categoryId,
+        :type,
+        :makerId,
+        :serialNo,
+        :yearMade,
+        :purchaseDate,
+        :departmentId,
+        :locationNo,
+        :status,
+        :note,
+        :image1,
+        :image2,
+        :controller,
+        :launchMethod,
+        :rapierType,
+        :widthInCm,
+        :totalAccumulator,
+        :totalSelector,
+        :totalHarness,
+        :endCapacity,
+        :gang,
+        :gauge,
+        :feeder,
+        :totalNeedles,
+        :yarnFeederType,
+        :needleSensor,
+        :capacityInM,
+        :capacityInKg,
+        :settingSystem,
+        :totalChamber,
+        :usableWidth,
+        :nominalWidth,
+        :position,
+        :outMachineId);
+        END;
+        `;
+      const result = await getConnection().query(sql, [
         input.machineId,
         input.contract,
         input.description,
@@ -237,36 +235,36 @@ export class MachineResolver {
         input.position,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outMachineId = result[0];
+      const data = MachineView.findOne({
+        machineId: outMachineId,
+        contract: input.contract
+      });
+      return data;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
-    const outMachineId = result[0];
-    const data = Machine.findOne({
-      machineId: outMachineId,
-      contract: input.contract
-    });
-    return data;
   }
 
-  @Mutation(() => Machine)
+  @Mutation(() => MachineView)
   @UseMiddleware(isAuth)
   async deleteMachine(
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string,
     @Ctx() { req }: Context
-  ): Promise<Machine> {
-    const createdBy: string = req.session.userId;
-    const data = await Machine.findOne({
-      machineId,
-      contract,
-      createdBy
-    });
-    if (!data) throw new Error('No data found.');
+  ): Promise<MachineView> {
     try {
+      const createdBy: string = req.session.username;
+      const data = await MachineView.findOne({
+        machineId,
+        contract,
+        createdBy
+      });
+      if (!data) throw new Error('No data found.');
       await Machine.delete({ machineId, contract, createdBy });
       return data;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

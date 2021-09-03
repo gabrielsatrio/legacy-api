@@ -26,4 +26,8 @@ export class MachineCategoryView extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'UPDATED_AT' })
   updatedAt!: Date;
+
+  @Field()
+  @Column({ name: 'OBJ_ID' })
+  objId!: string;
 }

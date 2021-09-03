@@ -4,7 +4,7 @@ import { createUserLoader } from '../utils/create-user-loader';
 
 export interface Context {
   req: Request & {
-    session: Session & Partial<SessionData> & { userId: any };
+    session: Session & Partial<SessionData> & { username: string };
   };
   res: Response;
   userLoader: ReturnType<typeof createUserLoader>;
