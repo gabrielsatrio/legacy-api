@@ -1,10 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Customer } from './entities/spt-customer';
-import { CustomerResponse } from './spt-customer.dr';
 import { CustomerInput } from './spt-customer.in';
 
 @Resolver(Customer)
@@ -23,11 +22,11 @@ export class CustomerResolver {
     return await Customer.findOne(customerId);
   }
 
-  @Mutation(() => CustomerResponse)
+  @Mutation(() => Customer)
   @UseMiddleware(isAuth)
   async createCustomer(
     @Arg('input') input: CustomerInput
-  ): Promise<CustomerResponse | undefined> {
+  ): Promise<Customer | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -45,20 +44,20 @@ export class CustomerResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outCustomerId = result[0] as string;
     const data = Customer.findOne({
       customerId: outCustomerId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => CustomerResponse, { nullable: true })
+  @Mutation(() => Customer, { nullable: true })
   @UseMiddleware(isAuth)
   async updateCustomer(
     @Arg('input') input: CustomerInput
-  ): Promise<CustomerResponse | undefined> {
+  ): Promise<Customer | undefined> {
     let result;
     const customer = await Customer.findOne({
       customerId: input.customerId
@@ -80,30 +79,30 @@ export class CustomerResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outCustomerId = result[0];
     const data = Customer.findOne({
       customerId: outCustomerId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => CustomerResponse)
+  @Mutation(() => Customer)
   @UseMiddleware(isAuth)
   async deleteCustomer(
     @Arg('customerId') customerId: string
-  ): Promise<CustomerResponse> {
+  ): Promise<Customer> {
     //const createdBy: string = req.session.userId;
     const customer = await Customer.findOne({
       customerId
     });
-    if (!customer) return setErrors('No data found.');
+    if (!customer) throw new Error('No data found.');
     try {
       await Customer.delete({ customerId });
-      return { success: true };
+      return customer;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

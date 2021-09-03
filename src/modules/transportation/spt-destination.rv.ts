@@ -1,10 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Destination } from './entities/spt-destination';
-import { DestinationResponse } from './spt-destination.dr';
 import { DestinationInput } from './spt-destination.in';
 
 @Resolver(Destination)
@@ -23,11 +22,11 @@ export class DestinationResolver {
     return await Destination.findOne(destinationId);
   }
 
-  @Mutation(() => DestinationResponse)
+  @Mutation(() => Destination)
   @UseMiddleware(isAuth)
   async createDestination(
     @Arg('input') input: DestinationInput
-  ): Promise<DestinationResponse | undefined> {
+  ): Promise<Destination | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -43,20 +42,20 @@ export class DestinationResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outDestinationId = result[0] as string;
     const data = Destination.findOne({
       destinationId: outDestinationId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => DestinationResponse, { nullable: true })
+  @Mutation(() => Destination, { nullable: true })
   @UseMiddleware(isAuth)
   async updateDestination(
     @Arg('input') input: DestinationInput
-  ): Promise<DestinationResponse | undefined> {
+  ): Promise<Destination | undefined> {
     let result;
     const destination = await Destination.findOne({
       destinationId: input.destinationId
@@ -76,30 +75,30 @@ export class DestinationResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outDestinationId = result[0];
     const data = Destination.findOne({
       destinationId: outDestinationId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => DestinationResponse)
+  @Mutation(() => Destination)
   @UseMiddleware(isAuth)
   async deleteDestination(
     @Arg('destinationId') destinationId: string
-  ): Promise<DestinationResponse> {
+  ): Promise<Destination> {
     //const createdBy: string = req.session.userId;
     const destination = await Destination.findOne({
       destinationId
     });
-    if (!destination) return setErrors('No data found.');
+    if (!destination) throw new Error('No data found.');
     try {
       await Destination.delete({ destinationId });
-      return { success: true };
+      return destination;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

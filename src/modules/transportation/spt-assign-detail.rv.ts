@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -12,7 +12,6 @@ import {
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { AssignDetail } from './entities/spt-assign-detail';
-import { AssignDetailResponse } from './spt-assign-detail.dr';
 import { AssignDetailInput } from './spt-assign-detail.in';
 
 @Resolver(AssignDetail)
@@ -35,12 +34,12 @@ export class AssignDetailResolver {
     });
   }
 
-  @Mutation(() => AssignDetailResponse)
+  @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async createAssignDetail(
     @Arg('input') input: AssignDetailInput,
     @Ctx() { req }: Context
-  ): Promise<AssignDetailResponse | undefined> {
+  ): Promise<AssignDetail | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -60,7 +59,7 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outAssignId = result[0] as string;
     const outReqNo = result[1] as number;
@@ -72,10 +71,10 @@ export class AssignDetailResolver {
       assignDate: outAssignDate,
       requisitionDate: outRequisitionDate
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => AssignDetailResponse)
+  @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
     @Arg('assignId') assignId: string,
@@ -83,7 +82,7 @@ export class AssignDetailResolver {
     @Arg('assignDate') assignDate: Date,
     @Arg('requisitionDate') requisitionDate: Date
     //@Ctx() { req }: Context
-  ): Promise<AssignDetailResponse> {
+  ): Promise<AssignDetail> {
     //const createdBy: string = req.session.userId;
     const assignDetail = await AssignDetail.findOne({
       assignId: assignId,
@@ -92,7 +91,7 @@ export class AssignDetailResolver {
       requisitionDate: requisitionDate
     });
 
-    if (!assignDetail) return setErrors('No data found.');
+    if (!assignDetail) throw new Error('No data found.');
     try {
       await AssignDetail.delete({
         assignId: assignId,
@@ -100,9 +99,9 @@ export class AssignDetailResolver {
         assignDate: assignDate,
         requisitionDate: requisitionDate
       });
-      return { success: true };
+      return assignDetail;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

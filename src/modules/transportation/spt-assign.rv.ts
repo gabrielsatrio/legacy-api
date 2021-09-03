@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -12,7 +12,6 @@ import {
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Assign } from './entities/spt-assign';
-import { AssignResponse } from './spt-assign.dr';
 import { AssignInput } from './spt-assign.in';
 
 @Resolver(Assign)
@@ -46,19 +45,19 @@ export class AssignResolver {
       assignId = assignId[0].ASSIGN_ID;
       console.log('assignId', assignId);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     //return assignId;
     return { assignId: assignId };
     //return Assign.create(assignId);
   }
 
-  @Mutation(() => AssignResponse)
+  @Mutation(() => Assign)
   @UseMiddleware(isAuth)
   async createAssign(
     @Arg('input') input: AssignInput,
     @Ctx() { req }: Context
-  ): Promise<AssignResponse | undefined> {
+  ): Promise<Assign | undefined> {
     let result;
     const createdBy: string = req.session.userId;
     const sql = `
@@ -75,21 +74,21 @@ export class AssignResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outAssignId = result[0] as string;
     const data = Assign.findOne({
       assignId: outAssignId,
       assignDate: input.assignDate
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => AssignResponse, { nullable: true })
+  @Mutation(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
   async updateAssign(
     @Arg('input') input: AssignInput
-  ): Promise<AssignResponse | undefined> {
+  ): Promise<Assign | undefined> {
     let result;
     const assign = await Assign.findOne({
       assignId: input.assignId
@@ -110,34 +109,34 @@ export class AssignResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outAssignId = result[0];
     const data = Assign.findOne({
       assignId: outAssignId,
       assignDate: input.assignDate
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => AssignResponse)
+  @Mutation(() => Assign)
   @UseMiddleware(isAuth)
   async deleteAssign(
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
     //@Ctx() { req }: Context
-  ): Promise<AssignResponse> {
+  ): Promise<Assign> {
     //const createdBy: string = req.session.userId;
     const assign = await Assign.findOne({
       assignId,
       assignDate
     });
-    if (!assign) return setErrors('No data found.');
+    if (!assign) throw new Error('No data found.');
     try {
       await Assign.delete({ assignId });
-      return { success: true };
+      return assign;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

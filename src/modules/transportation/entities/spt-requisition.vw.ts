@@ -53,7 +53,7 @@ export class RequisitionView extends BaseEntity {
 
   @Field()
   @Column({ name: 'CREATED_BY' })
-  createdBy!: string;
+  createdBy?: string;
 
   @Field()
   @CreateDateColumn({ name: 'CREATED_AT' })

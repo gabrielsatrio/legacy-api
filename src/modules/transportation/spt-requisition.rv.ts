@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -13,7 +13,6 @@ import {
 import { getConnection } from 'typeorm';
 import { Requisition } from './entities/spt-requisition';
 import { RequisitionView } from './entities/spt-requisition.vw';
-import { RequisitionResponse } from './spt-requisition.dr';
 import { RequisitionInput } from './spt-requisition.in';
 
 @Resolver(Requisition)
@@ -44,12 +43,12 @@ export class RequisitionResolver {
     return await Requisition.findOne(requisitionId);
   }
 
-  @Mutation(() => RequisitionResponse)
+  @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async createRequisition(
     @Arg('input') input: RequisitionInput,
     @Ctx() { req }: Context
-  ): Promise<RequisitionResponse | undefined> {
+  ): Promise<Requisition | undefined> {
     let result;
     const createdBy: string = req.session.userId;
     const sql = `
@@ -72,18 +71,19 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      console.log('error create req', err);
+      throw new Error(mapError(err));
     }
     const outReqNo = result[0] as number;
     const data = Requisition.findOne(outReqNo);
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => RequisitionResponse, { nullable: true })
+  @Mutation(() => Requisition, { nullable: true })
   @UseMiddleware(isAuth)
   async updateRequisition(
     @Arg('input') input: RequisitionInput
-  ): Promise<RequisitionResponse | undefined> {
+  ): Promise<Requisition | undefined> {
     let result;
     const requisition = await Requisition.findOne({
       reqNo: input.reqNo
@@ -109,31 +109,31 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outReqNo = result[0];
     const data = Requisition.findOne({
       reqNo: outReqNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => RequisitionResponse)
+  @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async deleteRequisition(
     @Arg('reqNo') reqNo: number
     //@Ctx() { req }: Context
-  ): Promise<RequisitionResponse> {
+  ): Promise<Requisition> {
     //const createdBy: string = req.session.userId;
     const requisition = await Requisition.findOne({
       reqNo
     });
-    if (!requisition) return setErrors('No data found.');
+    if (!requisition) throw new Error('No data found.');
     try {
       await Requisition.delete({ reqNo });
-      return { success: true };
+      return requisition;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

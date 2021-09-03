@@ -1,10 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Shipping } from './entities/spt-shipping';
-import { ShippingResponse } from './spt-shipping.dr';
 import { ShippingInput } from './spt-shipping.in';
 
 @Resolver(Shipping)
@@ -26,12 +25,12 @@ export class ShippingResolver {
     return await Shipping.findOne(shippingId);
   }
 
-  @Mutation(() => ShippingResponse)
+  @Mutation(() => Shipping)
   @UseMiddleware(isAuth)
   async createShipping(
     @Arg('input') input: ShippingInput
     // @Ctx() { req }: Context
-  ): Promise<ShippingResponse | undefined> {
+  ): Promise<Shipping | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -51,18 +50,18 @@ export class ShippingResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outShippingId = result[0] as string;
     const data = Shipping.findOne(outShippingId);
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ShippingResponse, { nullable: true })
+  @Mutation(() => Shipping, { nullable: true })
   @UseMiddleware(isAuth)
   async updateShipping(
     @Arg('input') input: ShippingInput
-  ): Promise<ShippingResponse | undefined> {
+  ): Promise<Shipping | undefined> {
     let result;
     const shipping = await Shipping.findOne({ shippingId: input.shippingId });
     if (!shipping) {
@@ -85,31 +84,31 @@ export class ShippingResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outShippingId = result[0];
     const data = Shipping.findOne({
       shippingId: outShippingId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ShippingResponse)
+  @Mutation(() => Shipping)
   @UseMiddleware(isAuth)
   async deleteShipping(
     @Arg('shippingId') shippingId: string
     //@Ctx() { req }: Context
-  ): Promise<ShippingResponse> {
+  ): Promise<Shipping> {
     //const createdBy: string = req.session.userId;
     const shipping = await Shipping.findOne({
       shippingId
     });
-    if (!shipping) return setErrors('No data found.');
+    if (!shipping) throw new Error('No data found.');
     try {
       await Shipping.delete({ shippingId });
-      return { success: true };
+      return shipping;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -12,7 +12,6 @@ import {
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Vehicle } from './entities/spt-vehicle';
-import { VehicleResponse } from './spt-vehicle.dr';
 import { VehicleInput } from './spt-vehicle.in';
 
 @Resolver(Vehicle)
@@ -34,12 +33,12 @@ export class VehicleResolver {
     return await Vehicle.findOne(vehicleId);
   }
 
-  @Mutation(() => VehicleResponse)
+  @Mutation(() => Vehicle)
   @UseMiddleware(isAuth)
   async createVehicle(
     @Arg('input') input: VehicleInput,
     @Ctx() { req }: Context
-  ): Promise<VehicleResponse | undefined> {
+  ): Promise<Vehicle | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -56,18 +55,18 @@ export class VehicleResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outVehicleId = result[0] as string;
     const data = Vehicle.findOne(outVehicleId);
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => VehicleResponse, { nullable: true })
+  @Mutation(() => Vehicle, { nullable: true })
   @UseMiddleware(isAuth)
   async updateVehicle(
     @Arg('input') input: VehicleInput
-  ): Promise<VehicleResponse | undefined> {
+  ): Promise<Vehicle | undefined> {
     let result;
     const vehicle = await Vehicle.findOne({ vehicleId: input.vehicleId });
     if (!vehicle) {
@@ -87,31 +86,31 @@ export class VehicleResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outVehicleId = result[0];
     const data = Vehicle.findOne({
       vehicleId: outVehicleId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => VehicleResponse)
+  @Mutation(() => Vehicle)
   @UseMiddleware(isAuth)
   async deleteVehicle(
     @Arg('vehicleId') vehicleId: string
     //@Ctx() { req }: Context
-  ): Promise<VehicleResponse> {
-    //const createdBy: string = req.session.userId;
-    const vehicle = await Vehicle.findOne({
-      vehicleId
-    });
-    if (!vehicle) return setErrors('No data found.');
+  ): Promise<Vehicle> {
     try {
+      //const createdBy: string = req.session.userId;
+      const vehicle = await Vehicle.findOne({
+        vehicleId
+      });
+      if (!vehicle) throw new Error('No data found.');
       await Vehicle.delete({ vehicleId });
-      return { success: true };
+      return vehicle;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }

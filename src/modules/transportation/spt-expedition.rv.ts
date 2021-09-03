@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -12,7 +12,6 @@ import {
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Expedition } from './entities/spt-expedition';
-import { ExpeditionResponse } from './spt-expedition.dr';
 import { ExpeditionInput } from './spt-expedition.in';
 
 @Resolver(Expedition)
@@ -34,12 +33,12 @@ export class ExpeditionResolver {
     return await Expedition.findOne(expeditionId);
   }
 
-  @Mutation(() => ExpeditionResponse)
+  @Mutation(() => Expedition)
   @UseMiddleware(isAuth)
   async createExpedition(
     @Arg('input') input: ExpeditionInput,
     @Ctx() { req }: Context
-  ): Promise<ExpeditionResponse | undefined> {
+  ): Promise<Expedition | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
     const sql = `
@@ -55,20 +54,20 @@ export class ExpeditionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outExpeditionId = result[0] as string;
     const data = Expedition.findOne({
       expeditionId: outExpeditionId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ExpeditionResponse, { nullable: true })
+  @Mutation(() => Expedition, { nullable: true })
   @UseMiddleware(isAuth)
   async updateExpedition(
     @Arg('input') input: ExpeditionInput
-  ): Promise<ExpeditionResponse | undefined> {
+  ): Promise<Expedition | undefined> {
     let result;
     const expedition = await Expedition.findOne({
       expeditionId: input.expeditionId
@@ -88,31 +87,31 @@ export class ExpeditionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
     const outExpeditionId = result[0];
     const data = Expedition.findOne({
       expeditionId: outExpeditionId
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => ExpeditionResponse)
+  @Mutation(() => Expedition)
   @UseMiddleware(isAuth)
   async deleteExpedition(
     @Arg('expeditionId') expeditionId: string
     //@Ctx() { req }: Context
-  ): Promise<ExpeditionResponse> {
+  ): Promise<Expedition> {
     //const createdBy: string = req.session.userId;
     const expedition = await Expedition.findOne({
       expeditionId
     });
-    if (!expedition) return setErrors('No data found.');
+    if (!expedition) throw new Error('No data found.');
     try {
       await Expedition.delete({ expeditionId });
-      return { success: true };
+      return expedition;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err));
     }
   }
 }
