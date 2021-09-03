@@ -43,7 +43,7 @@ export class HeadResep extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'ID_TABLE' })
-  idTable?: string;
+  objId?: string;
 
   @Field(() => [HeadDye], { nullable: true })
   @OneToMany(() => HeadDye, (headDye) => headDye.headResep, {
