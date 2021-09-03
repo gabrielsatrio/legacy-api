@@ -32,14 +32,14 @@ export class AuthResolver {
     try {
       const hashedPassword = await argon2.hash(input.password);
       const sql = `
-      BEGIN
-        ATJ_AUTH_API.Register(:username,
-          :password,
-          :departmentId,
-          :usernameDb,
-          :ifsUsername,
-          :outUsername);
-      END;
+        BEGIN
+          ATJ_AUTH_API.Register(:username,
+            :password,
+            :departmentId,
+            :usernameDb,
+            :ifsUsername,
+            :outUsername);
+        END;
       `;
       const result = await getConnection().query(sql, [
         input.username,
@@ -149,11 +149,11 @@ export class AuthResolver {
       }
       const hashedPassword = await argon2.hash(newPassword);
       const sql = `
-      BEGIN
-        ATJ_AUTH_API.Change_Password(:username,
-          :newPassword,
-          :outUsername);
-      END;
+        BEGIN
+          ATJ_AUTH_API.Change_Password(:username,
+            :newPassword,
+            :outUsername);
+        END;
       `;
       const result = await getConnection().query(sql, [
         username,
