@@ -1,12 +1,10 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { HeadResepResponse } from './ddp-head-resep.dr';
+import { mapError } from '../../utils/map-error';
 import { HeadResepInput } from './ddp-head-resep.in';
 import { HeadResep } from './entities/ddp-head-resep';
-import { MasterResep } from './entities/ddp-master-resep';
 
 @Resolver(HeadResep)
 export class HeadResepResolver {
@@ -35,14 +33,11 @@ export class HeadResepResolver {
     });
   }
 
-  @Mutation(() => HeadResepResponse)
+  @Mutation(() => HeadResep)
   @UseMiddleware(isAuth)
   async createHeadResep(
     @Arg('input') input: HeadResepInput
-    // @Ctx() { req }: Context
-  ): Promise<HeadResepResponse | undefined> {
-    //const createdBy: string = req.session.userId;
-
+  ): Promise<HeadResep | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_HEAD_RESEP(:contract, :partNo, :alternate,
@@ -71,36 +66,34 @@ export class HeadResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
 
-    // console.log(outMasterResepId);
-
     const data = HeadResep.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadResepResponse, { nullable: true })
+  @Mutation(() => HeadResep, { nullable: true })
   @UseMiddleware(isAuth)
   async updateHeadResep(
     @Arg('input') input: HeadResepInput
-  ): Promise<HeadResepResponse | undefined> {
-    const masterResep = await MasterResep.findOne({
+  ): Promise<HeadResep | undefined> {
+    const masterResep = await HeadResep.findOne({
       contract: input.contract,
       partNo: input.partNo,
       alternate: input.alternate
     });
 
     if (!masterResep) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -132,30 +125,28 @@ export class HeadResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
     const outAlternate = result[2] as number;
 
-    // console.log(outMasterResepId);
-
     const data = HeadResep.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadResepResponse)
+  @Mutation(() => HeadResep)
   @UseMiddleware(isAuth)
   async deleteHeadResep(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string,
     @Arg('alternate') alternate: number
-  ): Promise<HeadResepResponse> {
+  ): Promise<HeadResep> {
     try {
       const Resep = await HeadResep.findOne({
         contract: contract,
@@ -164,7 +155,7 @@ export class HeadResepResolver {
       });
 
       if (!Resep) {
-        return setErrors('No data found.');
+        throw new Error('No data found.');
       }
 
       await HeadResep.delete({
@@ -172,9 +163,9 @@ export class HeadResepResolver {
         partNo: partNo,
         alternate: alternate
       });
-      return { success: true };
+      return Resep;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

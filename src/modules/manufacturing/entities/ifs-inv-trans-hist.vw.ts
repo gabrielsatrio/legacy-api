@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('INVENTORY_TRANSACTION_HIST2')
 @ObjectType()
-export class TransactionHistory extends BaseEntity {
+export class InventoryTransactionHistory extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'TRANSACTION_ID' })
   transactionId!: number;
@@ -35,4 +35,8 @@ export class TransactionHistory extends BaseEntity {
   @Field()
   @Column({ name: 'QTY_REVERSED' })
   qtyReversed!: number;
+
+  @Field()
+  @Column({ name: 'OBJID' })
+  objId!: string;
 }

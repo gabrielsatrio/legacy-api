@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -10,7 +10,7 @@ import {
 import { BPOAuxiliaries } from './ddp-bpo-auxiliaries';
 import { BPODyestuff } from './ddp-bpo-dyestuff';
 
-@Entity('CHR_DDT_BPO_TAB')
+@Entity('CHR_DDT_BPO')
 @ObjectType()
 export class DDPBPO extends BaseEntity {
   @Field()
@@ -49,9 +49,9 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'WEIGHT' })
   weight?: number;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ name: 'ALT_RECEIPE' })
-  altReceipe?: string;
+  altReceipe?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'PROGRAM_NO' })
@@ -71,7 +71,7 @@ export class DDPBPO extends BaseEntity {
 
   @Field({ nullable: true })
   @PrimaryColumn({ name: 'JENIS_KU' })
-  jenisKu!: string;
+  jenisKu?: string;
 
   @Field({ nullable: true })
   @PrimaryColumn({ name: 'MATERIAL_LENGTH' })

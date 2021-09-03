@@ -40,6 +40,10 @@ export class HeadDye extends BaseEntity {
   @PrimaryColumn({ name: 'NO' })
   no!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'ID_TABLE' })
+  objId?: string;
+
   @ManyToOne(() => HeadResep, (headResep) => headResep.headDyes)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'PART_NO', referencedColumnName: 'partNo' })

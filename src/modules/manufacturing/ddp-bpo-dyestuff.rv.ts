@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { BPODyestuffResponse } from './ddp-bpo-dyestuff.dr';
+import { mapError } from '../../utils/map-error';
 import { BPODyestuffInput } from './ddp-bpo-dyestuff.in';
 import { BPODyestuff } from './entities/ddp-bpo-dyestuff';
 
@@ -24,14 +23,11 @@ export class BPODyestuffResolver {
     });
   }
 
-  @Mutation(() => BPODyestuffResponse)
+  @Mutation(() => BPODyestuff)
   @UseMiddleware(isAuth)
   async createBPODyestuff(
     @Arg('input') input: BPODyestuffInput
-    // @Ctx() { req }: Context
-  ): Promise<BPODyestuffResponse | undefined> {
-    //const createdBy: string = req.session.userId;
-
+  ): Promise<BPODyestuff | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.create_BPO_dyestuff(
@@ -68,7 +64,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -79,14 +75,14 @@ export class BPODyestuffResolver {
       idNo: outIdNo,
       kuCount: outKuCount
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPODyestuffResponse)
+  @Mutation(() => BPODyestuff, { nullable: true })
   @UseMiddleware(isAuth)
   async updateBPODyestuff(
     @Arg('input') input: BPODyestuffInput
-  ): Promise<BPODyestuffResponse | undefined> {
+  ): Promise<BPODyestuff | undefined> {
     const BPO = await BPODyestuff.findOne({
       contract: input.contract,
       idNo: input.idNo,
@@ -95,7 +91,7 @@ export class BPODyestuffResolver {
     });
 
     if (!BPO) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -132,7 +128,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -145,17 +141,17 @@ export class BPODyestuffResolver {
       kuCount: outKuCount,
       partNo: input.partNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPODyestuffResponse)
+  @Mutation(() => BPODyestuff)
   @UseMiddleware(isAuth)
   async deleteBPODyestuff(
     @Arg('contract') contract: string,
     @Arg('idNo') idNo: string,
     @Arg('kuCount') kuCount: number,
     @Arg('partNo') partNo: string
-  ): Promise<BPODyestuffResponse> {
+  ): Promise<BPODyestuff> {
     try {
       const material = await BPODyestuff.findOne({
         contract,
@@ -165,13 +161,13 @@ export class BPODyestuffResolver {
       });
 
       if (!material) {
-        return setErrors('No data found.');
+        throw new Error('No data found.');
       }
 
       await BPODyestuff.delete({ contract, idNo, kuCount, partNo });
-      return { success: true };
+      return material;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

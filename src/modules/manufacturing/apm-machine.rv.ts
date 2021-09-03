@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
-import { setErrors } from '@/utils/set-errors';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -11,7 +11,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { MachineResponse } from './apm-machine.dr';
 import { MachineInput } from './apm-machine.in';
 import { Machine } from './entities/apm-machine';
 import { MachineView } from './entities/apm-machine.vw';
@@ -40,12 +39,12 @@ export class MachineResolver {
     return await MachineView.findOne({ machineId, contract });
   }
 
-  @Mutation(() => MachineResponse)
+  @Mutation(() => Machine)
   @UseMiddleware(isAuth)
   async createMachine(
     @Arg('input') input: MachineInput,
     @Ctx() { req }: Context
-  ): Promise<MachineResponse | undefined> {
+  ): Promise<Machine | undefined> {
     let result;
     const createdBy: string = req.session.userId;
     const sql = `
@@ -133,28 +132,28 @@ export class MachineResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outMachineId = result[0] as string;
     const data = Machine.findOne({
       machineId: outMachineId,
       contract: input.contract
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MachineResponse, { nullable: true })
+  @Mutation(() => Machine, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMachine(
     @Arg('input') input: MachineInput
-  ): Promise<MachineResponse | undefined> {
+  ): Promise<Machine | undefined> {
     let result;
     const machine = await Machine.findOne({
       machineId: input.machineId,
       contract: input.contract
     });
     if (!machine) {
-      return undefined;
+      throw new Error('No data found.');
     }
     const sql = `
       BEGIN
@@ -239,35 +238,35 @@ export class MachineResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outMachineId = result[0];
     const data = Machine.findOne({
       machineId: outMachineId,
       contract: input.contract
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MachineResponse)
+  @Mutation(() => Machine)
   @UseMiddleware(isAuth)
   async deleteMachine(
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string,
     @Ctx() { req }: Context
-  ): Promise<MachineResponse> {
+  ): Promise<Machine> {
     const createdBy: string = req.session.userId;
-    const machine = await Machine.findOne({
+    const data = await Machine.findOne({
       machineId,
       contract,
       createdBy
     });
-    if (!machine) return setErrors('No data found.');
+    if (!data) throw new Error('No data found.');
     try {
       await Machine.delete({ machineId, contract, createdBy });
-      return { success: true };
+      return data;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

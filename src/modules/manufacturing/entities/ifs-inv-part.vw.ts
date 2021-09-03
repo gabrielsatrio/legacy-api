@@ -5,11 +5,11 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class InventoryPart extends BaseEntity {
   @Field()
-  @Column({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
 
   @Field()
-  @Column({ name: 'PART_NO' })
+  @PrimaryColumn({ name: 'PART_NO' })
   partNo!: string;
 
   @Field()
@@ -21,6 +21,6 @@ export class InventoryPart extends BaseEntity {
   partStatus!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'OBJID' })
+  @Column({ name: 'OBJID' })
   objId!: string;
 }

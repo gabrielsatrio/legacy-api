@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Material } from './ddp-material';
 
-@Entity('CHR_DDT_MATERIAL_USE_TAB')
+@Entity('CHR_DDT_MATERIAL_USE')
 @ObjectType()
 export class MaterialUse extends BaseEntity {
   @Field()
@@ -43,9 +43,6 @@ export class MaterialUse extends BaseEntity {
   @Field()
   @Column({ name: 'LENGTH' })
   length!: number;
-
-  // @ManyToOne(() => Material, (material) => material.materialUses)
-  // material!: Material;
 
   @ManyToOne(() => Material, (material) => material.materialUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })

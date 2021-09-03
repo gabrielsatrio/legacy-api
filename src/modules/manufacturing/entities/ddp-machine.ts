@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('CHR_DDT_MACH_TAB')
+@Entity('CHR_DDT_MACH')
 @ObjectType()
 export class DDPMachine extends BaseEntity {
   @Field()

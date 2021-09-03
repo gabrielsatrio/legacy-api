@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { DDPBPO } from './ddp-bpo';
 
-@Entity('CHR_DDT_AUXILIARIES_TAB')
+@Entity('CHR_DDT_AUXILIARIES')
 @ObjectType()
 export class BPOAuxiliaries extends BaseEntity {
   @Field()
@@ -48,13 +48,17 @@ export class BPOAuxiliaries extends BaseEntity {
   @Column({ name: 'ORDER_NO' })
   orderNo?: string;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'KU_COUNT' })
   kuCount!: number;
 
   @Field({ nullable: true })
   @Column({ name: 'BERAT_AKTUAL' })
   beratAktual?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ID_TABLE' })
+  objId?: string;
 
   @ManyToOne(() => DDPBPO, (dDPBPO) => dDPBPO.auxiliariesUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })

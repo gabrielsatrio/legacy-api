@@ -1,22 +1,18 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { HeadDyeResponse } from './ddp-head-dye.dr';
+import { mapError } from '../../utils/map-error';
 import { HeadDyeInput } from './ddp-head-dye.in';
 import { HeadDye } from './entities/ddp-head-dye';
 
 @Resolver(HeadDye)
 export class HeadDyeResolver {
-  @Mutation(() => HeadDyeResponse)
+  @Mutation(() => HeadDye)
   @UseMiddleware(isAuth)
   async createHeadDye(
     @Arg('input') input: HeadDyeInput
-    // @Ctx() { req }: Context
-  ): Promise<HeadDyeResponse | undefined> {
-    //const createdBy: string = req.session.userId;
-
+  ): Promise<HeadDye | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
@@ -45,7 +41,7 @@ export class HeadDyeResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -53,22 +49,20 @@ export class HeadDyeResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    // console.log(outMasterResepId);
-
     const data = HeadDye.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
       no: outNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadDyeResponse, { nullable: true })
+  @Mutation(() => HeadDye, { nullable: true })
   @UseMiddleware(isAuth)
   async updateHeadDye(
     @Arg('input') input: HeadDyeInput
-  ): Promise<HeadDyeResponse | undefined> {
+  ): Promise<HeadDye | undefined> {
     const masterResep = await HeadDye.findOne({
       contract: input.contract,
       partNo: input.partNo,
@@ -77,7 +71,7 @@ export class HeadDyeResolver {
     });
 
     if (!masterResep) {
-      return setErrors('No data found.');
+      throw new Error(mapError('No data found'));
     }
 
     const sql = `
@@ -111,7 +105,7 @@ export class HeadDyeResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -119,25 +113,23 @@ export class HeadDyeResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    // console.log(outMasterResepId);
-
     const data = HeadDye.findOne({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
       no: outNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => HeadDyeResponse)
+  @Mutation(() => HeadDye)
   @UseMiddleware(isAuth)
   async deleteHeadDye(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string,
     @Arg('alternate') alternate: number,
     @Arg('no') no: number
-  ): Promise<HeadDyeResponse> {
+  ): Promise<HeadDye> {
     try {
       const Resep = await HeadDye.findOne({
         contract: contract,
@@ -147,7 +139,7 @@ export class HeadDyeResolver {
       });
 
       if (!Resep) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found'));
       }
 
       await HeadDye.delete({
@@ -156,9 +148,9 @@ export class HeadDyeResolver {
         alternate: alternate,
         no: no
       });
-      return { success: true };
+      return Resep;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

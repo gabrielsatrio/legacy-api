@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { BPOAuxiliariesResponse } from './ddp-bpo-auxiliaries.dr';
+import { mapError } from '../../utils/map-error';
 import { BPOAuxiliariesInput } from './ddp-bpo-auxiliaries.in';
 import { BPOAuxiliaries } from './entities/ddp-bpo-auxiliaries';
 
@@ -24,14 +23,11 @@ export class BPOAuxiliariesResolver {
     });
   }
 
-  @Mutation(() => BPOAuxiliariesResponse)
+  @Mutation(() => BPOAuxiliaries)
   @UseMiddleware(isAuth)
   async createBPOAuxiliaries(
     @Arg('input') input: BPOAuxiliariesInput
-    // @Ctx() { req }: Context
-  ): Promise<BPOAuxiliariesResponse | undefined> {
-    //const createdBy: string = req.session.userId;
-
+  ): Promise<BPOAuxiliaries | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.create_BPO_auxiliaries(
@@ -70,7 +66,7 @@ export class BPOAuxiliariesResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -81,14 +77,14 @@ export class BPOAuxiliariesResolver {
       idNo: outIdNo,
       kuCount: outKuCount
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPOAuxiliariesResponse)
+  @Mutation(() => BPOAuxiliaries, { nullable: true })
   @UseMiddleware(isAuth)
   async updateBPOAuxiliaries(
     @Arg('input') input: BPOAuxiliariesInput
-  ): Promise<BPOAuxiliariesResponse | undefined> {
+  ): Promise<BPOAuxiliaries | undefined> {
     const BPO = await BPOAuxiliaries.findOne({
       contract: input.contract,
       idNo: input.idNo,
@@ -97,7 +93,7 @@ export class BPOAuxiliariesResolver {
     });
 
     if (!BPO) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -136,7 +132,7 @@ export class BPOAuxiliariesResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0];
@@ -149,17 +145,17 @@ export class BPOAuxiliariesResolver {
       kuCount: outKuCount as number,
       partNo: input.partNo
     });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => BPOAuxiliariesResponse)
+  @Mutation(() => BPOAuxiliaries)
   @UseMiddleware(isAuth)
   async deleteBPOAuxiliaries(
     @Arg('contract') contract: string,
     @Arg('idNo') idNo: string,
     @Arg('kuCount') kuCount: number,
     @Arg('partNo') partNo: string
-  ): Promise<BPOAuxiliariesResponse> {
+  ): Promise<BPOAuxiliaries> {
     try {
       const material = await BPOAuxiliaries.findOne({
         contract,
@@ -169,13 +165,13 @@ export class BPOAuxiliariesResolver {
       });
 
       if (!material) {
-        return setErrors('No data found.');
+        throw new Error('No data found.');
       }
 
       await BPOAuxiliaries.delete({ contract, idNo, kuCount, partNo });
-      return { success: true };
+      return material;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

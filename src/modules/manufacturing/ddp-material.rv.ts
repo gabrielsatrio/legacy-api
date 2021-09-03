@@ -1,9 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { MaterialResponse } from './ddp-material.dr';
+import { mapError } from '../../utils/map-error';
 import { MaterialInput } from './ddp-material.in';
 import { Material } from './entities/ddp-material';
 
@@ -50,12 +49,11 @@ export class MaterialResolver {
     });
   }
 
-  @Mutation(() => MaterialResponse)
+  @Mutation(() => Material)
   @UseMiddleware(isAuth)
   async createMaterial(
     @Arg('input') input: MaterialInput
-    // @Ctx() { req }: Context
-  ): Promise<MaterialResponse | undefined> {
+  ): Promise<Material | undefined> {
     const sql = `
     BEGIN
        CHR_DDP_API.CREATE_MATERIAL(:contract,
@@ -100,27 +98,27 @@ export class MaterialResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
 
     const data = Material.findOne({ contract: outContract, idNo: outIdNo });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MaterialResponse)
+  @Mutation(() => Material)
   @UseMiddleware(isAuth)
   async UpdateMaterial(
     @Arg('input') input: MaterialInput
-  ): Promise<MaterialResponse | undefined> {
+  ): Promise<Material | undefined> {
     const material = await Material.findOne({
       contract: input.contract,
       idNo: input.idNo
     });
 
     if (!material) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -165,21 +163,21 @@ export class MaterialResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
 
     const data = Material.findOne({ contract: outContract, idNo: outIdNo });
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MaterialResponse)
+  @Mutation(() => Material)
   @UseMiddleware(isAuth)
   async deleteMaterial(
     @Arg('contract') contract: string,
     @Arg('idNo') idNo: string
-  ): Promise<MaterialResponse> {
+  ): Promise<Material> {
     try {
       const material = await Material.findOne({
         contract,
@@ -187,13 +185,13 @@ export class MaterialResolver {
       });
 
       if (!material) {
-        return setErrors('No data found.');
+        throw new Error('No data found.');
       }
 
       await Material.delete({ contract, idNo });
-      return { success: true };
+      return material;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }

@@ -1,10 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { setErrors } from '@/utils/set-errors';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
+import { mapError } from '../../utils/map-error';
 import { MappingKuans } from './entities/map-kuans';
-import { MappingResponse } from './map-kuans.dr';
 import { MappingKuansInput } from './map-kuans.in';
 
 @Resolver(MappingKuans)
@@ -17,11 +16,6 @@ export class MappingKuansResolver {
     return await MappingKuans.find({
       contract: In(contract)
     });
-    // return await MappingKuans.createQueryBuilder('M')
-    //   .where('M.CONTRACT IN(:...contract)', {
-    //     contract: contract
-    //   })
-    //   .getRawMany();
   }
 
   @Query(() => [MappingKuans], { nullable: true })
@@ -36,11 +30,11 @@ export class MappingKuansResolver {
     });
   }
 
-  @Mutation(() => MappingResponse)
+  @Mutation(() => MappingKuans)
   @UseMiddleware(isAuth)
   async createMappingKuans(
     @Arg('input') input: MappingKuansInput
-  ): Promise<MappingResponse | undefined> {
+  ): Promise<MappingKuans | undefined> {
     const sql = `
       BEGIN
         CHR_DDP_API.create_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
@@ -65,7 +59,7 @@ export class MappingKuansResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -76,21 +70,21 @@ export class MappingKuansResolver {
       .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
       .getOne();
 
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MappingResponse)
+  @Mutation(() => MappingKuans)
   @UseMiddleware(isAuth)
   async updateMappingKuans(
     @Arg('input') input: MappingKuansInput
-  ): Promise<MappingResponse | undefined> {
+  ): Promise<MappingKuans | undefined> {
     const machine = await MappingKuans.findOne({
       contract: input.contract,
       partNo: input.partNo
     });
 
     if (!machine) {
-      return setErrors('No data found.');
+      throw new Error(mapError('No data found'));
     }
 
     const sql = `
@@ -119,7 +113,7 @@ export class MappingKuansResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
 
     const outContract = result[0] as string;
@@ -130,19 +124,15 @@ export class MappingKuansResolver {
       partNo: outPartNo
     });
 
-    // const data = await MappingKuans.createQueryBuilder('MK')
-    //   .where('MK.CONTRACT = :contract', { contract: outContract })
-    //   .andWhere('MK.PART_NO = :partNo', { partNo: outPartNo })
-    //   .getOne();
-    return { success: true, data };
+    return data;
   }
 
-  @Mutation(() => MappingResponse)
+  @Mutation(() => MappingKuans)
   @UseMiddleware(isAuth)
   async deleteMappingKuans(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
-  ): Promise<MappingResponse> {
+  ): Promise<MappingKuans> {
     try {
       const Resep = await MappingKuans.findOne({
         contract,
@@ -150,13 +140,13 @@ export class MappingKuansResolver {
       });
 
       if (!Resep) {
-        return setErrors('No data found.');
+        throw new Error(mapError('No data found'));
       }
 
       await MappingKuans.delete({ contract, partNo });
-      return { success: true };
+      return Resep;
     } catch (err) {
-      return setErrors(err.message);
+      throw new Error(mapError(err.message));
     }
   }
 }
