@@ -30,7 +30,7 @@ export class BPOAuxiliariesResolver {
   ): Promise<BPOAuxiliaries | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.create_BPO_auxiliaries(
+    CHR_DDT_AUXILIARIES_API.create_BPO_auxiliaries(
         :contract,
         :idNo,
         :partNo,
@@ -98,7 +98,7 @@ export class BPOAuxiliariesResolver {
 
     const sql = `
       BEGIN
-      CHR_DDP_API.update_BPO_auxiliaries(
+      CHR_DDT_AUXILIARIES_API.update_BPO_auxiliaries(
         :contract,
         :idNo,
         :partNo,
@@ -168,7 +168,17 @@ export class BPOAuxiliariesResolver {
         throw new Error('No data found.');
       }
 
-      await BPOAuxiliaries.delete({ contract, idNo, kuCount, partNo });
+      const sql = `
+      BEGIN
+      CHR_DDT_AUXILIARIES_API.delete_BPO_auxiliaries(
+        :contract,
+        :idNo,
+        :partNo,
+        :kuCount);
+      END;
+    `;
+
+      await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
       return material;
     } catch (err) {
       throw new Error(mapError(err));
