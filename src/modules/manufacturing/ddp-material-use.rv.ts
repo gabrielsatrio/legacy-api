@@ -25,7 +25,7 @@ export class MaterialUseResolver {
   ): Promise<MaterialUse | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_MATERIAL_USE(:contract, :idNo, :orderNo,
+    CHR_DDT_MATERIAL_USE_API.CREATE_MATERIAL_USE(:contract, :idNo, :orderNo,
         :tubeDyeing,
         :no,
         :lotBatchNo,
@@ -85,7 +85,7 @@ export class MaterialUseResolver {
 
     const sql = `
       BEGIN
-      CHR_DDP_API.UPDATE_MATERIAL_USE(:contract, :idNo, :orderNo,
+      CHR_DDT_MATERIAL_USE_API.UPDATE_MATERIAL_USE(:contract, :idNo, :orderNo,
         :tubeDyeing,
         :no,
         :lotBatchNo,
@@ -145,7 +145,7 @@ export class MaterialUseResolver {
 
       const sql = `
       BEGIN
-      CHR_DDP_API.DELETE_MATERIAL_USE(:contract, :idNo, :no);
+      CHR_DDT_MATERIAL_USE_API.DELETE_MATERIAL_USE(:contract, :idNo, :no);
       END;
      `;
 

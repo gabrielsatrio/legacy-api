@@ -29,7 +29,11 @@ export class HeadResepResolver {
   ): Promise<HeadResep[] | undefined> {
     return await HeadResep.find({
       relations: ['headDyes', 'headAuxs'],
-      where: { contract: In(contract), partNo: partNo }
+      where: {
+        contract: In(contract),
+        partNo: partNo,
+        status: In(['MASTER', 'ACTIVE'])
+      }
     });
   }
 

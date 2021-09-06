@@ -56,7 +56,7 @@ export class MaterialResolver {
   ): Promise<Material | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_MATERIAL(:contract,
+    CHR_DDT_MATERIAL_API.CREATE_MATERIAL(:contract,
         :jenisCelup,
         :idNo,
         :tanggal,
@@ -123,7 +123,7 @@ export class MaterialResolver {
 
     const sql = `
       BEGIN
-      CHR_DDP_API.UPDATE_MATERIAL(:contract,
+      CHR_DDT_MATERIAL_API.UPDATE_MATERIAL(:contract,
         :jenisCelup,
         :idNo,
         :tanggal,
@@ -188,7 +188,13 @@ export class MaterialResolver {
         throw new Error('No data found.');
       }
 
-      await Material.delete({ contract, idNo });
+      const sql = `
+      BEGIN
+      CHR_DDT_MATERIAL_API.DELETE_MATERIAL(:contract, :idNo);
+      END;
+     `;
+
+      await getConnection().query(sql, [contract, idNo]);
       return material;
     } catch (err) {
       throw new Error(mapError(err));
