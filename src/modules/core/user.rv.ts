@@ -1,31 +1,63 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { UserView } from './entities/user.vw';
+import { ObjectLiteral } from 'typeorm';
+import { User } from './entities/user';
 
-@Resolver(UserView)
+@Resolver(User)
 export class UserResolver {
-  @Query(() => [UserView])
+  @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getAllUsers(): Promise<UserView[]> {
-    return await UserView.find();
+  async getAllUsers(): Promise<User[]> {
+    return await User.find();
   }
 
-  @Query(() => UserView, { nullable: true })
+  @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
-  async getUser(
+  async getUser(@Arg('username') username: string): Promise<User | undefined> {
+    return await User.findOne(username);
+  }
+
+  @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getUserWithDetails(
     @Arg('username') username: string
-  ): Promise<UserView | undefined> {
-    return await UserView.findOne(username);
+  ): Promise<User | undefined> {
+    return await User.findOne({
+      relations: ['contracts'],
+      where: { username }
+    });
   }
 
-  @Mutation(() => UserView)
+  @Query(() => String, { nullable: true })
   @UseMiddleware(isAuth)
-  async deleteUser(@Arg('username') username: string): Promise<UserView> {
+  async getUserDefaultSite(
+    @Arg('username') username: string
+  ): Promise<string | null> {
+    const result = await User.findOne({
+      join: {
+        alias: 'user',
+        leftJoinAndSelect: { userContract: 'user.contracts' }
+      },
+      where: (objectLiteral: ObjectLiteral) => {
+        objectLiteral
+          .where({ username })
+          .andWhere('userContract.isDefault = :isDefault', {
+            isDefault: 'TRUE'
+          });
+      }
+    });
+    if (typeof result?.contracts === 'undefined') return null;
+    return result?.contracts[0].contract;
+  }
+
+  @Mutation(() => User)
+  @UseMiddleware(isAuth)
+  async deleteUser(@Arg('username') username: string): Promise<User> {
     try {
-      const data = await UserView.findOne(username);
+      const data = await User.findOne(username);
       if (!data) throw new Error('No data found.');
-      await UserView.delete(username);
+      await User.delete(username);
       return data;
     } catch (err) {
       throw new Error(mapError(err));
