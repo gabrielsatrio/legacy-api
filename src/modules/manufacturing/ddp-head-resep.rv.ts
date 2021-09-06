@@ -170,11 +170,7 @@ export class HeadResepResolver {
       END;
      `;
 
-      const result = await getConnection().query(sql, [
-        contract,
-        partNo,
-        alternate
-      ]);
+      await getConnection().query(sql, [contract, partNo, alternate]);
 
       return Resep;
     } catch (err) {

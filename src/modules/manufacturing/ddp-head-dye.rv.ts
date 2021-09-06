@@ -144,7 +144,7 @@ export class HeadDyeResolver {
 
       const sql = `
       BEGIN
-      CHR_DDT_MASTER_RESEP_DYE_API.DELETE_HEAD_RESEP(:contract, :partNo, :alternate. :no);
+      CHR_DDT_MASTER_RESEP_DYE_API.DELETE_RESEP_DYE(:contract, :partNo, :alternate, :no);
       END;
      `;
 
