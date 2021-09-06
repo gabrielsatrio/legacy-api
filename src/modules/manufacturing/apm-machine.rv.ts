@@ -48,48 +48,49 @@ export class MachineResolver {
     try {
       const createdBy: string = req.session.username;
       const sql = `
-      BEGIN
-        ROB_APM_Machine_API.Create__(
-          :machineId,
-          :contract,
-          :description,
-          :categoryId,
-          :type,
-          :makerId,
-          :serialNo,
-          :yearMade,
-          :purchaseDate,
-          :departmentId,
-          :locationNo,
-          :status,
-          :note,
-          :image1,
-          :image2,
-          :controller,
-          :launchMethod,
-          :rapierType,
-          :widthInCm,
-          :totalAccumulator,
-          :totalSelector,
-          :totalHarness,
-          :endCapacity,
-          :gang,
-          :gauge,
-          :feeder,
-          :totalNeedles,
-          :yarnFeederType,
-          :needleSensor,
-          :capacityInM,
-          :capacityInKg,
-          :settingSystem,
-          :totalChamber,
-          :usableWidth,
-          :nominalWidth,
-          :position,
-          :createdBy,
-          :outMachineId);
-      END;
-    `;
+        BEGIN
+          ROB_APM_Machine_API.Create__(
+            :machineId,
+            :contract,
+            :description,
+            :categoryId,
+            :type,
+            :makerId,
+            :serialNo,
+            :yearMade,
+            :purchaseDate,
+            :departmentId,
+            :locationNo,
+            :status,
+            :note,
+            :image1,
+            :image2,
+            :controller,
+            :launchMethod,
+            :rapierType,
+            :widthInCm,
+            :totalAccumulator,
+            :totalSelector,
+            :totalHarness,
+            :endCapacity,
+            :gang,
+            :gauge,
+            :feeder,
+            :totalNeedles,
+            :yarnFeederType,
+            :needleSensor,
+            :capacityInM,
+            :capacityInKg,
+            :settingSystem,
+            :totalChamber,
+            :usableWidth,
+            :nominalWidth,
+            :position,
+            :createdBy,
+            :outMachineId,
+            :outContract);
+        END;
+      `;
       const result = await getConnection().query(sql, [
         input.machineId,
         input.contract,
@@ -128,12 +129,14 @@ export class MachineResolver {
         input.nominalWidth,
         input.position,
         createdBy,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
-      const outMachineId = result[0] as string;
+      const outMachineId = result[0];
+      const outContract = result[1];
       const data = MachineView.findOne({
         machineId: outMachineId,
-        contract: input.contract
+        contract: outContract
       });
       return data;
     } catch (err) {
@@ -155,47 +158,48 @@ export class MachineResolver {
         throw new Error('No data found.');
       }
       const sql = `
-      BEGIN
-      Rob_APM_Machine_API.Update__(
-        :machineId,
-        :contract,
-        :description,
-        :categoryId,
-        :type,
-        :makerId,
-        :serialNo,
-        :yearMade,
-        :purchaseDate,
-        :departmentId,
-        :locationNo,
-        :status,
-        :note,
-        :image1,
-        :image2,
-        :controller,
-        :launchMethod,
-        :rapierType,
-        :widthInCm,
-        :totalAccumulator,
-        :totalSelector,
-        :totalHarness,
-        :endCapacity,
-        :gang,
-        :gauge,
-        :feeder,
-        :totalNeedles,
-        :yarnFeederType,
-        :needleSensor,
-        :capacityInM,
-        :capacityInKg,
-        :settingSystem,
-        :totalChamber,
-        :usableWidth,
-        :nominalWidth,
-        :position,
-        :outMachineId);
+        BEGIN
+          Rob_APM_Machine_API.Update__(
+            :machineId,
+            :contract,
+            :description,
+            :categoryId,
+            :type,
+            :makerId,
+            :serialNo,
+            :yearMade,
+            :purchaseDate,
+            :departmentId,
+            :locationNo,
+            :status,
+            :note,
+            :image1,
+            :image2,
+            :controller,
+            :launchMethod,
+            :rapierType,
+            :widthInCm,
+            :totalAccumulator,
+            :totalSelector,
+            :totalHarness,
+            :endCapacity,
+            :gang,
+            :gauge,
+            :feeder,
+            :totalNeedles,
+            :yarnFeederType,
+            :needleSensor,
+            :capacityInM,
+            :capacityInKg,
+            :settingSystem,
+            :totalChamber,
+            :usableWidth,
+            :nominalWidth,
+            :position,
+            :outMachineId,
+            :outContract);
         END;
-        `;
+      `;
       const result = await getConnection().query(sql, [
         input.machineId,
         input.contract,
@@ -233,12 +237,14 @@ export class MachineResolver {
         input.usableWidth,
         input.nominalWidth,
         input.position,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outMachineId = result[0];
+      const outContract = result[1];
       const data = MachineView.findOne({
         machineId: outMachineId,
-        contract: input.contract
+        contract: outContract
       });
       return data;
     } catch (err) {
@@ -250,18 +256,15 @@ export class MachineResolver {
   @UseMiddleware(isAuth)
   async deleteMachine(
     @Arg('machineId') machineId: string,
-    @Arg('contract') contract: string,
-    @Ctx() { req }: Context
+    @Arg('contract') contract: string
   ): Promise<MachineView> {
     try {
-      const createdBy: string = req.session.username;
       const data = await MachineView.findOne({
         machineId,
-        contract,
-        createdBy
+        contract
       });
       if (!data) throw new Error('No data found.');
-      await Machine.delete({ machineId, contract, createdBy });
+      await Machine.delete({ machineId, contract });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
