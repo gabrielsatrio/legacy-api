@@ -78,16 +78,16 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
     @Arg('assignId') assignId: string,
-    @Arg('reqNo') reqNo: number,
     @Arg('assignDate') assignDate: Date,
+    @Arg('reqNo') reqNo: number,
     @Arg('requisitionDate') requisitionDate: Date
     //@Ctx() { req }: Context
   ): Promise<AssignDetail> {
     //const createdBy: string = req.session.userId;
     const assignDetail = await AssignDetail.findOne({
       assignId: assignId,
-      reqNo: reqNo,
       assignDate: assignDate,
+      reqNo: reqNo,
       requisitionDate: requisitionDate
     });
 
@@ -95,8 +95,8 @@ export class AssignDetailResolver {
     try {
       await AssignDetail.delete({
         assignId: assignId,
-        reqNo: reqNo,
         assignDate: assignDate,
+        reqNo: reqNo,
         requisitionDate: requisitionDate
       });
       return assignDetail;
@@ -104,4 +104,46 @@ export class AssignDetailResolver {
       throw new Error(mapError(err));
     }
   }
+
+  // @Mutation(() => AssignDetail)
+  // @UseMiddleware(isAuth)
+  // async deleteAssignDetail(
+  //   @Arg('input') input: AssignDetailInput,
+  //   @Ctx() { req }: Context
+  // ): Promise<AssignDetail | undefined> {
+  //   let result;
+  //   //const createdBy: string = req.session.userId;
+  //   const sql = `
+  //     BEGIN
+  //       GBR_SPT_API.Delete_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
+  //     END;
+  //   `;
+  //   console.log('delete input', input);
+  //   try {
+  //     result = await getConnection().query(sql, [
+  //       input.assignId,
+  //       input.assignDate,
+  //       input.reqNo,
+  //       input.requisitionDate,
+  //       { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+  //       { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+  //       { dir: oracledb.BIND_OUT, type: oracledb.DATE },
+  //       { dir: oracledb.BIND_OUT, type: oracledb.DATE }
+  //     ]);
+  //   } catch (err) {
+  //     throw new Error(mapError(err));
+  //   }
+  //   const outAssignId = result[0] as string;
+  //   const outReqNo = result[1] as number;
+  //   const outAssignDate = result[2] as Date;
+  //   const outRequisitionDate = result[3] as Date;
+
+  //   const data = AssignDetail.findOne({
+  //     assignId: outAssignId,
+  //     reqNo: outReqNo,
+  //     assignDate: outAssignDate,
+  //     requisitionDate: outRequisitionDate
+  //   });
+  //   return data;
+  // }
 }

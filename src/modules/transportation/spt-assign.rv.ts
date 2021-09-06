@@ -59,12 +59,13 @@ export class AssignResolver {
     @Ctx() { req }: Context
   ): Promise<Assign | undefined> {
     let result;
-    const createdBy: string = req.session.userId;
+    const createdBy: string = req.session.username;
     const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
       END;
     `;
+    console.log('input assign adalah ', input);
     try {
       result = await getConnection().query(sql, [
         input.assignId,
