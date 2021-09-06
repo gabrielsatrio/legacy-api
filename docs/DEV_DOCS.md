@@ -40,6 +40,58 @@ root
 |   README.md
 ```
 
+# Error Handling
+
+## In Oracle Database
+
+```sql
+FUNCTION ABC(...) RETURN ... AS
+  ...
+BEGIN
+  ...
+  IF (...) THEN                           --- validation
+    RAISE_APPLICATION_ERROR(-20001, '');
+  END IF;
+  ...
+  RETURN ...;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN                 -- specific error
+    RAISE_APPLICATION_ERROR(-20001, '');
+  WHEN DUP_VAL_ON_INDEX THEN              -- specific error
+    RAISE_APPLICATION_ERROR(-20001, '');
+  WHEN OTHERS THEN                        --- general error
+    RAISE;
+END;
+```
+
+## Javascript/TypeScript
+
+```javascript
+const abc = () => {
+  try {
+    ...
+    return result;
+  } catch (err) {
+    throw new Error(mapError(err));
+  }
+}
+```
+
+# Git Branch Naming
+
+Use lowercase with hypens
+
+* `main`
+* `develop`
+* `feature/`[PROJECT_NAME]</br>
+  e.g. feature/apm
+* `bugfix/`[ISSUE_NAME]</br>
+  e.g. bugfix/more-gray-shades
+* `hotfix/`[ISSUE_NAME]</br>
+  e.g. hotfix/increase-scaling-threshold
+* `release/`[APP_VERSION]</br>
+  e.g. release/v1.0.0
+
 # References
 
 * [Coding Standards](https://github.com/angular/components/blob/master/CODING_STANDARDS.md)
