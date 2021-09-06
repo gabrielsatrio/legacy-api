@@ -71,7 +71,7 @@ export class HeadDyeResolver {
     });
 
     if (!masterResep) {
-      throw new Error(mapError('No data found'));
+      throw new Error('No data found');
     }
 
     const sql = `
@@ -139,7 +139,7 @@ export class HeadDyeResolver {
       });
 
       if (!Resep) {
-        throw new Error(mapError('No data found'));
+        throw new Error('No data found');
       }
 
       const sql = `

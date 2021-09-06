@@ -140,7 +140,7 @@ export class MaterialUseResolver {
       const material = await MaterialUse.findOne({ contract, idNo, no });
 
       if (!material) {
-        throw new Error(mapError('No data found'));
+        throw new Error('No data found');
       }
 
       const sql = `

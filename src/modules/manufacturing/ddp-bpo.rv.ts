@@ -111,7 +111,7 @@ export class BPOResolver {
     });
 
     if (!BPO) {
-      throw new Error(mapError('No data found'));
+      throw new Error('No data found');
     }
 
     const sql = `

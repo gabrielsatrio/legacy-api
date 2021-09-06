@@ -37,7 +37,7 @@ export class MappingKuansResolver {
   ): Promise<MappingKuans | undefined> {
     const sql = `
       BEGIN
-        CHR_DDP_API.create_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
+      ROB_TRANS_TO_KUAN_MAP_API.create_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
       END;
     `;
     let result;
@@ -84,12 +84,12 @@ export class MappingKuansResolver {
     });
 
     if (!machine) {
-      throw new Error(mapError('No data found'));
+      throw new Error('No data found');
     }
 
     const sql = `
       BEGIN
-      CHR_DDP_API.update_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
+      ROB_TRANS_TO_KUAN_MAP_API.update_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
       END;
     `;
 
@@ -140,10 +140,16 @@ export class MappingKuansResolver {
       });
 
       if (!Resep) {
-        throw new Error(mapError('No data found'));
+        throw new Error('No data found');
       }
 
-      await MappingKuans.delete({ contract, partNo });
+      const sql = `
+      BEGIN
+      ROB_TRANS_TO_KUAN_MAP_API.delete_mapping_kuans(:contract, :partNo);
+      END;
+     `;
+
+      await getConnection().query(sql, [contract, partNo]);
       return Resep;
     } catch (err) {
       throw new Error(mapError(err));
