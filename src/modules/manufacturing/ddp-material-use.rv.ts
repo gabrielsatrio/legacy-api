@@ -53,7 +53,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -114,7 +114,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -151,9 +151,9 @@ export class MaterialUseResolver {
 
       const result = await getConnection().query(sql, [contract, idNo, no]);
 
-      return result;
+      return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

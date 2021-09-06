@@ -98,7 +98,7 @@ export class MaterialResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -163,7 +163,7 @@ export class MaterialResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -191,7 +191,7 @@ export class MaterialResolver {
       await Material.delete({ contract, idNo });
       return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

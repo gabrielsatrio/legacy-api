@@ -64,7 +64,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -128,7 +128,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -167,7 +167,7 @@ export class BPODyestuffResolver {
       await BPODyestuff.delete({ contract, idNo, kuCount, partNo });
       return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

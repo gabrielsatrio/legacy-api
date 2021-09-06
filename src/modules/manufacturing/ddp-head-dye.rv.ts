@@ -15,7 +15,7 @@ export class HeadDyeResolver {
   ): Promise<HeadDye | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
+    CHR_DDT_MASTER_RESEP_DYE_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
         :componentPart,
         :deskripsi,
         :resep,
@@ -41,7 +41,7 @@ export class HeadDyeResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -76,7 +76,7 @@ export class HeadDyeResolver {
 
     const sql = `
     BEGIN
-    CHR_DDP_API.UPDATE_RESEP_DYE(:contract, :partNo, :alternate,
+    CHR_DDT_MASTER_RESEP_DYE_API.UPDATE_RESEP_DYE(:contract, :partNo, :alternate,
       :componentPart,
       :deskripsi,
       :resep,
@@ -105,7 +105,7 @@ export class HeadDyeResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -142,15 +142,16 @@ export class HeadDyeResolver {
         throw new Error(mapError('No data found'));
       }
 
-      await HeadDye.delete({
-        contract: contract,
-        partNo: partNo,
-        alternate: alternate,
-        no: no
-      });
+      const sql = `
+      BEGIN
+      CHR_DDT_MASTER_RESEP_DYE_API.DELETE_HEAD_RESEP(:contract, :partNo, :alternate. :no);
+      END;
+     `;
+
+      await getConnection().query(sql, [contract, partNo, alternate, no]);
       return Resep;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }
