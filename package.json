@@ -38,6 +38,7 @@
   "dependencies": {
     "apollo-server-express": "^3.1.1",
     "argon2": "^0.27.0",
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
     "class-validator": "^0.13.1",
     "compression": "^1.7.4",
@@ -61,6 +62,7 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/chance": "^1.1.0",
     "@types/compression": "^1.7.0",
     "@types/connect-redis": "^0.0.14",
