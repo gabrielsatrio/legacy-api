@@ -30,7 +30,7 @@ export class BPODyestuffResolver {
   ): Promise<BPODyestuff | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.create_BPO_dyestuff(
+    CHR_DDT_DYESTUFF_API.create_BPO_dyestuff(
         :contract,
         :idNo,
         :partNo,
@@ -64,7 +64,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -96,7 +96,7 @@ export class BPODyestuffResolver {
 
     const sql = `
       BEGIN
-      CHR_DDP_API.update_BPO_dyestuff(
+      CHR_DDT_DYESTUFF_API.update_BPO_dyestuff(
         :contract,
         :idNo,
         :partNo,
@@ -128,7 +128,7 @@ export class BPODyestuffResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -164,10 +164,21 @@ export class BPODyestuffResolver {
         throw new Error('No data found.');
       }
 
-      await BPODyestuff.delete({ contract, idNo, kuCount, partNo });
+      const sql = `
+      BEGIN
+      CHR_DDT_DYESTUFF_API.delete_BPO_dyestuff(
+        :contract,
+        :idNo,
+        :partNo,
+        :kuCount);
+      END;
+    `;
+
+      await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
+
       return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

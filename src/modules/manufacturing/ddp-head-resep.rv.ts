@@ -29,7 +29,11 @@ export class HeadResepResolver {
   ): Promise<HeadResep[] | undefined> {
     return await HeadResep.find({
       relations: ['headDyes', 'headAuxs'],
-      where: { contract: In(contract), partNo: partNo }
+      where: {
+        contract: In(contract),
+        partNo: partNo,
+        status: In(['MASTER', 'ACTIVE'])
+      }
     });
   }
 
@@ -40,7 +44,7 @@ export class HeadResepResolver {
   ): Promise<HeadResep | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_HEAD_RESEP(:contract, :partNo, :alternate,
+    CHR_DDT_MASTER_RESEP_API.CREATE_HEAD_RESEP(:contract, :partNo, :alternate,
         :programNo,
         :tanggalCelup,
         :notes,
@@ -66,7 +70,7 @@ export class HeadResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -98,7 +102,7 @@ export class HeadResepResolver {
 
     const sql = `
     BEGIN
-    CHR_DDP_API.UPDATE_HEAD_RESEP(:contract, :partNo, :alternate,
+    CHR_DDT_MASTER_RESEP_API.UPDATE_HEAD_RESEP(:contract, :partNo, :alternate,
      :programNo,
      :tanggalCelup,
      :notes,
@@ -125,7 +129,7 @@ export class HeadResepResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -158,14 +162,23 @@ export class HeadResepResolver {
         throw new Error('No data found.');
       }
 
-      await HeadResep.delete({
-        contract: contract,
-        partNo: partNo,
-        alternate: alternate
-      });
+      // await HeadResep.delete({
+      //   contract: contract,
+      //   partNo: partNo,
+      //   alternate: alternate
+      // });
+
+      const sql = `
+      BEGIN
+      CHR_DDT_MASTER_RESEP_API.DELETE_HEAD_RESEP(:contract, :partNo, :alternate);
+      END;
+     `;
+
+      await getConnection().query(sql, [contract, partNo, alternate]);
+
       return Resep;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

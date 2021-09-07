@@ -43,7 +43,7 @@ export class BPOResolver {
   async createBPO(@Arg('input') input: BPOInput): Promise<DDPBPO | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.create_BPO(
+    CHR_DDT_BPO_API.create_BPO(
         :idNo,
         :tanggal,
         :partNo,
@@ -87,7 +87,7 @@ export class BPOResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
@@ -111,12 +111,12 @@ export class BPOResolver {
     });
 
     if (!BPO) {
-      throw new Error(mapError('No data found'));
+      throw new Error('No data found');
     }
 
     const sql = `
       BEGIN
-      CHR_DDP_API.update_BPO(
+      CHR_DDT_BPO_API.update_BPO(
         :idNo,
         :tanggal,
         :partNo,
@@ -158,7 +158,7 @@ export class BPOResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -191,10 +191,20 @@ export class BPOResolver {
         throw new Error('No data found.');
       }
 
-      await DDPBPO.delete({ contract, idNo, kuCount });
+      const sql = `
+      BEGIN
+      CHR_DDT_BPO_API.delete_BPO(
+        :contract,
+        :idNo,
+        :kuCount);
+      END;
+    `;
+
+      await getConnection().query(sql, [contract, idNo, kuCount]);
+
       return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }

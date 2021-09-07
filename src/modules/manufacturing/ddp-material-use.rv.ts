@@ -25,7 +25,7 @@ export class MaterialUseResolver {
   ): Promise<MaterialUse | undefined> {
     const sql = `
     BEGIN
-       CHR_DDP_API.CREATE_MATERIAL_USE(:contract, :idNo, :orderNo,
+    CHR_DDT_MATERIAL_USE_API.CREATE_MATERIAL_USE(:contract, :idNo, :orderNo,
         :tubeDyeing,
         :no,
         :lotBatchNo,
@@ -53,7 +53,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -85,7 +85,7 @@ export class MaterialUseResolver {
 
     const sql = `
       BEGIN
-      CHR_DDP_API.UPDATE_MATERIAL_USE(:contract, :idNo, :orderNo,
+      CHR_DDT_MATERIAL_USE_API.UPDATE_MATERIAL_USE(:contract, :idNo, :orderNo,
         :tubeDyeing,
         :no,
         :lotBatchNo,
@@ -114,7 +114,7 @@ export class MaterialUseResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
 
     const outContract = result[0] as string;
@@ -140,20 +140,20 @@ export class MaterialUseResolver {
       const material = await MaterialUse.findOne({ contract, idNo, no });
 
       if (!material) {
-        throw new Error(mapError('No data found'));
+        throw new Error('No data found');
       }
 
       const sql = `
       BEGIN
-      CHR_DDP_API.DELETE_MATERIAL_USE(:contract, :idNo, :no);
+      CHR_DDT_MATERIAL_USE_API.DELETE_MATERIAL_USE(:contract, :idNo, :no);
       END;
      `;
 
-      const result = await getConnection().query(sql, [contract, idNo, no]);
+      await getConnection().query(sql, [contract, idNo, no]);
 
-      return result;
+      return material;
     } catch (err) {
-      throw new Error(mapError(err.message));
+      throw new Error(mapError(err));
     }
   }
 }
