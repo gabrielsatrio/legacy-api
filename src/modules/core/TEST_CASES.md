@@ -12,6 +12,8 @@ query GetAllUsers {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
@@ -26,22 +28,22 @@ query GetUser {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
   }
 }
 
-query Me {
-  me {
+query CurrentUser {
+  currentUser {
     username
     name
     email
-    usernameDb
-    ifsUsername
-    status
-    createdAt
-    updatedAt
+    departmentId
+    defaultContract
+    contract
   }
 }
 
@@ -61,6 +63,8 @@ mutation Register {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
@@ -75,6 +79,8 @@ mutation Login {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
@@ -100,6 +106,8 @@ mutation ChangePassword {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
@@ -114,6 +122,8 @@ mutation DeleteUser {
     departmentId
     usernameDb
     ifsUsername
+    defaultContract
+    contract
     status
     createdAt
     updatedAt
