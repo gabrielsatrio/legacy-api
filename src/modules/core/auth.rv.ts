@@ -4,31 +4,86 @@ import { mapError } from '@/utils/map-error';
 import { sendEmail } from '@/utils/send-email';
 import argon2 from 'argon2';
 import oracledb from 'oracledb';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root
+} from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
-import { UserView } from './entities/user.vw';
+import { User } from './entities/user';
+import { UserContractView } from './entities/user-contract.vw';
 import { LoginInput } from './login.in';
 import { RegisterInput } from './register.in';
 
 const FORGET_PASSWORD_PREFIX = config.token.prefix;
 
-@Resolver(UserView)
+@Resolver(User)
 export class AuthResolver {
-  @Query(() => UserView, { nullable: true })
-  async me(@Ctx() { req }: Context): Promise<UserView | undefined> {
-    if (!req.session.username) {
-      throw new Error('You need to login first.');
+  @FieldResolver(() => String, { nullable: true })
+  async defaultContract(@Root() user: User): Promise<string | null> {
+    try {
+      const userContract = await UserContractView.find({
+        username: user.ifsUsername,
+        usernameDb: user.usernameDb
+      });
+      if (!userContract) return null;
+      else {
+        const defaultContract = userContract.filter(
+          (rec: UserContractView) => rec.isDefault === 'TRUE'
+        );
+        return defaultContract[0].contract;
+      }
+    } catch (err) {
+      throw new Error(mapError(err));
     }
-    return await UserView.findOne(req.session.username);
   }
 
-  @Mutation(() => UserView)
+  @FieldResolver(() => [String], { nullable: true })
+  async contract(@Root() user: User): Promise<string[] | null> {
+    try {
+      const userContract = await UserContractView.find({
+        username: user.ifsUsername,
+        usernameDb: user.usernameDb
+      });
+      const contract = [];
+      if (!userContract) contract.push('');
+      else {
+        userContract.map((rec: UserContractView) => {
+          contract.push(rec.contract);
+        });
+      }
+      return contract;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => User, { nullable: true })
+  async currentUser(@Ctx() { req }: Context): Promise<User | null> {
+    try {
+      const username = req.session.username;
+      if (!username) {
+        throw new Error('You need to login first.');
+      }
+      const user = await User.findOne({ where: { username } });
+      if (!user || user?.status === 'Inactive') return null;
+      return user;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => User)
   async register(
     @Arg('input', { validate: true }) input: RegisterInput,
     @Ctx() { req }: Context
-  ): Promise<UserView | undefined> {
+  ): Promise<User | undefined> {
     try {
       const hashedPassword = await argon2.hash(input.password);
       const sql = `
@@ -50,7 +105,7 @@ export class AuthResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outUsername = result[0] as string;
-      const data = UserView.findOne({ username: outUsername });
+      const data = User.findOne({ username: outUsername });
       req.session.username = outUsername;
       return data;
     } catch (err) {
@@ -58,13 +113,13 @@ export class AuthResolver {
     }
   }
 
-  @Mutation(() => UserView)
+  @Mutation(() => User)
   async login(
     @Arg('input') input: LoginInput,
     @Ctx() { req }: Context
-  ): Promise<UserView | undefined> {
+  ): Promise<User | undefined> {
     try {
-      const user = await UserView.findOne({ username: input.username });
+      const user = await User.findOne({ username: input.username });
       if (!user) {
         throw new Error('Invalid username.');
       }
@@ -72,7 +127,7 @@ export class AuthResolver {
       if (!valid) {
         throw new Error('Invalid password.');
       }
-      const data = await UserView.findOne({ username: input.username });
+      const data = await User.findOne({ username: input.username });
       req.session.username = user.username;
       return data;
     } catch (err) {
@@ -104,7 +159,7 @@ export class AuthResolver {
   @Mutation(() => Boolean)
   async forgotPassword(@Arg('username') username: string): Promise<boolean> {
     try {
-      const user = await UserView.findOne(username);
+      const user = await User.findOne(username);
       if (!user) {
         return true;
       }
@@ -126,12 +181,12 @@ export class AuthResolver {
     }
   }
 
-  @Mutation(() => UserView)
+  @Mutation(() => User)
   async changePassword(
     @Arg('token') token: string,
     @Arg('newPassword') newPassword: string,
     @Ctx() { req }: Context
-  ): Promise<UserView | undefined> {
+  ): Promise<User | undefined> {
     try {
       const tokenKey = `${FORGET_PASSWORD_PREFIX}${token}`;
       if (newPassword.length < 3) {
@@ -143,7 +198,7 @@ export class AuthResolver {
       if (!username) {
         throw new Error('Token expired.');
       }
-      const user = await UserView.findOne(username);
+      const user = await User.findOne(username);
       if (!user) {
         throw new Error('User no longer exists.');
       }
@@ -161,7 +216,7 @@ export class AuthResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outUsername = result[0] as string;
-      const data = UserView.findOne({ username: outUsername });
+      const data = User.findOne({ username: outUsername });
       await redis.del(tokenKey);
       req.session.username = outUsername;
       return data;
