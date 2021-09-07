@@ -52,6 +52,14 @@ export class AssignResolver {
     //return Assign.create(assignId);
   }
 
+  @Query(() => [Assign])
+  @UseMiddleware(isAuth)
+  async getAssignIdByDate(
+    @Arg('assignDate') assignDate: Date
+  ): Promise<Assign[] | undefined> {
+    return Assign.find({ assignDate: assignDate });
+  }
+
   @Mutation(() => Assign)
   @UseMiddleware(isAuth)
   async createAssign(
