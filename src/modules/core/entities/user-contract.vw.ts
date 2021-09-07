@@ -1,13 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn
-} from 'typeorm';
-import { User } from './user';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ATJ_APP_USER_CONTRACT_MV')
 @ObjectType()
@@ -27,9 +19,4 @@ export class UserContractView extends BaseEntity {
   @Field()
   @Column({ name: 'IS_DEFAULT' })
   isDefault!: string;
-
-  @ManyToOne(() => User, (user) => user.contracts)
-  @JoinColumn({ name: 'USERNAME', referencedColumnName: 'ifsUsername' })
-  @JoinColumn({ name: 'USERNAME_DB', referencedColumnName: 'usernameDb' })
-  user!: User;
 }

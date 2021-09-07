@@ -13,10 +13,11 @@ import {
   Resolver,
   Root
 } from 'type-graphql';
-import { getConnection, ObjectLiteral } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import { User } from './entities/user';
+import { UserContractView } from './entities/user-contract.vw';
 import { LoginInput } from './login.in';
 import { RegisterInput } from './register.in';
 
@@ -26,37 +27,56 @@ const FORGET_PASSWORD_PREFIX = config.token.prefix;
 export class AuthResolver {
   @FieldResolver(() => String, { nullable: true })
   async defaultContract(@Root() user: User): Promise<string | null> {
-    const response = await User.findOne({
-      join: {
-        alias: 'user',
-        leftJoinAndSelect: { userContract: 'user.contracts' }
-      },
-      where: (objectLiteral: ObjectLiteral) => {
-        objectLiteral
-          .where({ username: user.username })
-          .andWhere('userContract.usernameDb = user.usernameDb')
-          .andWhere('userContract.isDefault = :isDefault', {
-            isDefault: 'TRUE'
-          });
+    try {
+      const userContract = await UserContractView.find({
+        username: user.ifsUsername,
+        usernameDb: user.usernameDb
+      });
+      if (!userContract) return null;
+      else {
+        const defaultContract = userContract.filter(
+          (rec: UserContractView) => rec.isDefault === 'TRUE'
+        );
+        return defaultContract[0].contract;
       }
-    });
-    if (typeof response?.contracts === 'undefined') return null;
-    const defaultSite = response?.contracts[0].contract;
-    return defaultSite;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @FieldResolver(() => [String], { nullable: true })
+  async contract(@Root() user: User): Promise<string[] | null> {
+    try {
+      const userContract = await UserContractView.find({
+        username: user.ifsUsername,
+        usernameDb: user.usernameDb
+      });
+      const contract = [];
+      if (!userContract) contract.push('');
+      else {
+        userContract.map((rec: UserContractView) => {
+          contract.push(rec.contract);
+        });
+      }
+      return contract;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => User, { nullable: true })
-  async me(@Ctx() { req }: Context): Promise<User | undefined> {
-    const username = req.session.username;
-    if (!username) {
-      throw new Error('You need to login first.');
+  async currentUser(@Ctx() { req }: Context): Promise<User | null> {
+    try {
+      const username = req.session.username;
+      if (!username) {
+        throw new Error('You need to login first.');
+      }
+      const user = await User.findOne({ where: { username } });
+      if (!user || user?.status === 'Inactive') return null;
+      return user;
+    } catch (err) {
+      throw new Error(mapError(err));
     }
-    const user = await User.findOne({
-      relations: ['contracts'],
-      where: { username }
-    });
-    if (user?.status === 'Inactive') return undefined;
-    return user;
   }
 
   @Mutation(() => User)

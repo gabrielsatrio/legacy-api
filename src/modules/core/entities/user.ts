@@ -5,11 +5,9 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { UserContractView } from './user-contract.vw';
 
 @Entity('ATJ_APP_USER')
 @ObjectType()
@@ -53,14 +51,4 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'UPDATED_AT' })
   updatedAt!: Date;
-
-  @Field(() => [UserContractView], { nullable: true })
-  @OneToMany(
-    () => UserContractView,
-    (userContractView) => userContractView.user,
-    {
-      nullable: true
-    }
-  )
-  contracts?: UserContractView[];
 }
