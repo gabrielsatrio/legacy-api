@@ -15,7 +15,6 @@ moduleAlias.addAliases({
 
 const startup = async () => {
   console.log(chalk.blue.bold('Starting server...\n'));
-
   try {
     console.log('Initializing database connection...');
     await createConnection();
@@ -34,10 +33,8 @@ startup().catch((err) => {
 const shutdown = async (
   error?: Error | Record<string, unknown> | null | undefined
 ) => {
-  let err = error;
-
+  let err: unknown = error;
   console.log(chalk.red.bold('\nShutting down\n'));
-
   try {
     console.log(`Closing Apollo server ${chalk.green('✓')}`);
     await apolloServer.close();
@@ -47,9 +44,7 @@ const shutdown = async (
     );
     err = err || error;
   }
-
   console.log(chalk.blue.bold('Exiting process'));
-
   if (err) {
     process.exit(1); // Non-zero failure code
   } else {
@@ -62,18 +57,15 @@ if (config.env === 'production') {
     console.log(`Received SIGTERM ${chalk.green('✓')}`);
     shutdown();
   });
-
   process.on('SIGINT', () => {
     console.log(`Received SIGINT ${chalk.green('✓')}`);
     shutdown();
   });
-
   process.on('uncaughtException', (err) => {
     console.log(chalk.red('Uncaught exception'));
     console.error(err);
     shutdown(err);
   });
-
   process.on('unhandledRejection', (err) => {
     console.log(chalk.red('Uncaught rejection'));
     console.error(err);
