@@ -1,8 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { mapError } from '../../utils/map-error';
 import { MaterialInput } from './ddp-material.in';
 import { Material } from './entities/ddp-material';
 
