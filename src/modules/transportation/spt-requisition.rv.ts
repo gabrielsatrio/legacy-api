@@ -50,7 +50,7 @@ export class RequisitionResolver {
     @Ctx() { req }: Context
   ): Promise<Requisition | undefined> {
     let result;
-    const createdBy: string = req.session.userId;
+    const createdBy: string = req.session.username;
     const sql = `
       BEGIN
         GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :weight, :volume, :contract, :createdBy, :outRequisitionNo);
@@ -59,7 +59,7 @@ export class RequisitionResolver {
 
     try {
       result = await getConnection().query(sql, [
-        input.reqNo,
+        0,
         input.destinationId,
         input.customerId,
         input.requisitionDate,

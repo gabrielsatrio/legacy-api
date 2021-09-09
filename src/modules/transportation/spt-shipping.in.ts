@@ -5,7 +5,6 @@ import { Shipping } from './entities/spt-shipping';
 @InputType()
 export class ShippingInput implements Partial<Shipping> {
   @Field()
-  @Length(1, 10)
   shippingId!: string;
 
   @Field()
