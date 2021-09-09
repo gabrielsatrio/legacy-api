@@ -28,20 +28,20 @@ export default class apolloServer {
     const RedisStore = connectRedis(session);
 
     app.use(express.json());
-
     app.use(
       helmet({
         contentSecurityPolicy: isProd || isTest ? undefined : false
       })
     );
 
-    app.use(
-      cors({
-        credentials: true,
-        origin: config.client.url
-      })
-    );
-
+    const options: cors.CorsOptions = {
+      credentials: true,
+      origin: [config.client.url],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      preflightContinue: false,
+      optionsSuccessStatus: 200
+    };
+    app.use(cors(options));
     app.set('trust proxy', 1);
 
     app.use(
@@ -66,9 +66,7 @@ export default class apolloServer {
     );
 
     app.use(compression());
-
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
-
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
     const apolloServer = new ApolloServer({
