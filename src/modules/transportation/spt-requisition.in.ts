@@ -8,7 +8,7 @@ export class RequisitionInput implements Partial<Requisition> {
   reqNo!: number;
 
   @Field()
-  @Length(1, 10)
+  @Length(1, 3)
   destinationId!: string;
 
   @Field()
@@ -20,6 +20,9 @@ export class RequisitionInput implements Partial<Requisition> {
 
   @Field()
   rollQty!: number;
+
+  @Field({ nullable: true })
+  meter?: number;
 
   @Field()
   weight!: number;

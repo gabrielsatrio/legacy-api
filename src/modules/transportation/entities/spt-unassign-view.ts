@@ -36,6 +36,10 @@ export class UnassignView extends BaseEntity {
   rollQty!: number;
 
   @Field()
+  @Column({ name: 'METER' })
+  meter!: number;
+
+  @Field()
   @Column({ name: 'WEIGHT' })
   weight!: number;
 

@@ -85,6 +85,7 @@ export class CustomerResolver {
     const data = Customer.findOne({
       customerId: outCustomerId
     });
+    console.log('data update customer', outCustomerId);
     return data;
   }
 

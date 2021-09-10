@@ -1,5 +1,4 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
@@ -31,6 +30,23 @@ export class AssignDetailResolver {
     return await AssignDetail.findOne({
       assignId: assignId,
       reqNo: reqNo
+    });
+  }
+  @Query(() => AssignDetail, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAssignDetailById(
+    @Arg('assignId') assignId: string,
+    @Arg('assignDate') assignDate: Date,
+    @Arg('reqNo') reqNo: number,
+    @Arg('requisitionDate') requisitionDate: Date
+    //@Arg('assignDate') assignDate: Date
+  ): Promise<any | undefined> {
+    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
+    return await AssignDetail.findOne({
+      assignId: assignId,
+      assignDate: assignDate,
+      reqNo: reqNo,
+      requisitionDate: requisitionDate
     });
   }
 
@@ -90,6 +106,7 @@ export class AssignDetailResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+    console.log('result create assign detail', result);
     const outAssignId = result[0] as string;
     const outReqNo = result[1] as number;
     const outAssignDate = result[2] as Date;
@@ -100,6 +117,67 @@ export class AssignDetailResolver {
       assignDate: outAssignDate,
       requisitionDate: outRequisitionDate
     });
+    console.log('----Param Out Create Assign Detail-----');
+    console.log('outAssignId', outAssignId);
+    console.log('reqNo', outReqNo);
+    console.log('assignDate', outAssignDate);
+    console.log('requisitionDate', outRequisitionDate);
+    return data;
+  }
+
+  @Mutation(() => AssignDetail)
+  @UseMiddleware(isAuth)
+  async updateAssignDetail(
+    @Arg('input') input: AssignDetailInput,
+    @Ctx() { req }: Context
+  ): Promise<AssignDetail | undefined> {
+    let result;
+    //const createdBy: string = req.session.userId;
+    const sql = `
+      BEGIN
+        GBR_SPT_API.UPDATE_ASSIGN_DETAIL(:assignId, :assignDate, :reqNo, :requisitionDate,
+          :expeditionId, :vehicleId, :licensePlate, :driverName, :nomorResi, :isNormalPrice,
+          :totalPrice, :nopolLangsir, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
+      END;
+    `;
+    try {
+      result = await getConnection().query(sql, [
+        input.assignId,
+        input.assignDate,
+        input.reqNo,
+        input.requisitionDate,
+        input.expeditionId,
+        input.vehicleId,
+        input.licensePlate,
+        input.driverName,
+        input.nomorResi,
+        input.isNormalPrice,
+        input.totalPrice,
+        input.nopolLangsir,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE }
+      ]);
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+    console.log('result update assign detail', result);
+    const outAssignId = result[0] as string;
+    const outReqNo = result[1] as number;
+    const outAssignDate = result[2] as Date;
+    const outRequisitionDate = result[3] as Date;
+    const data = AssignDetail.findOne({
+      assignId: outAssignId,
+      reqNo: outReqNo,
+      assignDate: outAssignDate,
+      requisitionDate: outRequisitionDate
+    });
+    console.log('----Param Out Update Assign Detail-----');
+    console.log('outAssignId', outAssignId);
+    console.log('reqNo', outReqNo);
+    console.log('assignDate', outAssignDate);
+    console.log('requisitionDate', outRequisitionDate);
     return data;
   }
 

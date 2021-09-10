@@ -31,6 +31,10 @@ export class Requisition extends BaseEntity {
   @Column({ name: 'ROLL_QTY' })
   rollQty!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'METER' })
+  meter?: number;
+
   @Field()
   @Column({ name: 'WEIGHT' })
   weight!: number;
