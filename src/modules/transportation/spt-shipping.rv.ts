@@ -25,6 +25,31 @@ export class ShippingResolver {
     return await Shipping.findOne(shippingId);
   }
 
+  @Query(() => Shipping, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getTarif(
+    @Arg('reqNo') reqNo: number,
+    @Arg('expeditionId') expeditionId: string,
+    @Arg('vehicleId') vehicleId: string,
+    @Arg('isNormalPrice') isNormalPrice: string
+  ): Promise<any | undefined> {
+    let tarif;
+    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TARIF FROM DUAL`;
+    try {
+      tarif = await getConnection().query(sql, [
+        reqNo,
+        expeditionId,
+        vehicleId,
+        isNormalPrice
+      ]);
+      tarif = tarif[0].TARIF;
+      console.log('tarif', tarif);
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+    return { rate: tarif };
+  }
+
   @Mutation(() => Shipping)
   @UseMiddleware(isAuth)
   async createShipping(
