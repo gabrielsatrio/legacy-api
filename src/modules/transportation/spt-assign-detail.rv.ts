@@ -1,14 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { AssignDetail } from './entities/spt-assign-detail';
 import { AssignDetailInput } from './spt-assign-detail.in';
@@ -82,8 +75,8 @@ export class AssignDetailResolver {
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async createAssignDetail(
-    @Arg('input') input: AssignDetailInput,
-    @Ctx() { req }: Context
+    @Arg('input') input: AssignDetailInput
+    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
@@ -128,8 +121,8 @@ export class AssignDetailResolver {
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async updateAssignDetail(
-    @Arg('input') input: AssignDetailInput,
-    @Ctx() { req }: Context
+    @Arg('input') input: AssignDetailInput
+    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
@@ -155,8 +148,8 @@ export class AssignDetailResolver {
         input.totalPrice,
         input.nopolLangsir,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
     } catch (err) {
@@ -164,19 +157,20 @@ export class AssignDetailResolver {
     }
     console.log('result update assign detail', result);
     const outAssignId = result[0] as string;
-    const outReqNo = result[1] as number;
-    const outAssignDate = result[2] as Date;
+    const outAssignDate = result[1] as Date;
+    const outReqNo = result[2] as number;
     const outRequisitionDate = result[3] as Date;
     const data = AssignDetail.findOne({
       assignId: outAssignId,
-      reqNo: outReqNo,
       assignDate: outAssignDate,
+      reqNo: outReqNo,
       requisitionDate: outRequisitionDate
     });
     console.log('----Param Out Update Assign Detail-----');
     console.log('outAssignId', outAssignId);
-    console.log('reqNo', outReqNo);
     console.log('assignDate', outAssignDate);
+    console.log('reqNo', outReqNo);
+
     console.log('requisitionDate', outRequisitionDate);
     return data;
   }
@@ -215,8 +209,8 @@ export class AssignDetailResolver {
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
-    @Arg('input') input: AssignDetailInput,
-    @Ctx() { req }: Context
+    @Arg('input') input: AssignDetailInput
+    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
     //const createdBy: string = req.session.userId;
     const sql = `
