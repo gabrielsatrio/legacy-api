@@ -31,4 +31,16 @@ export class AssignRequisitionResolver {
       assignDate
     });
   }
+
+  @Query(() => AssignRequisitionView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAssignRequisitionViewByReqNo(
+    @Arg('reqNo') reqNo: number,
+    @Arg('requisitionDate') requisitionDate: Date
+  ): Promise<AssignRequisitionView | undefined> {
+    return await AssignRequisitionView.findOne({
+      reqNo,
+      requisitionDate
+    });
+  }
 }

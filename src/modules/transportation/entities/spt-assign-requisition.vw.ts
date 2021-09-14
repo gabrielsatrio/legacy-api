@@ -51,4 +51,36 @@ export class AssignRequisitionView extends BaseEntity {
   @Field()
   @Column({ name: 'ASSIGN_DATE' })
   assignDate!: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EXPEDITION_ID' })
+  expeditionId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'VEHICLE_ID' })
+  vehicleId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'IS_NORMAL_PRICE' })
+  isNormalPrice?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TOTAL_PRICE' })
+  totalPrice?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LICENSE_PLATE' })
+  licensePlate?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOPOL_LANGSIR' })
+  nopolLangsir?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DRIVER_NAME' })
+  driverName?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOMOR_RESI' })
+  nomorResi?: string;
 }

@@ -110,11 +110,7 @@ export class AssignDetailResolver {
       assignDate: outAssignDate,
       requisitionDate: outRequisitionDate
     });
-    console.log('----Param Out Create Assign Detail-----');
-    console.log('outAssignId', outAssignId);
-    console.log('reqNo', outReqNo);
-    console.log('assignDate', outAssignDate);
-    console.log('requisitionDate', outRequisitionDate);
+
     return data;
   }
 
@@ -155,23 +151,22 @@ export class AssignDetailResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
-    console.log('result update assign detail', result);
+    console.log('input', input);
+
     const outAssignId = result[0] as string;
     const outAssignDate = result[1] as Date;
     const outReqNo = result[2] as number;
     const outRequisitionDate = result[3] as Date;
+    console.log('outAssignId', outAssignId);
+    console.log('outAssignDate', outAssignDate);
+    console.log('outReqNo', outReqNo);
+    console.log('outRequisitionDate', outRequisitionDate);
     const data = AssignDetail.findOne({
       assignId: outAssignId,
       assignDate: outAssignDate,
       reqNo: outReqNo,
       requisitionDate: outRequisitionDate
     });
-    console.log('----Param Out Update Assign Detail-----');
-    console.log('outAssignId', outAssignId);
-    console.log('assignDate', outAssignDate);
-    console.log('reqNo', outReqNo);
-
-    console.log('requisitionDate', outRequisitionDate);
     return data;
   }
 
