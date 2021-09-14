@@ -1,7 +1,15 @@
 import { isAuth } from '@/middlewares/is-auth';
 import oracledb from 'oracledb';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { getConnection, In } from 'typeorm';
+import { Context } from '../../types/context';
 import { mapError } from '../../utils/map-error';
 import { BPOAuxiliariesInput } from './ddp-bpo-auxiliaries.in';
 import { BPOAuxiliaries } from './entities/ddp-bpo-auxiliaries';
@@ -39,9 +47,12 @@ export class BPOAuxiliariesResolver {
         :persentase,
         :total,
         :lotBatchNo,
+        :lotBatchNo2,
         :orderNo,
         :kuCount,
         :beratAktual,
+        :qtyLot,
+        :qtyLot2,
         :outContract, :outIdNo, :outKuCount);
     END;
   `;
@@ -58,9 +69,12 @@ export class BPOAuxiliariesResolver {
         input.persentase,
         input.total,
         input.lotBatchNo,
+        input.lotBatchNo2,
         input.orderNo,
         input.kuCount,
         input.beratAktual,
+        input.qtyLot,
+        input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -107,9 +121,12 @@ export class BPOAuxiliariesResolver {
         :persentase,
         :total,
         :lotBatchNo,
+        :lotBatchNo2,
         :orderNo,
         :kuCount,
         :beratAktual,
+        :qtyLot,
+        :qtyLot2,
         :outContract, :outIdNo, :outKuCount);
       END;
     `;
@@ -124,9 +141,12 @@ export class BPOAuxiliariesResolver {
         input.persentase,
         input.total,
         input.lotBatchNo,
+        input.lotBatchNo2,
         input.orderNo,
         input.kuCount,
         input.beratAktual,
+        input.qtyLot,
+        input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -179,6 +199,56 @@ export class BPOAuxiliariesResolver {
     `;
 
       await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
+      return material;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => BPOAuxiliaries)
+  @UseMiddleware(isAuth)
+  async reserveBPOAuxiliaries(
+    @Arg('contract') contract: string,
+    @Arg('idNo') idNo: string,
+    @Arg('kuCount') kuCount: number,
+    @Arg('partNo') partNo: string,
+    @Arg('orderNo') orderNo: string,
+    @Ctx() { req }: Context
+  ): Promise<BPOAuxiliaries> {
+    try {
+      const material = await BPOAuxiliaries.findOne({
+        contract,
+        idNo,
+        kuCount,
+        partNo
+      });
+
+      if (!material) {
+        throw new Error('No data found.');
+      }
+
+      const createdBy: string = req.session.username;
+      const sql = `
+      BEGIN
+      CHR_DDT_AUXILIARIES_API.reserve_auxiliaries(
+        :contract,
+        :idNo,
+        :orderNo,
+        :partNo,
+        :kuCount,
+        :createdBy);
+      END;
+    `;
+
+      await getConnection().query(sql, [
+        contract,
+        idNo,
+        orderNo,
+        partNo,
+        kuCount,
+        createdBy
+      ]);
+
       return material;
     } catch (err) {
       throw new Error(mapError(err));
