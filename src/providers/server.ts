@@ -24,31 +24,25 @@ let server: http.Server | https.Server;
 export default class apolloServer {
   static initialize = async (): Promise<void> => {
     const app = express();
-
     const RedisStore = connectRedis(session);
 
+    app.set('trust proxy', 1);
+    app.use(
+      cors({
+        credentials: true,
+        origin: config.client.url
+      })
+    );
     app.use(express.json());
     app.use(
       helmet({
         contentSecurityPolicy: isProd || isTest ? undefined : false
       })
     );
-
-    const options: cors.CorsOptions = {
-      credentials: true,
-      origin: [config.client.url],
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      preflightContinue: false,
-      optionsSuccessStatus: 200
-    };
-    app.use(cors(options));
-    app.set('trust proxy', 1);
-
     app.use(
       session({
         store: new RedisStore({
           client: redis,
-          disableTTL: true,
           disableTouch: true
         }),
         name: config.cookie.name,
@@ -64,7 +58,6 @@ export default class apolloServer {
         }
       } as any)
     );
-
     app.use(compression());
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
@@ -82,18 +75,11 @@ export default class apolloServer {
         userLoader: createUserLoader()
       }),
       introspection: !isProd && !isTest
-      // uploads: false // disable apollo upload property
     });
-
     await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 
-    server = http.createServer(app);
-
-    // Add subscription support
-    // apolloServer.installSubscriptionHandlers(server);
-
-    server.listen(config.api.port, () =>
+    app.listen(config.api.port, () =>
       console.log(
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),

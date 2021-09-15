@@ -4,6 +4,7 @@
 
 ### GRAPHQL
 
+```
 query GetAllUsers {
   getAllUsers {
     username
@@ -129,3 +130,4 @@ mutation DeleteUser {
     updatedAt
   }
 }
+```

@@ -29,9 +29,11 @@
     "typeorm": "yarn development ./node_modules/typeorm/cli.js",
     "development": "DOTENV_CONFIG_PATH=./.env.development ts-node -P ./tsconfig.json -r dotenv/config",
     "gen-env": "gen-env-types .env.development -o src/types/env.d.ts -e . && rm -fr .env.example",
-    "deploy:": "./scripts/deploy-non-docker.sh",
+    "deploy": "./scripts/deploy.sh",
+    "deploy:local": "./scripts/deploy-local.sh",
     "deploy:test": "./scripts/deploy-test.sh",
     "deploy:prod": "./scripts/deploy-prod.sh",
+    "build:deploy:dev": "./scripts/build-deploy-dev.sh",
     "build:deploy:test": "./scripts/build-deploy-test.sh",
     "build:deploy:prod": "./scripts/build-deploy-prod.sh"
   },
