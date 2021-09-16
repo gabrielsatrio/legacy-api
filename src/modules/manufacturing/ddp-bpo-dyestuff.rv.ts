@@ -1,8 +1,16 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { getConnection, In } from 'typeorm';
+import { Context } from '../../types/context';
 import { BPODyestuffInput } from './ddp-bpo-dyestuff.in';
 import { BPODyestuff } from './entities/ddp-bpo-dyestuff';
 
@@ -39,8 +47,11 @@ export class BPODyestuffResolver {
         :persentase,
         :total,
         :lotBatchNo,
+        :lotBatchNo2,
         :orderNo,
         :kuCount,
+        :qtyLot,
+        :qtyLot2,
         :outContract, :outIdNo, :outKuCount);
     END;
   `;
@@ -57,8 +68,11 @@ export class BPODyestuffResolver {
         input.persentase,
         input.total,
         input.lotBatchNo,
+        input.lotBatchNo2,
         input.orderNo,
         input.kuCount,
+        input.qtyLot,
+        input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -105,8 +119,11 @@ export class BPODyestuffResolver {
         :persentase,
         :total,
         :lotBatchNo,
+        :lotBatchNo2,
         :orderNo,
         :kuCount,
+        :qtyLot,
+        :qtyLot2,
         :outContract, :outIdNo, :outKuCount);
       END;
     `;
@@ -121,8 +138,11 @@ export class BPODyestuffResolver {
         input.persentase,
         input.total,
         input.lotBatchNo,
+        input.lotBatchNo2,
         input.orderNo,
         input.kuCount,
+        input.qtyLot,
+        input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -175,6 +195,56 @@ export class BPODyestuffResolver {
     `;
 
       await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
+
+      return material;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => BPODyestuff)
+  @UseMiddleware(isAuth)
+  async reserveBPODyestuff(
+    @Arg('contract') contract: string,
+    @Arg('idNo') idNo: string,
+    @Arg('kuCount') kuCount: number,
+    @Arg('partNo') partNo: string,
+    @Arg('orderNo') orderNo: string,
+    @Ctx() { req }: Context
+  ): Promise<BPODyestuff> {
+    try {
+      const material = await BPODyestuff.findOne({
+        contract,
+        idNo,
+        kuCount,
+        partNo
+      });
+
+      if (!material) {
+        throw new Error('No data found.');
+      }
+
+      const createdBy: string = req.session.username;
+      const sql = `
+      BEGIN
+      CHR_DDT_DYESTUFF_API.reserve_dyestuff(
+        :contract,
+        :idNo,
+        :orderNo,
+        :partNo,
+        :kuCount,
+        :createdBy);
+      END;
+    `;
+
+      await getConnection().query(sql, [
+        contract,
+        idNo,
+        orderNo,
+        partNo,
+        kuCount,
+        createdBy
+      ]);
 
       return material;
     } catch (err) {
