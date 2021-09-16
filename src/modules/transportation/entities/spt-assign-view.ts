@@ -51,4 +51,8 @@ export class AssignView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ASSIGN_DATE' })
   assignDate!: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'STATUS' })
+  status?: string;
 }
