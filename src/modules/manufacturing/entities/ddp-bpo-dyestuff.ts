@@ -56,6 +56,22 @@ export class BPODyestuff extends BaseEntity {
   @Column({ name: 'ID_TABLE' })
   objId?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_LOT' })
+  qtyLot?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_BATCH_NO2' })
+  lotBatchNo2?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_LOT2' })
+  qtyLot2?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'STATUS_RESERVE' })
+  statusReserve?: string;
+
   @ManyToOne(() => DDPBPO, (dDPBPO) => dDPBPO.dyestuffsUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })

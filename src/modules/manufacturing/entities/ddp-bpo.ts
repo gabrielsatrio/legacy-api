@@ -77,6 +77,10 @@ export class DDPBPO extends BaseEntity {
   @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
   materialLength!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_SIZE' })
+  lotSize?: number;
+
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {
     nullable: true

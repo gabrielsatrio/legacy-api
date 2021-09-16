@@ -15,6 +15,7 @@ export class InventoryPartInStockResolver {
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
       .andWhere(`IPIS.LOCATION_NO like 'DYG%'`)
       .andWhere('IPIS.QTY_ONHAND > 0')
+      .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
       .getMany();
   }
 }

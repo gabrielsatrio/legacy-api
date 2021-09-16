@@ -40,4 +40,16 @@ export class BPOAuxiliariesInput implements Partial<BPOAuxiliaries> {
 
   @Field()
   beratAktual?: number;
+
+  @Field({ nullable: true })
+  qtyLot?: number;
+
+  @Field({ nullable: true })
+  lotBatchNo2?: string;
+
+  @Field({ nullable: true })
+  qtyLot2?: number;
+
+  @Field({ nullable: true })
+  statusReserve?: string;
 }
