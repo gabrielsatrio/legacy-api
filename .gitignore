@@ -28,6 +28,4 @@ yarn-error.log*
 .env.prod*
 .env.*.local
 uploads
-images
-deploy.sh
 TODO.md

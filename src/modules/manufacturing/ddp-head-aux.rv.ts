@@ -1,8 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { mapError } from '../../utils/map-error';
 import { HeadAuxInput } from './ddp-head-aux.in';
 import { HeadAux } from './entities/ddp-head-aux';
 

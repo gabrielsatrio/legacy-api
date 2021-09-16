@@ -4,9 +4,10 @@ const { join } = require('path');
 
 const {
   env,
+  deploy,
   db: { host, logging, password, port, sid, type, username }
 } = config.default;
-const sourcePath = env === 'production' || env === 'test' ? '.' : 'src';
+const sourcePath = env === 'development' && !deploy ? 'src' : '.';
 
 module.exports = {
   type,

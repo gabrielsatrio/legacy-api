@@ -24,31 +24,25 @@ let server: http.Server | https.Server;
 export default class apolloServer {
   static initialize = async (): Promise<void> => {
     const app = express();
-
     const RedisStore = connectRedis(session);
 
-    app.use(express.json());
-
-    app.use(
-      helmet({
-        contentSecurityPolicy: isProd || isTest ? undefined : false
-      })
-    );
-
+    app.set('trust proxy', 1);
     app.use(
       cors({
         credentials: true,
         origin: config.client.url
       })
     );
-
-    app.set('trust proxy', 1);
-
+    app.use(express.json());
+    app.use(
+      helmet({
+        contentSecurityPolicy: isProd || isTest ? undefined : false
+      })
+    );
     app.use(
       session({
         store: new RedisStore({
           client: redis,
-          disableTTL: true,
           disableTouch: true
         }),
         name: config.cookie.name,
@@ -64,11 +58,8 @@ export default class apolloServer {
         }
       } as any)
     );
-
     app.use(compression());
-
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
-
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
     const apolloServer = new ApolloServer({
@@ -84,18 +75,11 @@ export default class apolloServer {
         userLoader: createUserLoader()
       }),
       introspection: !isProd && !isTest
-      // uploads: false // disable apollo upload property
     });
-
     await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 
-    server = http.createServer(app);
-
-    // Add subscription support
-    // apolloServer.installSubscriptionHandlers(server);
-
-    server.listen(config.api.port, () =>
+    app.listen(config.api.port, () =>
       console.log(
         chalk.red.bold('🚀 '),
         chalk.green.bold('Server ready at'),
