@@ -38,4 +38,16 @@ export class BPODyestuffInput implements Partial<BPODyestuff> {
 
   @Field()
   kuCount!: number;
+
+  @Field({ nullable: true })
+  qtyLot?: number;
+
+  @Field({ nullable: true })
+  lotBatchNo2?: string;
+
+  @Field({ nullable: true })
+  qtyLot2?: number;
+
+  @Field({ nullable: true })
+  statusReserve?: string;
 }

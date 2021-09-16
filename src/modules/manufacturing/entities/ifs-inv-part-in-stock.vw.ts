@@ -25,6 +25,10 @@ export class InventoryPartInStock extends BaseEntity {
   qtyOnhand!: number;
 
   @Field()
+  @Column({ name: 'QTY_RESERVED' })
+  qtyReserved!: number;
+
+  @Field()
   @Column({ name: 'OBJID' })
   objId!: string;
 }
