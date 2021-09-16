@@ -27,6 +27,4 @@ yarn-error.log*
 .env.staging*
 .env.local*
 uploads
-images
-deploy.sh
 TODO.md

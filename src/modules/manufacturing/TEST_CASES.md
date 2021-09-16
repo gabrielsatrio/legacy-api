@@ -4,8 +4,9 @@
 
 ### GRAPHQL
 
+```
 query Machines {
-  getAllMachines(contract: ["AT1"]) {
+  getAllMachines(contract: ["AT1", "AT2"]) {
     machineId
     contract
     description
@@ -53,7 +54,7 @@ query Machines {
 }
 
 query Machine {
-  getMachine(machineId: "HJ-001", contract: "AT1") {
+  getMachine(machineId: "HJ-999", contract: "AT1") {
     machineId
     contract
     description
@@ -103,9 +104,9 @@ query Machine {
 mutation CreateMachine {
   createMachine(
     input: {
-      machineId: "HJ-001"
+      machineId: "HJ-999"
       contract: "AT1"
-      description: "Head Jacquard 001"
+      description: "Head Jacquard 999"
       categoryId: "C-WH"
       type: "HTVS 8/J"
       makerId: "DO"
@@ -122,62 +123,54 @@ mutation CreateMachine {
       endCapacity: 2688
     }
   ) {
-    success
-    data {
-      machineId
-      contract
-      description
-      categoryId
-      type
-      makerId
-      serialNo
-      yearMade
-      purchaseDate
-      departmentId
-      locationNo
-      status
-      note
-      image1
-      image2
-      controller
-      launchMethod
-      rapierType
-      widthInCm
-      totalAccumulator
-      totalSelector
-      totalHarness
-      endCapacity
-      gang
-      gauge
-      feeder
-      totalNeedles
-      yarnFeederType
-      needleSensor
-      capacityInM
-      capacityInKg
-      settingSystem
-      totalChamber
-      usableWidth
-      nominalWidth
-      position
-      createdBy
-      createdAt
-      updatedAt
-    }
-    errors {
-      message
-      field
-      code
-    }
+    machineId
+    contract
+    description
+    categoryId
+    type
+    makerId
+    serialNo
+    yearMade
+    purchaseDate
+    departmentId
+    locationNo
+    status
+    note
+    image1
+    image2
+    controller
+    launchMethod
+    rapierType
+    widthInCm
+    totalAccumulator
+    totalSelector
+    totalHarness
+    endCapacity
+    gang
+    gauge
+    feeder
+    totalNeedles
+    yarnFeederType
+    needleSensor
+    capacityInM
+    capacityInKg
+    settingSystem
+    totalChamber
+    usableWidth
+    nominalWidth
+    position
+    createdBy
+    createdAt
+    updatedAt
   }
 }
 
 mutation UpdateMachine {
   updateMachine(
     input: {
-      machineId: "HJ-001"
+      machineId: "HJ-999"
       contract: "AT1"
-      description: "Head Jacquard 001"
+      description: "Head Jacquard 999"
       categoryId: "C-WH"
       type: "HTVS 8/J"
       makerId: "DO"
@@ -194,71 +187,92 @@ mutation UpdateMachine {
       endCapacity: 2688
     }
   ) {
-    success
-    data {
-      machineId
-      contract
-      description
-      categoryId
-      type
-      makerId
-      serialNo
-      yearMade
-      purchaseDate
-      departmentId
-      locationNo
-      status
-      note
-      image1
-      image2
-      controller
-      launchMethod
-      rapierType
-      widthInCm
-      totalAccumulator
-      totalSelector
-      totalHarness
-      endCapacity
-      gang
-      gauge
-      feeder
-      totalNeedles
-      yarnFeederType
-      needleSensor
-      capacityInM
-      capacityInKg
-      settingSystem
-      totalChamber
-      usableWidth
-      nominalWidth
-      position
-      createdBy
-      createdAt
-      updatedAt
-    }
-    errors {
-      message
-      field
-      code
-    }
+    machineId
+    contract
+    description
+    categoryId
+    type
+    makerId
+    serialNo
+    yearMade
+    purchaseDate
+    departmentId
+    locationNo
+    status
+    note
+    image1
+    image2
+    controller
+    launchMethod
+    rapierType
+    widthInCm
+    totalAccumulator
+    totalSelector
+    totalHarness
+    endCapacity
+    gang
+    gauge
+    feeder
+    totalNeedles
+    yarnFeederType
+    needleSensor
+    capacityInM
+    capacityInKg
+    settingSystem
+    totalChamber
+    usableWidth
+    nominalWidth
+    position
+    createdBy
+    createdAt
+    updatedAt
   }
 }
 
 mutation DeleteMachine {
-  deleteMachine(machineId: "HJ-001", contract: "AT1") {
-    success
-    data {
-      machineId
-      contract
-      description
-    }
-    errors {
-      message
-      field
-      code
-    }
+  deleteMachine(machineId: "HJ-999", contract: "AT1") {
+    machineId
+    contract
+    description
+    categoryId
+    type
+    makerId
+    serialNo
+    yearMade
+    purchaseDate
+    departmentId
+    locationNo
+    status
+    note
+    image1
+    image2
+    controller
+    launchMethod
+    rapierType
+    widthInCm
+    totalAccumulator
+    totalSelector
+    totalHarness
+    endCapacity
+    gang
+    gauge
+    feeder
+    totalNeedles
+    yarnFeederType
+    needleSensor
+    capacityInM
+    capacityInKg
+    settingSystem
+    totalChamber
+    usableWidth
+    nominalWidth
+    position
+    createdBy
+    createdAt
+    updatedAt
   }
 }
+```
 
 ## DDP
 

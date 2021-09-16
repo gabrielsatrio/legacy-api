@@ -1,5 +1,5 @@
 # Create a first-stage to build the app
-FROM node:14-alpine as build
+FROM node:16-alpine as build
 
 # Create an app folder
 RUN mkdir /app
@@ -26,7 +26,7 @@ RUN yarn build
 
 # Create a second-stage which copies the /dist folder
 # and run the application
-FROM node:14-alpine
+FROM node:16-alpine
 
 # Install Instantclient Basic Light Oracle and dependencies
 RUN apk --no-cache add libaio libnsl libc6-compat curl && \
@@ -60,10 +60,24 @@ WORKDIR /app
 # Copy the built artifacts from the build stage
 COPY --from=build /app/dist .
 COPY --from=build /app/node_modules node_modules
+COPY --from=build /app/.env.development .env.development
+COPY --from=build /app/.env.test .env.test
 COPY --from=build /app/.env.production .env.production
 COPY --from=build /app/ormconfig.js ormconfig.js
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/yarn.lock yarn.lock
+
+# Configure based on the argument ENV
+RUN if [ $ENV = "development" ] ; \
+  then \
+  rm -fr .env.production .env.test ; \
+  elif [ $ENV = "test" ] ; \
+  then \
+  rm -fr .env.production ; \
+  elif [ $ENV = "production" ] ; \
+  then \
+  rm -fr .env.test ; \
+  fi
 
 # Set environment variables
 ENV NODE_ENV production

@@ -30,6 +30,7 @@ export default {
     sid: process.env.DATABASE_SID,
     logging: process.env.DATABASE_LOGGING === 'true' ? true : false
   },
+  deploy: process.env.DEPLOY === 'true' ? true : false,
   env: process.env.NODE_ENV || 'development',
   mail: {
     host: process.env.MAIL_HOST,

@@ -3,15 +3,11 @@ const config = require('@/config/main');
 const { join } = require('path');
 
 const {
-  host,
-  logging,
-  password,
-  port,
-  sid,
-  type,
-  username
-} = config.default.db;
-const sourcePath = config.default.env === 'production' ? '.' : 'src';
+  env,
+  deploy,
+  db: { host, logging, password, port, sid, type, username }
+} = config.default;
+const sourcePath = env === 'development' && !deploy ? 'src' : '.';
 
 module.exports = {
   type,

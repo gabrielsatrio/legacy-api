@@ -2,12 +2,10 @@ import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn
+  PrimaryColumn
 } from 'typeorm';
 import { MachineCategory } from './apm-machine-category';
 import { MachineLocation } from './apm-machine-location';
@@ -164,11 +162,11 @@ export class Machine extends BaseEntity {
   createdBy!: string;
 
   @Field()
-  @CreateDateColumn({ name: 'CREATED_AT' })
+  @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
   @Field()
-  @UpdateDateColumn({ name: 'UPDATED_AT' })
+  @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 
   @Field(() => MachineCategory)
