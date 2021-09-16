@@ -126,7 +126,7 @@ export class AssignDetailResolver {
       BEGIN
         GBR_SPT_API.UPDATE_ASSIGN_DETAIL(:assignId, :assignDate, :reqNo, :requisitionDate,
           :expeditionId, :vehicleId, :licensePlate, :driverName, :nomorResi, :isNormalPrice,
-          :totalPrice, :nopolLangsir, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
+          :totalPrice, :nopolLangsir, :ppn, :price, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
     try {
@@ -143,6 +143,8 @@ export class AssignDetailResolver {
         input.isNormalPrice,
         input.totalPrice,
         input.nopolLangsir,
+        input.ppn,
+        input.price,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },

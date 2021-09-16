@@ -37,4 +37,10 @@ export class AssignDetailInput implements Partial<AssignDetail> {
 
   @Field({ nullable: true })
   nopolLangsir?: string;
+
+  @Field({ nullable: true })
+  ppn?: string;
+
+  @Field({ nullable: true })
+  price?: number;
 }

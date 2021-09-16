@@ -65,6 +65,14 @@ export class AssignRequisitionView extends BaseEntity {
   isNormalPrice?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'PPN' })
+  ppn?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PRICE' })
+  price?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'TOTAL_PRICE' })
   totalPrice?: number;
 
