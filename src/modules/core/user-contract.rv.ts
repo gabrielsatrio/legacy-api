@@ -6,13 +6,13 @@ import { UserContractView } from './entities/user-contract.vw';
 export class UserContractResolver {
   @Query(() => [UserContractView])
   @UseMiddleware(isAuth)
-  async getAllUserContract(): Promise<UserContractView[]> {
+  async getAllUserContracts(): Promise<UserContractView[]> {
     return await UserContractView.find();
   }
 
   @Query(() => [UserContractView])
   @UseMiddleware(isAuth)
-  async getAllUserContractByUsername(
+  async getAllUserContractsByUsername(
     @Arg('username') username: string,
     @Arg('usernameDb') usernameDb: string
   ): Promise<UserContractView[]> {

@@ -25,6 +25,9 @@ export class MachineResolver {
     return await MachineView.find({
       where: {
         contract: In(contract)
+      },
+      order: {
+        machineId: 'ASC'
       }
     });
   }
