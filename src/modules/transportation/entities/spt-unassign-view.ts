@@ -6,7 +6,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 export class UnassignView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
-  reqNo!: number;
+  reqNo!: string;
 
   @Field()
   @Column({ name: 'CONTRACT' })

@@ -28,7 +28,7 @@ export class ShippingResolver {
   @Query(() => Shipping, { nullable: true })
   @UseMiddleware(isAuth)
   async getTarif(
-    @Arg('reqNo') reqNo: number,
+    @Arg('reqNo') reqNo: string,
     @Arg('expeditionId') expeditionId: string,
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string

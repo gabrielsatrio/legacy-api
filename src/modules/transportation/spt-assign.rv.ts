@@ -73,7 +73,6 @@ export class AssignResolver {
         GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
       END;
     `;
-    console.log('input assign adalah ', input);
     try {
       result = await getConnection().query(sql, [
         input.assignId,

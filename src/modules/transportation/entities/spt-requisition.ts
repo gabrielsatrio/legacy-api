@@ -13,7 +13,7 @@ import {
 export class Requisition extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
-  reqNo!: number;
+  reqNo!: string;
 
   @Field()
   @Column({ name: 'DESTINATION_ID' })

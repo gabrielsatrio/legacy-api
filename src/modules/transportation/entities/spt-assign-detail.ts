@@ -14,7 +14,7 @@ export class AssignDetail extends BaseEntity {
 
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
-  reqNo!: number;
+  reqNo!: string;
 
   @Field()
   @PrimaryColumn({ name: 'REQUISITION_DATE' })

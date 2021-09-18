@@ -18,7 +18,7 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async getAssignDetail(
     @Arg('assignId') assignId: string,
-    @Arg('reqNo') reqNo: number
+    @Arg('reqNo') reqNo: string
   ): Promise<AssignDetail | undefined> {
     return await AssignDetail.findOne({
       assignId: assignId,
@@ -30,7 +30,7 @@ export class AssignDetailResolver {
   async getAssignDetailById(
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date,
-    @Arg('reqNo') reqNo: number,
+    @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
     //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
@@ -46,7 +46,7 @@ export class AssignDetailResolver {
   @Query(() => AssignDetail, { nullable: true })
   @UseMiddleware(isAuth)
   async getTarif(
-    @Arg('reqNo') reqNo: number,
+    @Arg('reqNo') reqNo: string,
     @Arg('expeditionId') expeditionId: string,
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string
@@ -101,7 +101,7 @@ export class AssignDetailResolver {
     }
     console.log('result create assign detail', result);
     const outAssignId = result[0] as string;
-    const outReqNo = result[1] as number;
+    const outReqNo = result[1] as string;
     const outAssignDate = result[2] as Date;
     const outRequisitionDate = result[3] as Date;
     const data = AssignDetail.findOne({
@@ -157,7 +157,7 @@ export class AssignDetailResolver {
 
     const outAssignId = result[0] as string;
     const outAssignDate = result[1] as Date;
-    const outReqNo = result[2] as number;
+    const outReqNo = result[2] as string;
     const outRequisitionDate = result[3] as Date;
     console.log('outAssignId', outAssignId);
     console.log('outAssignDate', outAssignDate);

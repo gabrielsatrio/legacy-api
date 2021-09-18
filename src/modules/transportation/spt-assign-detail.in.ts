@@ -10,7 +10,7 @@ export class AssignDetailInput implements Partial<AssignDetail> {
   assignDate!: Date;
 
   @Field()
-  reqNo!: number;
+  reqNo!: string;
 
   @Field()
   requisitionDate!: Date;

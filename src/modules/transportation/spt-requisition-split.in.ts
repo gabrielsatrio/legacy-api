@@ -1,19 +1,10 @@
-import { Length } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { Requisition } from './entities/spt-requisition';
 
 @InputType()
-export class RequisitionInput implements Partial<Requisition> {
+export class RequisitionSplitInput implements Partial<Requisition> {
   @Field()
   reqNo!: string;
-
-  @Field()
-  @Length(1, 3)
-  destinationId!: string;
-
-  @Field()
-  @Length(1, 10)
-  customerId!: string;
 
   @Field()
   requisitionDate!: Date;
@@ -31,6 +22,20 @@ export class RequisitionInput implements Partial<Requisition> {
   volume!: number;
 
   @Field()
-  @Length(1, 5)
-  contract!: string;
+  reqNoSplit!: string;
+
+  // @Field()
+  // requisitionDateSplit!: Date;
+
+  @Field()
+  rollQtySplit!: number;
+
+  @Field({ nullable: true })
+  meterSplit?: number;
+
+  @Field()
+  weightSplit!: number;
+
+  @Field()
+  volumeSplit!: number;
 }

@@ -13,6 +13,7 @@ import {
 import { getConnection } from 'typeorm';
 import { Requisition } from './entities/spt-requisition';
 import { RequisitionView } from './entities/spt-requisition.vw';
+import { RequisitionSplitInput } from './spt-requisition-split.in';
 import { RequisitionInput } from './spt-requisition.in';
 
 @Resolver(Requisition)
@@ -59,7 +60,7 @@ export class RequisitionResolver {
 
     try {
       result = await getConnection().query(sql, [
-        0,
+        input.reqNo,
         input.destinationId,
         input.customerId,
         input.requisitionDate,
@@ -72,7 +73,6 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       ]);
     } catch (err) {
-      console.log('error create req', err);
       throw new Error(mapError(err));
     }
     const outReqNo = result[0] as number;
@@ -120,10 +120,63 @@ export class RequisitionResolver {
     return data;
   }
 
+  @Mutation(() => Requisition, { nullable: true })
+  @UseMiddleware(isAuth)
+  async splitRequisition(
+    @Arg('input') input: RequisitionSplitInput,
+    @Ctx() { req }: Context
+  ): Promise<Requisition | undefined> {
+    let result;
+    const createdBy: string = req.session.username;
+    // const requisition = await Requisition.findOne({
+    //   reqNo: reqNo as string
+    // });
+    // if (!requisition) {
+    //   return undefined;
+    // }
+    const sql = `
+    BEGIN
+      GBR_SPT_API.SPLIT_REQUISITION(:reqNo, :requisitionDate, :rollQty, :meter, :weight, :volume, :reqNoSplit, :rollQtySplit, :meterSplit,
+        :weightSplit, :volumeSplit, :createdBy,  :outRequisitionNo, :outRequisitionNoSplit);
+    END;
+  `;
+    try {
+      result = await getConnection().query(sql, [
+        input.reqNo,
+        input.requisitionDate,
+        input.rollQty,
+        input.meter,
+        input.weight,
+        input.volume,
+        input.reqNoSplit,
+        //input.requisitionDateSplit,
+        input.rollQtySplit,
+        input.meterSplit,
+        input.weightSplit,
+        input.volumeSplit,
+        createdBy,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+    const outReqNo = result[0];
+    // const outReqNoSplit = result[1];
+    const data = Requisition.findOne({
+      reqNo: outReqNo
+    });
+    // const data1 = Requisition.findOne({
+    //   reqNo: outReqNoSplit
+    // });
+    return data;
+    //return data1;
+  }
+
   @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async deleteRequisition(
-    @Arg('reqNo') reqNo: number
+    @Arg('reqNo') reqNo: string
     //@Ctx() { req }: Context
   ): Promise<Requisition> {
     //const createdBy: string = req.session.userId;
