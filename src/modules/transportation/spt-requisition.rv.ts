@@ -70,7 +70,7 @@ export class RequisitionResolver {
         input.volume,
         input.contract,
         createdBy,
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
       throw new Error(mapError(err));

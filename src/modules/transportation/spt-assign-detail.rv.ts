@@ -92,7 +92,7 @@ export class AssignDetailResolver {
         input.reqNo,
         input.requisitionDate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
@@ -147,7 +147,8 @@ export class AssignDetailResolver {
         input.price,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
     } catch (err) {
