@@ -54,7 +54,7 @@ export class RequisitionResolver {
     const createdBy: string = req.session.username;
     const sql = `
       BEGIN
-        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :createdBy, :outRequisitionNo);
+        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
       END;
     `;
 
@@ -69,6 +69,7 @@ export class RequisitionResolver {
         input.weight,
         input.volume,
         input.contract,
+        input.notes,
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -94,7 +95,7 @@ export class RequisitionResolver {
     }
     const sql = `
     BEGIN
-      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract,  :outRequisitionNo);
+      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
     END;
   `;
     try {
@@ -108,6 +109,7 @@ export class RequisitionResolver {
         input.weight,
         input.volume,
         input.contract,
+        input.notes,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {

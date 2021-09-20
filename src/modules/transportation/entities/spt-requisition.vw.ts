@@ -55,6 +55,10 @@ export class RequisitionView extends BaseEntity {
   @Column({ name: 'CONTRACT' })
   contract!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy?: string;

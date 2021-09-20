@@ -33,4 +33,7 @@ export class RequisitionInput implements Partial<Requisition> {
   @Field()
   @Length(1, 5)
   contract!: string;
+
+  @Field({ nullable: true })
+  notes?: string;
 }
