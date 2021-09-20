@@ -63,7 +63,6 @@ export class AssignDetailResolver {
         isNormalPrice
       ]);
       totalPrice = totalPrice[0].TOTAL_PRICE;
-      console.log('totalPrice', totalPrice);
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -99,7 +98,6 @@ export class AssignDetailResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
-    console.log('result create assign detail', result);
     const outAssignId = result[0] as string;
     const outReqNo = result[1] as string;
     const outAssignDate = result[2] as Date;
@@ -154,16 +152,11 @@ export class AssignDetailResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
-    console.log('input', input);
 
     const outAssignId = result[0] as string;
     const outAssignDate = result[1] as Date;
     const outReqNo = result[2] as string;
     const outRequisitionDate = result[3] as Date;
-    console.log('outAssignId', outAssignId);
-    console.log('outAssignDate', outAssignDate);
-    console.log('outReqNo', outReqNo);
-    console.log('outRequisitionDate', outRequisitionDate);
     const data = AssignDetail.findOne({
       assignId: outAssignId,
       assignDate: outAssignDate,
@@ -217,7 +210,6 @@ export class AssignDetailResolver {
       END;
     `;
     try {
-      console.log('delete input', input);
       const data = await AssignDetail.findOne({
         assignId: input.assignId,
         reqNo: input.reqNo,

@@ -43,7 +43,6 @@ export class AssignResolver {
     try {
       assignId = await getConnection().query(sql, [tipe]);
       assignId = assignId[0].ASSIGN_ID;
-      console.log('assignId', assignId);
     } catch (err) {
       throw new Error(mapError(err));
     }

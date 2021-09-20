@@ -43,7 +43,6 @@ export class ShippingResolver {
         isNormalPrice
       ]);
       tarif = tarif[0].TARIF;
-      console.log('tarif', tarif);
     } catch (err) {
       throw new Error(mapError(err));
     }
