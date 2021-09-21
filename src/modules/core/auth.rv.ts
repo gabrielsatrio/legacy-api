@@ -19,7 +19,6 @@ import { Context } from 'vm';
 import { User } from './entities/user';
 import { UserContractView } from './entities/user-contract.vw';
 import { LoginInput } from './login.in';
-import { RegisterInput } from './register.in';
 
 const FORGET_PASSWORD_PREFIX = config.token.prefix;
 
@@ -74,40 +73,6 @@ export class AuthResolver {
       const user = await User.findOne({ where: { username } });
       if (!user || user?.status === 'Inactive') return null;
       return user;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Mutation(() => User)
-  async register(
-    @Arg('input', { validate: true }) input: RegisterInput,
-    @Ctx() { req }: Context
-  ): Promise<User | undefined> {
-    try {
-      const hashedPassword = await argon2.hash(input.password);
-      const sql = `
-        BEGIN
-          ATJ_AUTH_API.Register(:username,
-            :password,
-            :departmentId,
-            :usernameDb,
-            :ifsUsername,
-            :outUsername);
-        END;
-      `;
-      const result = await getConnection().query(sql, [
-        input.username,
-        hashedPassword,
-        input.departmentId,
-        input.usernameDb,
-        input.ifsUsername,
-        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-      ]);
-      const outUsername = result[0] as string;
-      const data = User.findOne({ username: outUsername });
-      req.session.username = outUsername;
-      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
