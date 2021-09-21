@@ -22,9 +22,8 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(
-    @Arg('input', { validate: true }) input: UserInput
-  ): Promise<User | undefined> {
+  @UseMiddleware(isAuth)
+  async createUser(@Arg('input') input: UserInput): Promise<User | undefined> {
     try {
       const hashedPassword = await argon2.hash(input.password);
       const sql = `
@@ -48,6 +47,22 @@ export class UserResolver {
       const outUsername = result[0] as string;
       const data = User.findOne({ username: outUsername });
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => User)
+  @UseMiddleware(isAuth)
+  async updateUser(@Arg('input') input: UserInput): Promise<User | undefined> {
+    try {
+      const data = await User.findOne({
+        username: input.username
+      });
+      if (!data) throw new Error('No data found.');
+      User.merge(data, input);
+      const results = await User.save(data);
+      return results;
     } catch (err) {
       throw new Error(mapError(err));
     }
