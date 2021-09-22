@@ -25,8 +25,8 @@ export class BPOInput implements Partial<DDPBPO> {
   @Field()
   lotCelup!: string;
 
-  @Field()
-  liquidRatio!: number;
+  @Field({ nullable: true })
+  liquidRatio?: number;
 
   @Field()
   volume!: number;
