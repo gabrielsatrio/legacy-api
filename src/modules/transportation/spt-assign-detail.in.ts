@@ -16,6 +16,9 @@ export class AssignDetailInput implements Partial<AssignDetail> {
   requisitionDate!: Date;
 
   @Field({ nullable: true })
+  tipe?: string;
+
+  @Field({ nullable: true })
   expeditionId?: string;
 
   @Field({ nullable: true })

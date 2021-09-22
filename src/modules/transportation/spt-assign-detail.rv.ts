@@ -1,7 +1,15 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { AssignDetail } from './entities/spt-assign-detail';
 import { AssignDetailInput } from './spt-assign-detail.in';
@@ -88,6 +96,49 @@ export class AssignDetailResolver {
       result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
+        input.reqNo,
+        input.requisitionDate,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE },
+        { dir: oracledb.BIND_OUT, type: oracledb.DATE }
+      ]);
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+    const outAssignId = result[0] as string;
+    const outReqNo = result[1] as string;
+    const outAssignDate = result[2] as Date;
+    const outRequisitionDate = result[3] as Date;
+    const data = AssignDetail.findOne({
+      assignId: outAssignId,
+      reqNo: outReqNo,
+      assignDate: outAssignDate,
+      requisitionDate: outRequisitionDate
+    });
+
+    return data;
+  }
+
+  @Mutation(() => AssignDetail)
+  @UseMiddleware(isAuth)
+  async createNewAssign(
+    @Arg('input') input: AssignDetailInput,
+    @Ctx() { req }: Context
+  ): Promise<AssignDetail | undefined> {
+    let result;
+    const createdBy: string = req.session.username;
+    const sql = `
+      BEGIN
+        GBR_SPT_API.Create_NEW_ASSIGN(:assignId, :assignDate, :createdBy, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
+      END;
+    `;
+    try {
+      result = await getConnection().query(sql, [
+        input.assignId,
+        //input.tipe,
+        input.assignDate,
+        createdBy,
         input.reqNo,
         input.requisitionDate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },

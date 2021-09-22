@@ -175,22 +175,49 @@ export class RequisitionResolver {
     //return data1;
   }
 
+  // @Mutation(() => Requisition)
+  // @UseMiddleware(isAuth)
+  // async deleteRequisition(
+  //   @Arg('reqNo') reqNo: string
+  //   //@Ctx() { req }: Context
+  // ): Promise<Requisition> {
+  //   //const createdBy: string = req.session.userId;
+  //   const requisition = await Requisition.findOne({
+  //     reqNo
+  //   });
+  //   if (!requisition) throw new Error('No data found.');
+  //   try {
+  //     await Requisition.delete({ reqNo });
+  //     return requisition;
+  //   } catch (err) {
+  //     throw new Error(mapError(err));
+  //   }
+  // }
+
   @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
-  async deleteRequisition(
-    @Arg('reqNo') reqNo: string
-    //@Ctx() { req }: Context
-  ): Promise<Requisition> {
-    //const createdBy: string = req.session.userId;
+  async deleteRequisition(@Arg('reqNo') reqNo: string): Promise<Requisition> {
     const requisition = await Requisition.findOne({
-      reqNo
+      reqNo: reqNo
     });
-    if (!requisition) throw new Error('No data found.');
+    if (!requisition) {
+      throw new Error('No data found');
+    }
+    const sql = `
+    BEGIN
+      GBR_SPT_API.DELETE_Requisition(:reqNo);
+    END;
+  `;
     try {
-      await Requisition.delete({ reqNo });
+      await getConnection().query(sql, [reqNo]);
       return requisition;
     } catch (err) {
       throw new Error(mapError(err));
     }
+    // const outReqNo = result[0];
+    // const data = Requisition.findOne({
+    //   reqNo: outReqNo
+    // });
+    // return data;
   }
 }

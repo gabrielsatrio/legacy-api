@@ -21,8 +21,16 @@ export class SuratJalan extends BaseEntity {
   contract?: string;
 
   @Field()
+  @Column({ name: 'DESTINATION_ID' })
+  destinationId?: string;
+
+  @Field()
   @Column({ name: 'DESTINATION_NAME' })
   destinationName?: string;
+
+  @Field()
+  @Column({ name: 'CUSTOMER_ID' })
+  customerId?: string;
 
   @Field()
   @Column({ name: 'CUSTOMER_NAME' })
@@ -47,6 +55,14 @@ export class SuratJalan extends BaseEntity {
   @Field()
   @Column({ name: 'VOLUME' })
   volume?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EXPEDITION_ID' })
+  expeditionId?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'EXPEDITION_NAME' })
