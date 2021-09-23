@@ -1,13 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  PrimaryColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { BaseEntity, Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
 @Entity('ATJ_APP_USER')
 @ObjectType()
@@ -45,10 +37,10 @@ export class User extends BaseEntity {
   status!: 'Active' | 'Inactive';
 
   @Field()
-  @CreateDateColumn({ name: 'CREATED_AT' })
+  @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
   @Field()
-  @UpdateDateColumn({ name: 'UPDATED_AT' })
+  @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 }
