@@ -56,6 +56,7 @@ export class AuthResolver {
         userContract.map((rec: UserContractView) => {
           contract.push(rec.contract);
         });
+        user.ifsUsername === 'ATEJA' && contract.push('AGT');
       }
       return contract;
     } catch (err) {
