@@ -57,6 +57,7 @@ export class AuthResolver {
           contract.push(rec.contract);
         });
         user.ifsUsername === 'ATEJA' && contract.push('AGT');
+        user.ifsUsername === 'AT1GAP07' && contract.push('AGT');
       }
       return contract;
     } catch (err) {

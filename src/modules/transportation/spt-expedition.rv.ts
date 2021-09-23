@@ -1,15 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Expedition } from './entities/spt-expedition';
 import { ExpeditionInput } from './spt-expedition.in';
@@ -36,8 +28,8 @@ export class ExpeditionResolver {
   @Mutation(() => Expedition)
   @UseMiddleware(isAuth)
   async createExpedition(
-    @Arg('input') input: ExpeditionInput,
-    @Ctx() { req }: Context
+    @Arg('input') input: ExpeditionInput
+    //@Ctx() { req }: Context
   ): Promise<Expedition | undefined> {
     let result;
     //const createdBy: string = req.session.userId;
