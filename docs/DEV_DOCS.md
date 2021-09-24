@@ -1,8 +1,9 @@
 # Project Structure
 
 > **Filename**
-> - Lowercase w/ hypen
-> - Max Length: 27 chars (excluding the extension)
+> - Use lowercase with hypens
+> - Max Length: 27 chars (excl. the extension)
+> - Singular
 > - Format: [IFS|PROJECT_CODE]-[TABLE/VIEW_NAME].[SEQ].[vw].ts
 >
 ></br>
@@ -23,8 +24,7 @@ root
 │           └── entities
 │                   apm-machine-category.ts         [TABLE:PROJECT]
 │                   apm-machine-category.vw.ts      [TABLE:PROJECT]
-│                   ifs-inv-trans-history.ts        [TABLE:IFS]
-│                   ifs-inv-trans-history.vw.ts     [VIEW:IFS]
+│                   ifs-inv-trans-history.vw.ts     [VIEW:IFS] # View only
 │                   production-plan.1.vw.ts         [VIEW]
 │                   production-plan.ts              [TABLE]
 │                   production-plan.vw.ts           [VIEW]

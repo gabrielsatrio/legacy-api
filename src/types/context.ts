@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { Session, SessionData } from 'express-session';
 import { createUserLoader } from '../utils/create-user-loader';
 

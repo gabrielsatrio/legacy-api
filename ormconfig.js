@@ -18,6 +18,7 @@ module.exports = {
   sid,
   synchronize: false,
   logging,
+  connectString: `${host}:${port}/${sid}`,
   entities: [
     join(__dirname, sourcePath, 'modules/**/entities/!(*.test).{ts,js}')
   ],

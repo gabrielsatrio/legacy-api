@@ -28,6 +28,9 @@ RUN yarn build
 # and run the application
 FROM node:16-alpine
 
+# ARG variable
+ARG ENV=test
+
 # Install Instantclient Basic Light Oracle and dependencies
 RUN apk --no-cache add libaio libnsl libc6-compat curl && \
   cd /tmp && \
@@ -48,7 +51,7 @@ ENV LD_LIBRARY_PATH /usr/lib/instantclient
 ENV TNS_ADMIN /usr/lib/instantclient
 ENV ORACLE_HOME /usr/lib/instantclient
 
-# Install PM2
+# Install pm2 package
 RUN npm i -g pm2
 
 # Create an app folder
@@ -80,13 +83,13 @@ RUN if [ $ENV = "development" ] ; \
   fi
 
 # Set environment variables
-ENV NODE_ENV production
+ENV NODE_ENV $ENV
 
 # Expose port
 EXPOSE 4000
 
 # Set the startup command
-CMD ["pm2-runtime", "--name", "ais-server", "-i", "max", "index.js"]
+CMD ["pm2-runtime", "--name", "ezio-api", "-i", "max", "index.js"]
 
 # Debug mode only
 # ENTRYPOINT ["tail"]
