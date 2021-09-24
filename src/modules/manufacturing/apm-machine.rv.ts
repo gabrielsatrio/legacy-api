@@ -9,7 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { In } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { MachineInput } from './apm-machine.in';
 import { Machine } from './entities/apm-machine';
 import { MachineView } from './entities/apm-machine.vw';
@@ -39,6 +39,41 @@ export class MachineResolver {
     @Arg('contract') contract: string
   ): Promise<MachineView | undefined> {
     return await MachineView.findOne({ machineId, contract });
+  }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async isMachineExist(
+    @Arg('machineId') machineId: string,
+    @Arg('contract') contract: string
+  ): Promise<boolean> {
+    return (await this.getMachine(machineId, contract)) ? true : false;
+  }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async isMachineDescriptionExist(
+    @Arg('contract') contract: string,
+    @Arg('description') description: string
+  ): Promise<boolean> {
+    return (await MachineView.findOne({ contract, description }))
+      ? true
+      : false;
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  async getNewMachineId(
+    @Arg('contract') contract: string,
+    @Arg('categoryId') categoryId: string
+  ): Promise<string> {
+    try {
+      const sql = `SELECT ROB_APM_Machine_API.Get_New_ID(:contract, :categoryId) AS "newMachineId" FROM DUAL`;
+      const result = await getConnection().query(sql, [contract, categoryId]);
+      return result[0].newMachineId;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Machine)
