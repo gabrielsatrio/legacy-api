@@ -126,6 +126,27 @@ export class AssignResolver {
     return data;
   }
 
+  // @Mutation(() => Assign)
+  // @UseMiddleware(isAuth)
+  // async deleteAssign(
+  //   @Arg('assignId') assignId: string,
+  //   @Arg('assignDate') assignDate: Date
+  //   //@Ctx() { req }: Context
+  // ): Promise<Assign> {
+  //   //const createdBy: string = req.session.userId;
+  //   const assign = await Assign.findOne({
+  //     assignId,
+  //     assignDate
+  //   });
+  //   if (!assign) throw new Error('No data found.');
+  //   try {
+  //     await Assign.delete({ assignId });
+  //     return assign;
+  //   } catch (err) {
+  //     throw new Error(mapError(err));
+  //   }
+  // }
+
   @Mutation(() => Assign)
   @UseMiddleware(isAuth)
   async deleteAssign(
@@ -139,8 +160,10 @@ export class AssignResolver {
       assignDate
     });
     if (!assign) throw new Error('No data found.');
+
+    const sql = `BEGIN GBR_SPT_API.DELETE_ASSIGN(:assignId, :assignDate); END;`;
     try {
-      await Assign.delete({ assignId });
+      await getConnection().query(sql, [assignId, assignDate]);
       return assign;
     } catch (err) {
       throw new Error(mapError(err));
