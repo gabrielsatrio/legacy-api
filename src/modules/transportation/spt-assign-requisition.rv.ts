@@ -12,7 +12,7 @@ export class AssignRequisitionResolver {
     @Arg('assignDate', () => Date)
     assignDate: Date
   ): Promise<AssignRequisitionView[] | undefined> {
-    return AssignRequisitionView.find({
+    return await AssignRequisitionView.find({
       where: {
         assignId,
         assignDate

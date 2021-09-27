@@ -14,7 +14,7 @@ export class SuratJalanResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<SuratJalan[] | undefined> {
-    return SuratJalan.find({
+    return await SuratJalan.find({
       where: {
         contract: In(contract)
       }
@@ -29,9 +29,8 @@ export class SuratJalanResolver {
     let result;
     const suratJalan = await SuratJalan.findOne({ reqNo: input.reqNo });
     if (!suratJalan) {
-      return undefined;
+      throw new Error('No data found');
     }
-
     const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :outReqNo);

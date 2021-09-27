@@ -7,7 +7,7 @@ export class AssignResolver {
   @Query(() => [AssignView])
   @UseMiddleware(isAuth)
   async getAllAssignViews(): Promise<AssignView[] | undefined> {
-    return AssignView.find();
+    return await AssignView.find();
   }
 
   @Query(() => AssignView, { nullable: true })

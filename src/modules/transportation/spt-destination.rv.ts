@@ -11,7 +11,7 @@ export class DestinationResolver {
   @Query(() => [Destination])
   @UseMiddleware(isAuth)
   async getAllDestinations(): Promise<Destination[] | undefined> {
-    return Destination.find();
+    return await Destination.find();
   }
 
   @Query(() => Destination, { nullable: true })
@@ -28,7 +28,6 @@ export class DestinationResolver {
     @Arg('input') input: DestinationInput
   ): Promise<Destination | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
     BEGIN
       GBR_SPT_API.Create_Destination(:destinationId, :destinationName, :outDestinationId);
@@ -38,7 +37,6 @@ export class DestinationResolver {
       result = await getConnection().query(sql, [
         input.destinationId,
         input.destinationName,
-        //createdBy
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
@@ -89,7 +87,6 @@ export class DestinationResolver {
   async deleteDestination(
     @Arg('destinationId') destinationId: string
   ): Promise<Destination> {
-    //const createdBy: string = req.session.userId;
     const destination = await Destination.findOne({
       destinationId
     });

@@ -26,7 +26,6 @@ export class PPNResolver {
   @UseMiddleware(isAuth)
   async createPPN(@Arg('input') input: PPNInput): Promise<PPN | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
     BEGIN
       GBR_SPT_API.CREATE_PPN(:expeditionId, :ppn, :outExpeditionId);
@@ -36,7 +35,6 @@ export class PPNResolver {
       result = await getConnection().query(sql, [
         input.expeditionId,
         input.ppn,
-        //createdBy
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
@@ -58,7 +56,7 @@ export class PPNResolver {
       expeditionId: input.expeditionId
     });
     if (!ppn) {
-      return undefined;
+      throw new Error('No data found.');
     }
     const sql = `
     BEGIN
@@ -84,7 +82,6 @@ export class PPNResolver {
   @Mutation(() => PPN)
   @UseMiddleware(isAuth)
   async deletePPN(@Arg('expeditionId') expeditionId: string): Promise<PPN> {
-    //const createdBy: string = req.session.userId;
     const ppn = await PPN.findOne({
       expeditionId
     });

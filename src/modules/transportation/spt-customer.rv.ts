@@ -39,7 +39,6 @@ export class CustomerResolver {
         input.customerName,
         input.address,
         input.phone,
-        //createdBy
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
     } catch (err) {
@@ -62,7 +61,7 @@ export class CustomerResolver {
       customerId: input.customerId
     });
     if (!customer) {
-      return undefined;
+      throw new Error('No data found.');
     }
     const sql = `
     BEGIN

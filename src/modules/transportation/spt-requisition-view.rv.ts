@@ -6,10 +6,7 @@ import { RequisitionView } from './entities/spt-requisition.vw';
 export class RequisitionViewResolver {
   @Query(() => [RequisitionView])
   @UseMiddleware(isAuth)
-  async getAllRequisitionViews(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<RequisitionView[] | undefined> {
-    return RequisitionView.find();
+  async getAllRequisitionViews(): Promise<RequisitionView[] | undefined> {
+    return await RequisitionView.find();
   }
 }

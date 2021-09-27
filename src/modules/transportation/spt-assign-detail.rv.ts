@@ -186,7 +186,6 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
     } catch (err) {

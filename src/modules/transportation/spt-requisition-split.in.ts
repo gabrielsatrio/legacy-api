@@ -24,9 +24,6 @@ export class RequisitionSplitInput implements Partial<Requisition> {
   @Field()
   reqNoSplit!: string;
 
-  // @Field()
-  // requisitionDateSplit!: Date;
-
   @Field()
   rollQtySplit!: number;
 

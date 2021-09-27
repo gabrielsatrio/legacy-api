@@ -10,11 +10,8 @@ import { ShippingInput } from './spt-shipping.in';
 export class ShippingResolver {
   @Query(() => [Shipping])
   @UseMiddleware(isAuth)
-  async getAllShippings(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<Shipping[] | undefined> {
-    return Shipping.find();
+  async getAllShippings(): Promise<Shipping[] | undefined> {
+    return await Shipping.find();
   }
 
   @Query(() => Shipping, { nullable: true })
@@ -34,7 +31,7 @@ export class ShippingResolver {
     @Arg('isNormalPrice') isNormalPrice: string
   ): Promise<any | undefined> {
     let tarif;
-    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TARIF FROM DUAL`;
+    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "tarif" FROM DUAL`;
     try {
       tarif = await getConnection().query(sql, [
         reqNo,
@@ -42,7 +39,7 @@ export class ShippingResolver {
         vehicleId,
         isNormalPrice
       ]);
-      tarif = tarif[0].TARIF;
+      tarif = tarif[0].tarif;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -53,10 +50,8 @@ export class ShippingResolver {
   @UseMiddleware(isAuth)
   async createShipping(
     @Arg('input') input: ShippingInput
-    // @Ctx() { req }: Context
   ): Promise<Shipping | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
     BEGIN
       GBR_SPT_API.Create_Shipping(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
@@ -89,7 +84,7 @@ export class ShippingResolver {
     let result;
     const shipping = await Shipping.findOne({ shippingId: input.shippingId });
     if (!shipping) {
-      return undefined;
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -121,9 +116,7 @@ export class ShippingResolver {
   @UseMiddleware(isAuth)
   async deleteShipping(
     @Arg('shippingId') shippingId: string
-    //@Ctx() { req }: Context
   ): Promise<Shipping> {
-    //const createdBy: string = req.session.userId;
     const shipping = await Shipping.findOne({
       shippingId
     });

@@ -10,11 +10,8 @@ import { ExpeditionInput } from './spt-expedition.in';
 export class ExpeditionResolver {
   @Query(() => [Expedition])
   @UseMiddleware(isAuth)
-  async getAllExpeditions(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<Expedition[] | undefined> {
-    return Expedition.find();
+  async getAllExpeditions(): Promise<Expedition[] | undefined> {
+    return await Expedition.find();
   }
 
   @Query(() => Expedition, { nullable: true })
@@ -29,10 +26,8 @@ export class ExpeditionResolver {
   @UseMiddleware(isAuth)
   async createExpedition(
     @Arg('input') input: ExpeditionInput
-    //@Ctx() { req }: Context
   ): Promise<Expedition | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
     BEGIN
       GBR_SPT_API.Create_Expedition(:expeditionId, :expeditionName, :outExpeditionId);
@@ -65,7 +60,7 @@ export class ExpeditionResolver {
       expeditionId: input.expeditionId
     });
     if (!expedition) {
-      return undefined;
+      throw new Error('No data found.');
     }
     const sql = `
     BEGIN
@@ -92,9 +87,7 @@ export class ExpeditionResolver {
   @UseMiddleware(isAuth)
   async deleteExpedition(
     @Arg('expeditionId') expeditionId: string
-    //@Ctx() { req }: Context
   ): Promise<Expedition> {
-    //const createdBy: string = req.session.userId;
     const expedition = await Expedition.findOne({
       expeditionId
     });
