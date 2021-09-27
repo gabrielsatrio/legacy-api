@@ -19,7 +19,7 @@ export class AssignDetailResolver {
   @Query(() => [AssignDetail])
   @UseMiddleware(isAuth)
   async getAllAssignDetail(): Promise<AssignDetail[] | undefined> {
-    return AssignDetail.find();
+    return await AssignDetail.find();
   }
 
   @Query(() => AssignDetail, { nullable: true })
@@ -40,14 +40,12 @@ export class AssignDetailResolver {
     @Arg('assignDate') assignDate: Date,
     @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
-    //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
-    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
     return await AssignDetail.findOne({
-      assignId: assignId,
-      assignDate: assignDate,
-      reqNo: reqNo,
-      requisitionDate: requisitionDate
+      assignId,
+      assignDate,
+      reqNo,
+      requisitionDate
     });
   }
 
@@ -58,35 +56,29 @@ export class AssignDetailResolver {
     @Arg('expeditionId') expeditionId: string,
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string
-    //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
-    let totalPrice;
-    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
-    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TOTAL_PRICE from dual`;
     try {
+      let totalPrice;
+      const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "totalPrice" from dual`;
       totalPrice = await getConnection().query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
         isNormalPrice
       ]);
-      totalPrice = totalPrice[0].TOTAL_PRICE;
+      totalPrice = totalPrice[0].totalPrice;
+      return { totalPrice: totalPrice };
     } catch (err) {
       throw new Error(mapError(err));
     }
-    //return assignId;
-    return { totalPrice: totalPrice };
-    //return Assign.create(assignId);
   }
 
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async createAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
@@ -136,7 +128,6 @@ export class AssignDetailResolver {
     try {
       result = await getConnection().query(sql, [
         input.assignId,
-        //input.tipe,
         input.assignDate,
         createdBy,
         input.reqNo,
@@ -167,10 +158,8 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async updateAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_ASSIGN_DETAIL(:assignId, :assignDate, :reqNo, :requisitionDate,
@@ -217,44 +206,11 @@ export class AssignDetailResolver {
     return data;
   }
 
-  // @Mutation(() => AssignDetail)
-  // @UseMiddleware(isAuth)
-  // async deleteAssignDetail(
-  //   @Arg('assignId') assignId: string,
-  //   @Arg('assignDate') assignDate: Date,
-  //   @Arg('reqNo') reqNo: number,
-  //   @Arg('requisitionDate') requisitionDate: Date
-  //   //@Ctx() { req }: Context
-  // ): Promise<AssignDetail> {
-  //   //const createdBy: string = req.session.userId;
-  //   const assignDetail = await AssignDetail.findOne({
-  //     assignId: assignId,
-  //     assignDate: assignDate,
-  //     reqNo: reqNo,
-  //     requisitionDate: requisitionDate
-  //   });
-
-  //   if (!assignDetail) throw new Error('No data found.');
-  //   try {
-  //     await AssignDetail.delete({
-  //       assignId: assignId,
-  //       assignDate: assignDate,
-  //       reqNo: reqNo,
-  //       requisitionDate: requisitionDate
-  //     });
-  //     return assignDetail;
-  //   } catch (err) {
-  //     throw new Error(mapError(err));
-  //   }
-  // }
-
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    //const createdBy: string = req.session.userId;
     const sql = `
       BEGIN
         GBR_SPT_API.Delete_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);

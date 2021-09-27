@@ -1,12 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('GBR_SPT_REQUISITION_TAB')
 @ObjectType()
@@ -56,10 +49,10 @@ export class Requisition extends BaseEntity {
   createdBy!: string;
 
   @Field()
-  @CreateDateColumn({ name: 'CREATED_AT' })
-  createdAt?: Date;
+  @Column({ name: 'CREATED_AT' })
+  createdAt!: Date;
 
   @Field()
-  @UpdateDateColumn({ name: 'UPDATED_AT' })
-  updatedAt?: Date;
+  @Column({ name: 'UPDATED_AT' })
+  updatedAt!: Date;
 }

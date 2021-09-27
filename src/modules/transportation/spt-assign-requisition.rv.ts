@@ -14,8 +14,8 @@ export class AssignRequisitionResolver {
   ): Promise<AssignRequisitionView[] | undefined> {
     return AssignRequisitionView.find({
       where: {
-        assignId: assignId,
-        assignDate: assignDate
+        assignId,
+        assignDate
       }
     });
   }

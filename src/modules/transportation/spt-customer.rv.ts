@@ -11,7 +11,7 @@ export class CustomerResolver {
   @Query(() => [Customer])
   @UseMiddleware(isAuth)
   async getAllCustomer(): Promise<Customer[] | undefined> {
-    return Customer.find();
+    return await Customer.find();
   }
 
   @Query(() => Customer, { nullable: true })
@@ -28,7 +28,6 @@ export class CustomerResolver {
     @Arg('input') input: CustomerInput
   ): Promise<Customer | undefined> {
     let result;
-    //const createdBy: string = req.session.userId;
     const sql = `
     BEGIN
       GBR_SPT_API.Create_Customer(:customerId, :customerName, :address, :phone :outCustomerId);
@@ -93,7 +92,6 @@ export class CustomerResolver {
   async deleteCustomer(
     @Arg('customerId') customerId: string
   ): Promise<Customer> {
-    //const createdBy: string = req.session.userId;
     const customer = await Customer.findOne({
       customerId
     });

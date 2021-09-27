@@ -9,12 +9,6 @@ export class AssignInput implements Partial<Assign> {
   @Field()
   assignDate!: Date;
 
-  // @Field()
-  // createdAt!: Date;
-
-  // @Field()
-  // updatedAt!: Date;
-
   @Field()
   tipe!: string;
 }
