@@ -30,9 +30,9 @@ export class ShippingResolver {
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string
   ): Promise<any | undefined> {
-    let tarif;
-    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "tarif" FROM DUAL`;
     try {
+      let tarif;
+      const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "tarif" FROM DUAL`;
       tarif = await getConnection().query(sql, [
         reqNo,
         expeditionId,
@@ -40,10 +40,10 @@ export class ShippingResolver {
         isNormalPrice
       ]);
       tarif = tarif[0].tarif;
+      return { rate: tarif };
     } catch (err) {
       throw new Error(mapError(err));
     }
-    return { rate: tarif };
   }
 
   @Mutation(() => Shipping)
@@ -51,15 +51,13 @@ export class ShippingResolver {
   async createShipping(
     @Arg('input') input: ShippingInput
   ): Promise<Shipping | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Shipping(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
     END;
   `;
-
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.shippingId,
         input.expeditionId,
         input.vehicleId,
@@ -68,12 +66,12 @@ export class ShippingResolver {
         input.multidropRate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outShippingId = result[0] as string;
+      const data = Shipping.findOne(outShippingId);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outShippingId = result[0] as string;
-    const data = Shipping.findOne(outShippingId);
-    return data;
   }
 
   @Mutation(() => Shipping, { nullable: true })
@@ -81,19 +79,17 @@ export class ShippingResolver {
   async updateShipping(
     @Arg('input') input: ShippingInput
   ): Promise<Shipping | undefined> {
-    let result;
-    const shipping = await Shipping.findOne({ shippingId: input.shippingId });
-    if (!shipping) {
-      throw new Error('No data found.');
-    }
-
-    const sql = `
+    try {
+      const shipping = await Shipping.findOne({ shippingId: input.shippingId });
+      if (!shipping) {
+        throw new Error('No data found.');
+      }
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SHIPPING(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.shippingId,
         input.expeditionId,
         input.vehicleId,
@@ -102,14 +98,14 @@ export class ShippingResolver {
         input.multidropRate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outShippingId = result[0];
+      const data = Shipping.findOne({
+        shippingId: outShippingId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outShippingId = result[0];
-    const data = Shipping.findOne({
-      shippingId: outShippingId
-    });
-    return data;
   }
 
   @Mutation(() => Shipping)
@@ -117,11 +113,11 @@ export class ShippingResolver {
   async deleteShipping(
     @Arg('shippingId') shippingId: string
   ): Promise<Shipping> {
-    const shipping = await Shipping.findOne({
-      shippingId
-    });
-    if (!shipping) throw new Error('No data found.');
     try {
+      const shipping = await Shipping.findOne({
+        shippingId
+      });
+      if (!shipping) throw new Error('No data found.');
       await Shipping.delete({ shippingId });
       return shipping;
     } catch (err) {

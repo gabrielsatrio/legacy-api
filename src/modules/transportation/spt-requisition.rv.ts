@@ -44,16 +44,14 @@ export class RequisitionResolver {
     @Arg('input') input: RequisitionInput,
     @Ctx() { req }: Context
   ): Promise<Requisition | undefined> {
-    let result;
-    const createdBy: string = req.session.username;
-    const sql = `
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
       END;
     `;
-
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
         input.customerId,
@@ -67,12 +65,12 @@ export class RequisitionResolver {
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outReqNo = result[0] as number;
+      const data = Requisition.findOne(outReqNo);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outReqNo = result[0] as number;
-    const data = Requisition.findOne(outReqNo);
-    return data;
   }
 
   @Mutation(() => Requisition, { nullable: true })

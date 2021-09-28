@@ -34,15 +34,15 @@ export class AssignResolver {
   @Query(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
   async getMaxAssignId(@Arg('tipe') tipe: string): Promise<any | undefined> {
-    let assignId;
-    const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS ASSIGN_ID FROM DUAL`;
     try {
+      let assignId;
+      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS assignId FROM DUAL`;
       assignId = await getConnection().query(sql, [tipe]);
-      assignId = assignId[0].ASSIGN_ID;
+      assignId = assignId[0].assignId;
+      return { assignId };
     } catch (err) {
       throw new Error(mapError(err));
     }
-    return { assignId };
   }
 
   @Query(() => [Assign])
@@ -59,30 +59,29 @@ export class AssignResolver {
     @Arg('input') input: AssignInput,
     @Ctx() { req }: Context
   ): Promise<Assign | undefined> {
-    let result;
-    const createdBy: string = req.session.username;
-    const sql = `
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.tipe,
         createdBy,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outAssignId = result[0] as string;
+      const data = Assign.findOne({
+        assignId: outAssignId,
+        assignDate: input.assignDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0] as string;
-    const data = Assign.findOne({
-      assignId: outAssignId,
-      assignDate: input.assignDate
-    });
-    return data;
   }
 
   @Mutation(() => Assign, { nullable: true })
@@ -90,34 +89,33 @@ export class AssignResolver {
   async updateAssign(
     @Arg('input') input: AssignInput
   ): Promise<Assign | undefined> {
-    let result;
-    const assign = await Assign.findOne({
-      assignId: input.assignId
-    });
-    if (!assign) {
-      throw new Error('No data found');
-    }
-    const sql = `
+    try {
+      const assign = await Assign.findOne({
+        assignId: input.assignId
+      });
+      if (!assign) {
+        throw new Error('No data found');
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.Update_Assign(:assignId, :assignDate,  :tipe, :outAssignId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.tipe,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outAssignId = result[0];
+      const data = Assign.findOne({
+        assignId: outAssignId,
+        assignDate: input.assignDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0];
-    const data = Assign.findOne({
-      assignId: outAssignId,
-      assignDate: input.assignDate
-    });
-    return data;
   }
 
   @Mutation(() => Assign)
