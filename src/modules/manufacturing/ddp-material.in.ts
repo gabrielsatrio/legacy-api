@@ -57,4 +57,21 @@ export class MaterialInput implements Partial<Material> {
   @Field()
   @Length(1, 50)
   lotCelup!: string;
+
+  @Field({ nullable: true })
+  tara2?: number;
+
+  @Field({ nullable: true })
+  bruto2?: number;
+
+  @Field({ nullable: true })
+  netto2?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(300)
+  mediaCelup2!: string;
+
+  @Field({ nullable: true })
+  @MaxLength(300)
+  jmlMediaCelup2?: string;
 }
