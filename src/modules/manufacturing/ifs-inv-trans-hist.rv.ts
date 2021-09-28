@@ -9,13 +9,13 @@ export class TransactionHistoryResolver {
   async getTransactionHistory(
     @Arg('contract') contract: string,
     @Arg('lotBatchNo') lotBatchNo: string,
-    @Arg('transactionCode') transactionCode: string,
+    @Arg('transactionCode', () => [String]) transactionCode: string[],
     @Arg('locationNo') locationNo: string
   ): Promise<InventoryTransactionHistory[] | undefined> {
     return await InventoryTransactionHistory.createQueryBuilder('TH')
       .where('TH.CONTRACT = :contract', { contract: contract })
       .andWhere(`TH.LOT_BATCH_NO = :lotBatchNo`, { lotBatchNo: lotBatchNo })
-      .andWhere(`TH.TRANSACTION_CODE = :transactionCode`, {
+      .andWhere(`TH.TRANSACTION_CODE IN (:...transactionCode)`, {
         transactionCode: transactionCode
       })
       .andWhere(`TH.LOCATION_NO like :locationNo`, {
