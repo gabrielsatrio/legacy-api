@@ -58,7 +58,7 @@ export class DestinationResolver {
         destinationId: input.destinationId
       });
       if (!destination) {
-        return undefined;
+        throw new Error('No data found.');
       }
       const sql = `
     BEGIN

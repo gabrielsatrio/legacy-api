@@ -11,7 +11,7 @@ export class PPNResolver {
   @Query(() => [PPN])
   @UseMiddleware(isAuth)
   async getAllPPN(): Promise<PPN[] | undefined> {
-    return PPN.find();
+    return await PPN.find();
   }
 
   @Query(() => PPN, { nullable: true })
