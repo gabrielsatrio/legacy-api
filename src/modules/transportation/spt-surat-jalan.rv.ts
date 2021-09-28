@@ -26,18 +26,17 @@ export class SuratJalanResolver {
   async updateSuratJalan(
     @Arg('input') input: SuratJalanInput
   ): Promise<SuratJalan | undefined> {
-    let result;
-    const suratJalan = await SuratJalan.findOne({ reqNo: input.reqNo });
-    if (!suratJalan) {
-      throw new Error('No data found');
-    }
-    const sql = `
+    try {
+      const suratJalan = await SuratJalan.findOne({ reqNo: input.reqNo });
+      if (!suratJalan) {
+        throw new Error('No data found');
+      }
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :outReqNo);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.reqNo,
         input.rollQty,
         input.meter,
@@ -47,13 +46,13 @@ export class SuratJalanResolver {
         input.licensePlate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outReqNo = result[0];
+      const data = SuratJalan.findOne({
+        reqNo: outReqNo
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outReqNo = result[0];
-    const data = SuratJalan.findOne({
-      reqNo: outReqNo
-    });
-    return data;
   }
 }

@@ -27,28 +27,27 @@ export class CustomerResolver {
   async createCustomer(
     @Arg('input') input: CustomerInput
   ): Promise<Customer | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Customer(:customerId, :customerName, :address, :phone :outCustomerId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.customerId,
         input.customerName,
         input.address,
         input.phone,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outCustomerId = result[0] as string;
+      const data = Customer.findOne({
+        customerId: outCustomerId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outCustomerId = result[0] as string;
-    const data = Customer.findOne({
-      customerId: outCustomerId
-    });
-    return data;
   }
 
   @Mutation(() => Customer, { nullable: true })
@@ -56,34 +55,33 @@ export class CustomerResolver {
   async updateCustomer(
     @Arg('input') input: CustomerInput
   ): Promise<Customer | undefined> {
-    let result;
-    const customer = await Customer.findOne({
-      customerId: input.customerId
-    });
-    if (!customer) {
-      throw new Error('No data found.');
-    }
-    const sql = `
+    try {
+      const customer = await Customer.findOne({
+        customerId: input.customerId
+      });
+      if (!customer) {
+        throw new Error('No data found.');
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.Update_Customer(:customerId, :customerName,  :address, :phone, :outCustomerId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.customerId,
         input.customerName,
         input.address,
         input.phone,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outCustomerId = result[0];
+      const data = Customer.findOne({
+        customerId: outCustomerId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outCustomerId = result[0];
-    const data = Customer.findOne({
-      customerId: outCustomerId
-    });
-    return data;
   }
 
   @Mutation(() => Customer)
@@ -91,11 +89,11 @@ export class CustomerResolver {
   async deleteCustomer(
     @Arg('customerId') customerId: string
   ): Promise<Customer> {
-    const customer = await Customer.findOne({
-      customerId
-    });
-    if (!customer) throw new Error('No data found.');
     try {
+      const customer = await Customer.findOne({
+        customerId
+      });
+      if (!customer) throw new Error('No data found.');
       await Customer.delete({ customerId });
       return customer;
     } catch (err) {

@@ -80,20 +80,19 @@ export class RequisitionResolver {
   async updateRequisition(
     @Arg('input') input: RequisitionInput
   ): Promise<Requisition | undefined> {
-    let result;
-    const requisition = await Requisition.findOne({
-      reqNo: input.reqNo
-    });
-    if (!requisition) {
-      throw new Error('No data found');
-    }
-    const sql = `
+    try {
+      const requisition = await Requisition.findOne({
+        reqNo: input.reqNo
+      });
+      if (!requisition) {
+        throw new Error('No data found');
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
         input.customerId,
@@ -106,14 +105,14 @@ export class RequisitionResolver {
         input.notes,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outReqNo = result[0];
+      const data = Requisition.findOne({
+        reqNo: outReqNo
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outReqNo = result[0];
-    const data = Requisition.findOne({
-      reqNo: outReqNo
-    });
-    return data;
   }
 
   @Mutation(() => Requisition, { nullable: true })
@@ -122,16 +121,15 @@ export class RequisitionResolver {
     @Arg('input') input: RequisitionSplitInput,
     @Ctx() { req }: Context
   ): Promise<Requisition | undefined> {
-    let result;
-    const createdBy: string = req.session.username;
-    const sql = `
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
     BEGIN
       GBR_SPT_API.SPLIT_REQUISITION(:reqNo, :requisitionDate, :rollQty, :meter, :weight, :volume, :reqNoSplit, :rollQtySplit, :meterSplit,
         :weightSplit, :volumeSplit, :createdBy,  :outRequisitionNo, :outRequisitionNoSplit);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.reqNo,
         input.requisitionDate,
         input.rollQty,
@@ -147,31 +145,31 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outReqNo = result[0];
+      const data = Requisition.findOne({
+        reqNo: outReqNo
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outReqNo = result[0];
-    const data = Requisition.findOne({
-      reqNo: outReqNo
-    });
-    return data;
   }
 
   @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async deleteRequisition(@Arg('reqNo') reqNo: string): Promise<Requisition> {
-    const requisition = await Requisition.findOne({
-      reqNo
-    });
-    if (!requisition) {
-      throw new Error('No data found');
-    }
-    const sql = `
+    try {
+      const requisition = await Requisition.findOne({
+        reqNo
+      });
+      if (!requisition) {
+        throw new Error('No data found');
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.DELETE_Requisition(:reqNo);
     END;
   `;
-    try {
       await getConnection().query(sql, [reqNo]);
       return requisition;
     } catch (err) {

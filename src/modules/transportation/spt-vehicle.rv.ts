@@ -27,26 +27,24 @@ export class VehicleResolver {
   async createVehicle(
     @Arg('input') input: VehicleInput
   ): Promise<Vehicle | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Vehicle(:vehicleId, :vehicleName, :weightCapacity, :outVehicleId);
     END;
   `;
-
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.vehicleId,
         input.vehicleName,
         input.weightCapacity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outVehicleId = result[0] as string;
+      const data = Vehicle.findOne(outVehicleId);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outVehicleId = result[0] as string;
-    const data = Vehicle.findOne(outVehicleId);
-    return data;
   }
 
   @Mutation(() => Vehicle, { nullable: true })
@@ -54,32 +52,30 @@ export class VehicleResolver {
   async updateVehicle(
     @Arg('input') input: VehicleInput
   ): Promise<Vehicle | undefined> {
-    let result;
-    const vehicle = await Vehicle.findOne({ vehicleId: input.vehicleId });
-    if (!vehicle) {
-      throw new Error('No data found.');
-    }
-
-    const sql = `
+    try {
+      const vehicle = await Vehicle.findOne({ vehicleId: input.vehicleId });
+      if (!vehicle) {
+        throw new Error('No data found.');
+      }
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_VEHICLE(:vehicleId, :vehicleName, :weightCapacity, :outVehicleId);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.vehicleId,
         input.vehicleName,
         input.weightCapacity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outVehicleId = result[0];
+      const data = Vehicle.findOne({
+        vehicleId: outVehicleId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outVehicleId = result[0];
-    const data = Vehicle.findOne({
-      vehicleId: outVehicleId
-    });
-    return data;
   }
 
   @Mutation(() => Vehicle)

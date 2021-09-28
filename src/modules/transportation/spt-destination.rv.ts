@@ -27,26 +27,25 @@ export class DestinationResolver {
   async createDestination(
     @Arg('input') input: DestinationInput
   ): Promise<Destination | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Destination(:destinationId, :destinationName, :outDestinationId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.destinationId,
         input.destinationName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outDestinationId = result[0] as string;
+      const data = Destination.findOne({
+        destinationId: outDestinationId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outDestinationId = result[0] as string;
-    const data = Destination.findOne({
-      destinationId: outDestinationId
-    });
-    return data;
   }
 
   @Mutation(() => Destination, { nullable: true })
@@ -54,32 +53,31 @@ export class DestinationResolver {
   async updateDestination(
     @Arg('input') input: DestinationInput
   ): Promise<Destination | undefined> {
-    let result;
-    const destination = await Destination.findOne({
-      destinationId: input.destinationId
-    });
-    if (!destination) {
-      return undefined;
-    }
-    const sql = `
+    try {
+      const destination = await Destination.findOne({
+        destinationId: input.destinationId
+      });
+      if (!destination) {
+        return undefined;
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.Update_Destination(:destinationId, :destinationName,  :outDestinationId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.destinationId,
         input.destinationName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outDestinationId = result[0];
+      const data = Destination.findOne({
+        destinationId: outDestinationId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outDestinationId = result[0];
-    const data = Destination.findOne({
-      destinationId: outDestinationId
-    });
-    return data;
   }
 
   @Mutation(() => Destination)
@@ -87,11 +85,11 @@ export class DestinationResolver {
   async deleteDestination(
     @Arg('destinationId') destinationId: string
   ): Promise<Destination> {
-    const destination = await Destination.findOne({
-      destinationId
-    });
-    if (!destination) throw new Error('No data found.');
     try {
+      const destination = await Destination.findOne({
+        destinationId
+      });
+      if (!destination) throw new Error('No data found.');
       await Destination.delete({ destinationId });
       return destination;
     } catch (err) {

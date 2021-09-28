@@ -78,14 +78,13 @@ export class AssignDetailResolver {
   async createAssignDetail(
     @Arg('input') input: AssignDetailInput
   ): Promise<AssignDetail | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -95,21 +94,20 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outReqNo = result[1] as string;
+      const outAssignDate = result[2] as Date;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        reqNo: outReqNo,
+        assignDate: outAssignDate,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0] as string;
-    const outReqNo = result[1] as string;
-    const outAssignDate = result[2] as Date;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      reqNo: outReqNo,
-      assignDate: outAssignDate,
-      requisitionDate: outRequisitionDate
-    });
-
-    return data;
   }
 
   @Mutation(() => AssignDetail)
@@ -118,15 +116,14 @@ export class AssignDetailResolver {
     @Arg('input') input: AssignDetailInput,
     @Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    let result;
-    const createdBy: string = req.session.username;
-    const sql = `
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_NEW_ASSIGN(:assignId, :assignDate, :createdBy, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         createdBy,
@@ -137,21 +134,20 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outReqNo = result[1] as string;
+      const outAssignDate = result[2] as Date;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        reqNo: outReqNo,
+        assignDate: outAssignDate,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0] as string;
-    const outReqNo = result[1] as string;
-    const outAssignDate = result[2] as Date;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      reqNo: outReqNo,
-      assignDate: outAssignDate,
-      requisitionDate: outRequisitionDate
-    });
-
-    return data;
   }
 
   @Mutation(() => AssignDetail)
@@ -159,16 +155,15 @@ export class AssignDetailResolver {
   async updateAssignDetail(
     @Arg('input') input: AssignDetailInput
   ): Promise<AssignDetail | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_ASSIGN_DETAIL(:assignId, :assignDate, :reqNo, :requisitionDate,
           :expeditionId, :vehicleId, :licensePlate, :driverName, :nomorResi, :isNormalPrice,
           :totalPrice, :nopolLangsir, :ppn, :price, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -188,21 +183,20 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outAssignDate = result[1] as Date;
+      const outReqNo = result[2] as string;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        assignDate: outAssignDate,
+        reqNo: outReqNo,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-
-    const outAssignId = result[0] as string;
-    const outAssignDate = result[1] as Date;
-    const outReqNo = result[2] as string;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      assignDate: outAssignDate,
-      reqNo: outReqNo,
-      requisitionDate: outRequisitionDate
-    });
-    return data;
   }
 
   @Mutation(() => AssignDetail)
@@ -210,12 +204,12 @@ export class AssignDetailResolver {
   async deleteAssignDetail(
     @Arg('input') input: AssignDetailInput
   ): Promise<AssignDetail | undefined> {
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.Delete_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
       const data = await AssignDetail.findOne({
         assignId: input.assignId,
         reqNo: input.reqNo,

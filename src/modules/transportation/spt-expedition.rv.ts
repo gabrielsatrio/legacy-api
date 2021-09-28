@@ -27,27 +27,25 @@ export class ExpeditionResolver {
   async createExpedition(
     @Arg('input') input: ExpeditionInput
   ): Promise<Expedition | undefined> {
-    let result;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Expedition(:expeditionId, :expeditionName, :outExpeditionId);
     END;
   `;
-
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.expeditionId,
         input.expeditionName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outExpeditionId = result[0] as string;
+      const data = Expedition.findOne({
+        expeditionId: outExpeditionId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outExpeditionId = result[0] as string;
-    const data = Expedition.findOne({
-      expeditionId: outExpeditionId
-    });
-    return data;
   }
 
   @Mutation(() => Expedition, { nullable: true })
@@ -55,32 +53,31 @@ export class ExpeditionResolver {
   async updateExpedition(
     @Arg('input') input: ExpeditionInput
   ): Promise<Expedition | undefined> {
-    let result;
-    const expedition = await Expedition.findOne({
-      expeditionId: input.expeditionId
-    });
-    if (!expedition) {
-      throw new Error('No data found.');
-    }
-    const sql = `
+    try {
+      const expedition = await Expedition.findOne({
+        expeditionId: input.expeditionId
+      });
+      if (!expedition) {
+        throw new Error('No data found.');
+      }
+      const sql = `
     BEGIN
       GBR_SPT_API.UPDATE_EXPEDITION(:expeditionId, :expeditionName, :outExpeditionId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.expeditionId,
         input.expeditionName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outExpeditionId = result[0];
+      const data = Expedition.findOne({
+        expeditionId: outExpeditionId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outExpeditionId = result[0];
-    const data = Expedition.findOne({
-      expeditionId: outExpeditionId
-    });
-    return data;
   }
 
   @Mutation(() => Expedition)
@@ -88,11 +85,11 @@ export class ExpeditionResolver {
   async deleteExpedition(
     @Arg('expeditionId') expeditionId: string
   ): Promise<Expedition> {
-    const expedition = await Expedition.findOne({
-      expeditionId
-    });
-    if (!expedition) throw new Error('No data found.');
     try {
+      const expedition = await Expedition.findOne({
+        expeditionId
+      });
+      if (!expedition) throw new Error('No data found.');
       await Expedition.delete({ expeditionId });
       return expedition;
     } catch (err) {

@@ -126,14 +126,13 @@ export class AssignResolver {
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
   ): Promise<Assign> {
-    const assign = await Assign.findOne({
-      assignId,
-      assignDate
-    });
-    if (!assign) throw new Error('No data found.');
-
-    const sql = `BEGIN GBR_SPT_API.DELETE_ASSIGN(:assignId, :assignDate); END;`;
     try {
+      const assign = await Assign.findOne({
+        assignId,
+        assignDate
+      });
+      if (!assign) throw new Error('No data found.');
+      const sql = `BEGIN GBR_SPT_API.DELETE_ASSIGN(:assignId, :assignDate); END;`;
       await getConnection().query(sql, [assignId, assignDate]);
       return assign;
     } catch (err) {
