@@ -14,7 +14,7 @@ export class Assign extends BaseEntity {
 
   @Field()
   @Column({ name: 'CREATED_BY' })
-  createdBy?: string;
+  createdBy!: string;
 
   @Field()
   @Column({ name: 'TIPE' })

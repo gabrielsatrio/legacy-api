@@ -11,7 +11,7 @@ export class PPNResolver {
   @Query(() => [PPN])
   @UseMiddleware(isAuth)
   async getAllPPN(): Promise<PPN[] | undefined> {
-    return PPN.find();
+    return await PPN.find();
   }
 
   @Query(() => PPN, { nullable: true })
@@ -25,71 +25,63 @@ export class PPNResolver {
   @Mutation(() => PPN)
   @UseMiddleware(isAuth)
   async createPPN(@Arg('input') input: PPNInput): Promise<PPN | undefined> {
-    let result;
-    //const createdBy: string = req.session.userId;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.CREATE_PPN(:expeditionId, :ppn, :outExpeditionId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.expeditionId,
         input.ppn,
-        //createdBy
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outExpeditionId = result[0] as string;
+      const data = PPN.findOne({
+        expeditionId: outExpeditionId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outExpeditionId = result[0] as string;
-
-    const data = PPN.findOne({
-      expeditionId: outExpeditionId
-    });
-    return data;
   }
 
   @Mutation(() => PPN, { nullable: true })
   @UseMiddleware(isAuth)
   async updatePPN(@Arg('input') input: PPNInput): Promise<PPN | undefined> {
-    let result;
-    const ppn = await PPN.findOne({
-      expeditionId: input.expeditionId
-    });
-    if (!ppn) {
-      return undefined;
-    }
-    const sql = `
+    try {
+      const ppn = await PPN.findOne({
+        expeditionId: input.expeditionId
+      });
+      if (!ppn) throw new Error('No data found.');
+      const sql = `
     BEGIN
       GBR_SPT_API.UPDATE_PPN(:expeditionId, :ppn,  :outExpeditionId);
     END;
   `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.expeditionId,
         input.ppn,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outExpeditionId = result[0];
+      const data = PPN.findOne({
+        expeditionId: outExpeditionId
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outExpeditionId = result[0];
-    const data = PPN.findOne({
-      expeditionId: outExpeditionId
-    });
-    return data;
   }
 
   @Mutation(() => PPN)
   @UseMiddleware(isAuth)
   async deletePPN(@Arg('expeditionId') expeditionId: string): Promise<PPN> {
-    //const createdBy: string = req.session.userId;
-    const ppn = await PPN.findOne({
-      expeditionId
-    });
-    if (!ppn) throw new Error('No data found.');
     try {
+      const ppn = await PPN.findOne({
+        expeditionId
+      });
+      if (!ppn) throw new Error('No data found.');
       await PPN.delete({ expeditionId });
       return ppn;
     } catch (err) {

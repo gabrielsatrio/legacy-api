@@ -15,6 +15,7 @@ export class UnassignView extends BaseEntity {
   @Field()
   @Column({ name: 'DESTINATION_ID' })
   destinationId!: string;
+
   @Field()
   @Column({ name: 'DESTINATION_NAME' })
   destinationName!: string;

@@ -6,11 +6,8 @@ import { UnassignView } from './entities/spt-unassign-view';
 export class UnassignViewResolver {
   @Query(() => [UnassignView])
   @UseMiddleware(isAuth)
-  async getAllUnassignViews(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<UnassignView[] | undefined> {
-    return UnassignView.find();
+  async getAllUnassignViews(): Promise<UnassignView[] | undefined> {
+    return await UnassignView.find();
   }
 
   @Query(() => UnassignView, { nullable: true })

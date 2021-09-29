@@ -13,6 +13,14 @@ export class AssignView extends BaseEntity {
   reqNo!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'ASSIGN_DATE' })
+  assignDate!: Date;
+
+  @Field()
+  @PrimaryColumn({ name: 'REQUISITION_DATE' })
+  requisitionDate!: Date;
+
+  @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
 
@@ -43,14 +51,6 @@ export class AssignView extends BaseEntity {
   @Field()
   @Column({ name: 'TOTAL_VOLUME' })
   totalVolume!: number;
-
-  @Field()
-  @PrimaryColumn({ name: 'REQUISITION_DATE' })
-  requisitionDate!: Date;
-
-  @Field()
-  @PrimaryColumn({ name: 'ASSIGN_DATE' })
-  assignDate!: Date;
 
   @Field({ nullable: true })
   @Column({ name: 'STATUS' })

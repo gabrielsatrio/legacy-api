@@ -10,11 +10,8 @@ import { ShippingInput } from './spt-shipping.in';
 export class ShippingResolver {
   @Query(() => [Shipping])
   @UseMiddleware(isAuth)
-  async getAllShippings(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<Shipping[] | undefined> {
-    return Shipping.find();
+  async getAllShippings(): Promise<Shipping[] | undefined> {
+    return await Shipping.find();
   }
 
   @Query(() => Shipping, { nullable: true })
@@ -33,38 +30,33 @@ export class ShippingResolver {
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string
   ): Promise<any | undefined> {
-    let tarif;
-    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TARIF FROM DUAL`;
     try {
-      tarif = await getConnection().query(sql, [
+      const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "tarif" FROM DUAL`;
+      let tarif = await getConnection().query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
         isNormalPrice
       ]);
-      tarif = tarif[0].TARIF;
+      tarif = tarif[0].tarif;
+      return { rate: tarif };
     } catch (err) {
       throw new Error(mapError(err));
     }
-    return { rate: tarif };
   }
 
   @Mutation(() => Shipping)
   @UseMiddleware(isAuth)
   async createShipping(
     @Arg('input') input: ShippingInput
-    // @Ctx() { req }: Context
   ): Promise<Shipping | undefined> {
-    let result;
-    //const createdBy: string = req.session.userId;
-    const sql = `
+    try {
+      const sql = `
     BEGIN
       GBR_SPT_API.Create_Shipping(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
     END;
   `;
-
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.shippingId,
         input.expeditionId,
         input.vehicleId,
@@ -73,12 +65,12 @@ export class ShippingResolver {
         input.multidropRate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outShippingId = result[0] as string;
+      const data = Shipping.findOne(outShippingId);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outShippingId = result[0] as string;
-    const data = Shipping.findOne(outShippingId);
-    return data;
   }
 
   @Mutation(() => Shipping, { nullable: true })
@@ -86,19 +78,15 @@ export class ShippingResolver {
   async updateShipping(
     @Arg('input') input: ShippingInput
   ): Promise<Shipping | undefined> {
-    let result;
-    const shipping = await Shipping.findOne({ shippingId: input.shippingId });
-    if (!shipping) {
-      return undefined;
-    }
-
-    const sql = `
+    try {
+      const shipping = await Shipping.findOne({ shippingId: input.shippingId });
+      if (!shipping) throw new Error('No data found.');
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SHIPPING(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.shippingId,
         input.expeditionId,
         input.vehicleId,
@@ -107,28 +95,22 @@ export class ShippingResolver {
         input.multidropRate,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outShippingId = result[0];
+      const data = Shipping.findOne({ shippingId: outShippingId });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outShippingId = result[0];
-    const data = Shipping.findOne({
-      shippingId: outShippingId
-    });
-    return data;
   }
 
   @Mutation(() => Shipping)
   @UseMiddleware(isAuth)
   async deleteShipping(
     @Arg('shippingId') shippingId: string
-    //@Ctx() { req }: Context
   ): Promise<Shipping> {
-    //const createdBy: string = req.session.userId;
-    const shipping = await Shipping.findOne({
-      shippingId
-    });
-    if (!shipping) throw new Error('No data found.');
     try {
+      const shipping = await Shipping.findOne({ shippingId });
+      if (!shipping) throw new Error('No data found.');
       await Shipping.delete({ shippingId });
       return shipping;
     } catch (err) {

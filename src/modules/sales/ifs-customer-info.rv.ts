@@ -7,7 +7,7 @@ export class CustomerInfoResolver {
   @Query(() => [CustomerInfo])
   @UseMiddleware(isAuth)
   async getAllCustomerInfo(): Promise<CustomerInfo[] | undefined> {
-    return CustomerInfo.find();
+    return await CustomerInfo.find();
   }
 
   @Query(() => CustomerInfo, { nullable: true })

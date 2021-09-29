@@ -14,7 +14,7 @@ export class Customer extends BaseEntity {
 
   @Field()
   @Column({ name: 'ADDRESS' })
-  address?: string;
+  address!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'PHONE' })

@@ -4,37 +4,29 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('GBR_SPT_SURAT_JALAN_V')
 @ObjectType()
 export class SuratJalan extends BaseEntity {
-  // @Field()
-  // @PrimaryColumn({ name: 'ASSIGN_ID' })
-  // assignId!: string;
-
-  // @Field()
-  // @PrimaryColumn({ name: 'ASSIGN_DATE' })
-  // assignDate!: Date;
-
   @Field()
   @PrimaryColumn({ name: 'REQ_NO' })
   reqNo!: string;
 
   @Field()
   @Column({ name: 'CONTRACT' })
-  contract?: string;
+  contract!: string;
 
   @Field()
   @Column({ name: 'DESTINATION_ID' })
-  destinationId?: string;
+  destinationId!: string;
 
   @Field()
   @Column({ name: 'DESTINATION_NAME' })
-  destinationName?: string;
+  destinationName!: string;
 
   @Field()
   @Column({ name: 'CUSTOMER_ID' })
-  customerId?: string;
+  customerId!: string;
 
   @Field()
   @Column({ name: 'CUSTOMER_NAME' })
-  customerName?: string;
+  customerName!: string;
 
   @Field()
   @PrimaryColumn({ name: 'REQUISITION_DATE' })
@@ -42,19 +34,19 @@ export class SuratJalan extends BaseEntity {
 
   @Field()
   @Column({ name: 'ROLL_QTY' })
-  rollQty?: number;
+  rollQty!: number;
 
   @Field()
   @Column({ name: 'METER' })
-  meter?: number;
+  meter!: number;
 
   @Field()
   @Column({ name: 'WEIGHT' })
-  weight?: number;
+  weight!: number;
 
   @Field()
   @Column({ name: 'VOLUME' })
-  volume?: number;
+  volume!: number;
 
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })

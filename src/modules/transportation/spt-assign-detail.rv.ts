@@ -19,7 +19,7 @@ export class AssignDetailResolver {
   @Query(() => [AssignDetail])
   @UseMiddleware(isAuth)
   async getAllAssignDetail(): Promise<AssignDetail[] | undefined> {
-    return AssignDetail.find();
+    return await AssignDetail.find();
   }
 
   @Query(() => AssignDetail, { nullable: true })
@@ -42,10 +42,10 @@ export class AssignDetailResolver {
     @Arg('requisitionDate') requisitionDate: Date
   ): Promise<any | undefined> {
     return await AssignDetail.findOne({
-      assignId: assignId,
-      assignDate: assignDate,
-      reqNo: reqNo,
-      requisitionDate: requisitionDate
+      assignId,
+      assignDate,
+      reqNo,
+      requisitionDate
     });
   }
 
@@ -56,41 +56,34 @@ export class AssignDetailResolver {
     @Arg('expeditionId') expeditionId: string,
     @Arg('vehicleId') vehicleId: string,
     @Arg('isNormalPrice') isNormalPrice: string
-    //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
-    let totalPrice;
-    const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TOTAL_PRICE from dual`;
     try {
-      totalPrice = await getConnection().query(sql, [
+      const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "totalPrice" from dual`;
+      let totalPrice = await getConnection().query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
         isNormalPrice
       ]);
-      totalPrice = totalPrice[0].TOTAL_PRICE;
+      totalPrice = totalPrice[0].totalPrice;
+      return { totalPrice };
     } catch (err) {
       throw new Error(mapError(err));
     }
-    //return assignId;
-    return { totalPrice: totalPrice };
-    //return Assign.create(assignId);
   }
 
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async createAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    let result;
-    //const createdBy: string = req.session.userId;
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -100,21 +93,20 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outReqNo = result[1] as string;
+      const outAssignDate = result[2] as Date;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        reqNo: outReqNo,
+        assignDate: outAssignDate,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0] as string;
-    const outReqNo = result[1] as string;
-    const outAssignDate = result[2] as Date;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      reqNo: outReqNo,
-      assignDate: outAssignDate,
-      requisitionDate: outRequisitionDate
-    });
-
-    return data;
   }
 
   @Mutation(() => AssignDetail)
@@ -123,17 +115,15 @@ export class AssignDetailResolver {
     @Arg('input') input: AssignDetailInput,
     @Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    let result;
-    const createdBy: string = req.session.username;
-    const sql = `
+    try {
+      const createdBy: string = req.session.username;
+      const sql = `
       BEGIN
         GBR_SPT_API.Create_NEW_ASSIGN(:assignId, :assignDate, :createdBy, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
-        //input.tipe,
         input.assignDate,
         createdBy,
         input.reqNo,
@@ -143,40 +133,36 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outReqNo = result[1] as string;
+      const outAssignDate = result[2] as Date;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        reqNo: outReqNo,
+        assignDate: outAssignDate,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outAssignId = result[0] as string;
-    const outReqNo = result[1] as string;
-    const outAssignDate = result[2] as Date;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      reqNo: outReqNo,
-      assignDate: outAssignDate,
-      requisitionDate: outRequisitionDate
-    });
-
-    return data;
   }
 
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async updateAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    let result;
-    //const createdBy: string = req.session.userId;
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_ASSIGN_DETAIL(:assignId, :assignDate, :reqNo, :requisitionDate,
           :expeditionId, :vehicleId, :licensePlate, :driverName, :nomorResi, :isNormalPrice,
           :totalPrice, :nopolLangsir, :ppn, :price, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
-      result = await getConnection().query(sql, [
+      const result = await getConnection().query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -194,46 +180,41 @@ export class AssignDetailResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.DATE },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-
         { dir: oracledb.BIND_OUT, type: oracledb.DATE }
       ]);
+      const outAssignId = result[0] as string;
+      const outAssignDate = result[1] as Date;
+      const outReqNo = result[2] as string;
+      const outRequisitionDate = result[3] as Date;
+      const data = AssignDetail.findOne({
+        assignId: outAssignId,
+        assignDate: outAssignDate,
+        reqNo: outReqNo,
+        requisitionDate: outRequisitionDate
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-
-    const outAssignId = result[0] as string;
-    const outAssignDate = result[1] as Date;
-    const outReqNo = result[2] as string;
-    const outRequisitionDate = result[3] as Date;
-    const data = AssignDetail.findOne({
-      assignId: outAssignId,
-      assignDate: outAssignDate,
-      reqNo: outReqNo,
-      requisitionDate: outRequisitionDate
-    });
-    return data;
   }
 
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async deleteAssignDetail(
     @Arg('input') input: AssignDetailInput
-    //@Ctx() { req }: Context
   ): Promise<AssignDetail | undefined> {
-    //const createdBy: string = req.session.userId;
-    const sql = `
+    try {
+      const sql = `
       BEGIN
         GBR_SPT_API.Delete_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-    try {
       const data = await AssignDetail.findOne({
         assignId: input.assignId,
         reqNo: input.reqNo,
         assignDate: input.assignDate,
         requisitionDate: input.requisitionDate
       });
-
       if (!data) throw new Error('No data found.');
       await getConnection().query(sql, [
         input.assignId,

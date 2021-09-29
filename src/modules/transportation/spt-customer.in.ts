@@ -10,7 +10,7 @@ export class CustomerInput implements Partial<Customer> {
   customerName!: string;
 
   @Field()
-  address?: string;
+  address!: string;
 
   @Field({ nullable: true })
   phone?: string;

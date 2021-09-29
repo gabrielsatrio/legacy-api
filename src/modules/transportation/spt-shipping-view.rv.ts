@@ -6,10 +6,7 @@ import { ShippingView } from './entities/spt-shipping.vw';
 export class ShippingViewResolver {
   @Query(() => [ShippingView])
   @UseMiddleware(isAuth)
-  async getAllShippingViews(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<ShippingView[] | undefined> {
-    return ShippingView.find();
+  async getAllShippingViews(): Promise<ShippingView[] | undefined> {
+    return await ShippingView.find();
   }
 }
