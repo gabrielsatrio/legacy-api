@@ -92,9 +92,7 @@ export class AssignResolver {
       const assign = await Assign.findOne({
         assignId: input.assignId
       });
-      if (!assign) {
-        throw new Error('No data found');
-      }
+      if (!assign) throw new Error('No data found');
       const sql = `
     BEGIN
       GBR_SPT_API.Update_Assign(:assignId, :assignDate,  :tipe, :outAssignId);

@@ -14,11 +14,7 @@ export class SuratJalanResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<SuratJalan[] | undefined> {
-    return await SuratJalan.find({
-      where: {
-        contract: In(contract)
-      }
-    });
+    return await SuratJalan.find({ where: { contract: In(contract) } });
   }
 
   @Mutation(() => SuratJalan, { nullable: true })
@@ -28,9 +24,7 @@ export class SuratJalanResolver {
   ): Promise<SuratJalan | undefined> {
     try {
       const suratJalan = await SuratJalan.findOne({ reqNo: input.reqNo });
-      if (!suratJalan) {
-        throw new Error('No data found');
-      }
+      if (!suratJalan) throw new Error('No data found');
       const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :outReqNo);
@@ -47,9 +41,7 @@ export class SuratJalanResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outReqNo = result[0];
-      const data = SuratJalan.findOne({
-        reqNo: outReqNo
-      });
+      const data = SuratJalan.findOne({ reqNo: outReqNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

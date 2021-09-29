@@ -57,9 +57,7 @@ export class ExpeditionResolver {
       const expedition = await Expedition.findOne({
         expeditionId: input.expeditionId
       });
-      if (!expedition) {
-        throw new Error('No data found.');
-      }
+      if (!expedition) throw new Error('No data found.');
       const sql = `
     BEGIN
       GBR_SPT_API.UPDATE_EXPEDITION(:expeditionId, :expeditionName, :outExpeditionId);

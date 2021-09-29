@@ -53,9 +53,7 @@ export class PPNResolver {
       const ppn = await PPN.findOne({
         expeditionId: input.expeditionId
       });
-      if (!ppn) {
-        throw new Error('No data found.');
-      }
+      if (!ppn) throw new Error('No data found.');
       const sql = `
     BEGIN
       GBR_SPT_API.UPDATE_PPN(:expeditionId, :ppn,  :outExpeditionId);

@@ -59,9 +59,7 @@ export class CustomerResolver {
       const customer = await Customer.findOne({
         customerId: input.customerId
       });
-      if (!customer) {
-        throw new Error('No data found.');
-      }
+      if (!customer) throw new Error('No data found.');
       const sql = `
     BEGIN
       GBR_SPT_API.Update_Customer(:customerId, :customerName,  :address, :phone, :outCustomerId);

@@ -54,9 +54,7 @@ export class VehicleResolver {
   ): Promise<Vehicle | undefined> {
     try {
       const vehicle = await Vehicle.findOne({ vehicleId: input.vehicleId });
-      if (!vehicle) {
-        throw new Error('No data found.');
-      }
+      if (!vehicle) throw new Error('No data found.');
       const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_VEHICLE(:vehicleId, :vehicleName, :weightCapacity, :outVehicleId);
@@ -69,9 +67,7 @@ export class VehicleResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outVehicleId = result[0];
-      const data = Vehicle.findOne({
-        vehicleId: outVehicleId
-      });
+      const data = Vehicle.findOne({ vehicleId: outVehicleId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -82,9 +78,7 @@ export class VehicleResolver {
   @UseMiddleware(isAuth)
   async deleteVehicle(@Arg('vehicleId') vehicleId: string): Promise<Vehicle> {
     try {
-      const vehicle = await Vehicle.findOne({
-        vehicleId
-      });
+      const vehicle = await Vehicle.findOne({ vehicleId });
       if (!vehicle) throw new Error('No data found.');
       await Vehicle.delete({ vehicleId });
       return vehicle;

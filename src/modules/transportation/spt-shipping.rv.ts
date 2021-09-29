@@ -31,9 +31,8 @@ export class ShippingResolver {
     @Arg('isNormalPrice') isNormalPrice: string
   ): Promise<any | undefined> {
     try {
-      let tarif;
       const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "tarif" FROM DUAL`;
-      tarif = await getConnection().query(sql, [
+      let tarif = await getConnection().query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
@@ -81,9 +80,7 @@ export class ShippingResolver {
   ): Promise<Shipping | undefined> {
     try {
       const shipping = await Shipping.findOne({ shippingId: input.shippingId });
-      if (!shipping) {
-        throw new Error('No data found.');
-      }
+      if (!shipping) throw new Error('No data found.');
       const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SHIPPING(:shippingId, :expeditionId, :vehicleId, :destinationId, :rate, :multidropRate, :outShippingId);
@@ -99,9 +96,7 @@ export class ShippingResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outShippingId = result[0];
-      const data = Shipping.findOne({
-        shippingId: outShippingId
-      });
+      const data = Shipping.findOne({ shippingId: outShippingId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -114,9 +109,7 @@ export class ShippingResolver {
     @Arg('shippingId') shippingId: string
   ): Promise<Shipping> {
     try {
-      const shipping = await Shipping.findOne({
-        shippingId
-      });
+      const shipping = await Shipping.findOne({ shippingId });
       if (!shipping) throw new Error('No data found.');
       await Shipping.delete({ shippingId });
       return shipping;

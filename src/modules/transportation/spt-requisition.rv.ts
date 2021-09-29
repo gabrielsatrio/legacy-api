@@ -79,12 +79,8 @@ export class RequisitionResolver {
     @Arg('input') input: RequisitionInput
   ): Promise<Requisition | undefined> {
     try {
-      const requisition = await Requisition.findOne({
-        reqNo: input.reqNo
-      });
-      if (!requisition) {
-        throw new Error('No data found');
-      }
+      const requisition = await Requisition.findOne({ reqNo: input.reqNo });
+      if (!requisition) throw new Error('No data found');
       const sql = `
     BEGIN
       GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
@@ -104,9 +100,7 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outReqNo = result[0];
-      const data = Requisition.findOne({
-        reqNo: outReqNo
-      });
+      const data = Requisition.findOne({ reqNo: outReqNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -144,9 +138,7 @@ export class RequisitionResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outReqNo = result[0];
-      const data = Requisition.findOne({
-        reqNo: outReqNo
-      });
+      const data = Requisition.findOne({ reqNo: outReqNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -160,9 +152,7 @@ export class RequisitionResolver {
       const requisition = await Requisition.findOne({
         reqNo
       });
-      if (!requisition) {
-        throw new Error('No data found');
-      }
+      if (!requisition) throw new Error('No data found');
       const sql = `
     BEGIN
       GBR_SPT_API.DELETE_Requisition(:reqNo);

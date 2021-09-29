@@ -58,16 +58,15 @@ export class AssignDetailResolver {
     @Arg('isNormalPrice') isNormalPrice: string
   ): Promise<any | undefined> {
     try {
-      let totalPrice;
       const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "totalPrice" from dual`;
-      totalPrice = await getConnection().query(sql, [
+      let totalPrice = await getConnection().query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
         isNormalPrice
       ]);
       totalPrice = totalPrice[0].totalPrice;
-      return { totalPrice: totalPrice };
+      return { totalPrice };
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -216,7 +215,6 @@ export class AssignDetailResolver {
         assignDate: input.assignDate,
         requisitionDate: input.requisitionDate
       });
-
       if (!data) throw new Error('No data found.');
       await getConnection().query(sql, [
         input.assignId,
