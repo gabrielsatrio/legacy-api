@@ -35,10 +35,9 @@ export class AssignResolver {
   @UseMiddleware(isAuth)
   async getMaxAssignId(@Arg('tipe') tipe: string): Promise<any | undefined> {
     try {
-      let assignId;
-      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS assignId FROM DUAL`;
-      assignId = await getConnection().query(sql, [tipe]);
-      assignId = assignId[0].assignId;
+      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS "assignId" FROM DUAL`;
+      const result = await getConnection().query(sql, [tipe]);
+      const assignId = result[0].assignId;
       return { assignId };
     } catch (err) {
       throw new Error(mapError(err));
