@@ -71,6 +71,11 @@ export class MaterialResolver {
         :netto,
         :note,
         :lotCelup,
+        :tara2,
+        :bruto2,
+        :netto2,
+        :mediaCelup2,
+        :jmlMediaCelup2,
       :outContract, :outIdNo);
     END;
   `;
@@ -94,6 +99,11 @@ export class MaterialResolver {
         input.netto,
         input.note,
         input.lotCelup,
+        input.tara2,
+        input.bruto2,
+        input.netto2,
+        input.mediaCelup2,
+        input.jmlMediaCelup2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -138,6 +148,11 @@ export class MaterialResolver {
         :netto,
         :note,
         :lotCelup,
+        :tara2,
+        :bruto2,
+        :netto2,
+        :mediaCelup2,
+        :jmlMediaCelup2,
       :outContract, :outIdNo);
       END;
     `;
@@ -159,6 +174,11 @@ export class MaterialResolver {
         input.netto,
         input.note,
         input.lotCelup,
+        input.tara2,
+        input.bruto2,
+        input.netto2,
+        input.mediaCelup2,
+        input.jmlMediaCelup2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);

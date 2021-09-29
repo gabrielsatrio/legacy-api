@@ -75,6 +75,26 @@ export class Material extends BaseEntity {
   @Field({ nullable: true })
   deleteStatus?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'TARA2' })
+  tara2?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BRUTO2' })
+  bruto2?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NETTO2' })
+  netto2?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MEDIA_CELUP2' })
+  mediaCelup2?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'JML_MEDIA_CELUP2' })
+  jmlMediaCelup2?: string;
+
   @Field(() => [MaterialUse], { nullable: true })
   @OneToMany(() => MaterialUse, (materialUse) => materialUse.material, {
     nullable: true
