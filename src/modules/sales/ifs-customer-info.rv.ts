@@ -6,10 +6,7 @@ import { CustomerInfo } from './entities/ifs-customer-info.vw';
 export class CustomerInfoResolver {
   @Query(() => [CustomerInfo])
   @UseMiddleware(isAuth)
-  async getAllCustomerInfo(): // @Arg('contract', () => [String])
-  // contract: string[],
-  // @Ctx() { req }: Context
-  Promise<CustomerInfo[] | undefined> {
+  async getAllCustomerInfo(): Promise<CustomerInfo[] | undefined> {
     return CustomerInfo.find();
   }
 

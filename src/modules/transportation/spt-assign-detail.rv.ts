@@ -40,9 +40,7 @@ export class AssignDetailResolver {
     @Arg('assignDate') assignDate: Date,
     @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
-    //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
-    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
     return await AssignDetail.findOne({
       assignId: assignId,
       assignDate: assignDate,
@@ -61,7 +59,6 @@ export class AssignDetailResolver {
     //@Arg('assignDate') assignDate: Date
   ): Promise<any | undefined> {
     let totalPrice;
-    //const sql = `SELECT MAX(assign_id) as assign_id FROM GBR_SPT_ASSIGN_TAB where tipe = :tipe and assign_date = :assignDate`;
     const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as TOTAL_PRICE from dual`;
     try {
       totalPrice = await getConnection().query(sql, [
@@ -216,37 +213,6 @@ export class AssignDetailResolver {
     });
     return data;
   }
-
-  // @Mutation(() => AssignDetail)
-  // @UseMiddleware(isAuth)
-  // async deleteAssignDetail(
-  //   @Arg('assignId') assignId: string,
-  //   @Arg('assignDate') assignDate: Date,
-  //   @Arg('reqNo') reqNo: number,
-  //   @Arg('requisitionDate') requisitionDate: Date
-  //   //@Ctx() { req }: Context
-  // ): Promise<AssignDetail> {
-  //   //const createdBy: string = req.session.userId;
-  //   const assignDetail = await AssignDetail.findOne({
-  //     assignId: assignId,
-  //     assignDate: assignDate,
-  //     reqNo: reqNo,
-  //     requisitionDate: requisitionDate
-  //   });
-
-  //   if (!assignDetail) throw new Error('No data found.');
-  //   try {
-  //     await AssignDetail.delete({
-  //       assignId: assignId,
-  //       assignDate: assignDate,
-  //       reqNo: reqNo,
-  //       requisitionDate: requisitionDate
-  //     });
-  //     return assignDetail;
-  //   } catch (err) {
-  //     throw new Error(mapError(err));
-  //   }
-  // }
 
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
