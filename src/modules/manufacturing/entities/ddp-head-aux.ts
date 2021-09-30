@@ -40,6 +40,10 @@ export class HeadAux extends BaseEntity {
   @PrimaryColumn({ name: 'NO' })
   no!: number;
 
+  @Field()
+  @PrimaryColumn({ name: 'PENGALI' })
+  pengali!: string;
+
   @Field({ nullable: true })
   @Column({ name: 'ID_TABLE' })
   objId?: string;
