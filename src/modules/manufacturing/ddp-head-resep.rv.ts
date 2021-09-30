@@ -162,12 +162,6 @@ export class HeadResepResolver {
         throw new Error('No data found.');
       }
 
-      // await HeadResep.delete({
-      //   contract: contract,
-      //   partNo: partNo,
-      //   alternate: alternate
-      // });
-
       const sql = `
       BEGIN
       CHR_DDT_MASTER_RESEP_API.DELETE_HEAD_RESEP(:contract, :partNo, :alternate);
