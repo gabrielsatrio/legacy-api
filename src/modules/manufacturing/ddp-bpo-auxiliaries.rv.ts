@@ -1,4 +1,5 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
@@ -10,7 +11,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { Context } from '../../types/context';
 import { BPOAuxiliariesInput } from './ddp-bpo-auxiliaries.in';
 import { BPOAuxiliaries } from './entities/ddp-bpo-auxiliaries';
 
