@@ -1,5 +1,5 @@
-<a name="1.1.1"></a>
-# [1.1.1](https://gitlab.com/atjdev/ezio-web/-/merge_requests/16) (2021-09-29)
+<a name="1.1.2"></a>
+# [1.1.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/38) (2021-10-05)
 
 ### Bug Fix
 
