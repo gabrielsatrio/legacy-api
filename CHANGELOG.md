@@ -1,9 +1,9 @@
 <a name="1.1.1"></a>
 # [1.1.1](https://gitlab.com/atjdev/ezio-web/-/merge_requests/16) (2021-09-29)
 
-### Features
+### Bug Fix
 
-* [**M002**] DDP: Improvement for material weighing
+* [**T001**] SPT: Synchronize version with FE, add test case
 
 
 
