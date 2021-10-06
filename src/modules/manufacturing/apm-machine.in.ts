@@ -24,7 +24,7 @@ export class MachineInput implements Partial<Machine> {
   description!: string;
 
   @Field()
-  @MinLength(4)
+  @MinLength(2)
   categoryId!: string;
 
   @Field()
@@ -72,15 +72,33 @@ export class MachineInput implements Partial<Machine> {
   image2?: string;
 
   @Field({ nullable: true })
+  @IsNumber()
+  totalSpindle?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  totalMaxCreel?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  controllerType?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  oilingDevice?: string;
+
+  @Field({ nullable: true })
   @MaxLength(50)
   controller?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)
+  @IsIn(['Rapier', 'Airjet', ''])
   launchMethod?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)
+  @IsIn(['Flexible', 'Rigid', ''])
   rapierType?: string;
 
   @Field({ nullable: true })
@@ -137,6 +155,7 @@ export class MachineInput implements Partial<Machine> {
 
   @Field({ nullable: true })
   @MaxLength(50)
+  @IsIn(['Needle', 'Pin', ''])
   settingSystem?: string;
 
   @Field({ nullable: true })
@@ -153,5 +172,26 @@ export class MachineInput implements Partial<Machine> {
 
   @Field({ nullable: true })
   @MaxLength(50)
+  @IsIn(['Front', 'Mid', ''])
   position?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  capacity?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  steamCapacity?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  heatCapacity?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  maxWorkingPressure?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  freeAirDelivery?: string;
 }
