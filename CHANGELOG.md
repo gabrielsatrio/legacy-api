@@ -1,5 +1,12 @@
-<a name="1.1.2"></a>
+<a name="1.1.3"></a>
 # [1.1.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/39) (2021-10-06)
+
+### Bug Fix
+
+* [**M002**] DDP: add more column
+
+<a name="1.1.2"></a>
+# [1.1.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/37) (2021-10-05)
 
 ### Bug Fix
 
