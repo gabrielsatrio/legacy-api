@@ -1,5 +1,5 @@
 <a name="1.1.3"></a>
-# [1.1.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/39) (2021-10-06)
+# [1.1.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/39) (2021-10-06)
 
 ### Bug Fix
 
@@ -10,7 +10,7 @@
 
 ### Bug Fix
 
-* [**M002**] DDP: add more column
+* [**T001**] SPT: add custom message
 
 <a name="1.1.1"></a>
 # [1.1.1](https://gitlab.com/atjdev/ezio-web/-/merge_requests/16) (2021-09-29)
