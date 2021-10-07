@@ -2,6 +2,7 @@
 # [1.1.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/41) (2021-10-07)
 
 ### BREAKING CHANGES
+
 * Modify deployment script `deploy.sh` to execute the script inside the server
 
 ### Features
