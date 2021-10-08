@@ -1,3 +1,10 @@
+<a name="1.1.5"></a>
+# [1.1.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/42) (2021-10-08)
+
+### Bug Fixes
+
+* [**T001**] SPT: Add expedition name and vehicle name column for assign requisition view
+
 <a name="1.1.4"></a>
 # [1.1.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/41) (2021-10-07)
 
