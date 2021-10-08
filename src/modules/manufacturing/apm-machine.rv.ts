@@ -23,12 +23,8 @@ export class MachineResolver {
     contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({
-      where: {
-        contract: In(contract)
-      },
-      order: {
-        machineId: 'ASC'
-      }
+      where: { contract: In(contract) },
+      order: { machineId: 'ASC' }
     });
   }
 

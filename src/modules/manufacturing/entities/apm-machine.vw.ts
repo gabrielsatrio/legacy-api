@@ -86,6 +86,21 @@ export class MachineView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'IMAGE_2' })
   image2?: string;
+  @Field({ nullable: true })
+  @Column({ name: 'TOTAL_SPINDLE' })
+  totalSpindle?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TOTAL_MAX_CREEL' })
+  totalMaxCreel?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CONTROLLER_TYPE' })
+  controllerType?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'OILING_DEVICE' })
+  oilingDevice?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'CONTROLLER' })
@@ -170,6 +185,26 @@ export class MachineView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'POSITION' })
   position?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CAPACITY' })
+  capacity?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'STEAM_CAPACITY' })
+  steamCapacity?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'HEAT_CAPACITY' })
+  heatCapacity?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MAX_WORKING_PRESSURE' })
+  maxWorkingPressure?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'FREE_AIR_DELIVERY' })
+  freeAirDelivery?: string;
 
   @Field()
   @Column({ name: 'CREATED_BY' })
