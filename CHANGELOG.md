@@ -1,5 +1,5 @@
 <a name="1.1.5"></a>
-# [1.1.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/42) (2021-10-08)
+# [1.1.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/43) (2021-10-08)
 
 ### Bug Fixes
 
