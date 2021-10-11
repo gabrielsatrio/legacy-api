@@ -8,7 +8,7 @@ export class RequisitionInput implements Partial<Requisition> {
   reqNo!: string;
 
   @Field()
-  @Length(1, 3)
+  @Length(3, 10)
   destinationId!: string;
 
   @Field()
@@ -31,7 +31,7 @@ export class RequisitionInput implements Partial<Requisition> {
   volume!: number;
 
   @Field()
-  @Length(1, 5)
+  @Length(3, 4)
   contract!: string;
 
   @Field({ nullable: true })
