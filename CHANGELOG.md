@@ -33,7 +33,7 @@
 <a name="1.1.1"></a>
 # [1.1.1](https://gitlab.com/atjdev/ezio-web/-/merge_requests/16) (2021-09-29)
 
-### Bug Fix
+### Bug Fixes
 
 * [**T001**] SPT: Synchronize version with FE, add test case
 
