@@ -57,8 +57,16 @@ export class AssignRequisitionView extends BaseEntity {
   expeditionId?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'EXPEDITION_NAME' })
+  expeditionName?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'VEHICLE_ID' })
   vehicleId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'VEHICLE_NAME' })
+  vehicleName?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'IS_NORMAL_PRICE' })
