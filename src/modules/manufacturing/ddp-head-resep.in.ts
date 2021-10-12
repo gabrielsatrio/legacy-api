@@ -28,4 +28,7 @@ export class HeadResepInput implements Partial<HeadResep> {
 
   @Field({ nullable: true })
   status?: string;
+
+  @Field({ nullable: true })
+  subResep?: string;
 }
