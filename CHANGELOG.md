@@ -1,3 +1,11 @@
+<a name="1.2.0"></a>
+# [1.1.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/43) (2021-10-12)
+
+### Features
+
+* [**M002**] DDP: add column for sub resep
+* [**M002**] DDP: change API for sub resep to auto generate in auxiliaries
+
 <a name="1.1.5"></a>
 # [1.1.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/43) (2021-10-08)
 
