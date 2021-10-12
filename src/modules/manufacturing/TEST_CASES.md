@@ -5,100 +5,127 @@
 ### GRAPHQL
 
 ```
+fragment MachineFragment on Machine {
+  machineId
+  contract
+  description
+  categoryId
+  type
+  makerId
+  serialNo
+  yearMade
+  purchaseDate
+  departmentId
+  locationNo
+  status
+  note
+  image1
+  image2
+  totalSpindle
+  totalMaxCreel
+  controllerType
+  oilingDevice
+  controller
+  launchMethod
+  rapierType
+  widthInCm
+  totalAccumulator
+  totalSelector
+  totalHarness
+  endCapacity
+  gang
+  gauge
+  feeder
+  totalNeedles
+  yarnFeederType
+  needleSensor
+  capacityInM
+  capacityInKg
+  settingSystem
+  totalChamber
+  usableWidth
+  nominalWidth
+  position
+  capacityInKw
+  steamCapacity
+  heatCapacity
+  maxWorkingPressure
+  freeAirDelivery
+  createdBy
+  createdAt
+  updatedAt
+}
+
+fragment MachineViewFragment on MachineView {
+  machineId
+  contract
+  description
+  categoryId
+  category
+  type
+  makerId
+  maker
+  serialNo
+  yearMade
+  purchaseDate
+  departmentId
+  department
+  locationNo
+  location
+  status
+  note
+  image1
+  image2
+  totalSpindle
+  totalMaxCreel
+  controllerType
+  oilingDevice
+  controller
+  launchMethod
+  rapierType
+  widthInCm
+  totalAccumulator
+  totalSelector
+  totalHarness
+  endCapacity
+  gang
+  gauge
+  feeder
+  totalNeedles
+  yarnFeederType
+  needleSensor
+  capacityInM
+  capacityInKg
+  settingSystem
+  totalChamber
+  usableWidth
+  nominalWidth
+  position
+  capacityInKw
+  steamCapacity
+  heatCapacity
+  maxWorkingPressure
+  freeAirDelivery
+  createdBy
+  createdAt
+  updatedAt
+  objId
+}
+
 query Machines {
   getAllMachines(contract: ["AT1", "AT2"]) {
-    machineId
-    contract
-    description
-    categoryId
-    category
-    type
-    makerId
-    maker
-    serialNo
-    yearMade
-    purchaseDate
-    departmentId
-    department
-    locationNo
-    location
-    status
-    note
-    image1
-    image2
-    controller
-    launchMethod
-    rapierType
-    widthInCm
-    totalAccumulator
-    totalSelector
-    totalHarness
-    endCapacity
-    gang
-    gauge
-    feeder
-    totalNeedles
-    yarnFeederType
-    needleSensor
-    capacityInM
-    capacityInKg
-    settingSystem
-    totalChamber
-    usableWidth
-    nominalWidth
-    position
-    createdBy
-    createdAt
-    updatedAt
+    ...MachineViewFragment
   }
 }
 
 query Machine {
-  getMachine(machineId: "HJ-999", contract: "AT1") {
-    machineId
-    contract
-    description
-    categoryId
-    category
-    type
-    makerId
-    maker
-    serialNo
-    yearMade
-    purchaseDate
-    departmentId
-    department
-    locationNo
-    location
-    status
-    note
-    image1
-    image2
-    controller
-    launchMethod
-    rapierType
-    widthInCm
-    totalAccumulator
-    totalSelector
-    totalHarness
-    endCapacity
-    gang
-    gauge
-    feeder
-    totalNeedles
-    yarnFeederType
-    needleSensor
-    capacityInM
-    capacityInKg
-    settingSystem
-    totalChamber
-    usableWidth
-    nominalWidth
-    position
-    createdBy
-    createdAt
-    updatedAt
+  getMachine(machineId: "KN-123", contract: "AT1") {
+    ...MachineViewFragment
   }
+}
+
+query GetNewMachineId {
+  getNewMachineId(contract: "AT1", categoryId: "C-WL")
 }
 
 mutation CreateMachine {
@@ -123,46 +150,16 @@ mutation CreateMachine {
       endCapacity: 2688
     }
   ) {
-    machineId
-    contract
-    description
-    categoryId
-    type
-    makerId
-    serialNo
-    yearMade
-    purchaseDate
-    departmentId
-    locationNo
-    status
-    note
-    image1
-    image2
-    controller
-    launchMethod
-    rapierType
-    widthInCm
-    totalAccumulator
-    totalSelector
-    totalHarness
-    endCapacity
-    gang
-    gauge
-    feeder
-    totalNeedles
-    yarnFeederType
-    needleSensor
-    capacityInM
-    capacityInKg
-    settingSystem
-    totalChamber
-    usableWidth
-    nominalWidth
-    position
-    createdBy
-    createdAt
-    updatedAt
+    ...MachineFragment
   }
+}
+
+query IsMachineExist {
+  isMachineExist(machineId: "HJ-999", contract: "AT1")
+}
+
+query IsMachineDescriptionExist {
+  isMachineDescriptionExist(contract: "AT1", description: "Head Jacquard 999")
 }
 
 mutation UpdateMachine {
@@ -187,89 +184,13 @@ mutation UpdateMachine {
       endCapacity: 2688
     }
   ) {
-    machineId
-    contract
-    description
-    categoryId
-    type
-    makerId
-    serialNo
-    yearMade
-    purchaseDate
-    departmentId
-    locationNo
-    status
-    note
-    image1
-    image2
-    controller
-    launchMethod
-    rapierType
-    widthInCm
-    totalAccumulator
-    totalSelector
-    totalHarness
-    endCapacity
-    gang
-    gauge
-    feeder
-    totalNeedles
-    yarnFeederType
-    needleSensor
-    capacityInM
-    capacityInKg
-    settingSystem
-    totalChamber
-    usableWidth
-    nominalWidth
-    position
-    createdBy
-    createdAt
-    updatedAt
+    ...MachineFragment
   }
 }
 
 mutation DeleteMachine {
   deleteMachine(machineId: "HJ-999", contract: "AT1") {
-    machineId
-    contract
-    description
-    categoryId
-    type
-    makerId
-    serialNo
-    yearMade
-    purchaseDate
-    departmentId
-    locationNo
-    status
-    note
-    image1
-    image2
-    controller
-    launchMethod
-    rapierType
-    widthInCm
-    totalAccumulator
-    totalSelector
-    totalHarness
-    endCapacity
-    gang
-    gauge
-    feeder
-    totalNeedles
-    yarnFeederType
-    needleSensor
-    capacityInM
-    capacityInKg
-    settingSystem
-    totalChamber
-    usableWidth
-    nominalWidth
-    position
-    createdBy
-    createdAt
-    updatedAt
+    ...MachineFragment
   }
 }
 ```
