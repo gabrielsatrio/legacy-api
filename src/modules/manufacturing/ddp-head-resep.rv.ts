@@ -49,6 +49,7 @@ export class HeadResepResolver {
         :tanggalCelup,
         :notes,
         :status,
+        :subResep,
         :outContract,
         :outPartNo,
         :outAlternate);
@@ -65,6 +66,7 @@ export class HeadResepResolver {
         input.tanggalCelup,
         input.notes,
         input.status,
+        input.subResep,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -107,6 +109,7 @@ export class HeadResepResolver {
      :tanggalCelup,
      :notes,
      :status,
+     :subResep,
      :outContract,
      :outPartNo,
      :outAlternate);
@@ -124,6 +127,7 @@ export class HeadResepResolver {
         input.tanggalCelup,
         input.notes,
         input.status,
+        input.subResep,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
