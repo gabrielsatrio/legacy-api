@@ -9,8 +9,7 @@ export class MachineLocationResolver {
   @Query(() => [MachineLocationView])
   @UseMiddleware(isAuth)
   async getAllMachineLocations(
-    @Arg('contract', () => [String])
-    contract: string[]
+    @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineLocationView[] | undefined> {
     return await MachineLocationView.find({
       where: {

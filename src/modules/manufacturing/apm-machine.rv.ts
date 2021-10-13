@@ -19,8 +19,7 @@ export class MachineResolver {
   @Query(() => [MachineView])
   @UseMiddleware(isAuth)
   async getAllMachines(
-    @Arg('contract', () => [String])
-    contract: string[]
+    @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({
       where: { contract: In(contract) },
@@ -118,10 +117,7 @@ export class MachineResolver {
     @Arg('contract') contract: string
   ): Promise<Machine> {
     try {
-      const data = await Machine.findOne({
-        machineId,
-        contract
-      });
+      const data = await Machine.findOne({ machineId, contract });
       if (!data) throw new Error('No data found.');
       await Machine.delete({ machineId, contract });
       return data;
