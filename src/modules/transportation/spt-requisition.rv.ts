@@ -10,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Requisition } from './entities/spt-requisition';
 import { RequisitionView } from './entities/spt-requisition.vw';
 import { RequisitionSplitInput } from './spt-requisition-split.in';
@@ -20,14 +20,20 @@ import { RequisitionInput } from './spt-requisition.in';
 export class RequisitionResolver {
   @Query(() => [Requisition])
   @UseMiddleware(isAuth)
-  async getAllRequisitions(): Promise<Requisition[] | undefined> {
-    return await Requisition.find();
+  async getAllRequisitions(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<Requisition[] | undefined> {
+    return await Requisition.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => [RequisitionView])
   @UseMiddleware(isAuth)
-  async getAllRequisitionViews(): Promise<RequisitionView[] | undefined> {
-    return await RequisitionView.find();
+  async getAllRequisitionViews(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<RequisitionView[] | undefined> {
+    return await RequisitionView.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => Requisition, { nullable: true })
