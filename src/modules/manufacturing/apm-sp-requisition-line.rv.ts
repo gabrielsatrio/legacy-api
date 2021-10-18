@@ -16,8 +16,8 @@ import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
 export class SparePartReqLineResolver {
   @Query(() => [SparePartReqLineView])
   @UseMiddleware(isAuth)
-  async getAllSPRequisitionLines(
-    @Arg('requisitionId') requisitionId: string
+  async getSPRequisLinesByReqId(
+    @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartReqLineView[] | undefined> {
     return await SparePartReqLineView.find({
       where: { requisitionId },
@@ -27,8 +27,8 @@ export class SparePartReqLineResolver {
 
   @Query(() => SparePartReqLineView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getSPRequisitionLine(
-    @Arg('requisitionId') requisitionId: string,
+  async getSPRequisLine(
+    @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineView | undefined> {
     return await SparePartReqLineView.findOne({ requisitionId, lineItemNo });
@@ -40,7 +40,11 @@ export class SparePartReqLineResolver {
     @Arg('input') input: SparePartReqLineInput
   ): Promise<SparePartReqLine | undefined> {
     try {
-      const data = SparePartReqLine.create(input);
+      const data = SparePartReqLine.create({
+        ...input,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
       const results = await SparePartReqLine.save(data);
       return results;
     } catch (err) {
@@ -70,7 +74,7 @@ export class SparePartReqLineResolver {
   @Mutation(() => SparePartReqLine)
   @UseMiddleware(isAuth)
   async deleteSPRequisitionLine(
-    @Arg('requisitionId') requisitionId: string,
+    @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLine> {
     try {

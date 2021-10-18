@@ -1,20 +1,20 @@
 import { IsNumber, Length } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mach.vw';
 
 @InputType()
 export class SparePartReqLineMachInput
   implements Partial<SparePartReqLineMachView>
 {
-  @Field()
-  @Length(9)
-  requisitionId!: string;
+  @Field(() => Int)
+  @IsNumber()
+  requisitionId!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   lineItemNo!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   mapNo!: number;
 

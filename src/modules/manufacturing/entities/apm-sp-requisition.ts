@@ -1,12 +1,12 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ROB_APM_SPAREPART_REQ')
 @ObjectType()
 export class SparePartRequisition extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'REQUISITION_ID' })
-  requisitionId!: string;
+  requisitionId!: number;
 
   @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })

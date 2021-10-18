@@ -1,14 +1,14 @@
 import { IsBoolean, IsIn, IsNumber, Length, MaxLength } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 
 @InputType()
 export class SparePartReqLineInput implements Partial<SparePartReqLine> {
-  @Field()
-  @Length(9)
-  requisitionId!: string;
+  @Field(() => Int)
+  @IsNumber()
+  requisitionId!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   lineItemNo!: number;
 

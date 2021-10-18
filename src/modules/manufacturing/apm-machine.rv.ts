@@ -18,7 +18,7 @@ import { MachineView } from './entities/apm-machine.vw';
 export class MachineResolver {
   @Query(() => [MachineView])
   @UseMiddleware(isAuth)
-  async getAllMachines(
+  async getMachinesByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({

@@ -16,9 +16,9 @@ import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mac
 export class SparePartReqLineMachResolver {
   @Query(() => [SparePartReqLineMachView])
   @UseMiddleware(isAuth)
-  async getAllSPRequisLineMachs(
-    @Arg('requisitionId') requisitionId: string,
-    @Arg('lineItemNo') lineItemNo: string
+  async getSPRequisLineMachsByReqIdLineNo(
+    @Arg('requisitionId', () => Int) requisitionId: number,
+    @Arg('lineItemNo', () => Int) lineItemNo: string
   ): Promise<SparePartReqLineMachView[] | undefined> {
     return await SparePartReqLineMachView.find({
       where: { requisitionId, lineItemNo },
@@ -29,7 +29,7 @@ export class SparePartReqLineMachResolver {
   @Query(() => SparePartReqLineMachView, { nullable: true })
   @UseMiddleware(isAuth)
   async getSPRequisLineMach(
-    @Arg('requisitionId') requisitionId: string,
+    @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number,
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMachView | undefined> {
@@ -46,7 +46,11 @@ export class SparePartReqLineMachResolver {
     @Arg('input') input: SparePartReqLineMachInput
   ): Promise<SparePartReqLineMach | undefined> {
     try {
-      const data = SparePartReqLineMach.create(input);
+      const data = SparePartReqLineMach.create({
+        ...input,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
       const results = await SparePartReqLineMach.save(data);
       return results;
     } catch (err) {
@@ -77,7 +81,7 @@ export class SparePartReqLineMachResolver {
   @Mutation(() => SparePartReqLineMach)
   @UseMiddleware(isAuth)
   async deleteSPRequisLineMach(
-    @Arg('requisitionId') requisitionId: string,
+    @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number,
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMach> {

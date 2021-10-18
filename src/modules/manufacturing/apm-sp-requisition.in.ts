@@ -1,14 +1,21 @@
-import { IsBoolean, IsDate, IsIn, Length, MaxLength } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import {
+  IsBoolean,
+  IsDate,
+  IsIn,
+  IsNumber,
+  Length,
+  MaxLength
+} from 'class-validator';
+import { Field, InputType, Int } from 'type-graphql';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
 
 @InputType()
 export class SparePartRequisitionInput
   implements Partial<SparePartRequisition>
 {
-  @Field()
-  @Length(9)
-  requisitionId!: string;
+  @Field(() => Int)
+  @IsNumber()
+  requisitionId!: number;
 
   @Field({ nullable: true })
   @MaxLength(12)
@@ -35,6 +42,10 @@ export class SparePartRequisitionInput
   @IsDate()
   dueDate!: Date;
 
+  @Field()
+  @IsDate()
+  createdAt!: Date;
+
   @Field({ defaultValue: false })
   @IsBoolean()
   urgent!: boolean;
@@ -44,16 +55,8 @@ export class SparePartRequisitionInput
   approverLv1!: string;
 
   @Field()
-  @Length(12, 100)
-  emaillApprLv1!: string;
-
-  @Field()
   @Length(5)
   approverLv2!: string;
-
-  @Field()
-  @Length(12, 100)
-  emaillApprLv2!: string;
 
   @Field()
   @IsIn([

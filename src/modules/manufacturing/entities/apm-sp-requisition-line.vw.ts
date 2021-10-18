@@ -1,14 +1,14 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ROB_APM_SPAREPART_REQ_LINE_V')
 @ObjectType()
 export class SparePartReqLineView extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'REQUISITION_ID' })
-  requisitionId!: string;
+  requisitionId!: number;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'LINE_ITEM_NO' })
   lineItemNo!: number;
 
@@ -78,5 +78,5 @@ export class SparePartReqLineView extends BaseEntity {
 
   @Field()
   @Column({ name: 'OBJ_ID' })
-  ObjId!: string;
+  objId!: string;
 }

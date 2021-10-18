@@ -1,12 +1,12 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ROB_APM_SPAREPART_REQ_V')
 @ObjectType()
 export class SparePartRequisitionView extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'REQUISITION_ID' })
-  requisitionId!: string;
+  requisitionId!: number;
 
   @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })
@@ -53,12 +53,20 @@ export class SparePartRequisitionView extends BaseEntity {
   approverLv1!: string;
 
   @Field()
+  @Column({ name: 'NAME_APPR_LV_1' })
+  nameApprLv1!: string;
+
+  @Field()
   @Column({ name: 'EMAIL_APPR_LV_1' })
   emaillApprLv1!: string;
 
   @Field()
   @Column({ name: 'APPROVER_LV_2' })
   approverLv2!: string;
+
+  @Field()
+  @Column({ name: 'NAME_APPR_LV_2' })
+  nameApprLv2!: string;
 
   @Field()
   @Column({ name: 'EMAIL_APPR_LV_2' })

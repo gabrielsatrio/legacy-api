@@ -1,18 +1,18 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ROB_APM_SPART_REQ_LINE_MACH')
 @ObjectType()
 export class SparePartReqLineMach extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'REQUISITION_ID' })
-  requisitionId!: string;
+  requisitionId!: number;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'LINE_ITEM_NO' })
   lineItemNo!: number;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'MAP_NO' })
   mapNo!: number;
 

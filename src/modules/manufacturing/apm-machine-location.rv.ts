@@ -8,7 +8,7 @@ import { MachineLocationView } from './entities/apm-machine-location.vw';
 export class MachineLocationResolver {
   @Query(() => [MachineLocationView])
   @UseMiddleware(isAuth)
-  async getAllMachineLocations(
+  async getMachLocationsByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineLocationView[] | undefined> {
     return await MachineLocationView.find({
@@ -20,7 +20,7 @@ export class MachineLocationResolver {
 
   @Query(() => MachineLocationView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getMachineLocation(
+  async getMachLocation(
     @Arg('locationNo') locationNo: string,
     @Arg('contract') contract: string
   ): Promise<MachineLocationView | undefined> {
