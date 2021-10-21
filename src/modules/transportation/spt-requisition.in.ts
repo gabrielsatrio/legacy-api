@@ -14,6 +14,9 @@ export class RequisitionInput implements Partial<Requisition> {
   @Field()
   ds!: string;
 
+  @Field({ nullable: true })
+  divisi?: string;
+
   @Field()
   @Length(1, 10)
   customerId!: string;

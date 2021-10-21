@@ -16,6 +16,10 @@ export class Requisition extends BaseEntity {
   @Column({ name: 'DS' })
   ds!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DIVISI' })
+  divisi?: string;
+
   @Field()
   @Column({ name: 'CUSTOMER_ID' })
   customerId!: string;

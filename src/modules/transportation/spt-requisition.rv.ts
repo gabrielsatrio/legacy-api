@@ -54,12 +54,14 @@ export class RequisitionResolver {
       const createdBy: string = req.session.username;
       const sql = `
       BEGIN
-        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
+        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
       END;
     `;
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
+        '',
+        input.divisi,
         input.customerId,
         input.requisitionDate,
         input.rollQty,
@@ -90,13 +92,14 @@ export class RequisitionResolver {
       if (!requisition) throw new Error('No data found');
       const sql = `
     BEGIN
-      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
+      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
     END;
   `;
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
         input.ds,
+        input.divisi,
         input.customerId,
         input.requisitionDate,
         input.rollQty,
