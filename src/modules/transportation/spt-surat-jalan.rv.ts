@@ -27,7 +27,7 @@ export class SuratJalanResolver {
       if (!suratJalan) throw new Error('No data found');
       const sql = `
       BEGIN
-        GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :outReqNo);
+        GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :nopolLangsir, :outReqNo);
       END;
     `;
       const result = await getConnection().query(sql, [
@@ -38,6 +38,7 @@ export class SuratJalanResolver {
         input.volume,
         input.notes,
         input.licensePlate,
+        input.nopolLangsir,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outReqNo = result[0];

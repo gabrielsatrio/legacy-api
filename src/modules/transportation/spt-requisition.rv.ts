@@ -90,12 +90,13 @@ export class RequisitionResolver {
       if (!requisition) throw new Error('No data found');
       const sql = `
     BEGIN
-      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
+      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
     END;
   `;
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
+        input.ds,
         input.customerId,
         input.requisitionDate,
         input.rollQty,
