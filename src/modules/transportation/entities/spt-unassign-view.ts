@@ -33,6 +33,10 @@ export class UnassignView extends BaseEntity {
   customerName!: string;
 
   @Field()
+  @Column({ name: 'DIVISI' })
+  divisi!: string;
+
+  @Field()
   @Column({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
 
