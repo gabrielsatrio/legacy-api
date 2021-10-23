@@ -1,3 +1,11 @@
+<a name="1.2.1"></a>
+# [1.2.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/47) (2021-10-23)
+
+### Features
+
+* [**T001**] SPT: add ds, divisi, and space column for requisition
+* [**T001**] SPT: add nopol langsir for surat ijin keluar
+
 <a name="1.2.0"></a>
 # [1.2.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/45) (2021-10-12)
 

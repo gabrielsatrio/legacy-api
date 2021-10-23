@@ -29,6 +29,10 @@ export class SuratJalan extends BaseEntity {
   customerName!: string;
 
   @Field()
+  @Column({ name: 'DIVISI' })
+  divisi!: string;
+
+  @Field()
   @PrimaryColumn({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
 
