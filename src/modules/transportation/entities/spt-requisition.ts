@@ -34,7 +34,7 @@ export class Requisition extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'SPACE' })
-  space!: number;
+  space?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'METER' })
