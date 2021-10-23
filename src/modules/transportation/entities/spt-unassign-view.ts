@@ -21,12 +21,20 @@ export class UnassignView extends BaseEntity {
   destinationName!: string;
 
   @Field()
+  @Column({ name: 'DS' })
+  ds!: string;
+
+  @Field()
   @Column({ name: 'CUSTOMER_ID' })
   customerId!: string;
 
   @Field()
   @Column({ name: 'CUSTOMER_NAME' })
   customerName!: string;
+
+  @Field()
+  @Column({ name: 'DIVISI' })
+  divisi!: string;
 
   @Field()
   @Column({ name: 'REQUISITION_DATE' })
@@ -36,15 +44,19 @@ export class UnassignView extends BaseEntity {
   @Column({ name: 'ROLL_QTY' })
   rollQty!: number;
 
-  @Field()
+  @Field({ nullable: true })
+  @Column({ name: 'SPACE' })
+  space?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'METER' })
-  meter!: number;
+  meter?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WEIGHT' })
-  weight!: number;
+  weight?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'VOLUME' })
-  volume!: number;
+  volume?: number;
 }

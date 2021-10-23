@@ -10,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Requisition } from './entities/spt-requisition';
 import { RequisitionView } from './entities/spt-requisition.vw';
 import { RequisitionSplitInput } from './spt-requisition-split.in';
@@ -20,14 +20,20 @@ import { RequisitionInput } from './spt-requisition.in';
 export class RequisitionResolver {
   @Query(() => [Requisition])
   @UseMiddleware(isAuth)
-  async getAllRequisitions(): Promise<Requisition[] | undefined> {
-    return await Requisition.find();
+  async getAllRequisitions(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<Requisition[] | undefined> {
+    return await Requisition.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => [RequisitionView])
   @UseMiddleware(isAuth)
-  async getAllRequisitionViews(): Promise<RequisitionView[] | undefined> {
-    return await RequisitionView.find();
+  async getAllRequisitionViews(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<RequisitionView[] | undefined> {
+    return await RequisitionView.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => Requisition, { nullable: true })
@@ -48,15 +54,18 @@ export class RequisitionResolver {
       const createdBy: string = req.session.username;
       const sql = `
       BEGIN
-        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
+        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
       END;
     `;
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
+        '',
+        input.divisi,
         input.customerId,
         input.requisitionDate,
         input.rollQty,
+        input.space,
         input.meter,
         input.weight,
         input.volume,
@@ -83,15 +92,18 @@ export class RequisitionResolver {
       if (!requisition) throw new Error('No data found');
       const sql = `
     BEGIN
-      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :customerId, :requisitionDate, :rollQty, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
+      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
     END;
   `;
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
+        input.ds,
+        input.divisi,
         input.customerId,
         input.requisitionDate,
         input.rollQty,
+        input.space,
         input.meter,
         input.weight,
         input.volume,

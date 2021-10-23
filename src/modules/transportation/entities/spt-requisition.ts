@@ -13,6 +13,14 @@ export class Requisition extends BaseEntity {
   destinationId!: string;
 
   @Field()
+  @Column({ name: 'DS' })
+  ds!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DIVISI' })
+  divisi?: string;
+
+  @Field()
   @Column({ name: 'CUSTOMER_ID' })
   customerId!: string;
 
@@ -25,16 +33,20 @@ export class Requisition extends BaseEntity {
   rollQty!: number;
 
   @Field({ nullable: true })
+  @Column({ name: 'SPACE' })
+  space?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'METER' })
   meter?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WEIGHT' })
-  weight!: number;
+  weight?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'VOLUME' })
-  volume!: number;
+  volume?: number;
 
   @Field()
   @Column({ name: 'CONTRACT' })
