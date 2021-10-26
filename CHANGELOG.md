@@ -1,3 +1,10 @@
+<a name="1.2.2"></a>
+# [1.2.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/49) (2021-10-26)
+
+### Features
+
+* [**T001**] SPT: Add "via" column for requisition resolver and related views
+
 <a name="1.2.1"></a>
 # [1.2.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/47) (2021-10-23)
 
@@ -22,9 +29,11 @@
 * [**T001**] SPT: Add expedition name and vehicle name column for assign requisition view
 
 <a name="1.1.4"></a>
+
 # [1.1.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/41) (2021-10-07)
 
 ### BREAKING CHANGES
+
 * Modify deployment script `deploy.sh` to execute the script inside the server
 
 ### Features
