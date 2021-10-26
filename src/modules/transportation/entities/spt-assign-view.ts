@@ -40,9 +40,17 @@ export class AssignView extends BaseEntity {
   @Column({ name: 'DESTINATION_NAME' })
   destinationName!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'VIA' })
+  via?: string;
+
   @Field()
   @Column({ name: 'TOTAL_ROLL' })
   totalRoll!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TOTAL_SPACE' })
+  totalSpace?: number;
 
   @Field()
   @Column({ name: 'TOTAL_WEIGHT' })

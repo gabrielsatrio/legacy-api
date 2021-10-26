@@ -32,6 +32,10 @@ export class RequisitionView extends BaseEntity {
   @Column({ name: 'CUSTOMER_NAME' })
   customerName!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'VIA' })
+  via?: string;
+
   @Field()
   @Column({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;

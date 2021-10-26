@@ -32,6 +32,10 @@ export class UnassignView extends BaseEntity {
   @Column({ name: 'CUSTOMER_NAME' })
   customerName!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'VIA' })
+  via?: string;
+
   @Field()
   @Column({ name: 'DIVISI' })
   divisi!: string;
@@ -59,4 +63,8 @@ export class UnassignView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'VOLUME' })
   volume?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
 }
