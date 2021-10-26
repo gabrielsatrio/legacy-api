@@ -40,6 +40,10 @@ export class AssignRequisitionView extends BaseEntity {
   @Column({ name: 'ROLL_QTY' })
   rollQty!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'SPACE' })
+  space?: number;
+
   @Field()
   @Column({ name: 'WEIGHT' })
   weight!: number;
@@ -103,4 +107,8 @@ export class AssignRequisitionView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NOMOR_RESI' })
   nomorResi?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
 }
