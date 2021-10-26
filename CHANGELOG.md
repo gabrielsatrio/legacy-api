@@ -1,3 +1,10 @@
+<a name="1.2.2"></a>
+# [1.2.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/49) (2021-10-26)
+
+### Features
+
+* [**T001**] SPT: Add "via" column for requisition resolver and related views
+*
 <a name="1.2.1"></a>
 # [1.2.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/47) (2021-10-23)
 
