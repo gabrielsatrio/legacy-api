@@ -12,14 +12,26 @@ export class RequisitionInput implements Partial<Requisition> {
   destinationId!: string;
 
   @Field()
+  ds!: string;
+
+  @Field({ nullable: true })
+  divisi?: string;
+
+  @Field()
   @Length(1, 10)
   customerId!: string;
+
+  @Field({ nullable: true })
+  via?: string;
 
   @Field()
   requisitionDate!: Date;
 
   @Field()
   rollQty!: number;
+
+  @Field({ nullable: true })
+  space?: number;
 
   @Field({ nullable: true })
   meter?: number;

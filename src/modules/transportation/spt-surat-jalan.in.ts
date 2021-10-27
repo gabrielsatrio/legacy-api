@@ -23,4 +23,10 @@ export class SuratJalanInput implements Partial<SuratJalan> {
 
   @Field({ nullable: true })
   licensePlate?: string;
+
+  @Field({ nullable: true })
+  nopolLangsir?: string;
+
+  @Field({ nullable: true })
+  driverName?: string;
 }
