@@ -21,8 +21,12 @@ export class SparePartReqLineMachView extends BaseEntity {
   machineId!: string;
 
   @Field()
-  @Column({ name: 'MACHINE_DESC' })
-  machineDesc!: string;
+  @Column({ name: 'MACHINE' })
+  machine!: string;
+
+  @Field()
+  @Column({ name: 'LOCATION_NO' })
+  locationNo!: string;
 
   @Field()
   @Column({ name: 'CONTRACT' })

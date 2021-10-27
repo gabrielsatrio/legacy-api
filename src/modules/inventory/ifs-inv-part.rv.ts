@@ -1,16 +1,27 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Brackets } from 'typeorm';
-import { InventoryPart } from './entities/ifs-inv-part.vw';
+import { Brackets, In, Like } from 'typeorm';
+import { InventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 
-@Resolver(InventoryPart)
-export class ShopOrderResolver {
-  @Query(() => [InventoryPart], { nullable: true })
+@Resolver(InventoryPartView)
+export class InventoryPartResolver {
+  @Query(() => [InventoryPartView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getInventoryPartsByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<InventoryPartView[] | undefined> {
+    return await InventoryPartView.find({
+      where: { contract: In(contract), partStatus: 'A' },
+      order: { partNo: 'ASC', contract: 'ASC' }
+    });
+  }
+
+  @Query(() => [InventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getPartMaster(
     @Arg('contract') contract: string
-  ): Promise<InventoryPart[] | undefined> {
-    return await InventoryPart.createQueryBuilder('IP')
+  ): Promise<InventoryPartView[] | undefined> {
+    return await InventoryPartView.createQueryBuilder('IP')
       .where('IP.CONTRACT = :contract', { contract: contract })
       .andWhere(
         new Brackets((qb) => {
@@ -26,14 +37,14 @@ export class ShopOrderResolver {
       .getMany();
   }
 
-  @Query(() => [InventoryPart], { nullable: true })
+  @Query(() => [InventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getDDPAllComponentPart(
     @Arg('contract') contract: string,
     @Arg('partNoOne') partNoOne: string,
     @Arg('partNoTwo') partNoTwo: string
-  ): Promise<InventoryPart[] | undefined> {
-    return await InventoryPart.createQueryBuilder('IP')
+  ): Promise<InventoryPartView[] | undefined> {
+    return await InventoryPartView.createQueryBuilder('IP')
       .where('IP.CONTRACT = :contract', { contract: contract })
       .andWhere(
         new Brackets((qb) => {
@@ -48,24 +59,35 @@ export class ShopOrderResolver {
       .getMany();
   }
 
-  @Query(() => [InventoryPart], { nullable: true })
+  @Query(() => [InventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getAllByPartNo(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
-  ): Promise<InventoryPart[] | undefined> {
-    return await InventoryPart.createQueryBuilder('IP')
+  ): Promise<InventoryPartView[] | undefined> {
+    return await InventoryPartView.createQueryBuilder('IP')
       .where('IP.CONTRACT = :contract', { contract: contract })
       .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
       .andWhere(`IP.PART_STATUS = 'A'`)
       .getMany();
   }
 
-  @Query(() => InventoryPart, { nullable: true })
+  @Query(() => InventoryPartView, { nullable: true })
   @UseMiddleware(isAuth)
   async getInventoryPartByObjId(
     @Arg('objId') objId: string
-  ): Promise<InventoryPart | undefined> {
-    return await InventoryPart.findOne(objId);
+  ): Promise<InventoryPartView | undefined> {
+    return await InventoryPartView.findOne(objId);
+  }
+
+  @Query(() => [InventoryPartView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getSparePartsByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<InventoryPartView[] | undefined> {
+    return await InventoryPartView.find({
+      where: { contract: In(contract), partStatus: 'A', partNo: Like('S__-%') },
+      order: { partNo: 'ASC', contract: 'ASC' }
+    });
   }
 }

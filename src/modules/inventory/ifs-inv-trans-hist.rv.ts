@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { InventoryTransactionHistory } from './entities/ifs-inv-trans-hist.vw';
+import { InventoryTransactionHistory } from '../inventory/entities/ifs-inv-trans-hist.vw';
 
 @Resolver(InventoryTransactionHistory)
 export class TransactionHistoryResolver {
