@@ -1,3 +1,11 @@
+<a name="1.2.3"></a>
+# [1.2.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/51) (2021-11-01)
+
+### Features
+
+* [**T001**] SPT: Add contract param for assignViews & unassignViews query
+* [**T001**] SPT: Add lock requisition module for kendaraan
+
 <a name="1.2.2"></a>
 # [1.2.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/49) (2021-10-26)
 
