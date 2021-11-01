@@ -44,6 +44,18 @@ export class RequisitionResolver {
     return await Requisition.findOne(requisitionId);
   }
 
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAssignStatus(@Arg('reqNo') reqNo: string): Promise<string> {
+    try {
+      const sql = `SELECT GBR_SPT_API.IS_ASSIGNED(:reqNo) AS "status" FROM DUAL`;
+      const result = await getConnection().query(sql, [reqNo]);
+      return result[0].status;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async createRequisition(
