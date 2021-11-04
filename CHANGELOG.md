@@ -1,9 +1,9 @@
 <a name="1.2.4"></a>
-# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/51) (2021-11-01)
+# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-01)
 
 ### Features
 
-* [**M002**] SPT:kolom NO menjadi mandatory
+* [**M002**] DDP:kolom NO menjadi mandatory
 
 
 <a name="1.2.3"></a>
