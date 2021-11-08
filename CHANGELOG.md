@@ -6,7 +6,7 @@
 * [**M002**] DDP:bug fix api timbangan auxiliaries when same part occur + add input
 
 <a name="1.2.4"></a>
-# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-01)
+# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-04)
 
 ### Features
 
