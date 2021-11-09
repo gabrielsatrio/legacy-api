@@ -44,6 +44,18 @@ export class RequisitionResolver {
     return await Requisition.findOne(requisitionId);
   }
 
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAssignStatus(@Arg('reqNo') reqNo: string): Promise<string> {
+    try {
+      const sql = `SELECT GBR_SPT_API.IS_ASSIGNED(:reqNo) AS "status" FROM DUAL`;
+      const result = await getConnection().query(sql, [reqNo]);
+      return result[0].status;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => Requisition)
   @UseMiddleware(isAuth)
   async createRequisition(
@@ -53,16 +65,18 @@ export class RequisitionResolver {
     try {
       const createdBy: string = req.session.username;
       const sql = `
-      BEGIN
-        GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
-      END;
-    `;
+        BEGIN
+          GBR_SPT_API.Create_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :via, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes, :createdBy, :outRequisitionNo);
+        END;
+      `;
+
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
         '',
         input.divisi,
         input.customerId,
+        input.via,
         input.requisitionDate,
         input.rollQty,
         input.space,
@@ -91,16 +105,18 @@ export class RequisitionResolver {
       const requisition = await Requisition.findOne({ reqNo: input.reqNo });
       if (!requisition) throw new Error('No data found');
       const sql = `
-    BEGIN
-      GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
-    END;
-  `;
+        BEGIN
+          GBR_SPT_API.Update_Requisition(:reqNo, :destinationId, :ds, :divisi, :customerId, :via, :requisitionDate, :rollQty, :space, :meter, :weight, :volume, :contract, :notes,  :outRequisitionNo);
+        END;
+      `;
+
       const result = await getConnection().query(sql, [
         input.reqNo,
         input.destinationId,
         input.ds,
         input.divisi,
         input.customerId,
+        input.via,
         input.requisitionDate,
         input.rollQty,
         input.space,

@@ -212,8 +212,7 @@ export class AssignDetailResolver {
       const data = await AssignDetail.findOne({
         assignId: input.assignId,
         reqNo: input.reqNo,
-        assignDate: input.assignDate,
-        requisitionDate: input.requisitionDate
+        assignDate: input.assignDate
       });
       if (!data) throw new Error('No data found.');
       await getConnection().query(sql, [

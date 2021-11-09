@@ -10,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Assign } from './entities/spt-assign';
 import { AssignInput } from './spt-assign.in';
 
@@ -18,8 +18,11 @@ import { AssignInput } from './spt-assign.in';
 export class AssignResolver {
   @Query(() => [Assign])
   @UseMiddleware(isAuth)
-  async getAllAssigns(): Promise<Assign[] | undefined> {
-    return await Assign.find();
+  async getAllAssigns(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<Assign[] | undefined> {
+    return await Assign.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => Assign, { nullable: true })

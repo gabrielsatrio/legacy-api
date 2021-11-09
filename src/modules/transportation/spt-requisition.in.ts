@@ -21,6 +21,9 @@ export class RequisitionInput implements Partial<Requisition> {
   @Length(1, 10)
   customerId!: string;
 
+  @Field({ nullable: true })
+  via?: string;
+
   @Field()
   requisitionDate!: Date;
 

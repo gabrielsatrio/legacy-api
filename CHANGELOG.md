@@ -1,3 +1,33 @@
+<a name="1.2.5"></a>
+# [1.2.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/55) (2021-11-08)
+
+### Features
+
+* [**M002**] DDP:bug fix api timbangan auxiliaries when same part occur + add input
+
+<a name="1.2.4"></a>
+# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-04)
+
+### Features
+
+* [**M002**] DDP:kolom NO menjadi mandatory
+
+
+<a name="1.2.3"></a>
+# [1.2.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/51) (2021-11-01)
+
+### Features
+
+* [**T001**] SPT: Add contract param for assignViews & unassignViews query
+* [**T001**] SPT: Add lock requisition module for kendaraan
+
+<a name="1.2.2"></a>
+# [1.2.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/49) (2021-10-26)
+
+### Features
+
+* [**T001**] SPT: Add "via" column for requisition resolver and related views
+
 <a name="1.2.1"></a>
 # [1.2.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/47) (2021-10-23)
 
@@ -22,9 +52,11 @@
 * [**T001**] SPT: Add expedition name and vehicle name column for assign requisition view
 
 <a name="1.1.4"></a>
+
 # [1.1.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/41) (2021-10-07)
 
 ### BREAKING CHANGES
+
 * Modify deployment script `deploy.sh` to execute the script inside the server
 
 ### Features

@@ -103,7 +103,8 @@ export class BPOAuxiliariesResolver {
       contract: input.contract,
       idNo: input.idNo,
       kuCount: input.kuCount,
-      partNo: input.partNo
+      partNo: input.partNo,
+      no: input.no
     });
 
     if (!BPO) {
@@ -125,6 +126,7 @@ export class BPOAuxiliariesResolver {
         :orderNo,
         :kuCount,
         :beratAktual,
+        :no,
         :qtyLot,
         :qtyLot2,
         :outContract, :outIdNo, :outKuCount);
@@ -147,6 +149,7 @@ export class BPOAuxiliariesResolver {
         input.beratAktual,
         input.qtyLot,
         input.qtyLot2,
+        input.no,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
