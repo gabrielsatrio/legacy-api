@@ -8,6 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { getConnection } from 'typeorm';
 import { SparePartReqLineInput } from './apm-sp-requisition-line.in';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
@@ -32,6 +33,20 @@ export class SparePartReqLineResolver {
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineView | undefined> {
     return await SparePartReqLineView.findOne({ requisitionId, lineItemNo });
+  }
+
+  @Query(() => Int)
+  @UseMiddleware(isAuth)
+  async getNewSPReqLineNo(
+    @Arg('requisitionId', () => Int) requistionId: number
+  ): Promise<number> {
+    try {
+      const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Get_New_Line_No(:requisitionId) AS "newLineNo" FROM DUAL`;
+      const result = await getConnection().query(sql, [requistionId]);
+      return result[0].newLineNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => SparePartReqLine)
@@ -85,6 +100,24 @@ export class SparePartReqLineResolver {
       if (!data) throw new Error('No data found.');
       await SparePartReqLine.delete({ requisitionId, lineItemNo });
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async isSPReqLineValid(
+    @Arg('requisitionId', () => Int) requistionId: number,
+    @Arg('lineItemNo', () => Int) lineItemNo: number
+  ): Promise<boolean> {
+    try {
+      const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Is_Valid(:requisitionId, :lineItemNo) AS "isValid" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        requistionId,
+        lineItemNo
+      ]);
+      return result[0].isValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }

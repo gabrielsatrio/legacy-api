@@ -8,6 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { getConnection } from 'typeorm';
 import { SparePartReqLineMachInput } from './apm-sp-requisition-line-mach.in';
 import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mach.vw';
@@ -38,6 +39,24 @@ export class SparePartReqLineMachResolver {
       lineItemNo,
       mapNo
     });
+  }
+
+  @Query(() => Int)
+  @UseMiddleware(isAuth)
+  async getNewSPReqLineMachMapNo(
+    @Arg('requisitionId', () => Int) requistionId: number,
+    @Arg('lineItemNo', () => Int) lineItemNo: number
+  ): Promise<number> {
+    try {
+      const sql = `SELECT ROB_APM_SPart_Req_Line_Mac_API.Get_New_Map_No(:requisitionId, :lineItemNo) AS "newMapNo" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        requistionId,
+        lineItemNo
+      ]);
+      return result[0].newMapNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => SparePartReqLineMach)
