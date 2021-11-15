@@ -1,3 +1,10 @@
+<a name="1.2.6"></a>
+# [1.2.6](https://gitlab.com/atjdev/ezio-api/-/merge_requests/57) (2021-11-15)
+
+### Features
+
+* [**M002**] DDP:penambahan untuk advance search
+
 <a name="1.2.5"></a>
 # [1.2.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/55) (2021-11-08)
 
