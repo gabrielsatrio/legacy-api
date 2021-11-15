@@ -34,6 +34,10 @@ export class HeadResep extends BaseEntity {
   tanggalCelup!: Date;
 
   @Field({ nullable: true })
+  @CreateDateColumn({ name: 'TANGGAL_CELUP' })
+  tanggalCelupBetween!: Date;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 
