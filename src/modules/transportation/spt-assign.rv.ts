@@ -36,10 +36,13 @@ export class AssignResolver {
 
   @Query(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
-  async getMaxAssignId(@Arg('tipe') tipe: string): Promise<any | undefined> {
+  async getMaxAssignId(
+    @Arg('tipe') tipe: string,
+    @Arg('assignDate') assignDate: Date
+  ): Promise<any | undefined> {
     try {
-      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS "assignId" FROM DUAL`;
-      const result = await getConnection().query(sql, [tipe]);
+      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe, :assignDate) AS "assignId" FROM DUAL`;
+      const result = await getConnection().query(sql, [tipe, assignDate]);
       const assignId = result[0].assignId;
       return { assignId };
     } catch (err) {
