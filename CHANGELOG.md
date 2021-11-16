@@ -3,28 +3,28 @@
 
 ### Features
 
-* [**T001**] SPT:penambahan untuk advanced search
+* [**T001**] SPT: Penambahan untuk advanced search
 
 <a name="1.2.6"></a>
 # [1.2.6](https://gitlab.com/atjdev/ezio-api/-/merge_requests/57) (2021-11-15)
 
 ### Features
 
-* [**M002**] DDP:penambahan untuk advance search
+* [**M002**] DDP: Penambahan untuk advance search
 
 <a name="1.2.5"></a>
 # [1.2.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/55) (2021-11-08)
 
 ### Features
 
-* [**M002**] DDP:bug fix api timbangan auxiliaries when same part occur + add input
+* [**M002**] DDP: Bug fix api timbangan auxiliaries when same part occur + add input
 
 <a name="1.2.4"></a>
 # [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-04)
 
 ### Features
 
-* [**M002**] DDP:kolom NO menjadi mandatory
+* [**M002**] DDP: Kolom NO menjadi mandatory
 
 
 <a name="1.2.3"></a>
