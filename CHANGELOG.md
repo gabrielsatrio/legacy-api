@@ -1,3 +1,10 @@
+<a name="1.2.7"></a>
+# [1.2.7](https://gitlab.com/atjdev/ezio-api/-/merge_requests/59) (2021-11-16)
+
+### Features
+
+* [**T001**] SPT:penambahan untuk advanced search
+
 <a name="1.2.6"></a>
 # [1.2.6](https://gitlab.com/atjdev/ezio-api/-/merge_requests/57) (2021-11-15)
 
