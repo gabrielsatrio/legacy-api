@@ -81,6 +81,10 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'LOT_SIZE' })
   lotSize?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'PRINT_AUX' })
+  printAux?: number;
+
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {
     nullable: true
