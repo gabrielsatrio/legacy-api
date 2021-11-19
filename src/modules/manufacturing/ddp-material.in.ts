@@ -74,4 +74,8 @@ export class MaterialInput implements Partial<Material> {
   @Field({ nullable: true })
   @MaxLength(300)
   jmlMediaCelup2?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(300)
+  lotBahan?: string;
 }
