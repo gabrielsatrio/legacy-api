@@ -1,3 +1,11 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/63) (2021-11-18)
+
+### Features
+
+* [**M002**] DDP: Penambahan kolom, untuk feature lot bahan benang
+* [**M002**] DDP: Penambahan virtual kolom, untuk feature total netto timbangan 1 dan 2
+
 <a name="1.2.8"></a>
 # [1.2.8](https://gitlab.com/atjdev/ezio-api/-/merge_requests/61) (2021-11-18)
 

@@ -95,6 +95,22 @@ export class Material extends BaseEntity {
   @Column({ name: 'JML_MEDIA_CELUP2' })
   jmlMediaCelup2?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_BAHAN' })
+  lotBahan!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TARA_TOTAL', update: false })
+  total_tara?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BRUTO_TOTAL', update: false })
+  total_bruto?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NETTO_TOTAL', update: false })
+  total_netto?: number;
+
   @Field(() => [MaterialUse], { nullable: true })
   @OneToMany(() => MaterialUse, (materialUse) => materialUse.material, {
     nullable: true
