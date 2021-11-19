@@ -101,15 +101,15 @@ export class Material extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'TARA_TOTAL', update: false })
-  total_tara?: number;
+  totalTara?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'BRUTO_TOTAL', update: false })
-  total_bruto?: number;
+  totalBruto?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'NETTO_TOTAL', update: false })
-  total_netto?: number;
+  totalNetto?: number;
 
   @Field(() => [MaterialUse], { nullable: true })
   @OneToMany(() => MaterialUse, (materialUse) => materialUse.material, {
