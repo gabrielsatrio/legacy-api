@@ -1,6 +1,6 @@
 {
   "name": "ezio-api",
-  "version": "1.2.7",
+  "version": "1.3.0",
   "description": "EZIO - API Server",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
