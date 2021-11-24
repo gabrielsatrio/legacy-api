@@ -193,7 +193,7 @@ export class AssignDetailResolver {
         input.licensePlate,
         input.driverName,
         input.nomorResi,
-        input.isNormalPrice ? input.isNormalPrice : 'Y',
+        input.isNormalPrice,
         input.totalPrice,
         input.nopolLangsir,
         input.ppn,
