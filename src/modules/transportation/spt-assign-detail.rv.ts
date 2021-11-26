@@ -72,6 +72,27 @@ export class AssignDetailResolver {
     }
   }
 
+  @Query(() => AssignDetail, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getIsNormalPrice(
+    @Arg('reqNo') reqNo: string,
+    @Arg('expeditionId') expeditionId: string,
+    @Arg('vehicleId') vehicleId: string
+  ): Promise<any | undefined> {
+    try {
+      const sql = `SELECT GBR_SPT_API.IS_NORMAL_PRICE(:reqNo, :expeditionId, :vehicleId) as "isNormalPrice" from dual`;
+      let isNormalPrice = await getConnection().query(sql, [
+        reqNo,
+        expeditionId,
+        vehicleId
+      ]);
+      isNormalPrice = isNormalPrice[0].isNormalPrice;
+      return { isNormalPrice };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => AssignDetail)
   @UseMiddleware(isAuth)
   async createAssignDetail(
@@ -172,7 +193,7 @@ export class AssignDetailResolver {
         input.licensePlate,
         input.driverName,
         input.nomorResi,
-        input.isNormalPrice ? input.isNormalPrice : 'Y',
+        input.isNormalPrice,
         input.totalPrice,
         input.nopolLangsir,
         input.ppn,

@@ -20,6 +20,14 @@ export class AssignRequisitionResolver {
     });
   }
 
+  @Query(() => [AssignRequisitionView])
+  @UseMiddleware(isAuth)
+  async getAllAssignRequisitionViewsNoFilter(): Promise<
+    AssignRequisitionView[] | undefined
+  > {
+    return await AssignRequisitionView.find();
+  }
+
   @Query(() => AssignRequisitionView, { nullable: true })
   @UseMiddleware(isAuth)
   async getAssignRequisitionView(

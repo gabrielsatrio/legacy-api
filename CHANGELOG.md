@@ -1,3 +1,10 @@
+<a name="1.3.1"></a>
+# [1.3.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/65) (2021-11-26)
+
+### Features
+
+* [**T001**] SPT: Penambahan query utk view assignment user gudang
+
 <a name="1.3.0"></a>
 # [1.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/63) (2021-11-18)
 
