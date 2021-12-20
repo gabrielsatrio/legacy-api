@@ -24,7 +24,6 @@ export class WindingQCResolver {
   ): Promise<WindingQC | undefined> {
     const sql = `SELECT max(id_no)+1 as "id" from CHR_WINDING_QC`;
     const result = await getConnection().query(sql);
-    console.log(result[0].id);
     try {
       const data = WindingQC.create({
         ...input,

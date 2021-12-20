@@ -23,4 +23,21 @@ export class TransactionHistoryResolver {
       })
       .getMany();
   }
+
+  @Query(() => [InventoryTransactionHistory], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getByLotBatchQC(
+    @Arg('contract') contract: string,
+    @Arg('lotBatchNo') lotBatchNo: string,
+    @Arg('transactionCode') transactionCode: string
+  ): Promise<InventoryTransactionHistory[] | undefined> {
+    return await InventoryTransactionHistory.createQueryBuilder('TH')
+      .where('TH.CONTRACT = :contract', { contract: contract })
+      .andWhere(`TH.LOT_BATCH_NO = :lotBatchNo`, { lotBatchNo: lotBatchNo })
+      .andWhere(`TH.TRANSACTION_CODE =:transactionCode`, {
+        transactionCode: transactionCode
+      })
+      .andWhere(`TH.QTY_REVERSED= 0`)
+      .getMany();
+  }
 }
