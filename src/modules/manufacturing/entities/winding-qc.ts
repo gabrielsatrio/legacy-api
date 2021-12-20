@@ -1,11 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn
-} from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CHR_WINDING_QC')
 @ObjectType()
@@ -24,11 +18,11 @@ export class WindingQC extends BaseEntity {
 
   @Field()
   @Column({ name: 'LOT_BATCH_NO' })
-  lot_batch_no!: string;
+  lotBatchNo!: string;
 
   @Field()
   @Column({ name: 'PIECE_NO' })
-  piece_no!: string;
+  pieceNo!: string;
 
   @Field()
   @Column({ name: 'GROSS' })
@@ -75,7 +69,7 @@ export class WindingQC extends BaseEntity {
   mesin?: string;
 
   @Field({ nullable: true })
-  @CreateDateColumn({ name: 'TANGGAL' })
+  @Column({ name: 'TANGGAL' })
   tanggal?: Date;
 
   @Field({ nullable: true })
@@ -84,5 +78,5 @@ export class WindingQC extends BaseEntity {
 
   @Field()
   @PrimaryColumn({ name: 'ID_NO' })
-  idNo!: string;
+  idNo!: number;
 }
