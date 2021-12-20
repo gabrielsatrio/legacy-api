@@ -22,12 +22,17 @@ export class WindingQCResolver {
   async createWinding(
     @Arg('input') input: WindingQCInput
   ): Promise<WindingQC | undefined> {
-    const sql = `SELECT max(id_no)+1 as "id" from CHR_WINDING_QC`;
+    const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_WINDING_QC`;
     const result = await getConnection().query(sql);
+
+    const currenTRoll = `SELECT nvl(max(roll_no)+1,1) as "id" from CHR_WINDING_QC
+                        where trunc(tanggal) = trunc(sysdate) `;
+    const resultRoll = await getConnection().query(currenTRoll);
     try {
       const data = WindingQC.create({
         ...input,
-        idNo: result[0].id
+        idNo: result[0].id,
+        rollNo: resultRoll[0].id
       });
       const results = await WindingQC.save(data);
       return results;

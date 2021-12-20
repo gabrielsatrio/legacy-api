@@ -8,8 +8,8 @@ export class WindingQCInput implements Partial<WindingQC> {
   @Length(1, 5)
   contract!: string;
 
-  @Field()
-  rollNo!: number;
+  @Field({ nullable: true })
+  rollNo?: number;
 
   @Field()
   @Length(1, 100)
@@ -66,7 +66,6 @@ export class WindingQCInput implements Partial<WindingQC> {
   mesin?: string;
 
   @Field({ nullable: true })
-  @MaxLength(100)
   tanggal?: Date;
 
   @Field({ nullable: true })
