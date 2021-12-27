@@ -1,5 +1,5 @@
 <a name="1.4.0"></a>
-# [1.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/67) (2021-12-27)
+# [1.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/68) (2021-12-27)
 
 ### Features
 
