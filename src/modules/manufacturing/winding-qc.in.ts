@@ -1,5 +1,5 @@
 import { Length, MaxLength } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { WindingQC } from './entities/winding-qc';
 
 @InputType()
@@ -72,6 +72,6 @@ export class WindingQCInput implements Partial<WindingQC> {
   @MaxLength(100)
   shift?: string;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   idNo?: number;
 }

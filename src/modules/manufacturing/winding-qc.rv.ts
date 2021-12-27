@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { getConnection, In } from 'typeorm';
 import { WindingQC } from './entities/winding-qc';
 import { WindingQCInput } from './winding-qc.in';
@@ -81,7 +88,7 @@ export class WindingQCResolver {
   @Mutation(() => WindingQC)
   @UseMiddleware(isAuth)
   async deleteWinding(
-    @Arg('idNo') idNo: number,
+    @Arg('idNo', () => Int) idNo: number,
     @Arg('contract') contract: string
   ): Promise<WindingQC> {
     try {
