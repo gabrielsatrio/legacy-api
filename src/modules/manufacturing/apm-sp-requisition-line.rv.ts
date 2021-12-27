@@ -11,6 +11,7 @@ import {
 import { getConnection } from 'typeorm';
 import { SparePartReqLineInput } from './apm-sp-requisition-line.in';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
+import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
 
 @Resolver(SparePartReqLine)
@@ -98,6 +99,23 @@ export class SparePartReqLineResolver {
         lineItemNo
       });
       if (!data) throw new Error('No data found.');
+      const detailData = await SparePartReqLineMach.find({
+        requisitionId,
+        lineItemNo
+      });
+      await Promise.all(
+        detailData.map(async (item) => {
+          try {
+            await SparePartReqLineMach.delete({
+              requisitionId: item.requisitionId,
+              lineItemNo: item.lineItemNo,
+              mapNo: item.mapNo
+            });
+          } catch (err) {
+            throw new Error(mapError(err));
+          }
+        })
+      );
       await SparePartReqLine.delete({ requisitionId, lineItemNo });
       return data;
     } catch (err) {

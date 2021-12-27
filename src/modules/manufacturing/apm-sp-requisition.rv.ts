@@ -11,8 +11,10 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
+import { SparePartReqLineResolver } from './apm-sp-requisition-line.rv';
 import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
+import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartRequisitionView } from './entities/apm-sp-requisition.vw';
 
 @Resolver(SparePartRequisition)
@@ -105,6 +107,20 @@ export class SparePartRequisitionResolver {
     try {
       const data = await SparePartRequisition.findOne({ requisitionId });
       if (!data) throw new Error('No data found.');
+      const detailData = await SparePartReqLine.find({ requisitionId });
+      const SPReqLine = new SparePartReqLineResolver();
+      await Promise.all(
+        detailData.map(async (item) => {
+          try {
+            await SPReqLine.deleteSPRequisitionLine(
+              item.requisitionId,
+              item.lineItemNo
+            );
+          } catch (err) {
+            throw new Error(mapError(err));
+          }
+        })
+      );
       await SparePartRequisition.delete({ requisitionId });
       return data;
     } catch (err) {
