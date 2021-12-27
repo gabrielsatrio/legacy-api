@@ -17,6 +17,18 @@ export class WindingQCResolver {
     });
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getStatusLot(
+    @Arg('lotBatchNo') lotBatchNo: string
+  ): Promise<number | undefined> {
+    const currentQuery = `SELECT distinct count(*) as "stat" from CHR_WINDING_QC
+                        where lot_batch_no = :lotBatchNo `;
+    const isFound = await getConnection().query(currentQuery, [lotBatchNo]);
+
+    return isFound[0].stat;
+  }
+
   @Mutation(() => WindingQC)
   @UseMiddleware(isAuth)
   async createWinding(
@@ -26,8 +38,10 @@ export class WindingQCResolver {
     const result = await getConnection().query(sql);
 
     const currenTRoll = `SELECT nvl(max(roll_no)+1,1) as "id" from CHR_WINDING_QC
-                        where trunc(tanggal) = trunc(sysdate) `;
-    const resultRoll = await getConnection().query(currenTRoll);
+                        where trunc(tanggal) = trunc(:tanggal) `;
+    const resultRoll = await getConnection().query(currenTRoll, [
+      input.tanggal
+    ]);
     try {
       const data = WindingQC.create({
         ...input,
