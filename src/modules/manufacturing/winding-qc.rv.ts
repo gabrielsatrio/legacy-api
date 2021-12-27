@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { mapError } from '../../utils/map-error';
 import { WindingQC } from './entities/winding-qc';
 import { WindingQCInput } from './winding-qc.in';
 
@@ -22,11 +22,15 @@ export class WindingQCResolver {
   async getStatusLot(
     @Arg('lotBatchNo') lotBatchNo: string
   ): Promise<number | undefined> {
-    const currentQuery = `SELECT distinct count(*) as "stat" from CHR_WINDING_QC
+    try {
+      const currentQuery = `SELECT distinct count(*) as "stat" from CHR_WINDING_QC
                         where lot_batch_no = :lotBatchNo `;
-    const isFound = await getConnection().query(currentQuery, [lotBatchNo]);
+      const isFound = await getConnection().query(currentQuery, [lotBatchNo]);
 
-    return isFound[0].stat;
+      return isFound[0].stat;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => WindingQC)
@@ -34,15 +38,15 @@ export class WindingQCResolver {
   async createWinding(
     @Arg('input') input: WindingQCInput
   ): Promise<WindingQC | undefined> {
-    const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_WINDING_QC`;
-    const result = await getConnection().query(sql);
-
-    const currenTRoll = `SELECT nvl(max(roll_no)+1,1) as "id" from CHR_WINDING_QC
-                        where trunc(tanggal) = trunc(:tanggal) `;
-    const resultRoll = await getConnection().query(currenTRoll, [
-      input.tanggal
-    ]);
     try {
+      const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_WINDING_QC`;
+      const result = await getConnection().query(sql);
+
+      const currenTRoll = `SELECT nvl(max(roll_no)+1,1) as "id" from CHR_WINDING_QC
+                        where trunc(tanggal) = trunc(:tanggal) `;
+      const resultRoll = await getConnection().query(currenTRoll, [
+        input.tanggal
+      ]);
       const data = WindingQC.create({
         ...input,
         idNo: result[0].id,

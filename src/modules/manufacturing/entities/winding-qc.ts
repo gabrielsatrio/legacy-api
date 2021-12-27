@@ -5,6 +5,9 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class WindingQC extends BaseEntity {
   @Field()
+  @PrimaryColumn({ name: 'ID_NO' })
+  idNo!: number;
+  @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
 
@@ -75,8 +78,4 @@ export class WindingQC extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'SHIFT' })
   shift?: string;
-
-  @Field()
-  @PrimaryColumn({ name: 'ID_NO' })
-  idNo!: number;
 }
