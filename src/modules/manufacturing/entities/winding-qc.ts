@@ -7,6 +7,7 @@ export class WindingQC extends BaseEntity {
   @Field(() => Int)
   @PrimaryColumn({ name: 'ID_NO' })
   idNo!: number;
+  
   @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
