@@ -1,3 +1,10 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/68) (2021-12-27)
+
+### Features
+
+* [**M004**] WindingQc: penambahan BE untuk module WindingQc
+
 <a name="1.3.1"></a>
 # [1.3.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/65) (2021-11-26)
 
