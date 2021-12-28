@@ -1,7 +1,14 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { mapError } from '@/utils/map-error';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { mapError } from '../../utils/map-error';
 import { BPPFInput } from './bppf.in';
 import { BPPF } from './entities/bppf';
 
@@ -20,10 +27,9 @@ export class BPPFResolver {
   @Mutation(() => BPPF)
   @UseMiddleware(isAuth)
   async createBPPF(@Arg('input') input: BPPFInput): Promise<BPPF | undefined> {
-    const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_BPPF`;
-    const result = await getConnection().query(sql);
-
     try {
+      const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_BPPF`;
+      const result = await getConnection().query(sql);
       const data = BPPF.create({
         ...input,
         idNo: result[0].id
@@ -57,7 +63,7 @@ export class BPPFResolver {
   @Mutation(() => BPPF)
   @UseMiddleware(isAuth)
   async deleteBPPF(
-    @Arg('idNo') idNo: number,
+    @Arg('idNo', () => Int) idNo: number,
     @Arg('contract') contract: string
   ): Promise<BPPF> {
     try {

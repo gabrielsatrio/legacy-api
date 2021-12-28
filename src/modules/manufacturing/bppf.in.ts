@@ -1,5 +1,5 @@
 import { Length, MaxLength } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { BPPF } from './entities/bppf';
 
 @InputType()
@@ -46,6 +46,6 @@ export class BPPFInput implements Partial<BPPF> {
   @MaxLength(200)
   keterangan?: string;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   idNo?: number;
 }

@@ -1,9 +1,12 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CHR_BPPF')
 @ObjectType()
 export class BPPF extends BaseEntity {
+  @Field(() => Int)
+  @PrimaryColumn({ name: 'ID_NO' })
+  idNo!: number;
   @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
@@ -47,8 +50,4 @@ export class BPPF extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'KETERANGAN' })
   keterangan?: string;
-
-  @Field()
-  @PrimaryColumn({ name: 'ID_NO' })
-  idNo!: number;
 }
