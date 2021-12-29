@@ -50,4 +50,8 @@ export class BPPF extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'KETERANGAN' })
   keterangan?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PRINT_ID' })
+  printId?: string;
 }
