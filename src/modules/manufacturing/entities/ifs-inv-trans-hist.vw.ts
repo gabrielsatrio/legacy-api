@@ -24,9 +24,17 @@ export class InventoryTransactionHistory extends BaseEntity {
   @Column({ name: 'QUANTITY' })
   quantity!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'CTM_GROSS_LENGTH' })
+  grossLength?: number;
+
   @Field()
   @Column({ name: 'TRANSACTION_CODE' })
   transactionCode!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CTM_PIECE_NO' })
+  ctmPieceNo?: string;
 
   @Field()
   @Column({ name: 'LOCATION_NO' })
