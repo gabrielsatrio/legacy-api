@@ -1,3 +1,10 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)
+
+### Features
+
+* [**M005**] BPPF: penambahan BE untuk module BPPF
+
 <a name="1.4.0"></a>
 # [1.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/68) (2021-12-27)
 
