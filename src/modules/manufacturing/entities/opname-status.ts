@@ -5,11 +5,15 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class OpnameStatus extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'OBJID' })
+  objId!: string;
+
+  @Field()
+  @Column({ name: 'CONTRACT' })
   contract!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'USERNAME' })
+  @Column({ name: 'USERNAME' })
   username!: string;
 
   @Field()
@@ -23,4 +27,16 @@ export class OpnameStatus extends BaseEntity {
   @Field()
   @Column({ name: 'STATUS' })
   status!: string;
+
+  @Field()
+  @Column({ name: 'DEPT' })
+  dept!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TYPE' })
+  type?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LOCATION_NO' })
+  locationNo?: string;
 }

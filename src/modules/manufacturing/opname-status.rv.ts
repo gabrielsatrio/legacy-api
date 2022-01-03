@@ -1,8 +1,10 @@
 import { isAuth } from '@/middlewares/is-auth';
-import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import oracledb from 'oracledb';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { mapError } from './../../utils/map-error';
 import { OpnameStatus } from './entities/opname-status';
+import { OpnameStatusInput } from './opname-status.in';
 
 @Resolver(OpnameStatus)
 export class OpnameStatusResolver {
@@ -28,20 +30,29 @@ export class OpnameStatusResolver {
     }
   }
 
+  @Mutation(() => OpnameStatus)
+  @UseMiddleware(isAuth)
   async startOpname(
-    @Arg('contract') contract: string,
-    @Arg('username') username: string,
-    @Arg('tanggal') tanggal: Date
+    @Arg('input') input: OpnameStatusInput
   ): Promise<any | undefined> {
     try {
-      const sql = `BEGIN GBR_STOCK_OPNAME_API.START_STOCK_OPNAME(:contract, :username, :tanggal)`;
+      const sql = `BEGIN GBR_FREEZE_OPNAME_API.Freeze_WIP(:objId, :contract, :username, :dept, :periode, :time, :type, :numOfLocation, :locationNo, :outObjId); END;`;
       const result = await getConnection().query(sql, [
-        contract,
-        username,
-        tanggal
+        input.objId,
+        input.contract,
+        input.username,
+        '',
+        input.periode,
+        input.time,
+        input.type,
+        input.numOfLocation,
+        input.locationNo,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
-      const status = result[0].STATUS;
-      return { status };
+      const outObjId = result[0] as string;
+
+      const data = OpnameStatus.findOne(outObjId);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -49,15 +60,15 @@ export class OpnameStatusResolver {
 
   async finishOpname(
     @Arg('contract') contract: string,
-    @Arg('username') username: string,
-    @Arg('tanggal') tanggal: Date
+    @Arg('periode') periode: Date,
+    @Arg('username') username: string
   ): Promise<any | undefined> {
     try {
-      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :username, :tanggal)`;
+      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username); END;`;
       const result = await getConnection().query(sql, [
         contract,
-        username,
-        tanggal
+        periode,
+        username
       ]);
       const status = result[0].STATUS;
       return { status };
