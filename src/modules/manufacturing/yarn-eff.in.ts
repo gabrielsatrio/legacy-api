@@ -18,10 +18,10 @@ export class YarnEffInput implements Partial<YarnEff> {
   shift!: string;
 
   @Field()
-  mesin!: string;
+  machine!: string;
 
   @Field()
-  keterangan!: string;
+  yarnType!: string;
 
   @Field()
   gradeA!: number;

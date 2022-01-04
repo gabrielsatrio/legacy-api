@@ -21,12 +21,12 @@ export class YarnEff extends BaseEntity {
   shift!: string;
 
   @Field()
-  @Column({ name: 'MESIN' })
-  mesin!: string;
+  @Column({ name: 'MACHINE' })
+  machine!: string;
 
   @Field()
-  @Column({ name: 'KETERANGAN' })
-  keterangan!: string;
+  @Column({ name: 'YARN_TYPE' })
+  yarnType!: string;
 
   @Field()
   @Column({ name: 'GRADE_A' })
