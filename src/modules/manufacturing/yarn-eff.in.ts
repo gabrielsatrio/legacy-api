@@ -15,6 +15,9 @@ export class YarnEffInput implements Partial<YarnEff> {
   reportDate?: Date;
 
   @Field()
+  employeeId!: string;
+
+  @Field()
   shift!: string;
 
   @Field()

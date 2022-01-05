@@ -17,6 +17,10 @@ export class YarnEff extends BaseEntity {
   reportDate!: Date;
 
   @Field()
+  @Column({ name: 'EMPLOYEE_ID' })
+  employeeId!: string;
+
+  @Field()
   @Column({ name: 'SHIFT' })
   shift!: string;
 
