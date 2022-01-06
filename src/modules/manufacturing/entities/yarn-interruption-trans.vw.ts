@@ -17,6 +17,10 @@ export class YarnInterruptionTransView extends BaseEntity {
   machine!: string;
 
   @Field()
+  @Column({ name: 'INTERRUPTION_ID' })
+  interruptionId!: string;
+
+  @Field()
   @Column({ name: 'INTERRUPTION' })
   interruption!: string;
 
