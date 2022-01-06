@@ -1,5 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
+import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
 import { YarnInterruptionTrans } from './entities/yarn-interruption-trans';
@@ -37,17 +38,44 @@ export class YarnInterruptionTransResolver {
 
   @Mutation(() => YarnInterruptionTrans, { nullable: true })
   @UseMiddleware(isAuth)
+  // async updateYarnInterruptionTrans(
+  //   @Arg('input') input: YarnInterruptionTransInput
+  // ): Promise<YarnInterruptionTrans | undefined> {
+  //   try {
+  //     const data = await YarnInterruptionTrans.findOne({
+  //       id: input.id
+  //     });
+  //     if (!data) throw new Error('No data found.');
+  //     YarnInterruptionTrans.merge(data, input);
+  //     const results = await YarnInterruptionTrans.save(data);
+  //     return results;
+  //   } catch (err) {
+  //     throw new Error(mapError(err));
+  //   }
+  // }
   async updateYarnInterruptionTrans(
     @Arg('input') input: YarnInterruptionTransInput
   ): Promise<YarnInterruptionTrans | undefined> {
     try {
-      const data = await YarnInterruptionTrans.findOne({
+      const yarnInterruptionTrans = await YarnInterruptionTrans.findOne({
         id: input.id
       });
-      if (!data) throw new Error('No data found.');
-      YarnInterruptionTrans.merge(data, input);
-      const results = await YarnInterruptionTrans.save(data);
-      return results;
+      if (!yarnInterruptionTrans) throw new Error('No data found.');
+      const sql = `BEGIN GBR_YARN_INTR_TRANS_API.Update_Yarn_Intr_Trans(:id, :contract, :machine, :interruptionId, :freq, :durationMinute, :reportDate, :outId); END;`;
+
+      const result = await getConnection().query(sql, [
+        input.id,
+        input.contract,
+        input.machine,
+        input.interruptionId,
+        input.freq,
+        input.durationMinute,
+        input.reportDate,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+      const outId = result[0];
+      const data = YarnInterruptionTrans.findOne({ id: outId });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
