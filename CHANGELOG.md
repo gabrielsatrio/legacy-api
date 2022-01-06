@@ -1,3 +1,10 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/72) (2021-12-29)
+
+### Features
+
+* [**M006**] Yarn Eff: Penambahan BE untuk module Efisiensi Benang
+
 <a name="1.5.0"></a>
 # [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)
 

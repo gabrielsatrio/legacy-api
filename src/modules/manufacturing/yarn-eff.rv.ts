@@ -5,7 +5,7 @@ import { In } from 'typeorm';
 import { YarnEff } from './entities/yarn-eff';
 import { YarnEffInput } from './yarn-eff.in';
 @Resolver(YarnEff)
-export class EffBenangResolver {
+export class YarnEffResolver {
   @Query(() => [YarnEff], { nullable: true })
   @UseMiddleware(isAuth)
   async getYarnEff(
