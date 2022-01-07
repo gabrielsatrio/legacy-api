@@ -59,6 +59,6 @@ export class SparePartRequisitionInput
   approverLv2!: string;
 
   @Field()
-  @IsIn(['Created', 'Partially Approved', 'Approved', 'Rejected'])
+  @IsIn(['Created', 'Submitted', 'Partially Approved', 'Approved', 'Rejected'])
   status!: string;
 }

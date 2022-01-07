@@ -23,7 +23,7 @@ export class EmployeeResolver {
   @UseMiddleware(isAuth)
   async getManagers(): Promise<EmployeeView[]> {
     return await EmployeeView.find({
-      where: { grade: MoreThanOrEqual(9) },
+      where: { grade: MoreThanOrEqual(7) }, // TODO: revert to grade 9 or more!!
       order: { name: 'ASC' }
     });
   }
