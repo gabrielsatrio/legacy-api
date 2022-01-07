@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Brackets } from 'typeorm';
+import { Brackets, getConnection } from 'typeorm';
+import { mapError } from './../../utils/map-error';
 import { InventoryPart } from './entities/ifs-inv-part.vw';
 
 @Resolver(InventoryPart)
@@ -67,5 +68,36 @@ export class ShopOrderResolver {
     @Arg('objId') objId: string
   ): Promise<InventoryPart | undefined> {
     return await InventoryPart.findOne(objId);
+  }
+
+  @Query(() => InventoryPart, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getPartDescByOrderNo(
+    @Arg('orderNo') orderNo: string
+  ): Promise<any | undefined> {
+    try {
+      const sql = `SELECT inventory_part_api.get_description(shop_ord_api.get_contract( :orderno, '*', '*'), shop_ord_api.get_part_no( :orderno, '*', '*')) as "description"
+      FROM   DUAL`;
+      const result = await getConnection().query(sql, [orderNo]);
+      const description = result[0].description;
+      return { description };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => InventoryPart, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getPartNoByOrderNo(
+    @Arg('orderNo') orderNo: string
+  ): Promise<any | undefined> {
+    try {
+      const sql = `select SHOP_ORD_API.GET_PART_NO(:orderNo, '*', '*')  as "partNo" from dual`;
+      const result = await getConnection().query(sql, [orderNo]);
+      const partNo = result[0].partNo;
+      return { partNo };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }
