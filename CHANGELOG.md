@@ -1,5 +1,5 @@
 <a name="1.7.0"></a>
-# [1.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/76) (2022-01-10)
+# [1.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/73) (2022-01-10)
 
 ### Features
 * [**M006**] YarnEff: Add new module Efisiensi Benang
