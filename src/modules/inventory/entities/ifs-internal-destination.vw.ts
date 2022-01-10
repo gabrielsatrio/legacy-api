@@ -9,10 +9,14 @@ export class IfsInternalDestinationView extends BaseEntity {
   destinationId!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
   @Column({ name: 'DESCRIPTION' })
   description!: string;
 
   @Field()
-  @Column({ name: 'OBJID' })
-  objId!: string;
+  @Column({ name: 'OBJKEY' })
+  objKey!: string;
 }

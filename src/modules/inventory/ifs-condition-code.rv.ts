@@ -6,7 +6,7 @@ import { IfsConditionCodeView } from './entities/ifs-condition-code.vw';
 export class IfsConditionCodeResolver {
   @Query(() => [IfsConditionCodeView], { nullable: true })
   @UseMiddleware(isAuth)
-  async getAllConditionCodes(): Promise<IfsConditionCodeView[] | undefined> {
+  async getConditionCodes(): Promise<IfsConditionCodeView[] | undefined> {
     return await IfsConditionCodeView.find({ order: { conditionCode: 'ASC' } });
   }
 }
