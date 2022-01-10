@@ -18,9 +18,8 @@ import { MachineView } from './entities/apm-machine.vw';
 export class MachineResolver {
   @Query(() => [MachineView])
   @UseMiddleware(isAuth)
-  async getAllMachines(
-    @Arg('contract', () => [String])
-    contract: string[]
+  async getMachinesByContract(
+    @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({
       where: { contract: In(contract) },
@@ -118,15 +117,23 @@ export class MachineResolver {
     @Arg('contract') contract: string
   ): Promise<Machine> {
     try {
-      const data = await Machine.findOne({
-        machineId,
-        contract
-      });
+      const data = await Machine.findOne({ machineId, contract });
       if (!data) throw new Error('No data found.');
       await Machine.delete({ machineId, contract });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [MachineView])
+  @UseMiddleware(isAuth)
+  async getUtilityMachinesByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<MachineView[] | undefined> {
+    return await MachineView.find({
+      where: { contract: In(contract), departmentId: 'MTC' },
+      order: { machineId: 'ASC' }
+    });
   }
 }

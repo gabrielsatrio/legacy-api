@@ -1,16 +1,16 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { InventoryPartInStock } from './entities/ifs-inv-part-in-stock.vw';
+import { IfsInventoryPartInStockView } from './entities/ifs-inv-part-in-stock.vw';
 
-@Resolver(InventoryPartInStock)
-export class InventoryPartInStockResolver {
-  @Query(() => [InventoryPartInStock], { nullable: true })
+@Resolver(IfsInventoryPartInStockView)
+export class IfsInventoryPartInStockResolver {
+  @Query(() => [IfsInventoryPartInStockView], { nullable: true })
   @UseMiddleware(isAuth)
   async getStockByContractAndPart(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
-  ): Promise<InventoryPartInStock[] | undefined> {
-    return await InventoryPartInStock.createQueryBuilder('IPIS')
+  ): Promise<IfsInventoryPartInStockView[] | undefined> {
+    return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
       .andWhere(`IPIS.LOCATION_NO like 'DYG%'`)

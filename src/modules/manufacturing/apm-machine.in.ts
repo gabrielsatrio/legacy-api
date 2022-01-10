@@ -1,22 +1,15 @@
-import {
-  IsDate,
-  IsIn,
-  IsNumber,
-  Length,
-  MaxLength,
-  MinLength
-} from 'class-validator';
+import { IsDate, IsIn, IsNumber, Length, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { Machine } from './entities/apm-machine';
 
 @InputType()
 export class MachineInput implements Partial<Machine> {
   @Field()
-  @MinLength(6)
+  @Length(6)
   machineId!: string;
 
   @Field()
-  @Length(3, 4)
+  @Length(3, 5)
   contract!: string;
 
   @Field()
@@ -24,7 +17,7 @@ export class MachineInput implements Partial<Machine> {
   description!: string;
 
   @Field()
-  @MinLength(2)
+  @Length(2)
   categoryId!: string;
 
   @Field()
@@ -32,7 +25,7 @@ export class MachineInput implements Partial<Machine> {
   type!: string;
 
   @Field()
-  @MinLength(2)
+  @Length(2)
   makerId!: string;
 
   @Field()
@@ -48,7 +41,7 @@ export class MachineInput implements Partial<Machine> {
   purchaseDate!: Date;
 
   @Field()
-  @MinLength(3)
+  @Length(3)
   departmentId!: string;
 
   @Field()
