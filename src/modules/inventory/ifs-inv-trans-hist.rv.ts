@@ -3,7 +3,7 @@ import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { IfsInventoryTransactionHistoryView } from '../inventory/entities/ifs-inv-trans-hist.vw';
 
 @Resolver(IfsInventoryTransactionHistoryView)
-export class TransactionHistoryResolver {
+export class IfsTransactionHistoryResolver {
   @Query(() => [IfsInventoryTransactionHistoryView], { nullable: true })
   @UseMiddleware(isAuth)
   async getTransactionHistory(

@@ -3,7 +3,7 @@ import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { IfsInventoryPartInStockView } from './entities/ifs-inv-part-in-stock.vw';
 
 @Resolver(IfsInventoryPartInStockView)
-export class InventoryPartInStockResolver {
+export class IfsInventoryPartInStockResolver {
   @Query(() => [IfsInventoryPartInStockView], { nullable: true })
   @UseMiddleware(isAuth)
   async getStockByContractAndPart(

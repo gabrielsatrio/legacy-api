@@ -4,7 +4,7 @@ import { In } from 'typeorm';
 import { IfsShopOrderView } from './entities/ifs-shop-ord.vw';
 
 @Resolver(IfsShopOrderView)
-export class ShopOrderResolver {
+export class IfsShopOrderResolver {
   @Query(() => [IfsShopOrderView], { nullable: true })
   @UseMiddleware(isAuth)
   async getShopOrder(

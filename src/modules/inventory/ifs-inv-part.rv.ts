@@ -4,7 +4,7 @@ import { Brackets, In, Like } from 'typeorm';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 
 @Resolver(IfsInventoryPartView)
-export class InventoryPartResolver {
+export class IfsInventoryPartResolver {
   @Query(() => [IfsInventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getInventoryPartsByContract(

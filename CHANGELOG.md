@@ -2,11 +2,12 @@
 # [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/74) (2022-01-10)
 
 ### BREAKING CHANGES
+* Chore: Update `typescript` from version `4.4.2` to version `4.4.4`.
 * Refactor: Move all files related to the inventory module into `/src/modules/inventory`.
 * Refactor: Rename all files related to the IFS tables or views to follow the conventions.
 
 ### Features
-* [**M001**] APM: Add some new entities for Spare Part Requisitions module.
+* [**M001**] APM: Add new entities, inputs, and resolvers for Spare Part Requisitions module.
 
 <a name="1.5.0"></a>
 # [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)

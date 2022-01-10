@@ -3,7 +3,7 @@ import { Query, Resolver, UseMiddleware } from 'type-graphql';
 import { IfsConditionCodeView } from './entities/ifs-condition-code.vw';
 
 @Resolver(IfsConditionCodeView)
-export class ConditionCodeResolver {
+export class IfsConditionCodeResolver {
   @Query(() => [IfsConditionCodeView], { nullable: true })
   @UseMiddleware(isAuth)
   async getAllConditionCodes(): Promise<IfsConditionCodeView[] | undefined> {
