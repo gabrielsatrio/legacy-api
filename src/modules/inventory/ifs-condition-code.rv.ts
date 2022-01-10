@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Query, Resolver, UseMiddleware } from 'type-graphql';
 import { IfsConditionCodeView } from './entities/ifs-condition-code.vw';
+
 @Resolver(IfsConditionCodeView)
 export class ConditionCodeResolver {
   @Query(() => [IfsConditionCodeView], { nullable: true })
