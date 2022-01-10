@@ -10,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { Assign } from './entities/spt-assign';
 import { AssignInput } from './spt-assign.in';
 
@@ -18,8 +18,11 @@ import { AssignInput } from './spt-assign.in';
 export class AssignResolver {
   @Query(() => [Assign])
   @UseMiddleware(isAuth)
-  async getAllAssigns(): Promise<Assign[] | undefined> {
-    return await Assign.find();
+  async getAllAssigns(
+    @Arg('contract', () => [String])
+    contract: string[]
+  ): Promise<Assign[] | undefined> {
+    return await Assign.find({ where: { contract: In(contract) } });
   }
 
   @Query(() => Assign, { nullable: true })
@@ -33,10 +36,13 @@ export class AssignResolver {
 
   @Query(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
-  async getMaxAssignId(@Arg('tipe') tipe: string): Promise<any | undefined> {
+  async getMaxAssignId(
+    @Arg('tipe') tipe: string,
+    @Arg('assignDate') assignDate: Date
+  ): Promise<any | undefined> {
     try {
-      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe) AS "assignId" FROM DUAL`;
-      const result = await getConnection().query(sql, [tipe]);
+      const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe, :assignDate) AS "assignId" FROM DUAL`;
+      const result = await getConnection().query(sql, [tipe, assignDate]);
       const assignId = result[0].assignId;
       return { assignId };
     } catch (err) {

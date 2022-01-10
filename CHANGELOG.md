@@ -3,8 +3,79 @@
 
 ### Features
 
-* [**T001**] SPT: Add "via" column for requisition resolver and related views
+* 
 
+<a name="1.5.0"></a>
+# [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)
+
+### Features
+
+* [**M005**] BPPF: penambahan BE untuk module BPPF
+
+<a name="1.4.0"></a>
+# [1.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/68) (2021-12-27)
+
+### Features
+
+* [**M004**] WindingQc: penambahan BE untuk module WindingQc
+
+<a name="1.3.1"></a>
+# [1.3.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/65) (2021-11-26)
+
+### Features
+
+* [**T001**] SPT: Penambahan query utk view assignment user gudang
+
+<a name="1.3.0"></a>
+# [1.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/63) (2021-11-18)
+
+### Features
+
+* [**M002**] DDP: Penambahan kolom, untuk feature lot bahan benang
+* [**M002**] DDP: Penambahan virtual kolom, untuk feature total netto timbangan 1 dan 2
+
+<a name="1.2.8"></a>
+# [1.2.8](https://gitlab.com/atjdev/ezio-api/-/merge_requests/61) (2021-11-18)
+
+### Features
+
+* [**M002**] DDP: Penambahan kolom, untuk menentukan status pengerjaan BPO (khusus AMI)
+
+<a name="1.2.7"></a>
+# [1.2.7](https://gitlab.com/atjdev/ezio-api/-/merge_requests/59) (2021-11-16)
+
+### Features
+
+* [**T001**] SPT: Penambahan untuk advanced search
+
+<a name="1.2.6"></a>
+# [1.2.6](https://gitlab.com/atjdev/ezio-api/-/merge_requests/57) (2021-11-15)
+
+### Features
+
+* [**M002**] DDP: Penambahan untuk advance search
+
+<a name="1.2.5"></a>
+# [1.2.5](https://gitlab.com/atjdev/ezio-api/-/merge_requests/55) (2021-11-08)
+
+### Features
+
+* [**M002**] DDP: Bug fix api timbangan auxiliaries when same part occur + add input
+
+<a name="1.2.4"></a>
+# [1.2.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/53) (2021-11-04)
+
+### Features
+
+* [**M002**] DDP: Kolom NO menjadi mandatory
+
+<a name="1.2.3"></a>
+# [1.2.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/51) (2021-11-01)
+
+### Features
+
+* [**T001**] SPT: Add contract param for assignViews & unassignViews query
+* [**T001**] SPT: Add lock requisition module for kendaraan
 
 <a name="1.2.2"></a>
 # [1.2.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/49) (2021-10-26)

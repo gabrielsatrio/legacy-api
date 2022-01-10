@@ -36,6 +36,10 @@ export class SuratJalan extends BaseEntity {
   @PrimaryColumn({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
 
+  @Field({ nullable: true })
+  @Column({ name: 'REQUISITION_DATE' })
+  requisitionDateBetween!: Date;
+
   @Field()
   @Column({ name: 'ROLL_QTY' })
   rollQty!: number;

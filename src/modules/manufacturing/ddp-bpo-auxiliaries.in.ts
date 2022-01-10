@@ -52,4 +52,7 @@ export class BPOAuxiliariesInput implements Partial<BPOAuxiliaries> {
 
   @Field({ nullable: true })
   statusReserve?: string;
+
+  @Field()
+  no!: number;
 }

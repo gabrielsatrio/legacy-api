@@ -16,6 +16,10 @@ export class AssignView extends BaseEntity {
   @PrimaryColumn({ name: 'ASSIGN_DATE' })
   assignDate!: Date;
 
+  @Field({ nullable: true })
+  @Column({ name: 'ASSIGN_DATE' })
+  assignDateBetween?: Date;
+
   @Field()
   @PrimaryColumn({ name: 'REQUISITION_DATE' })
   requisitionDate!: Date;
