@@ -1,12 +1,11 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Query, Resolver, UseMiddleware } from 'type-graphql';
-import { ConditionCodeView } from './entities/ifs-condition-code.vw';
-
-@Resolver(ConditionCodeView)
+import { IfsConditionCodeView } from './entities/ifs-condition-code.vw';
+@Resolver(IfsConditionCodeView)
 export class ConditionCodeResolver {
-  @Query(() => [ConditionCodeView], { nullable: true })
+  @Query(() => [IfsConditionCodeView], { nullable: true })
   @UseMiddleware(isAuth)
-  async getAllConditionCodes(): Promise<ConditionCodeView[] | undefined> {
-    return await ConditionCodeView.find({ order: { conditionCode: 'ASC' } });
+  async getAllConditionCodes(): Promise<IfsConditionCodeView[] | undefined> {
+    return await IfsConditionCodeView.find({ order: { conditionCode: 'ASC' } });
   }
 }

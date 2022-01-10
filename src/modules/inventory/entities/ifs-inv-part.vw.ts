@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('INVENTORY_PART')
 @ObjectType()
-export class InventoryPartView extends BaseEntity {
+export class IfsInventoryPartView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'PART_NO' })
   partNo!: string;

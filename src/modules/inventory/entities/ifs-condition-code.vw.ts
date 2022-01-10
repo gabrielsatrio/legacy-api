@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CONDITION_CODE')
 @ObjectType()
-export class ConditionCodeView extends BaseEntity {
+export class IfsConditionCodeView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'CONDITION_CODE' })
   conditionCode!: string;

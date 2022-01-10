@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('INVENTORY_TRANSACTION_HIST2')
 @ObjectType()
-export class InventoryTransactionHistory extends BaseEntity {
+export class IfsInventoryTransactionHistoryView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'TRANSACTION_ID' })
   transactionId!: number;

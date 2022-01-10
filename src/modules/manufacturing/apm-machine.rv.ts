@@ -125,4 +125,15 @@ export class MachineResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [MachineView])
+  @UseMiddleware(isAuth)
+  async getUtilityMachinesByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<MachineView[] | undefined> {
+    return await MachineView.find({
+      where: { contract: In(contract), departmentId: 'MTC' },
+      order: { machineId: 'ASC' }
+    });
+  }
 }
