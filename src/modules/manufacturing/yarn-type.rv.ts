@@ -1,6 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { In } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { mapError } from './../../utils/map-error';
 import { YarnType } from './entities/yarn-type';
 import { YarnTypeInput } from './yarn-type.in';
@@ -22,8 +22,11 @@ export class YarnTypeResolver {
     @Arg('input') input: YarnTypeInput
   ): Promise<YarnType | undefined> {
     try {
+      const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_YARN_TYPE`;
+      const result = await getConnection().query(sql);
       const data = YarnType.create({
-        ...input
+        ...input,
+        id: result[0].id
       });
       const results = await YarnType.save(data);
       return results;

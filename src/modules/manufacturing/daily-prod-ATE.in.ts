@@ -12,7 +12,7 @@ export class DailyProdATEInput implements Partial<DailyProdATE> {
   contract!: string;
 
   @Field()
-  reportDate?: Date;
+  reportDate!: Date;
 
   @Field()
   partNo!: string;
@@ -35,8 +35,8 @@ export class DailyProdATEInput implements Partial<DailyProdATE> {
   @Field()
   poNo!: string;
 
-  @Field()
-  keterangan!: string;
+  @Field({ nullable: true })
+  keterangan?: string;
 
   @Field()
   orderNo!: string;

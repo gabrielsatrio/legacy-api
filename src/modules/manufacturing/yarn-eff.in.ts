@@ -12,7 +12,7 @@ export class YarnEffInput implements Partial<YarnEff> {
   contract!: string;
 
   @Field()
-  reportDate?: Date;
+  reportDate!: Date;
 
   @Field()
   employeeId!: string;

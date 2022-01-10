@@ -1,9 +1,10 @@
 <a name="1.6.0"></a>
-# [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/72) (2022-01-07)
+# [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/72) (2022-01-10)
 
 ### Features
 
-* [**M006**] Yarn Eff: Penambahan BE untuk module Efisiensi Benang
+* [**M006**] YarnEff: Penambahan BE untuk module Efisiensi Benang
+* [**M007**] DailyProd: Penambahan BE untuk module Daily Production
 
 <a name="1.5.0"></a>
 # [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)
