@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('INVENTORY_PART_IN_STOCK')
 @ObjectType()
-export class InventoryPartInStock extends BaseEntity {
+export class IfsInventoryPartInStockView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;

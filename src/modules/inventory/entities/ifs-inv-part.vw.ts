@@ -3,20 +3,24 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('INVENTORY_PART')
 @ObjectType()
-export class InventoryPart extends BaseEntity {
-  @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
-  contract!: string;
-
+export class IfsInventoryPartView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'PART_NO' })
   partNo!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
   @Column({ name: 'DESCRIPTION' })
   description!: string;
 
-  @Field({ nullable: true })
+  @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unitMeas!: string;
+
+  @Field()
   @Column({ name: 'PART_STATUS' })
   partStatus!: string;
 

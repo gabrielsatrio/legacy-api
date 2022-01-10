@@ -7,13 +7,13 @@ import { MachineCategoryView } from './entities/apm-machine-category.vw';
 export class MachineCategoryResolver {
   @Query(() => [MachineCategoryView])
   @UseMiddleware(isAuth)
-  async getAllMachineCategories(): Promise<MachineCategoryView[] | undefined> {
+  async getAllMachCategories(): Promise<MachineCategoryView[] | undefined> {
     return await MachineCategoryView.find();
   }
 
   @Query(() => MachineCategoryView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getMachineCategory(
+  async getMachCategory(
     @Arg('categoryId') categoryId: string
   ): Promise<MachineCategoryView | undefined> {
     return await MachineCategoryView.findOne({ categoryId });
