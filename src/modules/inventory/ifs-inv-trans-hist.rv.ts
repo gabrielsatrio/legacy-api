@@ -24,14 +24,14 @@ export class TransactionHistoryResolver {
       .getMany();
   }
 
-  @Query(() => [InventoryTransactionHistory], { nullable: true })
+  @Query(() => [IfsInventoryTransactionHistoryView], { nullable: true })
   @UseMiddleware(isAuth)
   async getByLotBatchQC(
     @Arg('contract') contract: string,
     @Arg('lotBatchNo') lotBatchNo: string,
     @Arg('transactionCode') transactionCode: string
-  ): Promise<InventoryTransactionHistory[] | undefined> {
-    return await InventoryTransactionHistory.createQueryBuilder('TH')
+  ): Promise<IfsInventoryTransactionHistoryView[] | undefined> {
+    return await IfsInventoryTransactionHistoryView.createQueryBuilder('TH')
       .where('TH.CONTRACT = :contract', { contract })
       .andWhere(`TH.LOT_BATCH_NO = :lotBatchNo`, { lotBatchNo })
       .andWhere(`TH.TRANSACTION_CODE = :transactionCode`, {

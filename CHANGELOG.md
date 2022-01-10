@@ -1,9 +1,13 @@
 <a name="1.6.0"></a>
 # [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/74) (2022-01-10)
 
+### BREAKING CHANGES
+
+*
+
 ### Features
 
-* 
+*
 
 <a name="1.5.0"></a>
 # [1.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/70) (2021-12-29)
