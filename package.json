@@ -1,6 +1,6 @@
 {
   "name": "ezio-api",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "EZIO - API Server",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -95,7 +95,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0-pre.63",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.4"
   },
   "husky": {
     "hooks": {

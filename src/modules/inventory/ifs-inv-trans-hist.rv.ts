@@ -1,18 +1,18 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { InventoryTransactionHistory } from './entities/ifs-inv-trans-hist.vw';
+import { IfsInventoryTransactionHistoryView } from '../inventory/entities/ifs-inv-trans-hist.vw';
 
-@Resolver(InventoryTransactionHistory)
-export class TransactionHistoryResolver {
-  @Query(() => [InventoryTransactionHistory], { nullable: true })
+@Resolver(IfsInventoryTransactionHistoryView)
+export class IfsTransactionHistoryResolver {
+  @Query(() => [IfsInventoryTransactionHistoryView], { nullable: true })
   @UseMiddleware(isAuth)
   async getTransactionHistory(
     @Arg('contract') contract: string,
     @Arg('lotBatchNo') lotBatchNo: string,
     @Arg('transactionCode', () => [String]) transactionCode: string[],
     @Arg('locationNo') locationNo: string
-  ): Promise<InventoryTransactionHistory[] | undefined> {
-    return await InventoryTransactionHistory.createQueryBuilder('TH')
+  ): Promise<IfsInventoryTransactionHistoryView[] | undefined> {
+    return await IfsInventoryTransactionHistoryView.createQueryBuilder('TH')
       .where('TH.CONTRACT = :contract', { contract: contract })
       .andWhere(`TH.LOT_BATCH_NO = :lotBatchNo`, { lotBatchNo: lotBatchNo })
       .andWhere(`TH.TRANSACTION_CODE IN (:...transactionCode)`, {
@@ -24,14 +24,14 @@ export class TransactionHistoryResolver {
       .getMany();
   }
 
-  @Query(() => [InventoryTransactionHistory], { nullable: true })
+  @Query(() => [IfsInventoryTransactionHistoryView], { nullable: true })
   @UseMiddleware(isAuth)
   async getByLotBatchQC(
     @Arg('contract') contract: string,
     @Arg('lotBatchNo') lotBatchNo: string,
     @Arg('transactionCode') transactionCode: string
-  ): Promise<InventoryTransactionHistory[] | undefined> {
-    return await InventoryTransactionHistory.createQueryBuilder('TH')
+  ): Promise<IfsInventoryTransactionHistoryView[] | undefined> {
+    return await IfsInventoryTransactionHistoryView.createQueryBuilder('TH')
       .where('TH.CONTRACT = :contract', { contract })
       .andWhere(`TH.LOT_BATCH_NO = :lotBatchNo`, { lotBatchNo })
       .andWhere(`TH.TRANSACTION_CODE = :transactionCode`, {
