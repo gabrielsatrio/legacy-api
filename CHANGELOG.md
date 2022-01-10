@@ -4,7 +4,7 @@
 ### BREAKING CHANGES
 
 * Refactor: Move all files related to the inventory module into `/src/modules/inventory`.
-* Refactor: Rename all files related to the IFS table or view to follow the conventions.
+* Refactor: Rename all files related to the IFS tables or views to follow the conventions.
 
 ### Features
 * [**M001**] APM: Add some new entities for Spare Part Requisitions module.
