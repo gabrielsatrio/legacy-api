@@ -4,6 +4,7 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
 import { DailyProdATEInput } from './daily-prod-ATE.in';
 import { DailyProdATE } from './entities/daily-prod-ATE';
+
 @Resolver(DailyProdATE)
 export class DailyProdATEResolver {
   @Query(() => [DailyProdATE], { nullable: true })

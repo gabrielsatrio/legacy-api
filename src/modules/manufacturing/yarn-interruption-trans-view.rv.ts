@@ -2,6 +2,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
 import { YarnInterruptionTransView } from './entities/yarn-interruption-trans.vw';
+
 @Resolver(YarnInterruptionTransView)
 export class YarnInterruptionTransViewResolver {
   @Query(() => [YarnInterruptionTransView], { nullable: true })
@@ -23,8 +24,8 @@ export class YarnInterruptionTransViewResolver {
   ): Promise<YarnInterruptionTransView[] | undefined> {
     return await YarnInterruptionTransView.find({
       contract: In(contract),
-      machine: machine,
-      reportDate: reportDate
+      machine,
+      reportDate
     });
   }
 }

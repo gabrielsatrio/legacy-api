@@ -6,8 +6,8 @@ import { YarnInterruptionTrans } from './entities/yarn-interruption-trans';
 export class YarnInterruptionTransInput
   implements Partial<YarnInterruptionTrans>
 {
-  @Field({ nullable: true })
-  id?: number;
+  @Field()
+  id!: number;
 
   @Field()
   @Length(1, 5)

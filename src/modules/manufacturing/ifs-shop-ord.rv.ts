@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { mapError } from './../../utils/map-error';
 import { IfsShopOrderView } from './entities/ifs-shop-ord.vw';
 
 @Resolver(IfsShopOrderView)
@@ -19,7 +19,7 @@ export class IfsShopOrderResolver {
   @UseMiddleware(isAuth)
   async getPartNoByOrderNo(
     @Arg('orderNo') orderNo: string
-  ): Promise<any | undefined> {
+  ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `select SHOP_ORD_API.GET_PART_NO(:orderNo, '*', '*')  as "partNo" from dual`;
       const result = await getConnection().query(sql, [orderNo]);

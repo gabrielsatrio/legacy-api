@@ -1,8 +1,8 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { Brackets, getConnection, In, Like } from 'typeorm';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
-import { mapError } from './../../utils/map-error';
 
 @Resolver(IfsInventoryPartView)
 export class IfsInventoryPartResolver {
@@ -96,7 +96,7 @@ export class IfsInventoryPartResolver {
   @UseMiddleware(isAuth)
   async getPartDescByOrderNo(
     @Arg('orderNo') orderNo: string
-  ): Promise<any | undefined> {
+  ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `SELECT inventory_part_api.get_description(shop_ord_api.get_contract( :orderno, '*', '*'), shop_ord_api.get_part_no( :orderno, '*', '*')) as "description"
       FROM   DUAL`;

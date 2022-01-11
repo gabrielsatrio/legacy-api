@@ -4,6 +4,7 @@ import { getConnection, In } from 'typeorm';
 import { mapError } from './../../utils/map-error';
 import { YarnMachine } from './entities/yarn-machine';
 import { YarnMachineInput } from './yarn-machine.in';
+
 @Resolver(YarnMachine)
 export class YarnMachineResolver {
   @Query(() => [YarnMachine], { nullable: true })
@@ -58,7 +59,7 @@ export class YarnMachineResolver {
   async deleteYarnMachine(@Arg('id') id: number): Promise<YarnMachine> {
     try {
       const data = await YarnMachine.findOne({
-        id
+        id: id
       });
       if (!data) throw new Error('No data found.');
       await YarnMachine.delete({ id });

@@ -4,6 +4,7 @@ import { getConnection, In } from 'typeorm';
 import { mapError } from './../../utils/map-error';
 import { YarnType } from './entities/yarn-type';
 import { YarnTypeInput } from './yarn-type.in';
+
 @Resolver(YarnType)
 export class YarnTypeResolver {
   @Query(() => [YarnType], { nullable: true })
@@ -58,7 +59,7 @@ export class YarnTypeResolver {
   async deleteYarnType(@Arg('id') id: number): Promise<YarnType> {
     try {
       const data = await YarnType.findOne({
-        id
+        id: id
       });
       if (!data) throw new Error('No data found.');
       await YarnType.delete({ id });

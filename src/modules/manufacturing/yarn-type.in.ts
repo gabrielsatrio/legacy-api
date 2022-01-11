@@ -3,8 +3,8 @@ import { YarnType } from './entities/yarn-type';
 
 @InputType()
 export class YarnTypeInput implements Partial<YarnType> {
-  @Field({ nullable: true })
-  id?: number;
+  @Field()
+  id!: number;
 
   @Field()
   contract!: string;

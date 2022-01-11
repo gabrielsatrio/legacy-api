@@ -5,6 +5,7 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
 import { YarnInterruptionTrans } from './entities/yarn-interruption-trans';
 import { YarnInterruptionTransInput } from './yarn-interruption-trans.in';
+
 @Resolver(YarnInterruptionTrans)
 export class YarnInterruptionTransResolver {
   @Query(() => [YarnInterruptionTrans], { nullable: true })
@@ -38,21 +39,6 @@ export class YarnInterruptionTransResolver {
 
   @Mutation(() => YarnInterruptionTrans, { nullable: true })
   @UseMiddleware(isAuth)
-  // async updateYarnInterruptionTrans(
-  //   @Arg('input') input: YarnInterruptionTransInput
-  // ): Promise<YarnInterruptionTrans | undefined> {
-  //   try {
-  //     const data = await YarnInterruptionTrans.findOne({
-  //       id: input.id
-  //     });
-  //     if (!data) throw new Error('No data found.');
-  //     YarnInterruptionTrans.merge(data, input);
-  //     const results = await YarnInterruptionTrans.save(data);
-  //     return results;
-  //   } catch (err) {
-  //     throw new Error(mapError(err));
-  //   }
-  // }
   async updateYarnInterruptionTrans(
     @Arg('input') input: YarnInterruptionTransInput
   ): Promise<YarnInterruptionTrans | undefined> {
@@ -88,7 +74,7 @@ export class YarnInterruptionTransResolver {
   ): Promise<YarnInterruptionTrans> {
     try {
       const data = await YarnInterruptionTrans.findOne({
-        id
+        id: id
       });
       if (!data) throw new Error('No data found.');
       await YarnInterruptionTrans.delete({ id });

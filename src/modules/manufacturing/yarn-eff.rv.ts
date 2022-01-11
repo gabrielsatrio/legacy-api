@@ -4,6 +4,7 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
 import { YarnEff } from './entities/yarn-eff';
 import { YarnEffInput } from './yarn-eff.in';
+
 @Resolver(YarnEff)
 export class YarnEffResolver {
   @Query(() => [YarnEff], { nullable: true })
