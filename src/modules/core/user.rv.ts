@@ -56,11 +56,17 @@ export class UserResolver {
   @UseMiddleware(isAuth)
   async updateUser(@Arg('input') input: UserInput): Promise<User | undefined> {
     try {
+      if (input.password.length < 3) {
+        throw new Error(
+          'Password must be longer than or equal to 3 characters.'
+        );
+      }
       const data = await User.findOne({
         username: input.username
       });
       if (!data) throw new Error('No data found.');
-      User.merge(data, input);
+      const hashedPassword = await argon2.hash(input.password);
+      User.merge(data, { ...input, password: hashedPassword });
       const results = await User.save(data);
       return results;
     } catch (err) {
