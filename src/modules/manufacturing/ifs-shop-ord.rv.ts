@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { In } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { IfsShopOrderView } from './entities/ifs-shop-ord.vw';
 
 @Resolver(IfsShopOrderView)
@@ -12,5 +13,20 @@ export class IfsShopOrderResolver {
     @Arg('orderNo') orderNo: string
   ): Promise<IfsShopOrderView[] | undefined> {
     return await IfsShopOrderView.find({ contract: In(contract), orderNo });
+  }
+
+  @Query(() => IfsShopOrderView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getPartNoByOrderNo(
+    @Arg('orderNo') orderNo: string
+  ): Promise<Record<string, string | undefined>> {
+    try {
+      const sql = `select SHOP_ORD_API.GET_PART_NO(:orderNo, '*', '*')  as "partNo" from dual`;
+      const result = await getConnection().query(sql, [orderNo]);
+      const partNo = result[0].partNo;
+      return { partNo };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }

@@ -1,3 +1,12 @@
+<a name="1.7.0"></a>
+
+# [1.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/73) (2022-01-10)
+
+### Features
+
+- [**M006**] YarnEff: Add new module Efisiensi Benang
+- [**M007**] DailyProd: Add new module Daily Production
+
 <a name="1.6.0"></a>
 
 # [1.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/74) (2022-01-10)
