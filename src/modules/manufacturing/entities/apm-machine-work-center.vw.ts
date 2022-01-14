@@ -8,12 +8,12 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-@Entity('ROB_APM_MACHINE_LOCATION_V')
+@Entity('ROB_APM_MACH_WORK_CENTER_V')
 @ObjectType()
-export class MachineLocationView extends BaseEntity {
+export class MachineWorkCenterView extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'LOCATION_NO' })
-  locationNo!: string;
+  @PrimaryColumn({ name: 'WORK_CENTER_NO' })
+  workCenterNo!: string;
 
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })

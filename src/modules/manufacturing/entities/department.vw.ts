@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_DEPARTMENT_MV')
+@Entity('ATJ_DEPARTMENT_V')
 @ObjectType()
 export class DepartmentView extends BaseEntity {
   @Field()

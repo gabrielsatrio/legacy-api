@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_EMPLOYEE_MV')
+@Entity('ATJ_EMPLOYEE_V')
 @ObjectType()
 export class EmployeeView extends BaseEntity {
   @Field()
@@ -17,8 +17,20 @@ export class EmployeeView extends BaseEntity {
   email!: string;
 
   @Field()
+  @Column({ name: 'JOB_ID' })
+  jobId!: string;
+
+  @Field()
   @Column({ name: 'JOB_TITLE' })
   jobTitle!: string;
+
+  @Field()
+  @Column({ name: 'ORGANIZATION_ID' })
+  organizationId!: string;
+
+  @Field()
+  @Column({ name: 'ORGANIZATION_NAME' })
+  organizationName!: string;
 
   @Field()
   @Column({ name: 'GRADE' })

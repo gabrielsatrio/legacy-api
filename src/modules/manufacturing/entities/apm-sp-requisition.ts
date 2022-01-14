@@ -41,12 +41,20 @@ export class SparePartRequisition extends BaseEntity {
   approverLv1!: string;
 
   @Field()
+  @Column({ name: 'NAME_APPR_LV_1' })
+  nameApprLv1!: string;
+
+  @Field()
   @Column({ name: 'EMAIL_APPR_LV_1' })
   emailApprLv1!: string;
 
   @Field()
   @Column({ name: 'APPROVER_LV_2' })
   approverLv2!: string;
+
+  @Field()
+  @Column({ name: 'NAME_APPR_LV_2' })
+  nameApprLv2!: string;
 
   @Field()
   @Column({ name: 'EMAIL_APPR_LV_2' })
@@ -59,6 +67,10 @@ export class SparePartRequisition extends BaseEntity {
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
+
+  @Field()
+  @Column({ name: 'NAME_CREATED_BY' })
+  nameCreatedBy!: string;
 
   @Field()
   @Column({ name: 'EMAIL_CREATED_BY' })

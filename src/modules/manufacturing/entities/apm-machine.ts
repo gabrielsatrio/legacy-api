@@ -8,7 +8,7 @@ import {
   PrimaryColumn
 } from 'typeorm';
 import { MachineCategory } from './apm-machine-category';
-import { MachineLocation } from './apm-machine-location';
+import { MachineWorkCenter } from './apm-machine-work-center';
 
 @Entity('ROB_APM_MACHINE')
 @ObjectType()
@@ -54,8 +54,8 @@ export class Machine extends BaseEntity {
   departmentId!: string;
 
   @Field()
-  @Column({ name: 'LOCATION_NO' })
-  locationNo!: string;
+  @Column({ name: 'WORK_CENTER_NO' })
+  workCenterNo!: string;
 
   @Field()
   @Column({ name: 'STATUS' })
@@ -210,11 +210,11 @@ export class Machine extends BaseEntity {
   @JoinColumn({ name: 'CATEGORY_ID' })
   category!: MachineCategory;
 
-  @Field(() => MachineLocation)
-  @OneToOne(() => MachineLocation)
+  @Field(() => MachineWorkCenter)
+  @OneToOne(() => MachineWorkCenter)
   @JoinColumn([
-    { name: 'LOCATION_NO', referencedColumnName: 'locationNo' },
+    { name: 'WORK_CENTER_NO', referencedColumnName: 'workCenterNo' },
     { name: 'CONTRACT', referencedColumnName: 'contract' }
   ])
-  location!: MachineLocation;
+  workCenter!: MachineWorkCenter;
 }
