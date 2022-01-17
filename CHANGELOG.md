@@ -1,11 +1,37 @@
+<a name="1.8.0"></a>
+
+# [1.8.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/78) (2022-01-17)
+
+### BREAKING CHANGES
+
+- [**HRD**] **employee:** replace entity source from `ATJ_EMPLOYEE_MV` to `ATJ_EMPLOYEE_V`.
+- [**MANUF**] **department:** replace entity source from `ATJ_DEPARTMENT_MV` to `ATJ_DEPARTMENT_V`.
+
+### Features
+
+- [**CORE**] **auth:** refactor to grant specific users to access AGT site.
+- [**HR**] **employee:** add new resolver to get specific employee using custom email.
+- [**INV**] **internal-customer:** change the resolver name.
+- [**INV**] **internal-destination:** modify the resolver.
+- [**M0001**] **apm:** replace `locationNo` to `workCenterNo`.
+- [**M0001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
+- [**M0001**] **apm:** make changes to get a `name` and `email`.
+- [**M0002**] **ddp:** add new line space in `bppf.ts` file.
+
+### Bug Fixes
+
+- fix the module alias for `@/modules`.
+- [**CORE**] **user:** hashed the password each time someone updates the user data.
+- [**INV**] **intenal-destination:** add `contract` field and replace `objId` to `objKey`.
+
 <a name="1.7.0"></a>
 
 # [1.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/73) (2022-01-10)
 
 ### Features
 
-- [**M006**] YarnEff: Add new module Efisiensi Benang
-- [**M007**] DailyProd: Add new module Daily Production
+- [**M006**] YarnEff: Add new module Efisiensi Benang.
+- [**M007**] DailyProd: Add new module Daily Production.
 
 <a name="1.6.0"></a>
 
