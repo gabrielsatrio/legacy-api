@@ -13,10 +13,10 @@
 - [**HR**] **employee:** add new resolver to get specific employee using custom email.
 - [**INV**] **internal-customer:** change the resolver name.
 - [**INV**] **internal-destination:** modify the resolver.
-- [**M0001**] **apm:** replace `locationNo` to `workCenterNo`.
-- [**M0001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
-- [**M0001**] **apm:** make changes to get a `name` and `email`.
-- [**M0002**] **ddp:** add new line space in `bppf.ts` file.
+- [**M001**] **apm:** replace `locationNo` to `workCenterNo`.
+- [**M001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
+- [**M001**] **apm:** make changes to get a `name` and `email`.
+- [**M002**] **ddp:** add new line space in `bppf.ts` file.
 
 ### Bug Fixes
 
