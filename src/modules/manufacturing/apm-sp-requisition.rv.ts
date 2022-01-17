@@ -14,6 +14,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
+import { EmployeeResolver } from './../human-resources/org-employee.rv';
 import { SparePartReqLineResolver } from './apm-sp-requisition-line.rv';
 import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
@@ -59,27 +60,24 @@ export class SparePartRequisitionResolver {
     @Ctx() { req }: Context
   ): Promise<SparePartRequisition | undefined> {
     try {
-      const sql = `SELECT ATJ_EMP_API.Get_Email(:approver) AS "emailAppr" FROM DUAL`;
-      const resultForCreatedBy = await getConnection().query(sql, [
-        req.session.username
-      ]);
-      const emailCreatedBy = resultForCreatedBy[0].emailAppr;
-      const resultForApproverLv1 = await getConnection().query(sql, [
+      const createdBy = req.session.username;
+      const employee = new EmployeeResolver();
+      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
+      const approverLv1 = await employee.getEmployeeWithCustomEmail(
         input.approverLv1
-      ]);
-      const emailApprLv1 = resultForApproverLv1[0].emailAppr;
-      console.log('>> emailApprvLv1: ', emailApprLv1);
-      const resultForApproverLv2 = await getConnection().query(sql, [
+      );
+      const approverLv2 = await employee.getEmployeeWithCustomEmail(
         input.approverLv2
-      ]);
-      const emailApprLv2 = resultForApproverLv2[0].emailAppr;
-      console.log('>> emailApprvLv2: ', emailApprLv2);
+      );
       const data = SparePartRequisition.create({
         ...input,
-        emailApprLv1,
-        emailApprLv2,
-        createdBy: req.session.username,
-        emailCreatedBy,
+        nameApprLv1: approverLv1?.name,
+        emailApprLv1: approverLv1?.email,
+        nameApprLv2: approverLv2?.name,
+        emailApprLv2: approverLv2?.email,
+        createdBy,
+        nameCreatedBy: creator?.name,
+        emailCreatedBy: creator?.email,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -180,54 +178,49 @@ export class SparePartRequisitionResolver {
       }
       SparePartRequisition.merge(data, input);
       const results = await SparePartRequisition.save(data);
-      const sql = `
-        SELECT atj_emp_api.get_name(:createdby)   AS "creatorName",
-               atj_emp_api.get_name(:approverlv1) AS "approverLv1Name",
-               atj_emp_api.get_name(:approverlv2) AS "approverLv2Name"
-        FROM   DUAL
-      `;
-      const result = await getConnection().query(sql, [
-        results.createdBy,
-        results.approverLv1,
+      const { requisitionId, orderNo, createdBy } = results;
+      const employee = new EmployeeResolver();
+      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
+      const approverLv1 = await employee.getEmployeeWithCustomEmail(
+        results.approverLv1
+      );
+      const approverLv2 = await employee.getEmployeeWithCustomEmail(
         results.approverLv2
-      ]);
-      const creatorName = result[0].creatorName;
-      const approverLv1Name = result[0].approverLv1Name;
-      const approverLv2Name = result[0].approverLv2Name;
+      );
       switch (input.status) {
         case 'Submitted':
           await sendEmail(
-            results.emailApprLv1,
-            `Approval Request for Spare Part Requisition No ${results.requisitionId}`,
-            `<p>Dear Mr/Ms ${approverLv1Name},</p>
-            <p>A new Spare Part Requisition (No: ${results.requisitionId}) has been submitted for your approval.</br>
-            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${results.requisitionId}"><b>here</b></a>.</br>
+            approverLv1?.email || '',
+            `Approval Request for Spare Part Requisition No ${requisitionId}`,
+            `<p>Dear Mr/Ms ${approverLv1?.name},</p>
+            <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
+            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
             Please confirm your approval.</p>`
           );
           break;
         case 'Partially Approved':
           await sendEmail(
-            results.emailApprLv2,
-            `Approval Request for Spare Part Requisition No ${results.requisitionId}`,
-            `<p>Dear Mr/Ms ${approverLv2Name},</p>
-            <p>A new Spare Part Requisition (No: ${results.requisitionId}) has been submitted for your approval.</br>
-            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${results.requisitionId}"><b>here</b></a>.</br>
+            approverLv2?.email || '',
+            `Approval Request for Spare Part Requisition No ${requisitionId}`,
+            `<p>Dear Mr/Ms ${approverLv2?.name},</p>
+            <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
+            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
             Please confirm your approval.</p>`
           );
           break;
         case 'Approved':
           await sendEmail(
-            results.emailCreatedBy,
-            `Spare Part Requisition No ${results.requisitionId} has been Approved`,
-            `<p>Dear Mr/Ms ${creatorName},</p>
-            <p>Spare Part Requisition No: ${results.requisitionId} has been approved and Material Requisition No ${results.orderNo} has been created in IFS Applications.</p>`
+            creator?.email || '',
+            `Spare Part Requisition No ${requisitionId} has been Approved`,
+            `<p>Dear Mr/Ms ${creator?.name},</p>
+            <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</p>`
           );
           break;
         case 'Rejected':
           await sendEmail(
-            results.emailCreatedBy,
+            creator?.email || '',
             `Spare Part Requisition No ${results.requisitionId} has been Rejected`,
-            `<p>Dear Mr/Ms ${creatorName},</p>
+            `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${results.requisitionId} has been rejected.</p>`
           );
           break;

@@ -16,7 +16,7 @@ fragment MachineFragment on Machine {
   yearMade
   purchaseDate
   departmentId
-  locationNo
+  workCenterNo
   status
   note
   image1
@@ -70,8 +70,8 @@ fragment MachineViewFragment on MachineView {
   purchaseDate
   departmentId
   department
-  locationNo
-  location
+  workCenterNo
+  workCenter
   status
   note
   image1
@@ -101,7 +101,7 @@ fragment MachineViewFragment on MachineView {
   usableWidth
   nominalWidth
   position
-  capacityInKw
+  capacity
   steamCapacity
   heatCapacity
   maxWorkingPressure
@@ -141,7 +141,7 @@ mutation CreateMachine {
       yearMade: 2000
       purchaseDate: "2001-11-09"
       departmentId: "TN1"
-      locationNo: "TD001"
+      workCenterNo: "TD001"
       status: "Inactive"
       note: "Weaving Head Machine"
       image1: "image.png"
@@ -175,7 +175,7 @@ mutation UpdateMachine {
       yearMade: 2000
       purchaseDate: "2001-11-11"
       departmentId: "TN1"
-      locationNo: "TD001"
+      workCenterNo: "TD001"
       status: "Active"
       note: "Weaving Head Machine"
       image1: "image.png"
@@ -198,11 +198,15 @@ mutation DeleteMachine {
 ## DDP
 
 ### GRAPHQL
+
 pada modul BPO pastikan bisa CRUD header dan detail ( auxiliaries dan dyestuff)
+
 #### **BPO**
+
 kondisi saat ini saat insert head detail automatis terisi\
 untuk detail tidak perlu insert saat ini, jadi cukup query, update dan delete\
 jika ingin menggunakan test case yang lain pastikan master resepnya sudah dibuat terlebih dahulu
+
 ```
 # query all dan spesifik
 
@@ -459,7 +463,9 @@ mutation deleteDye2{
 }
 
 ```
+
 #### **Material**
+
 berisi head dan detail, lakukan masing-masing crud pada head dan detail\
 pastikan depedency master-detail sesuai
 
@@ -635,8 +641,11 @@ mutation deleteMaterialUse{
   }
 }
 ```
+
 #### **Mesin**
+
 query saja
+
 ```
 query getMesin {
   getDDPMachine(contract:["AMI"]){
