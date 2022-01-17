@@ -56,9 +56,14 @@ export class AuthResolver {
         userContract.map((rec: UserContractView) => {
           contract.push(rec.contract);
         });
-        user.ifsUsername === 'ATEJA' && contract.push('AGT');
-        //penambahan untuk project SPT (user AT1GAP07)
-        user.ifsUsername === 'AT1GAP07' && contract.push('AGT');
+        /**
+         ** Grant additional access to AGT site for the following users:
+         ** - ATEJA    : Super User
+         ** - HLDCCU02 : CCU
+         ** - AT1GAP07 : SPT Project
+         **/
+        const specialUsers = ['ATEJA', 'HLDCCU02', 'AT1GAP07'];
+        specialUsers.includes(user.ifsUsername) && contract.push('AGT');
       }
       return contract;
     } catch (err) {

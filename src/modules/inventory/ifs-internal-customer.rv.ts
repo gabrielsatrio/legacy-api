@@ -6,7 +6,7 @@ import { IfsInternalCustomerView } from './entities/ifs-internal-customer.vw';
 export class IfsInternalCustomerResolver {
   @Query(() => [IfsInternalCustomerView])
   @UseMiddleware(isAuth)
-  async getAllInternalCustomers(): Promise<IfsInternalCustomerView[]> {
+  async getAllIntCustomers(): Promise<IfsInternalCustomerView[]> {
     return await IfsInternalCustomerView.find({
       order: { intCustomerNo: 'ASC' }
     });

@@ -27,4 +27,21 @@ export class EmployeeResolver {
       order: { name: 'ASC' }
     });
   }
+
+  @Query(() => EmployeeView)
+  @UseMiddleware(isAuth)
+  async getEmployeeWithCustomEmail(
+    @Arg('employeeId') employeeId: string
+  ): Promise<EmployeeView | undefined> {
+    const employee = await EmployeeView.findOne({ employeeId });
+    const allowedDomains = ['ateja.co.id', 'agtex.co.id'];
+    if (employee?.email) {
+      employee.email = allowedDomains.includes(
+        employee?.email.slice(employee.email.indexOf('@') + 1) || ''
+      )
+        ? employee?.email.toLowerCase()
+        : 'oracle@ateja.co.id';
+    }
+    return employee;
+  }
 }

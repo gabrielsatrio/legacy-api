@@ -7,7 +7,7 @@ import apolloServer from './providers/server';
 moduleAlias.addAliases({
   '@/config': `${__dirname}/config`,
   '@/middlewares': `${__dirname}/middlewares`,
-  '@/features': `${__dirname}/features`,
+  '@/modules': `${__dirname}/modules`,
   '@/providers': `${__dirname}/providers`,
   '@/types': `${__dirname}/types`,
   '@/utils': `${__dirname}/utils`
