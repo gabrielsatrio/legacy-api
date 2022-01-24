@@ -18,14 +18,11 @@ export class OpnameStatusInput implements Partial<OpnameStatus> {
   @Field()
   time!: string;
 
-  @Field()
-  dept!: string;
+  @Field({ nullable: true })
+  opnameType?: string;
 
   @Field({ nullable: true })
-  type?: string;
-
-  @Field({ nullable: true })
-  numOfLocation?: number;
+  numOfLoc?: number;
 
   @Field({ nullable: true })
   locationNo?: string;

@@ -8,6 +8,11 @@ import { OpnameStatusInput } from './opname-status.in';
 
 @Resolver(OpnameStatus)
 export class OpnameStatusResolver {
+  async getOpname(
+    @Arg('objId') objId: string
+  ): Promise<OpnameStatus | undefined> {
+    return await OpnameStatus.findOne(objId);
+  }
   @Query(() => OpnameStatus, { nullable: true })
   @UseMiddleware(isAuth)
   async getOpnameStatus(
@@ -29,13 +34,28 @@ export class OpnameStatusResolver {
     }
   }
 
+  @Query(() => OpnameStatus, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getOpnameByContractUsernamePeriode(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('periode') periode: Date
+  ): Promise<OpnameStatus | undefined> {
+    // return await OpnameStatus.findOne({ contract, username, periode });
+    return await OpnameStatus.createQueryBuilder('OS')
+      .where('OS.CONTRACT = :contract', { contract })
+      .andWhere('OS.USERNAME = :username', { username })
+      .andWhere('TRUNC(OS.PERIODE) = trunc(:periode)', { periode })
+      .getOne();
+  }
+
   @Mutation(() => OpnameStatus)
   @UseMiddleware(isAuth)
   async startOpname(
     @Arg('input') input: OpnameStatusInput
   ): Promise<OpnameStatus | undefined> {
     try {
-      const sql = `BEGIN GBR_FREEZE_OPNAME_API.Freeze_WIP(:objId, :contract, :username, :dept, :periode, :time, :type, :numOfLocation, :locationNo, :outObjId); END;`;
+      const sql = `BEGIN GBR_FREEZE_OPNAME_API.Freeze_WIP_Ezio(:objId, :contract, :username, :dept, :periode, :time, :opnameType, :numOfLocation, :locationNo, :outObjId); END;`;
       const result = await getConnection().query(sql, [
         input.objId,
         input.contract,
@@ -43,8 +63,8 @@ export class OpnameStatusResolver {
         '',
         input.periode,
         input.time,
-        input.type,
-        input.numOfLocation,
+        input.opnameType,
+        input.numOfLoc,
         input.locationNo,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -63,16 +83,19 @@ export class OpnameStatusResolver {
     @Arg('contract') contract: string,
     @Arg('periode') periode: Date,
     @Arg('username') username: string
-  ): Promise<Record<string, string | undefined>> {
+  ): Promise<OpnameStatus | undefined> {
     try {
-      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username); END;`;
+      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username, :outObjId); END;`;
       const result = await getConnection().query(sql, [
         contract,
         periode,
-        username
+        username,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
-      const status = result[0].STATUS;
-      return { status };
+
+      const outObjId = result[0] as string;
+      const data = OpnameStatus.findOne(outObjId);
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
