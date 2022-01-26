@@ -61,8 +61,8 @@ export class SparePartReqLineResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await SparePartReqLine.save(data);
-      return results;
+      const result = await SparePartReqLine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -80,8 +80,8 @@ export class SparePartReqLineResolver {
       });
       if (!data) throw new Error('No data found.');
       SparePartReqLine.merge(data, input);
-      const results = await SparePartReqLine.save(data);
-      return results;
+      const result = await SparePartReqLine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }

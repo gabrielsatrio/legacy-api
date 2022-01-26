@@ -84,8 +84,8 @@ export class MachineResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await Machine.save(data);
-      return results;
+      const result = await Machine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -103,8 +103,8 @@ export class MachineResolver {
       });
       if (!data) throw new Error('No data found.');
       Machine.merge(data, input);
-      const results = await Machine.save(data);
-      return results;
+      const result = await Machine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }

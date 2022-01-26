@@ -20,6 +20,7 @@ import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartRequisitionView } from './entities/apm-sp-requisition.vw';
+
 @Resolver(SparePartRequisition)
 export class SparePartRequisitionResolver {
   @Query(() => [SparePartRequisitionView])
@@ -81,8 +82,8 @@ export class SparePartRequisitionResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await SparePartRequisition.save(data);
-      return results;
+      const result = await SparePartRequisition.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -107,6 +108,7 @@ export class SparePartRequisitionResolver {
               :intCustomerNo,
               :destinationId,
               :dueDate,
+              :dateEntered,
               :outOrderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -119,6 +121,7 @@ export class SparePartRequisitionResolver {
           input.intCustomerNo,
           input.destinationId,
           input.dueDate,
+          input.createdAt,
           { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         ]);
         outOrderNo = result[0] as string;
@@ -177,15 +180,15 @@ export class SparePartRequisitionResolver {
         }
       }
       SparePartRequisition.merge(data, input);
-      const results = await SparePartRequisition.save(data);
-      const { requisitionId, orderNo, createdBy } = results;
+      const result = await SparePartRequisition.save(data);
+      const { requisitionId, orderNo, createdBy } = result;
       const employee = new EmployeeResolver();
       const creator = await employee.getEmployeeWithCustomEmail(createdBy);
       const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        results.approverLv1
+        result.approverLv1
       );
       const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        results.approverLv2
+        result.approverLv2
       );
       switch (input.status) {
         case 'Submitted':
@@ -219,15 +222,15 @@ export class SparePartRequisitionResolver {
         case 'Rejected':
           await sendEmail(
             creator?.email || '',
-            `Spare Part Requisition No ${results.requisitionId} has been Rejected`,
+            `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${results.requisitionId} has been rejected.</p>`
+            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</p>`
           );
           break;
         default:
           null;
       }
-      return results;
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }

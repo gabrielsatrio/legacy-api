@@ -70,8 +70,8 @@ export class SparePartReqLineMachResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await SparePartReqLineMach.save(data);
-      return results;
+      const result = await SparePartReqLineMach.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -90,8 +90,8 @@ export class SparePartReqLineMachResolver {
       });
       if (!data) throw new Error('No data found.');
       SparePartReqLineMach.merge(data, input);
-      const results = await SparePartReqLineMach.save(data);
-      return results;
+      const result = await SparePartReqLineMach.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
