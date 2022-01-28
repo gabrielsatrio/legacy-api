@@ -23,6 +23,20 @@ import { SparePartRequisitionView } from './entities/apm-sp-requisition.vw';
 
 @Resolver(SparePartRequisition)
 export class SparePartRequisitionResolver {
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkSPReqValid(
+    @Arg('requisitionId', () => Int) requistionId: number
+  ): Promise<boolean> {
+    try {
+      const sql = `SELECT ROB_APM_Sparepart_Req_API.Check_Valid(:requisitionId) AS "checkValid" FROM DUAL`;
+      const result = await getConnection().query(sql, [requistionId]);
+      return result[0].checkValid === 1 ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [SparePartRequisitionView])
   @UseMiddleware(isAuth)
   async getSPRequisitionsByContract(
@@ -100,7 +114,7 @@ export class SparePartRequisitionResolver {
       });
       if (!data) throw new Error('No data found.');
       let outOrderNo: string;
-      if (input.status === 'Approved') {
+      if (input.status === 'Approved' || input.urgent) {
         let sql = `
           BEGIN
             ATJ_Material_Requisition_API.New__(
@@ -167,16 +181,18 @@ export class SparePartRequisitionResolver {
               ]);
             })
           );
-          sql = `
+          if (input.status === 'Approved') {
+            sql = `
             BEGIN
-              ATJ_Material_Requisition_API.Release__(:orderNo);
+            ATJ_Material_Requisition_API.Release__(:orderNo);
             EXCEPTION
-              WHEN OTHERS THEN
-                ROLLBACK;
-                RAISE;
-              END;
-          `;
-          await getConnection().query(sql, [outOrderNo]);
+            WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
+            END;
+            `;
+            await getConnection().query(sql, [outOrderNo]);
+          }
         }
       }
       SparePartRequisition.merge(data, input);
@@ -260,20 +276,6 @@ export class SparePartRequisitionResolver {
       );
       await SparePartRequisition.delete({ requisitionId });
       return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
-  async isSPReqValid(
-    @Arg('requisitionId', () => Int) requistionId: number
-  ): Promise<boolean> {
-    try {
-      const sql = `SELECT ROB_APM_Sparepart_Req_API.Is_Valid(:requisitionId) AS "isValid" FROM DUAL`;
-      const result = await getConnection().query(sql, [requistionId]);
-      return result[0].isValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }

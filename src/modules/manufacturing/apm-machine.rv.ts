@@ -16,6 +16,26 @@ import { MachineView } from './entities/apm-machine.vw';
 
 @Resolver(Machine)
 export class MachineResolver {
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkMachineExist(
+    @Arg('machineId') machineId: string,
+    @Arg('contract') contract: string
+  ): Promise<boolean> {
+    return (await this.getMachine(machineId, contract)) ? true : false;
+  }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkMachineDescriptionExist(
+    @Arg('contract') contract: string,
+    @Arg('description') description: string
+  ): Promise<boolean> {
+    return (await MachineView.findOne({ contract, description }))
+      ? true
+      : false;
+  }
+
   @Query(() => [MachineView])
   @UseMiddleware(isAuth)
   async getMachinesByContract(
@@ -36,26 +56,6 @@ export class MachineResolver {
     return await MachineView.findOne({ machineId, contract });
   }
 
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
-  async isMachineExist(
-    @Arg('machineId') machineId: string,
-    @Arg('contract') contract: string
-  ): Promise<boolean> {
-    return (await this.getMachine(machineId, contract)) ? true : false;
-  }
-
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
-  async isMachineDescriptionExist(
-    @Arg('contract') contract: string,
-    @Arg('description') description: string
-  ): Promise<boolean> {
-    return (await MachineView.findOne({ contract, description }))
-      ? true
-      : false;
-  }
-
   @Query(() => String)
   @UseMiddleware(isAuth)
   async getNewMachineId(
@@ -69,6 +69,28 @@ export class MachineResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [MachineView])
+  @UseMiddleware(isAuth)
+  async getUtilityMachinesByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<MachineView[] | undefined> {
+    return await MachineView.find({
+      where: { contract: In(contract), departmentId: 'MTC' },
+      order: { machineId: 'ASC' }
+    });
+  }
+
+  @Query(() => [MachineView])
+  @UseMiddleware(isAuth)
+  async getMachinesForServicePRMap(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<MachineView[] | undefined> {
+    return await MachineView.find({
+      where: { contract: In(contract) },
+      order: { machineId: 'ASC' }
+    });
   }
 
   @Mutation(() => Machine)
@@ -124,16 +146,5 @@ export class MachineResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
-  }
-
-  @Query(() => [MachineView])
-  @UseMiddleware(isAuth)
-  async getUtilityMachinesByContract(
-    @Arg('contract', () => [String]) contract: string[]
-  ): Promise<MachineView[] | undefined> {
-    return await MachineView.find({
-      where: { contract: In(contract), departmentId: 'MTC' },
-      order: { machineId: 'ASC' }
-    });
   }
 }
