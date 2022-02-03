@@ -41,7 +41,6 @@ export class OpnameStatusResolver {
     @Arg('username') username: string,
     @Arg('periode') periode: Date
   ): Promise<OpnameStatus | undefined> {
-    // return await OpnameStatus.findOne({ contract, username, periode });
     return await OpnameStatus.createQueryBuilder('OS')
       .where('OS.CONTRACT = :contract', { contract })
       .andWhere('OS.USERNAME = :username', { username })
