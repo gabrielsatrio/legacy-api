@@ -46,7 +46,7 @@ export class MachineInput implements Partial<Machine> {
 
   @Field()
   @Length(3, 10)
-  locationNo!: string;
+  workCenterNo!: string;
 
   @Field()
   @IsIn(['Active', 'Inactive', 'Sold', 'Scrapped'])
