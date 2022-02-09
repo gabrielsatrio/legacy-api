@@ -8,11 +8,6 @@ import { OpnameStatusInput } from './opname-status.in';
 
 @Resolver(OpnameStatus)
 export class OpnameStatusResolver {
-  async getOpname(
-    @Arg('objId') objId: string
-  ): Promise<OpnameStatus | undefined> {
-    return await OpnameStatus.findOne(objId);
-  }
   @Query(() => OpnameStatus, { nullable: true })
   @UseMiddleware(isAuth)
   async getOpnameStatus(
@@ -29,6 +24,69 @@ export class OpnameStatusResolver {
       ]);
       const status = result[0].status;
       return { status };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => OpnameStatus, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getOpnameType(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('tanggal') tanggal: Date
+  ): Promise<Record<string, string | undefined>> {
+    try {
+      const sql = `SELECT GBR_STOCK_OPNAME_API.GET_OPNAME_TYPE(:contract, :username, :tanggal) as "opnameType" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        contract,
+        username,
+        tanggal
+      ]);
+      const opnameType = result[0].opnameType;
+      return { opnameType };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => OpnameStatus, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getOpnameNumOfLoc(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('tanggal') tanggal: Date
+  ): Promise<Record<string, string | undefined>> {
+    try {
+      const sql = `SELECT GBR_STOCK_OPNAME_API.GET_NUM_OF_LOC(:contract, :username, :tanggal) as "numOfLoc" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        contract,
+        username,
+        tanggal
+      ]);
+      const numOfLoc = result[0].numOfLoc;
+      return { numOfLoc };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => OpnameStatus, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getOpnameLocation(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('tanggal') tanggal: Date
+  ): Promise<Record<string, string | undefined>> {
+    try {
+      const sql = `SELECT GBR_STOCK_OPNAME_API.GET_LOCATION(:contract, :username, :tanggal) as "locationNo" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        contract,
+        username,
+        tanggal
+      ]);
+      const locationNo = result[0].locationNo;
+      return { locationNo };
     } catch (err) {
       throw new Error(mapError(err));
     }
