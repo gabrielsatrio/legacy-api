@@ -2,12 +2,20 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { getConnection, In } from 'typeorm';
 import { OpnameStatus } from './entities/opname-status';
 import { OpnameStatusInput } from './opname-status.in';
 
 @Resolver(OpnameStatus)
 export class OpnameStatusResolver {
+  @Query(() => OpnameStatus, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getOpname(
+    @Arg('objId') objId: string
+  ): Promise<OpnameStatus | undefined> {
+    return await OpnameStatus.findOne({ objId });
+  }
+
   @Query(() => OpnameStatus, { nullable: true })
   @UseMiddleware(isAuth)
   async getOpnameStatus(
@@ -92,18 +100,18 @@ export class OpnameStatusResolver {
     }
   }
 
-  @Query(() => OpnameStatus, { nullable: true })
+  @Query(() => [OpnameStatus])
   @UseMiddleware(isAuth)
-  async getOpnameByContractUsernamePeriode(
-    @Arg('contract') contract: string,
-    @Arg('username') username: string,
-    @Arg('periode') periode: Date
-  ): Promise<OpnameStatus | undefined> {
-    return await OpnameStatus.createQueryBuilder('OS')
-      .where('OS.CONTRACT = :contract', { contract })
-      .andWhere('OS.USERNAME = :username', { username })
-      .andWhere('TRUNC(OS.PERIODE) = trunc(:periode)', { periode })
-      .getOne();
+  async getOpnameByContractUsername(
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('username') username: string
+  ): Promise<OpnameStatus[] | undefined> {
+    return await OpnameStatus.find({
+      where: {
+        contract: In(contract),
+        username: username
+      }
+    });
   }
 
   @Mutation(() => OpnameStatus)
