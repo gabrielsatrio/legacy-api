@@ -183,13 +183,13 @@ export class SparePartRequisitionResolver {
           );
           if (input.status === 'Approved') {
             sql = `
-            BEGIN
-            ATJ_Material_Requisition_API.Release__(:orderNo);
-            EXCEPTION
-            WHEN OTHERS THEN
-            ROLLBACK;
-            RAISE;
-            END;
+              BEGIN
+                ATJ_Material_Requisition_API.Release__(:orderNo);
+              EXCEPTION
+                WHEN OTHERS THEN
+                  ROLLBACK;
+                  RAISE;
+              END;
             `;
             await getConnection().query(sql, [outOrderNo]);
           }

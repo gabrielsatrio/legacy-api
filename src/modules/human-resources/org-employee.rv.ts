@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { MoreThanOrEqual } from 'typeorm';
+import { Like, MoreThanOrEqual, Not } from 'typeorm';
+import { customEmail } from './../../utils/custom-email';
 import { EmployeeView } from './entities/org-employee.vw';
 
 @Resolver(EmployeeView)
@@ -19,6 +20,16 @@ export class EmployeeResolver {
     return await EmployeeView.findOne({ employeeId });
   }
 
+  @Query(() => EmployeeView)
+  @UseMiddleware(isAuth)
+  async getEmployeeWithCustomEmail(
+    @Arg('employeeId') employeeId: string
+  ): Promise<EmployeeView | undefined> {
+    const employee = await EmployeeView.findOne({ employeeId });
+    if (employee) employee.email = customEmail(employee.email);
+    return employee;
+  }
+
   @Query(() => [EmployeeView])
   @UseMiddleware(isAuth)
   async getManagers(): Promise<EmployeeView[]> {
@@ -28,20 +39,41 @@ export class EmployeeResolver {
     });
   }
 
-  @Query(() => EmployeeView)
+  @Query(() => [EmployeeView])
   @UseMiddleware(isAuth)
-  async getEmployeeWithCustomEmail(
-    @Arg('employeeId') employeeId: string
-  ): Promise<EmployeeView | undefined> {
-    const employee = await EmployeeView.findOne({ employeeId });
-    const allowedDomains = ['ateja.co.id', 'agtex.co.id'];
-    if (employee?.email) {
-      employee.email = allowedDomains.includes(
-        employee?.email.slice(employee.email.indexOf('@') + 1) || ''
-      )
-        ? employee?.email.toLowerCase()
-        : 'oracle@ateja.co.id';
-    }
-    return employee;
+  async getEmployeesByOrg(
+    @Arg('workLocation') workLocation: string,
+    @Arg('organizationName') organizationName: string
+  ): Promise<EmployeeView[]> {
+    const employees = await EmployeeView.find({
+      where: { workLocation, organizationName: Like(organizationName) },
+      order: { name: 'ASC' }
+    });
+    employees.map((employee) => (employee.email = customEmail(employee.email)));
+    return employees;
+  }
+
+  @Query(() => [EmployeeView])
+  @UseMiddleware(isAuth)
+  async getMaintenancePerson(
+    @Arg('workLocation') workLocation: string
+  ): Promise<EmployeeView[]> {
+    const employees = await EmployeeView.find({
+      where: [
+        {
+          workLocation,
+          jobId: Not(Like('HLD%')),
+          organizationName: Like('%Maintenance%')
+        },
+        {
+          workLocation,
+          jobId: Not(Like('HLD%')),
+          organizationName: Like('%Electrical%')
+        }
+      ],
+      order: { name: 'ASC' }
+    });
+    employees.map((employee) => (employee.email = customEmail(employee.email)));
+    return employees;
   }
 }

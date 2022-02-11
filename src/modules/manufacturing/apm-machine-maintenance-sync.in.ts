@@ -3,7 +3,9 @@ import { Field, InputType } from 'type-graphql';
 import { MachineMaintenance } from './entities/apm-machine-maintenance';
 
 @InputType()
-export class MachineMaintenanceInput implements Partial<MachineMaintenance> {
+export class MachineMaintenanceSyncInput
+  implements Partial<MachineMaintenance>
+{
   @Field()
   @MaxLength(5)
   contract!: string;
@@ -31,10 +33,6 @@ export class MachineMaintenanceInput implements Partial<MachineMaintenance> {
   @Field()
   @MaxLength(30)
   performedBy!: string;
-
-  @Field()
-  @MaxLength(100)
-  personName?: string;
 
   @Field({ nullable: true })
   @MaxLength(12)
@@ -67,4 +65,12 @@ export class MachineMaintenanceInput implements Partial<MachineMaintenance> {
   @Field({ nullable: true })
   @MaxLength(4)
   prReleaseNo?: string;
+
+  @Field()
+  @MaxLength(6)
+  newMachineId!: string;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  newQuantity?: number;
 }
