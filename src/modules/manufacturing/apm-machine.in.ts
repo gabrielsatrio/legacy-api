@@ -45,7 +45,7 @@ export class MachineInput implements Partial<Machine> {
   departmentId!: string;
 
   @Field()
-  @Length(3, 10)
+  @Length(2, 10)
   workCenterNo!: string;
 
   @Field()
