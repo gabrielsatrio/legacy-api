@@ -1,3 +1,11 @@
+<a name="1.10.0"></a>
+
+# [1.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/82) (2022-02-14)
+
+### Features
+
+- [**M003**] **opname:** add new queries at opname status resolver
+
 <a name="1.9.0"></a>
 
 # [1.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/80) (2022-02-14)
