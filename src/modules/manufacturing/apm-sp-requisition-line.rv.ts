@@ -16,6 +16,24 @@ import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
 
 @Resolver(SparePartReqLine)
 export class SparePartReqLineResolver {
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkSPReqLineValid(
+    @Arg('requisitionId', () => Int) requistionId: number,
+    @Arg('lineItemNo', () => Int) lineItemNo: number
+  ): Promise<boolean> {
+    try {
+      const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Check_Valid(:requisitionId, :lineItemNo) AS "isValid" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        requistionId,
+        lineItemNo
+      ]);
+      return result[0].isValid === 1 ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [SparePartReqLineView])
   @UseMiddleware(isAuth)
   async getSPRequisLinesByReqId(
@@ -61,8 +79,8 @@ export class SparePartReqLineResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await SparePartReqLine.save(data);
-      return results;
+      const result = await SparePartReqLine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -80,8 +98,8 @@ export class SparePartReqLineResolver {
       });
       if (!data) throw new Error('No data found.');
       SparePartReqLine.merge(data, input);
-      const results = await SparePartReqLine.save(data);
-      return results;
+      const result = await SparePartReqLine.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -118,24 +136,6 @@ export class SparePartReqLineResolver {
       );
       await SparePartReqLine.delete({ requisitionId, lineItemNo });
       return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
-  async isSPReqLineValid(
-    @Arg('requisitionId', () => Int) requistionId: number,
-    @Arg('lineItemNo', () => Int) lineItemNo: number
-  ): Promise<boolean> {
-    try {
-      const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Is_Valid(:requisitionId, :lineItemNo) AS "isValid" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        requistionId,
-        lineItemNo
-      ]);
-      return result[0].isValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }

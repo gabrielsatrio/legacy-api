@@ -1,3 +1,22 @@
+<a name="1.9.0"></a>
+
+# [1.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/80) (2022-02-14)
+
+### Features
+
+- add new utility: **custom-email** to replace the email that not using ateja.co.id domain.
+- [**HR**] **employee:** add new resolvers.
+- [**PRC**] **purchase-requisition-line:** add new entity, input, and resolver.
+- [**M001**] **apm:** add new entities, input types, and resolvers for maintenance log module.
+- [**M001**] **apm:** rename some resolvers.
+
+### Bug Fixes
+
+- **dev-docs:** fix typos.
+- **dev-docs:** add new section **Entity / Input Type Script Generator**.
+- [**M001**] **apm:** fix typos.
+- [**M006**] **yarn-eff:** fix file path.
+
 <a name="1.8.0"></a>
 
 # [1.8.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/78) (2022-01-17)
@@ -13,10 +32,10 @@
 - [**HR**] **employee:** add new resolver to get specific employee using custom email.
 - [**INV**] **internal-customer:** change the resolver name.
 - [**INV**] **internal-destination:** modify the resolver.
-- [**M0001**] **apm:** replace `locationNo` to `workCenterNo`.
-- [**M0001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
-- [**M0001**] **apm:** make changes to get a `name` and `email`.
-- [**M0002**] **ddp:** add new line space in `bppf.ts` file.
+- [**M001**] **apm:** replace `locationNo` to `workCenterNo`.
+- [**M001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
+- [**M001**] **apm:** make changes to get a `name` and `email`.
+- [**M002**] **ddp:** add new line space in `bppf.ts` file.
 
 ### Bug Fixes
 
