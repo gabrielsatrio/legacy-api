@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { mapError } from './../../utils/map-error';
 import { YarnMachine } from './entities/yarn-machine';
 import { YarnMachineInput } from './yarn-machine.in';
 

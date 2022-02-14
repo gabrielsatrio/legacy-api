@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { customEmail } from '@/utils/custom-email';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { Like, MoreThanOrEqual, Not } from 'typeorm';
-import { customEmail } from './../../utils/custom-email';
 import { EmployeeView } from './entities/org-employee.vw';
 
 @Resolver(EmployeeView)

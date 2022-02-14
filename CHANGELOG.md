@@ -1,3 +1,22 @@
+<a name="1.9.0"></a>
+
+# [1.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/80) (2022-02-14)
+
+### Features
+
+- add new utility: **custom-email** to replace the email that not using ateja.co.id domain.
+- [**HR**] **employee:** add new resolvers.
+- [**PRC**] **purchase-requisition-line:** add new entity, input, and resolver.
+- [**M001**] **apm:** add new entities, input types, and resolvers for maintenance log module.
+- [**M001**] **apm:** rename some resolvers.
+
+### Bug Fixes
+
+- **dev-docs:** fix typos.
+- **dev-docs:** add new section **Entity / Input Type Script Generator**.
+- [**M001**] **apm:** fix typos.
+- [**M006**] **yarn-eff:** fix file path.
+
 <a name="1.8.0"></a>
 
 # [1.8.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/78) (2022-01-17)

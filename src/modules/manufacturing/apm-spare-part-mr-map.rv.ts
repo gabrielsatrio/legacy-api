@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { mapError } from './../../utils/map-error';
 import { SparePartMrMapPkInput } from './apm-spare-part-mr-map-pk.in';
 import { SparePartMrMapSyncInput } from './apm-spare-part-mr-map-sync.in';
 import { SparePartMrMapView } from './entities/apm-spare-part-mr-map.vw';
