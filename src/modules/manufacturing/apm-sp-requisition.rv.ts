@@ -20,8 +20,23 @@ import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartRequisitionView } from './entities/apm-sp-requisition.vw';
+
 @Resolver(SparePartRequisition)
 export class SparePartRequisitionResolver {
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkSPReqValid(
+    @Arg('requisitionId', () => Int) requistionId: number
+  ): Promise<boolean> {
+    try {
+      const sql = `SELECT ROB_APM_Sparepart_Req_API.Check_Valid(:requisitionId) AS "checkValid" FROM DUAL`;
+      const result = await getConnection().query(sql, [requistionId]);
+      return result[0].checkValid === 1 ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [SparePartRequisitionView])
   @UseMiddleware(isAuth)
   async getSPRequisitionsByContract(
@@ -81,8 +96,8 @@ export class SparePartRequisitionResolver {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      const results = await SparePartRequisition.save(data);
-      return results;
+      const result = await SparePartRequisition.save(data);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -99,7 +114,7 @@ export class SparePartRequisitionResolver {
       });
       if (!data) throw new Error('No data found.');
       let outOrderNo: string;
-      if (input.status === 'Approved') {
+      if (input.status === 'Approved' || input.urgent) {
         let sql = `
           BEGIN
             ATJ_Material_Requisition_API.New__(
@@ -107,6 +122,7 @@ export class SparePartRequisitionResolver {
               :intCustomerNo,
               :destinationId,
               :dueDate,
+              :dateEntered,
               :outOrderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -119,6 +135,7 @@ export class SparePartRequisitionResolver {
           input.intCustomerNo,
           input.destinationId,
           input.dueDate,
+          input.createdAt,
           { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         ]);
         outOrderNo = result[0] as string;
@@ -164,28 +181,30 @@ export class SparePartRequisitionResolver {
               ]);
             })
           );
-          sql = `
-            BEGIN
-              ATJ_Material_Requisition_API.Release__(:orderNo);
-            EXCEPTION
-              WHEN OTHERS THEN
-                ROLLBACK;
-                RAISE;
+          if (input.status === 'Approved') {
+            sql = `
+              BEGIN
+                ATJ_Material_Requisition_API.Release__(:orderNo);
+              EXCEPTION
+                WHEN OTHERS THEN
+                  ROLLBACK;
+                  RAISE;
               END;
-          `;
-          await getConnection().query(sql, [outOrderNo]);
+            `;
+            await getConnection().query(sql, [outOrderNo]);
+          }
         }
       }
       SparePartRequisition.merge(data, input);
-      const results = await SparePartRequisition.save(data);
-      const { requisitionId, orderNo, createdBy } = results;
+      const result = await SparePartRequisition.save(data);
+      const { requisitionId, orderNo, createdBy } = result;
       const employee = new EmployeeResolver();
       const creator = await employee.getEmployeeWithCustomEmail(createdBy);
       const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        results.approverLv1
+        result.approverLv1
       );
       const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        results.approverLv2
+        result.approverLv2
       );
       switch (input.status) {
         case 'Submitted':
@@ -219,15 +238,15 @@ export class SparePartRequisitionResolver {
         case 'Rejected':
           await sendEmail(
             creator?.email || '',
-            `Spare Part Requisition No ${results.requisitionId} has been Rejected`,
+            `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${results.requisitionId} has been rejected.</p>`
+            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</p>`
           );
           break;
         default:
           null;
       }
-      return results;
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -257,20 +276,6 @@ export class SparePartRequisitionResolver {
       );
       await SparePartRequisition.delete({ requisitionId });
       return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
-  async isSPReqValid(
-    @Arg('requisitionId', () => Int) requistionId: number
-  ): Promise<boolean> {
-    try {
-      const sql = `SELECT ROB_APM_Sparepart_Req_API.Is_Valid(:requisitionId) AS "isValid" FROM DUAL`;
-      const result = await getConnection().query(sql, [requistionId]);
-      return result[0].isValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }

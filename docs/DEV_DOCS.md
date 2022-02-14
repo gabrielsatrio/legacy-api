@@ -1,12 +1,13 @@
 # Project Structure
 
 > **Filename**
+>
 > - Use lowercase with hypens
 > - Max Length: 27 chars (excl. the extension)
 > - Singular
 > - Format: [IFS|PROJECT_CODE]-[TABLE/VIEW_NAME].[SEQ].[vw].ts
 >
-></br>
+> </br>
 
 ```
 root
@@ -39,6 +40,21 @@ root
 |   CHANGELOG.md                                    [CHANGELOG]
 |   README.md
 ```
+
+# Entity / Input Type Script Generator
+
+Follow these steps:
+
+1. Open SQLPlus\* / TOAD application and run the following command:
+
+```SQL
+SELECT ATJ_Util_API.Get_Entity_Input_Type_Script(<SCHEMA_NAME>, <TABLE/VIEW_NAME>) AS "Script"
+FROM   DUAL;
+```
+
+2. Paste the result into a new Entity file (and a new Input Type file if it's a Table).
+3. Specify the primary column(s) manually if it's a View.
+4. Recheck and save.
 
 # Error Handling
 
@@ -81,17 +97,17 @@ const abc = () => {
 
 Use lowercase with hypens
 
-* `main`
-* `develop`
-* `feature/`[PROJECT_NAME]</br>
+- `main`
+- `develop`
+- `feature/`[PROJECT_NAME]</br>
   e.g. feature/apm
-* `bugfix/`[ISSUE_NAME]</br>
+- `bugfix/`[ISSUE_NAME]</br>
   e.g. bugfix/more-gray-shades
-* `hotfix/`[ISSUE_NAME]</br>
+- `hotfix/`[ISSUE_NAME]</br>
   e.g. hotfix/increase-scaling-threshold
-* `release/`[APP_VERSION]</br>
+- `release/`[APP_VERSION]</br>
   e.g. release/v1.0.0
 
 # References
 
-* [Coding Standards](https://github.com/angular/components/blob/master/CODING_STANDARDS.md)
+- [Coding Standards](https://github.com/angular/components/blob/master/CODING_STANDARDS.md)

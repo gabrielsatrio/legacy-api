@@ -21,7 +21,7 @@ export class IfsShopOrderResolver {
     @Arg('orderNo') orderNo: string
   ): Promise<Record<string, string | undefined>> {
     try {
-      const sql = `select SHOP_ORD_API.GET_PART_NO(:orderNo, '*', '*')  as "partNo" from dual`;
+      const sql = `SELECT SHOP_ORD_API.GET_PART_NO(:orderNo, '*', '*')  as "partNo" FROM DUAL`;
       const result = await getConnection().query(sql, [orderNo]);
       const partNo = result[0].partNo;
       return { partNo };
