@@ -12,8 +12,8 @@
 
 ### Bug Fixes
 
-- **dev-docs:** fix typos.
-- **dev-docs:** add new section **Entity / Input Type Script Generator**.
+- **docs:** fix typos.
+- **docs:** add new section **Entity / Input Type Script Generator**.
 - [**M001**] **apm:** fix typos.
 - [**M006**] **yarn-eff:** fix file path.
 
