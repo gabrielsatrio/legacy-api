@@ -33,8 +33,12 @@ export class OpnameStatus extends BaseEntity {
   dept!: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'TYPE' })
-  type?: string;
+  @Column({ name: 'OPNAME_TYPE' })
+  opnameType?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NUM_OF_LOC' })
+  numOfLoc?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'LOCATION_NO' })
