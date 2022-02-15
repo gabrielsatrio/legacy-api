@@ -51,8 +51,4 @@ export class BenangSisaInput implements Partial<BenangSisa> {
   @Field({ nullable: true })
   @MaxLength(200)
   keterangan?: string;
-
-  @Field()
-  @MaxLength(100)
-  rowId!: string;
 }

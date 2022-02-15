@@ -1,23 +1,23 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CHR_BENANG_SISA')
 @ObjectType()
 export class BenangSisa extends BaseEntity {
   @Field({ nullable: true })
-  @Column({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'CONTRACT' })
   contract?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'TANGGAL' })
+  @PrimaryColumn({ name: 'TANGGAL' })
   tanggal?: Date;
 
   @Field({ nullable: true })
-  @Column({ name: 'NO_PALET' })
+  @PrimaryColumn({ name: 'NO_PALET' })
   noPalet?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'NO_DUS' })
+  @PrimaryColumn({ name: 'NO_DUS' })
   noDus?: number;
 
   @Field()
@@ -52,7 +52,7 @@ export class BenangSisa extends BaseEntity {
   @Column({ name: 'KETERANGAN' })
   keterangan?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ROW_ID' })
-  rowId!: string;
+  rowId?: string;
 }
