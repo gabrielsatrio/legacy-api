@@ -1,15 +1,15 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CHR_BENANG_SISA_DO')
 @ObjectType()
 export class BenangSisaDo extends BaseEntity {
   @Field({ nullable: true })
-  @Column({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'CONTRACT' })
   contract?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'TANGGAL' })
+  @PrimaryColumn({ name: 'TANGGAL' })
   tanggal?: Date;
 
   @Field()

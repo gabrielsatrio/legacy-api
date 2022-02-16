@@ -30,6 +30,15 @@ export class BenangSisaResolver {
     @Arg('input') input: BenangSisaInput
   ): Promise<BenangSisa | undefined> {
     try {
+      const check = await BenangSisa.findOne({
+        contract: input.contract,
+        tanggal: input.tanggal,
+        noPalet: input.noPalet,
+        noDus: input.noDus
+      });
+
+      if (check) throw new Error('Data Already Exists');
+
       const data = BenangSisa.create({
         ...input
       });
