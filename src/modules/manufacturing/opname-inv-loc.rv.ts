@@ -12,12 +12,23 @@ export class OpnameInventoryLocationViewResolver {
     @Arg('username') username: string
   ): Promise<OpnameInventoryLocationView[] | undefined> {
     return await OpnameInventoryLocationView.createQueryBuilder('IL')
-      .where('IL.CONTRACT = :contract', { contract: contract })
+      .where(
+        `IL.CONTRACT = CASE WHEN :contract = 'AT3' then 'AT1' else :contract end`,
+        { contract: contract }
+      )
       .andWhere('ROWNUM <= :numOfLoc', { numOfLoc: numOfLoc })
       .andWhere(
-        `LOCATION_NO NOT LIKE (CASE WHEN :username = 'AT1GAP02' THEN 'AT3%' ELSE 'AT10' END)`,
+        `LOCATION_NO NOT LIKE (CASE WHEN :username like 'AT1GAP%' THEN '%AT3%' ELSE 'AT10' END)`,
         { username: username }
       )
+      .andWhere(
+        `LOCATION_NO LIKE (CASE WHEN :username = 'AT3GAP02' THEN '%AT3%' ELSE '%' END)`,
+        { username: username }
+      )
+      .andWhere(
+        `DEPT = (CASE WHEN :username in ('AT1GAP06', 'AT2GAP05', 'AT3GAP05', 'AT4GAP05', 'ATEGAP01', 'AMIGAP01', 'AGTGAP02') THEN 'SP1' ELSE 'FG1' END) `
+      )
+      .orderBy(`DBMS_RANDOM.VALUE`)
       .getMany();
   }
 }
