@@ -9,25 +9,22 @@ export class OpnameInventoryLocationViewResolver {
   async getRandomLocation(
     @Arg('contract') contract: string,
     @Arg('numOfLoc') numOfLoc: number,
-    @Arg('username') username: string
+    @Arg('dept') dept: string
   ): Promise<OpnameInventoryLocationView[] | undefined> {
     return await OpnameInventoryLocationView.createQueryBuilder('IL')
       .where(
         `IL.CONTRACT = CASE WHEN :contract = 'AT3' then 'AT1' else :contract end`,
-        { contract: contract }
+        { contract }
       )
-      .andWhere('ROWNUM <= :numOfLoc', { numOfLoc: numOfLoc })
+      .andWhere('ROWNUM <= :numOfLoc', { numOfLoc })
       .andWhere(
-        `LOCATION_NO NOT LIKE (CASE WHEN :username like 'AT1GAP%' THEN '%AT3%' ELSE 'AT10' END)`,
-        { username: username }
-      )
-      .andWhere(
-        `LOCATION_NO LIKE (CASE WHEN :username = 'AT3GAP02' THEN '%AT3%' ELSE '%' END)`,
-        { username: username }
+        `LOCATION_NO NOT LIKE (CASE WHEN :contract = 'AT1' and :dept = 'FG1' THEN '%AT3%' ELSE 'AT10' END)`,
+        { dept }
       )
       .andWhere(
-        `DEPT = (CASE WHEN :username in ('AT1GAP06', 'AT2GAP05', 'AT3GAP05', 'AT4GAP05', 'ATEGAP01', 'AMIGAP01', 'AGTGAP02') THEN 'SP1' ELSE 'FG1' END) `
+        `LOCATION_NO LIKE (CASE WHEN :contract = 'AT3' and :dept = 'FG1' THEN '%AT3%' ELSE '%' END)`
       )
+      .andWhere(`DEPT = :dept`)
       .orderBy(`DBMS_RANDOM.VALUE`)
       .getMany();
   }
