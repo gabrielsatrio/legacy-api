@@ -4,19 +4,19 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('CHR_BENANG_SISA')
 @ObjectType()
 export class BenangSisa extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'TANGGAL' })
   tanggal?: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'NO_PALET' })
   noPalet?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'NO_DUS' })
   noDus?: number;
 

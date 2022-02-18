@@ -4,19 +4,19 @@ import { BenangSisa } from './entities/benang-sisa';
 
 @InputType()
 export class BenangSisaInput implements Partial<BenangSisa> {
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(5)
   contract?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsDate()
   tanggal?: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(5)
   noPalet?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
   noDus?: number;
 

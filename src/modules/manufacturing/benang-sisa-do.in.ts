@@ -4,11 +4,11 @@ import { BenangSisaDo } from './entities/benang-sisa-do';
 
 @InputType()
 export class BenangSisaDoInput implements Partial<BenangSisaDo> {
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(5)
   contract?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsDate()
   tanggal?: Date;
 
