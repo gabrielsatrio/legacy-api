@@ -1,3 +1,11 @@
+<a name="1.10.1"></a>
+
+# [1.10.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/84) (2022-02-17)
+
+### Features
+
+- [**M003**] **opname:** modify param opname loc resolver
+
 <a name="1.10.0"></a>
 
 # [1.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/82) (2022-02-14)
