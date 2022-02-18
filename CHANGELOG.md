@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**M008**] **BenangSisa:** add BE for Benang Sisa Apps
+- [**M008**] **benang-sisa:** add BE for Benang Sisa Apps
 
 <a name="1.10.1"></a>
 

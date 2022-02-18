@@ -6,11 +6,11 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 export class BenangSisaDo extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
-  contract?: string;
+  contract!: string;
 
   @Field()
   @PrimaryColumn({ name: 'TANGGAL' })
-  tanggal?: Date;
+  tanggal!: Date;
 
   @Field()
   @Column({ name: 'TOTAL_DO' })
