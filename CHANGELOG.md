@@ -1,3 +1,11 @@
+<a name="1.12.0"></a>
+
+# [1.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/88) (2022-02-23)
+
+### Features
+
+- [**M009**] **inspek-qc:** Add Inspek QC module.
+
 <a name="1.11.0"></a>
 
 # [1.11.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/86) (2022-02-18)
