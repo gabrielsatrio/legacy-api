@@ -15,6 +15,7 @@ export const getReport = (
       if (!error && res.statusCode == 200) {
         resolve(body);
       } else {
+        console.error('error:', error);
         reject(error);
       }
     })

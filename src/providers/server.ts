@@ -67,9 +67,25 @@ export default class apolloServer {
 
     app.get('/api/report', async (req, res) => {
       try {
-        const reportUrl = `${config.jrs.url}/rest_v2/reports/reports/${req.query.path}.pdf`;
+        const { path, format, params } = req.query;
+        const reportFormat = format || 'pdf';
+        let mimeType = 'application/pdf';
+        switch (reportFormat) {
+          case 'xlsx':
+            mimeType =
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            break;
+          default:
+            'application/pdf';
+        }
+        const reportUrl = `${
+          config.jrs.url
+        }/rest_v2/reports/reports/${path}.${reportFormat}?${
+          typeof params === 'string' &&
+          params.replace(/;/g, '&').replace(/%/g, '%25')
+        }`;
         const reportId = crypto.randomBytes(16).toString('hex');
-        const filePath = `./reports/${reportId}.pdf`;
+        const filePath = `./tmp/${reportId}.${reportFormat}`;
         await getReport(
           reportUrl,
           config.jrs.username,
@@ -77,7 +93,7 @@ export default class apolloServer {
           filePath
         );
         if (fs.existsSync(filePath)) {
-          res.contentType('application/pdf');
+          res.contentType(mimeType);
           const file = fs.createReadStream(filePath);
           file.on('end', () => {
             fs.unlinkSync(filePath);
@@ -88,7 +104,7 @@ export default class apolloServer {
           res.send('File not found');
         }
       } catch (err) {
-        console.error(err);
+        console.error('>> JRS_ERROR: ', err);
       }
     });
 
