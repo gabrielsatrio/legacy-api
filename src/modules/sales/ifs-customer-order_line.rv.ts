@@ -6,17 +6,12 @@ import { IfsCustomerOrderLineView } from './entities/ifs-customer-order_line.vw'
 export class IfsCustomerOrderLineViewResolver {
   @Query(() => [IfsCustomerOrderLineView])
   @UseMiddleware(isAuth)
-  async getAllCustomerOrderLine(): Promise<
-    IfsCustomerOrderLineView[] | undefined
-  > {
-    return await IfsCustomerOrderLineView.find();
-  }
-
-  @Query(() => IfsCustomerOrderLineView, { nullable: true })
-  @UseMiddleware(isAuth)
   async getCustomerOrderLine(
     @Arg('orderNo') orderNo: string
-  ): Promise<IfsCustomerOrderLineView | undefined> {
-    return await IfsCustomerOrderLineView.findOne(orderNo);
+  ): Promise<IfsCustomerOrderLineView[]> {
+    return await IfsCustomerOrderLineView.find({
+      where: { orderNo },
+      order: { lineNo: 'ASC' }
+    });
   }
 }
