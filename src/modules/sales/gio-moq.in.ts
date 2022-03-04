@@ -1,13 +1,9 @@
-import { IsNumber, Length } from 'class-validator';
+import { IsNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { Moq } from './entities/gio-moq';
 
 @InputType()
 export class MoqInput implements Partial<Moq> {
-  @Field()
-  @Length(1, 5)
-  contract!: string;
-
   @Field()
   orderNo!: string;
 
@@ -22,5 +18,5 @@ export class MoqInput implements Partial<Moq> {
   minQty!: number;
 
   @Field()
-  rowId!: string;
+  rowId?: string;
 }
