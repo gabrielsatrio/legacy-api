@@ -14,7 +14,7 @@ export class OpnameInventoryLocationViewResolver {
   ): Promise<OpnameInventoryLocationView[] | undefined> {
     return await OpnameInventoryLocationView.createQueryBuilder('IL')
       .where(
-        `IL.CONTRACT = CASE WHEN :contract = 'AT3' then 'AT1' else :contract end`,
+        `IL.CONTRACT = CASE WHEN :contract = 'AT3' and :dept = 'FG1' then 'AT1' else :contract end`,
         { contract }
       )
       .andWhere('ROWNUM <= :numOfLoc', { numOfLoc })
