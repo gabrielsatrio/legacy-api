@@ -1,6 +1,7 @@
 declare namespace NodeJS {
-  export interface ProcessEnv {
-    PORT: string;
+  interface ProcessEnv {
+    API_HOSTNAME: string;
+    API_PORT: string;
     DATABASE_TYPE: string;
     DATABASE_HOST: string;
     DATABASE_PORT: string;
@@ -14,5 +15,11 @@ declare namespace NodeJS {
     COOKIE_DOMAIN: string;
     SESSION_SECRET: string;
     FORGET_PASSWORD_PREFIX: string;
+    JRS_URL: string;
+    JRS_USERNAME: string;
+    JRS_PASSWORD: string;
+    MAIL_HOST: string;
+    MAIL_PORT: string;
+    MAIL_SENDER: string;
   }
 }

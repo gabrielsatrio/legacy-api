@@ -100,6 +100,11 @@ export class MachineResolver {
     @Ctx() { req }: Context
   ): Promise<Machine | undefined> {
     try {
+      const existingData = await Machine.findOne({
+        machineId: input.machineId,
+        contract: input.contract
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = Machine.create({
         ...input,
         createdBy: req.session.username,
