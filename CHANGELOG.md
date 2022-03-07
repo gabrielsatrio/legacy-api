@@ -1,12 +1,37 @@
-<a name="1.13.0"></a>
+<a name="1.14.0"></a>
 
-# [1.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/90) (2022-03-07)
+# [1.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/92) (2022-03-07)
 
 ### Features
 
 - [**M003**] **opname:** Add exclude FB parameter.
 - [**M003**] **opname:** Add expected number of completion & item query.
 - [**M010**] **pengiriman-kain:** Add pengiriman kain module.
+
+<a name="1.13.0"></a>
+
+# [1.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/90) (2022-03-07)
+
+### BREAKING CHANGES
+
+- add new npm package `request` (version: `2.88.2`).
+- add new environment variables inside `.env` file.
+- add new empty `tmp` folder.
+- ability to run reports from JasperReports Server (format: PDF and XLSX).
+- remove `.env.example.test` file.
+
+#### New Utils
+
+- **get-report:** to get output report from JasperReports server.
+
+### Features
+
+- [**CORE**] **server:** add new resolver to receive request to get/run report from JasperReports server (REST API).
+- [**M001**] **apm-machine-wc:** add new resolver: `getAvailMachWcForHeadLoomByContract`.
+- [**M001**] **apm-machine-wc:** add `try-catch` for each resolver that use `getConnection().query()`.
+- [**M001**] **apm-machine:** add new validation to check if the data already exists in `createMachine` resovler.
+- [**M001**] **apm-sp-requisition-line-mach:** add new validation to check if the data already exists in `createSPRequisLineMach` resovler.
+- [**M001**] **apm-sp-requisition-line:** add new validation to check if the data already exists in `createSPRequisitionLine` resovler.
 
 <a name="1.12.0"></a>
 
@@ -54,8 +79,8 @@
 
 ### Bug Fixes
 
-- **dev-docs:** fix typos.
-- **dev-docs:** add new section **Entity / Input Type Script Generator**.
+- **docs:** fix typos.
+- **docs:** add new section **Entity / Input Type Script Generator**.
 - [**M001**] **apm:** fix typos.
 - [**M006**] **yarn-eff:** fix file path.
 
