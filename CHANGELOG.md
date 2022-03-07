@@ -4,9 +4,9 @@
 
 ### Features
 
-- [**M003**] **spt:** Add exclude FB parameter
-- [**M003**] **spt:** Add expected number of completion & item query
-- [**M010**] **pengiriman-kain:** Add pengiriman kain module
+- [**M003**] **opname:** Add exclude FB parameter.
+- [**M003**] **opname:** Add expected number of completion & item query.
+- [**M010**] **pengiriman-kain:** Add pengiriman kain module.
 
 <a name="1.12.0"></a>
 
