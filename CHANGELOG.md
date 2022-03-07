@@ -12,16 +12,16 @@
 
 #### New Utils
 
-- **get-report:** to get output report from JasperReports server.
+- **get-report**: to get output report from JasperReports server.
 
 ### Features
 
-- [**CORE**] **server:** add new resolver to receive request to get/run report from JasperReports server (REST API).
-- [**M001**] **apm-machine-wc:** add new resolver: `getAvailMachWcForHeadLoomByContract`.
-- [**M001**] **apm-machine-wc:** add `try-catch` for each resolver that use `getConnection().query()`.
-- [**M001**] **apm-machine:** add new validation to check if the data already exists in `createMachine` resovler.
-- [**M001**] **apm-sp-requisition-line-mach:** add new validation to check if the data already exists in `createSPRequisLineMach` resovler.
-- [**M001**] **apm-sp-requisition-line:** add new validation to check if the data already exists in `createSPRequisitionLine` resovler.
+- [**CORE**] **server**: add new resolver to receive request to get/run report from JasperReports server (REST API).
+- [**M001**] **apm-machine-wc**: add new resolver: `getAvailMachWcForHeadLoomByContract`.
+- [**M001**] **apm-machine-wc**: add `try-catch` for each resolver that use `getConnection().query()`.
+- [**M001**] **apm-machine**: add new validation to check if the data already exists in `createMachine` resovler.
+- [**M001**] **apm-sp-requisition-line-mach**: add new validation to check if the data already exists in `createSPRequisLineMach` resovler.
+- [**M001**] **apm-sp-requisition-line**: add new validation to check if the data already exists in `createSPRequisitionLine` resovler.
 
 <a name="1.12.0"></a>
 
@@ -29,7 +29,7 @@
 
 ### Features
 
-- [**M009**] **inspek-qc:** Add Inspek QC module.
+- [**M009**] **inspek-qc**: Add Inspek QC module.
 
 <a name="1.11.0"></a>
 
@@ -37,7 +37,7 @@
 
 ### Features
 
-- [**M008**] **benang-sisa:** add BE for Benang Sisa Apps
+- [**M008**] **benang-sisa**: add BE for Benang Sisa Apps
 
 <a name="1.10.1"></a>
 
@@ -45,7 +45,7 @@
 
 ### Features
 
-- [**M003**] **opname:** modify param opname loc resolver
+- [**M003**] **opname**: modify param opname loc resolver
 
 <a name="1.10.0"></a>
 
@@ -53,7 +53,7 @@
 
 ### Features
 
-- [**M003**] **opname:** add new queries at opname status resolver
+- [**M003**] **opname**: add new queries at opname status resolver
 
 <a name="1.9.0"></a>
 
@@ -62,17 +62,17 @@
 ### Features
 
 - add new utility: **custom-email** to replace the email that not using ateja.co.id domain.
-- [**HR**] **employee:** add new resolvers.
-- [**PRC**] **purchase-requisition-line:** add new entity, input, and resolver.
-- [**M001**] **apm:** add new entities, input types, and resolvers for maintenance log module.
-- [**M001**] **apm:** rename some resolvers.
+- [**HR**] **employee**: add new resolvers.
+- [**PRC**] **purchase-requisition-line**: add new entity, input, and resolver.
+- [**M001**] **apm**: add new entities, input types, and resolvers for maintenance log module.
+- [**M001**] **apm**: rename some resolvers.
 
 ### Bug Fixes
 
-- **docs:** fix typos.
-- **docs:** add new section **Entity / Input Type Script Generator**.
-- [**M001**] **apm:** fix typos.
-- [**M006**] **yarn-eff:** fix file path.
+- **docs**: fix typos.
+- **docs**: add new section **Entity / Input Type Script Generator**.
+- [**M001**] **apm**: fix typos.
+- [**M006**] **yarn-eff**: fix file path.
 
 <a name="1.8.0"></a>
 
@@ -80,25 +80,25 @@
 
 ### BREAKING CHANGES
 
-- [**HRD**] **employee:** replace entity source from `ATJ_EMPLOYEE_MV` to `ATJ_EMPLOYEE_V`.
-- [**MANUF**] **department:** replace entity source from `ATJ_DEPARTMENT_MV` to `ATJ_DEPARTMENT_V`.
+- [**HRD**] **employee**: replace entity source from `ATJ_EMPLOYEE_MV` to `ATJ_EMPLOYEE_V`.
+- [**MANUF**] **department**: replace entity source from `ATJ_DEPARTMENT_MV` to `ATJ_DEPARTMENT_V`.
 
 ### Features
 
-- [**CORE**] **auth:** refactor to grant specific users to access AGT site.
-- [**HR**] **employee:** add new resolver to get specific employee using custom email.
-- [**INV**] **internal-customer:** change the resolver name.
-- [**INV**] **internal-destination:** modify the resolver.
-- [**M001**] **apm:** replace `locationNo` to `workCenterNo`.
-- [**M001**] **apm:** add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
-- [**M001**] **apm:** make changes to get a `name` and `email`.
-- [**M002**] **ddp:** add new line space in `bppf.ts` file.
+- [**CORE**] **auth**: refactor to grant specific users to access AGT site.
+- [**HR**] **employee**: add new resolver to get specific employee using custom email.
+- [**INV**] **internal-customer**: change the resolver name.
+- [**INV**] **internal-destination**: modify the resolver.
+- [**M001**] **apm**: replace `locationNo` to `workCenterNo`.
+- [**M001**] **apm**: add new fields: `nameApprLv1`, `nameApprLv2`, and `nameCreatedBy` in `apm-sp-requisition.ts` file.
+- [**M001**] **apm**: make changes to get a `name` and `email`.
+- [**M002**] **ddp**: add new line space in `bppf.ts` file.
 
 ### Bug Fixes
 
 - fix the module alias for `@/modules`.
-- [**CORE**] **user:** hashed the password each time someone updates the user data.
-- [**INV**] **intenal-destination:** add `contract` field and replace `objId` to `objKey`.
+- [**CORE**] **user**: hashed the password each time someone updates the user data.
+- [**INV**] **intenal-destination**: add `contract` field and replace `objId` to `objKey`.
 
 <a name="1.7.0"></a>
 
