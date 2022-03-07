@@ -32,6 +32,11 @@ export default {
   },
   deploy: process.env.DEPLOY === 'true' ? true : false,
   env: process.env.NODE_ENV || 'development',
+  jrs: {
+    url: process.env.JRS_URL,
+    username: process.env.JRS_USERNAME,
+    password: process.env.JRS_PASSWORD
+  },
   mail: {
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT || (25 as any),
