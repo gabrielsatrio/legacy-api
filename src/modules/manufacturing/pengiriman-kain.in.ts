@@ -30,7 +30,7 @@ export class PengirimanKainInput implements Partial<PengirimanKain> {
 
   @Field()
   @MaxLength(200)
-  design!: string;
+  partNo!: string;
 
   @Field()
   @MaxLength(50)

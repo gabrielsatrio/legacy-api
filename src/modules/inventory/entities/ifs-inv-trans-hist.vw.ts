@@ -47,4 +47,8 @@ export class IfsInventoryTransactionHistoryView extends BaseEntity {
   @Field()
   @Column({ name: 'OBJID' })
   objId!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CTM_JOB_ORDER' })
+  ctmJobOrder?: string;
 }

@@ -29,8 +29,8 @@ export class PengirimanKain extends BaseEntity {
   category!: string;
 
   @Field()
-  @Column({ name: 'DESIGN' })
-  design!: string;
+  @Column({ name: 'PART_NO' })
+  partNo!: string;
 
   @Field()
   @Column({ name: 'JOB_ORDER' })
