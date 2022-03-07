@@ -1,3 +1,27 @@
+<a name="1.12.0"></a>
+
+# [1.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/88) (2022-02-23)
+
+### Features
+
+- [**M009**] **inspek-qc:** Add Inspek QC module.
+
+<a name="1.11.0"></a>
+
+# [1.11.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/86) (2022-02-18)
+
+### Features
+
+- [**M008**] **benang-sisa:** add BE for Benang Sisa Apps
+
+<a name="1.10.1"></a>
+
+# [1.10.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/84) (2022-02-17)
+
+### Features
+
+- [**M003**] **opname:** modify param opname loc resolver
+
 <a name="1.10.0"></a>
 
 # [1.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/82) (2022-02-14)

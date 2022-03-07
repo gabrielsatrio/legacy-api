@@ -9,15 +9,23 @@ export class OpnameInventoryLocationViewResolver {
   async getRandomLocation(
     @Arg('contract') contract: string,
     @Arg('numOfLoc') numOfLoc: number,
-    @Arg('username') username: string
+    @Arg('dept') dept: string
   ): Promise<OpnameInventoryLocationView[] | undefined> {
     return await OpnameInventoryLocationView.createQueryBuilder('IL')
-      .where('IL.CONTRACT = :contract', { contract: contract })
-      .andWhere('ROWNUM <= :numOfLoc', { numOfLoc: numOfLoc })
-      .andWhere(
-        `LOCATION_NO NOT LIKE (CASE WHEN :username = 'AT1GAP02' THEN 'AT3%' ELSE 'AT10' END)`,
-        { username: username }
+      .where(
+        `IL.CONTRACT = CASE WHEN :contract = 'AT3' then 'AT1' else :contract end`,
+        { contract }
       )
+      .andWhere('ROWNUM <= :numOfLoc', { numOfLoc })
+      .andWhere(
+        `LOCATION_NO NOT LIKE (CASE WHEN :contract = 'AT1' and :dept = 'FG1' THEN '%AT3%' ELSE 'AT10' END)`,
+        { dept }
+      )
+      .andWhere(
+        `LOCATION_NO LIKE (CASE WHEN :contract = 'AT3' and :dept = 'FG1' THEN '%AT3%' ELSE '%' END)`
+      )
+      .andWhere(`DEPT = :dept`)
+      .orderBy(`DBMS_RANDOM.VALUE`)
       .getMany();
   }
 }
