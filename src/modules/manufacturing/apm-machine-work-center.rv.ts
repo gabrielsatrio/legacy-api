@@ -117,7 +117,7 @@ export class MachineWorkCenterResolver {
                  WHERE  ram.contract = ramwc.contract
                  AND    work_center_api.get_department_no(ram.contract, ram.work_center_no) IN
                           ('TN1', 'TN2')
-                 AND    ram.category_id NOT IN ('HD'))
+                 AND    ram.category_id NOT IN ('HD', 'HJ'))
         ORDER BY ramwc.work_center_no
     `;
       const results = await getConnection().query(sql, [contract]);
