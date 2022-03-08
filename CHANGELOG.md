@@ -1,3 +1,11 @@
+<a name="1.14.2"></a>
+
+# [1.14.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/96) (2022-03-08)
+
+### Bug Fixes
+
+- [**M001**] **spare-part-req**: fix the issue related to data not being synchronized with MR Spare Part Map.
+
 <a name="1.14.1"></a>
 
 # [1.14.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/94) (2022-03-08)
