@@ -1,3 +1,11 @@
+<a name="1.14.1"></a>
+
+# [1.14.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/94) (2022-03-08)
+
+### Bug Fixes
+
+- **server**: update JRS REST API path
+
 <a name="1.14.0"></a>
 
 # [1.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/92) (2022-03-07)
