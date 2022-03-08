@@ -198,6 +198,18 @@ export class SparePartRequisitionResolver {
       SparePartRequisition.merge(data, input);
       const result = await SparePartRequisition.save(data);
       const { requisitionId, orderNo, createdBy } = result;
+      if (input.status === 'Approved') {
+        const sql = `
+          BEGIN
+            ROB_APM_MR_Sparepart_Map_API.insert_from_mr__(:orderNo);
+          EXCEPTION
+            WHEN OTHERS THEN
+              ROLLBACK;
+              RAISE;
+          END;
+        `;
+        await getConnection().query(sql, [orderNo]);
+      }
       const employee = new EmployeeResolver();
       const creator = await employee.getEmployeeWithCustomEmail(createdBy);
       const approverLv1 = await employee.getEmployeeWithCustomEmail(
