@@ -114,6 +114,50 @@ export class OpnameStatusResolver {
     });
   }
 
+  @Query(() => Number)
+  @UseMiddleware(isAuth)
+  async getExpectedPercentage(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('dept') dept: string,
+    @Arg('location') location: string
+  ): Promise<number> {
+    try {
+      const sql = `SELECT GBR_STOCK_OPNAME_API.GET_EXPECTED_PERCENTAGE(:contract, :username, :dept, :location) as "percentage" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        contract,
+        username,
+        dept,
+        location
+      ]);
+      return result[0].percentage;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number)
+  @UseMiddleware(isAuth)
+  async getExpectedRoll(
+    @Arg('contract') contract: string,
+    @Arg('username') username: string,
+    @Arg('dept') dept: string,
+    @Arg('location') location: string
+  ): Promise<number> {
+    try {
+      const sql = `SELECT GBR_STOCK_OPNAME_API.GET_EXPECTED_ROLL(:contract, :username, :dept, :location) as "roll" FROM DUAL`;
+      const result = await getConnection().query(sql, [
+        contract,
+        username,
+        dept,
+        location
+      ]);
+      return result[0].roll;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => OpnameStatus)
   @UseMiddleware(isAuth)
   async startOpname(

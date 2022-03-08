@@ -1,3 +1,13 @@
+<a name="1.14.0"></a>
+
+# [1.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/92) (2022-03-07)
+
+### Features
+
+- [**M003**] **opname**: add exclude FB parameter.
+- [**M003**] **opname**: add expected number of completion & item query.
+- [**M010**] **pengiriman-kain**: add pengiriman kain module.
+
 <a name="1.13.0"></a>
 
 # [1.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/90) (2022-03-07)
