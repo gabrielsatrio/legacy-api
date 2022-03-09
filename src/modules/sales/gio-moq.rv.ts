@@ -17,6 +17,12 @@ export class MachineResolver {
     return (await this.getMoq(orderNo, lineNo, relNo)) ? true : false;
   }
 
+  @Query(() => [Moq])
+  @UseMiddleware(isAuth)
+  async getAllMoq(): Promise<Moq[] | undefined> {
+    return await Moq.find();
+  }
+
   @Query(() => MoqView, { nullable: true })
   @UseMiddleware(isAuth)
   async getMoq(

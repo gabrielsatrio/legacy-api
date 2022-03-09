@@ -20,7 +20,7 @@ export class MoqView extends BaseEntity {
   @PrimaryColumn({ name: 'MIN_QTY' })
   minQty!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'ROW_ID' })
-  rowId?: string;
+  rowId!: string;
 }
