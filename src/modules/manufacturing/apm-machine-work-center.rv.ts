@@ -87,7 +87,14 @@ export class MachineWorkCenterResolver {
       });
       formattedContract.slice(0, formattedContract.length - 1);
       sql = `${sql}  AND      ramwc.contract IN (${formattedContract} )`;
-      const results = await getConnection().query(sql);
+      let results = await getConnection().query(sql);
+      if (results) {
+        results = results
+          .slice()
+          .sort((a: Record<string, any>, b: Record<string, any>) =>
+            a.workCenterNo > b.workCenterNo ? 1 : -1
+          );
+      }
       return results;
     } catch (err) {
       throw new Error(mapError(err));
