@@ -65,6 +65,12 @@ export class SparePartReqLineMachResolver {
     @Arg('input') input: SparePartReqLineMachInput
   ): Promise<SparePartReqLineMach | undefined> {
     try {
+      const existingData = await SparePartReqLineMach.findOne({
+        requisitionId: input.requisitionId,
+        lineItemNo: input.lineItemNo,
+        mapNo: input.mapNo
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = SparePartReqLineMach.create({
         ...input,
         createdAt: new Date(),

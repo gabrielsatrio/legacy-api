@@ -26,4 +26,7 @@ export class OpnameStatusInput implements Partial<OpnameStatus> {
 
   @Field({ nullable: true })
   locationNo?: string;
+
+  @Field({ nullable: true })
+  exclude?: string;
 }

@@ -4,8 +4,10 @@ import chalk from 'chalk';
 import compression from 'compression';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
+import crypto from 'crypto';
 import express from 'express';
 import session from 'express-session';
+import fs from 'fs';
 import { graphqlUploadExpress } from 'graphql-upload';
 import helmet from 'helmet';
 import http from 'http';
@@ -15,6 +17,7 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import config from '../config/main';
 import { createUserLoader } from '../utils/create-user-loader';
+import { getReport } from '../utils/get-report';
 import { redis } from './redis';
 
 const isProd = config.env === 'production';
@@ -61,6 +64,50 @@ export default class apolloServer {
     app.use(compression());
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+
+    app.get('/api/report', async (req, res) => {
+      const { path, format, params } = req.query;
+      const reportFormat = format || 'pdf';
+      let mimeType = 'application/pdf';
+      switch (reportFormat) {
+        case 'xlsx':
+          mimeType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+          break;
+        default:
+          'application/pdf';
+      }
+      const reportUrl = `${
+        config.jrs.url
+      }/rest_v2/reports/Reports/${path}.${reportFormat}?${
+        typeof params === 'string' &&
+        params.replace(/;/g, '&').replace(/%/g, '%25')
+      }`;
+      const reportId = crypto.randomBytes(16).toString('hex');
+      const filePath = `./tmp/${reportId}.${reportFormat}`;
+      try {
+        await getReport(
+          reportUrl,
+          config.jrs.username,
+          config.jrs.password,
+          filePath
+        );
+        if (fs.existsSync(filePath)) {
+          res.contentType(mimeType);
+          const file = fs.createReadStream(filePath);
+          file.on('end', () => {
+            fs.unlinkSync(filePath);
+          });
+          file.pipe(res);
+        } else {
+          res.status(500);
+          res.send('File not found');
+        }
+      } catch (err) {
+        console.error('>> REPORT_URL: ', reportUrl);
+        console.error('>> JRS_ERROR: ', err);
+      }
+    });
 
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
