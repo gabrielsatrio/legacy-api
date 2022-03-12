@@ -1,3 +1,16 @@
+<a name="1.15.0"></a>
+
+# [1.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/98) (2022-03-12)
+
+### BREAKING CHANGES
+
+- replace `getManagers` resolver into `getEmployeesByGrade` resolver
+
+### Features
+
+- [**M001**] **apm-machine-wc**: add sorting by work center for the result.
+- [**M001**] **apm-machine-wc**: add new condition for `getAvailMachWcForHeadLoomByContract` resolver.
+
 <a name="1.14.2"></a>
 
 # [1.14.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/96) (2022-03-08)
