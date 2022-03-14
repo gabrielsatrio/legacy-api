@@ -22,5 +22,5 @@ export class Moq extends BaseEntity {
 
   @Field()
   @Column({ name: 'ROW_ID' })
-  rowId!: string;
+  rowId?: string;
 }
