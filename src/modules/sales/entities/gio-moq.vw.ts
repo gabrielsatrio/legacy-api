@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('GIO_MOQ_V')
 @ObjectType()
@@ -19,4 +19,8 @@ export class MoqView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'MIN_QTY' })
   minQty!: number;
+
+  @Field()
+  @Column({ name: 'GABUNG_CO' })
+  gabungCo?: string;
 }

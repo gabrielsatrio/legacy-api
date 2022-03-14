@@ -16,4 +16,7 @@ export class MoqInput implements Partial<Moq> {
   @Field()
   @IsNumber()
   minQty!: number;
+
+  @Field()
+  gabungCO?: string;
 }

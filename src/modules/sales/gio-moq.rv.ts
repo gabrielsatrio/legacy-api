@@ -37,6 +37,12 @@ export class MachineResolver {
   @UseMiddleware(isAuth)
   async createMoq(@Arg('input') input: MoqInput): Promise<Moq | undefined> {
     try {
+      const existingData = await Moq.findOne({
+        orderNo: input.orderNo,
+        lineNo: input.lineNo,
+        relNo: input.relNo
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = Moq.create({
         ...input
       });
