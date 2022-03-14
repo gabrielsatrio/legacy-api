@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { customEmail } from '@/utils/custom-email';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Like, MoreThanOrEqual, Not } from 'typeorm';
+import { In, Like, Not } from 'typeorm';
 import { EmployeeView } from './entities/org-employee.vw';
 
 @Resolver(EmployeeView)
@@ -32,9 +32,11 @@ export class EmployeeResolver {
 
   @Query(() => [EmployeeView])
   @UseMiddleware(isAuth)
-  async getManagers(): Promise<EmployeeView[]> {
+  async getEmployeesByGrade(
+    @Arg('grade', () => [String]) grade: string[]
+  ): Promise<EmployeeView[]> {
     return await EmployeeView.find({
-      where: { grade: MoreThanOrEqual(7) }, // TODO: revert to grade 9 or more!!
+      where: { grade: In(grade) },
       order: { name: 'ASC' }
     });
   }
