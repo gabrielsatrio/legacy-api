@@ -20,7 +20,7 @@ export class Moq extends BaseEntity {
   @Column({ name: 'MIN_QTY' })
   minQty!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'GABUNG_CO' })
   gabungCo?: string;
 }
