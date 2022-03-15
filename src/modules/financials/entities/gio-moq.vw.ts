@@ -5,10 +5,6 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class MoqView extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'ROW_ID' })
-  rowId!: string;
-
-  @Field()
   @PrimaryColumn({ name: 'ORDER_NO' })
   orderNo!: string;
 
@@ -27,4 +23,8 @@ export class MoqView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'GABUNG_CO' })
   gabungCo?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ROW_ID' })
+  rowId?: string;
 }

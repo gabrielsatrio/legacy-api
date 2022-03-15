@@ -5,9 +5,6 @@ import { Moq } from './entities/gio-moq';
 @InputType()
 export class MoqInput implements Partial<Moq> {
   @Field()
-  rowId!: string;
-
-  @Field()
   orderNo!: string;
 
   @Field()
