@@ -67,4 +67,8 @@ export class IfsCustomerOrderLineView extends BaseEntity {
   @Field()
   @Column({ name: 'DESIRED_QTY' })
   desiredQty!: number;
+
+  @Field()
+  @Column({ name: 'OBJID' })
+  objId!: string;
 }
