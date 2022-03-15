@@ -4,9 +4,9 @@ import { IfsCustomerOrderLineView } from './entities/ifs-customer-order_line.vw'
 
 @Resolver(IfsCustomerOrderLineView)
 export class IfsCustomerOrderLineViewResolver {
-  @Query(() => [IfsCustomerOrderLineView])
+  @Query(() => [IfsCustomerOrderLineView], { nullable: true })
   @UseMiddleware(isAuth)
-  async getCustomerOrderLine(
+  async getCustomerOrderLineByOrderNo(
     @Arg('orderNo') orderNo: string
   ): Promise<IfsCustomerOrderLineView[]> {
     return await IfsCustomerOrderLineView.find({
