@@ -10,7 +10,7 @@ export class IfsCoOutstandingViewResolver {
     IfsCoOutstandingView[] | undefined
   > {
     return await IfsCoOutstandingView.find({
-      order: { orderNo: 'ASC', lineNo: 'ASC' }
+      order: { orderNo: 'ASC', lineNo: 'ASC', relNo: 'ASC' }
     });
   }
 }
