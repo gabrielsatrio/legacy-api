@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('CUSTOMER_ORDER_LINE')
+@Entity('ATJ_CO_OUTSTANDING_V')
 @ObjectType()
-export class IfsCustomerOrderLineView extends BaseEntity {
+export class IfsCoOutstandingView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ORDER_NO' })
   orderNo!: string;
