@@ -1,9 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Moq } from './entities/gio-moq';
-import { MoqView } from './entities/gio-moq.vw';
-import { MoqInput } from './gio-moq.in';
+import { Moq } from './entities/moq';
+import { MoqView } from './entities/moq.vw';
+import { MoqInput } from './moq.in';
 
 @Resolver(Moq)
 export class MachineResolver {

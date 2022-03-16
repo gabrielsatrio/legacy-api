@@ -1,6 +1,6 @@
 import { IsNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { Moq } from './entities/gio-moq';
+import { Moq } from './entities/moq';
 
 @InputType()
 export class MoqInput implements Partial<Moq> {
