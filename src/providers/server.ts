@@ -62,7 +62,7 @@ export default class apolloServer {
       } as any)
     );
     app.use(compression());
-    app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
+    app.use('/uploads', express.static(join(__dirname, '../..', 'uploads')));
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
     app.get('/api/report', async (req, res) => {
