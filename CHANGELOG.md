@@ -1,3 +1,12 @@
+<a name="1.16.0"></a>
+
+# [1.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/100) (2022-03-21)
+
+### Features
+
+- [**F001**] MOQ - BASE
+- [**SNM**] **customer-order-line-outstanding**: add new resolvers.
+
 <a name="1.15.0"></a>
 
 # [1.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/98) (2022-03-12)
