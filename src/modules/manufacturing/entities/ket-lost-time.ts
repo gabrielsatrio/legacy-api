@@ -1,15 +1,15 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('CHR_KETERANGAN_LOST_TIME')
 @ObjectType()
 export class KeteranganLostTime extends BaseEntity {
-  @Field({ nullable: true })
-  @Column({ name: 'CONTRACT' })
-  contract?: string;
+  @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
-  @Column({ name: 'LOST_TIME' })
+  @PrimaryColumn({ name: 'LOST_TIME' })
   lostTime!: string;
 
   @Field()
