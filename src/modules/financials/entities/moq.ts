@@ -23,8 +23,4 @@ export class Moq extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'GABUNG_CO' })
   gabungCo?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'ROW_ID' })
-  rowId?: string;
 }

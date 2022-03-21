@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ATJ_CO_OUTSTANDING_V')
 @ObjectType()
-export class IfsCoOutstandingView extends BaseEntity {
+export class CoLineOutstandingView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ORDER_NO' })
   orderNo!: string;
@@ -28,7 +28,7 @@ export class IfsCoOutstandingView extends BaseEntity {
   @Column({ name: 'CATALOG_NO' })
   catalogNo!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'PART_NO' })
   partNo?: string;
 
@@ -36,7 +36,7 @@ export class IfsCoOutstandingView extends BaseEntity {
   @Column({ name: 'BUY_QTY_DUE' })
   buyQtyDue!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'CATALOG_DESC' })
   catalogDesc?: string;
 

@@ -43,8 +43,8 @@ mutation CreateMoq {
   }
 }
 
-query ChecMoqExist {
-  checMoqExist(orderNo: "10C/001/1220", lineNo: "1", relNo: "1")
+query CheckMoqExist {
+  checkMoqExist(orderNo: "10C/001/1220", lineNo: "1", relNo: "1")
 }
 
 mutation UpdateMoq {

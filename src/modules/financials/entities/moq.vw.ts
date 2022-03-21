@@ -24,7 +24,7 @@ export class MoqView extends BaseEntity {
   @Column({ name: 'GABUNG_CO' })
   gabungCo?: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'ROW_ID' })
-  rowId?: string;
+  @Field()
+  @Column({ name: 'OBJ_ID' })
+  objId!: string;
 }

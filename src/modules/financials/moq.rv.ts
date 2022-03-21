@@ -9,7 +9,7 @@ import { MoqInput } from './moq.in';
 export class MachineResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checMoqExist(
+  async checkMoqExist(
     @Arg('orderNo') orderNo: string,
     @Arg('lineNo') lineNo: string,
     @Arg('relNo') relNo: string
@@ -17,10 +17,10 @@ export class MachineResolver {
     return (await this.getMoq(orderNo, lineNo, relNo)) ? true : false;
   }
 
-  @Query(() => [Moq])
+  @Query(() => [MoqView])
   @UseMiddleware(isAuth)
-  async getAllMoq(): Promise<Moq[] | undefined> {
-    return await Moq.find();
+  async getAllMoq(): Promise<MoqView[] | undefined> {
+    return await MoqView.find();
   }
 
   @Query(() => MoqView, { nullable: true })
