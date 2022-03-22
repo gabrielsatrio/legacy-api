@@ -6,7 +6,7 @@ import { TargetGangguan } from './entities/target_gangguan_dyeing';
 import { TargetGangguanInput } from './target_gangguan_dyeing.in';
 
 @Resolver(TargetGangguan)
-export class BenangTargetGangguanDyeing {
+export class TargetGangguanDyeingResolver {
   @Query(() => [TargetGangguan], { nullable: true })
   @UseMiddleware(isAuth)
   async getTargetGangguanDyeing(
