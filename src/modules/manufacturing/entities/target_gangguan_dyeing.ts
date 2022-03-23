@@ -20,7 +20,7 @@ export class TargetGangguan extends BaseEntity {
   @Column({ name: 'METER' })
   meter!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ROW_ID' })
-  rowId!: string;
+  rowId?: string;
 }

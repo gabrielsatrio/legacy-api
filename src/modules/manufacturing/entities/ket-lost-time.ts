@@ -16,7 +16,7 @@ export class KeteranganLostTime extends BaseEntity {
   @Column({ name: 'TIPE' })
   tipe!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ROW_ID' })
-  rowId!: string;
+  rowId?: string;
 }
