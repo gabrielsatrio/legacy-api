@@ -31,6 +31,18 @@ export class MachineMaintenanceResolver {
     });
   }
 
+  @Query(() => [MachineMaintenanceView])
+  @UseMiddleware(isAuth)
+  async getMachMaintenanceForSNPByMachineId(
+    @Arg('contract') contract: string,
+    @Arg('machineId') machineId: string
+  ): Promise<MachineMaintenanceView[] | undefined> {
+    return await MachineMaintenanceView.find({
+      where: { contract, machineId, categoryId: 'SNP' },
+      order: { maintenanceId: 'ASC' }
+    });
+  }
+
   @Mutation(() => MachineMaintenanceView)
   @UseMiddleware(isAuth)
   async createMachMaintenance(

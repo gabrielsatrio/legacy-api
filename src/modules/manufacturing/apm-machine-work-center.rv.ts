@@ -48,7 +48,8 @@ export class MachineWorkCenterResolver {
         AND      (ramwc.contract, ramwc.work_center_no) NOT IN (SELECT ram.contract,
                                                                        ram.work_center_no
                                                                 FROM   rob_apm_machine ram
-                                                                WHERE  ram.contract = ramwc.contract)
+                                                                WHERE  ram.contract = ramwc.contract
+                                                                AND    ram.work_center_no IS NOT NULL)
         ORDER BY ramwc.work_center_no
     `;
       const results = await getConnection().query(sql, [contract]);

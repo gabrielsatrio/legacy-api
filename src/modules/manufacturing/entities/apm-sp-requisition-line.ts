@@ -44,6 +44,14 @@ export class SparePartReqLine extends BaseEntity {
   @Column({ name: 'SUPPLY_CODE' })
   supplyCode!: string;
 
+  @Field()
+  @Column({ name: 'REMAINING_DESC' })
+  remainingDesc!: string;
+
+  @Field()
+  @Column({ name: 'REMAINING_QTY' })
+  remainingQty!: number;
+
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })
   note?: string;
