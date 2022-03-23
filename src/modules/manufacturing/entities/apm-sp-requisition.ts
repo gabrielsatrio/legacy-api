@@ -76,6 +76,10 @@ export class SparePartRequisition extends BaseEntity {
   @Column({ name: 'EMAIL_CREATED_BY' })
   emailCreatedBy!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'REJECT_REASON' })
+  rejectReason?: string;
+
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
