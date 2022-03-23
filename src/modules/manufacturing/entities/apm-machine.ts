@@ -53,9 +53,9 @@ export class Machine extends BaseEntity {
   @Column({ name: 'DEPARTMENT_ID' })
   departmentId!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WORK_CENTER_NO' })
-  workCenterNo!: string;
+  workCenterNo?: string;
 
   @Field()
   @Column({ name: 'STATUS' })
