@@ -1,9 +1,6 @@
-import config from '@/config/main';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
-import fs from 'fs';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import {
   Arg,
   Ctx,
@@ -13,8 +10,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { getConnection, In } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-import { File } from '../core/entities/file';
 import { MachineInput } from './apm-machine.in';
 import { Machine } from './entities/apm-machine';
 import { MachineView } from './entities/apm-machine.vw';
@@ -153,56 +148,6 @@ export class MachineResolver {
       if (!data) throw new Error('No data found.');
       await Machine.delete({ machineId, contract });
       return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Mutation(() => File)
-  // @UseMiddleware(isAuth)
-  async uploadPhoto(
-    @Arg('file', () => GraphQLUpload) file: FileUpload
-  ): Promise<any> {
-    try {
-      const isProd = config.env === 'production';
-      const isTest = config.env === 'test';
-      const { createReadStream, mimetype, encoding, filename } = file;
-      const path = 'uploads/images/machines/' + uuidv4() + filename;
-      const url = `http${isProd || isTest ? 's' : ''}://${config.api.hostname}${
-        !isProd && !isTest ? `:${config.api.port}` : ''
-      }/${path}`;
-      const stream = createReadStream();
-      // const result = await getConnection()
-      //   .createQueryBuilder()
-      //   .insert()
-      //   .into('ROB_APM_Machine_Photo')
-      //   .values({
-      //     machineId: filename.split('.')[0],
-      //     contract: filename.split('.')[1],
-      //     photo: stream
-      //   })
-      //   .execute();
-      return new Promise((resolve, reject) => {
-        stream
-          .pipe(fs.createWriteStream(path))
-          .on('finish', () => {
-            resolve({
-              success: true,
-              message: 'File uploaded successfully',
-              mimetype,
-              filename,
-              encoding,
-              url
-            });
-          })
-          .on('error', (err: Record<string, unknown>) => {
-            console.error('Error event emitted!', err);
-            reject({
-              success: false,
-              message: 'Error uploading file'
-            });
-          });
-      });
     } catch (err) {
       throw new Error(mapError(err));
     }
