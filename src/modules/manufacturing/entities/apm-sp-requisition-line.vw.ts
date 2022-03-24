@@ -60,6 +60,14 @@ export class SparePartReqLineView extends BaseEntity {
   @Column({ name: 'SUPPLY_CODE_DESC' })
   supplyCodeDesc!: string;
 
+  @Field()
+  @Column({ name: 'REMAINING_DESC' })
+  remainingDesc!: string;
+
+  @Field()
+  @Column({ name: 'REMAINING_QTY' })
+  remainingQty!: number;
+
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })
   note?: string;

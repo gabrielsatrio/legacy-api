@@ -63,13 +63,13 @@ export class MachineView extends BaseEntity {
   @Column({ name: 'DEPARTMENT' })
   department!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WORK_CENTER_NO' })
-  workCenterNo!: string;
+  workCenterNo?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'WORK_CENTER' })
-  workCenter!: string;
+  workCenter?: string;
 
   @Field()
   @Column({ name: 'STATUS' })

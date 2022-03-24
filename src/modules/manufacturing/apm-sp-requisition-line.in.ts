@@ -46,6 +46,15 @@ export class SparePartReqLineInput implements Partial<SparePartReqLine> {
   @IsIn(['IO', 'PO'])
   supplyCode!: string;
 
+  @Field()
+  @MaxLength(25)
+  @IsIn(['Semua ada bekas', 'Sebagian ada bekas', 'Tidak ada bekas'])
+  remainingDesc!: string;
+
+  @Field()
+  @IsNumber()
+  remainingQty!: number;
+
   @Field({ nullable: true })
   @MaxLength(2000)
   note?: string;
