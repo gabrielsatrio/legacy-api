@@ -61,4 +61,8 @@ export class SparePartRequisitionInput
   @Field()
   @IsIn(['Created', 'Submitted', 'Partially Approved', 'Approved', 'Rejected'])
   status!: string;
+
+  @Field({ nullable: true })
+  @MaxLength(2000)
+  rejectReason?: string;
 }
