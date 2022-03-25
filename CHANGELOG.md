@@ -1,10 +1,32 @@
 <a name="1.18.0"></a>
 
-# [1.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/102) (2022-03-22)
+# [1.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/104) (2022-03-25)
 
 ### Features
 
 - [**M011**] **jadwal-emad**: Add entity and resolvers for module: jadwal-emad.
+
+<a name="1.17.0"></a>
+
+# [1.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/102) (2022-03-23)
+
+### BREAKING CHANGES
+
+- Ability to upload file.
+
+### Features
+
+- [**CORE**] **server**: fix path for upload public folder.
+- [**HR**] **employee**: add new resolver to get data by grade and work location.
+- [**M001**] **apm-machine**: add new resolver to upload image (WIP).
+- [**M001**] **apm-requisition**: add new column/field: `rejectReason`.
+- [**M001**] **apm-requisition-line**: add 2 new columns/fields: `remainingDesc` and `remainingQty`.
+- [**M001**] **apm-maintenance**: add new resolver to get specific data with category id equaql to **SNP**.
+
+### Bug Fixes
+
+- [**M001**] **apm-machine**: makes `workCenterNo` nullable.
+- [**M001**] **apm-work-center**: add where clause to check `workCenterNo` is not null.
 
 <a name="1.16.0"></a>
 
