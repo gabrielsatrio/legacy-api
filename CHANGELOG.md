@@ -1,3 +1,11 @@
+<a name="1.18.0"></a>
+
+# [1.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/104) (2022-03-24)
+
+### Features
+
+- [**M011**] **jadwal-emad**: Add entity and resolvers for module: jadwal-emad.
+
 <a name="1.17.0"></a>
 
 # [1.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/102) (2022-03-23)
