@@ -57,11 +57,11 @@ export class MachineInput implements Partial<Machine> {
   note?: string;
 
   @Field({ nullable: true })
-  @MaxLength(30)
+  @MaxLength(3000)
   image1?: string;
 
   @Field({ nullable: true })
-  @MaxLength(30)
+  @MaxLength(3000)
   image2?: string;
 
   @Field({ nullable: true })
