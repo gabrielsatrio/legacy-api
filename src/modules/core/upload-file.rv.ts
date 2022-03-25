@@ -22,7 +22,7 @@ export class UploadFileResolver {
       const { createReadStream, mimetype, encoding, filename } = file;
       const prefix = getDateString(new Date());
       const seq = crypto.randomBytes(1).toString('hex');
-      const newFilename = `${prefix}-${seq}-${filename.replace(/ /g, '_')}`;
+      const newFilename = `${prefix}-${seq}-${filename.replace(/ /g, '-')}`;
       const path = `uploads${uploadDirectory}/${newFilename}`;
       const url = `http${isProd || isTest ? 's' : ''}://${config.api.hostname}${
         !isProd && !isTest ? `:${config.api.port}` : ''
