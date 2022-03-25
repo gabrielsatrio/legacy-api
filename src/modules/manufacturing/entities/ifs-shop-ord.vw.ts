@@ -17,14 +17,14 @@ export class IfsShopOrderView extends BaseEntity {
   partNo!: string;
 
   @Field()
-  @Column({ name: 'OBJID' })
-  objId!: string;
-
-  @Field()
   @Column({ name: 'ORG_QTY_DUE' })
   orgQtyDue!: number;
 
   @Field()
   @Column({ name: 'QTY_COMPLETE' })
   qtyComplete!: number;
+
+  @Field()
+  @Column({ name: 'OBJID' })
+  objId!: string;
 }
