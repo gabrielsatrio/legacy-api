@@ -1,3 +1,16 @@
+<a name="1.19.0"></a>
+
+# [1.19.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/106) (2022-03-28)
+
+### Features
+
+- extract `uploadFile` resolver into separate file.
+- create new utility/hepler to get date string.
+
+### Bug Fixes
+
+- [**M001**] **machine**: enlarge column size.
+
 <a name="1.18.0"></a>
 
 # [1.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/104) (2022-03-25)
