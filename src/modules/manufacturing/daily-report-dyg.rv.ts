@@ -11,6 +11,7 @@ import {
 import { getConnection, In } from 'typeorm';
 import { DailyReportDygInput } from './daily-report-dyg.in';
 import { DailyReportDyg } from './entities/daily-report-dyg';
+import { DDPBPO } from './entities/ddp-bpo';
 
 @Resolver(DailyReportDyg)
 export class DailyReportDygResolver {
@@ -22,6 +23,26 @@ export class DailyReportDygResolver {
     return await DailyReportDyg.find({
       contract: In(contract)
     });
+  }
+
+  @Query(() => DDPBPO, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getBPOByLotCelup(
+    @Arg('contract', () => [String])
+    contract: string[],
+    @Arg('lotCelup') lotCelup: string
+  ): Promise<DDPBPO | undefined> {
+    const data = await DDPBPO.findOne({
+      relations: ['dyestuffsUses', 'auxiliariesUses'],
+      where: {
+        contract: In(contract),
+        lotCelup
+      }
+    });
+
+    if (!data) throw new Error('No data found.');
+
+    return data;
   }
 
   @Mutation(() => DailyReportDyg)

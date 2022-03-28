@@ -17,6 +17,23 @@ export class TargetGangguanDyeingResolver {
     });
   }
 
+  @Query(() => [TargetGangguan], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getTargetGangguanDyeingByPart(
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('partNo') partNo: string
+  ): Promise<TargetGangguan[] | undefined> {
+    const data = await TargetGangguan.find({
+      contract: In(contract),
+      partNo
+    });
+
+    if (data.length > 1)
+      throw new Error(`part ${partNo} memiliki lebih dari 1 target`);
+
+    return data;
+  }
+
   @Mutation(() => TargetGangguan)
   @UseMiddleware(isAuth)
   async createTargetGangguanDyeing(
