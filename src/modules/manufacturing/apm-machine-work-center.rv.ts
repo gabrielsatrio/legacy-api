@@ -31,7 +31,7 @@ export class MachineWorkCenterResolver {
 
   @Query(() => [MachineWorkCenterView])
   @UseMiddleware(isAuth)
-  async getUnassignedlWorkCentersByContract(
+  async getUnassignedWorkCentersByContract(
     @Arg('contract') contract: string
   ): Promise<MachineWorkCenterView[] | undefined> {
     try {
