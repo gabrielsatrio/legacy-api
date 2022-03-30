@@ -15,7 +15,8 @@ export class MachineWorkCenterResolver {
   ): Promise<MachineWorkCenterView[] | undefined> {
     return await MachineWorkCenterView.find({
       where: {
-        contract: In(contract)
+        contract: In(contract),
+        status: 'Active'
       }
     });
   }
@@ -26,13 +27,49 @@ export class MachineWorkCenterResolver {
     @Arg('workCenterNo') workCenterNo: string,
     @Arg('contract') contract: string
   ): Promise<MachineWorkCenterView | undefined> {
-    return await MachineWorkCenterView.findOne({ workCenterNo, contract });
+    return await MachineWorkCenterView.findOne({
+      workCenterNo,
+      contract,
+      status: 'Active'
+    });
+  }
+
+  @Query(() => MachineWorkCenterView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getMachineWorkCenterByDepartmentId(
+    @Arg('contract') contract: string,
+    @Arg('departmentId') departmentId: string
+  ): Promise<MachineWorkCenterView | undefined> {
+    try {
+      const sql = `
+        SELECT   work_center_no AS "workCenterNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 status       AS "status",
+                 created_at   AS "createdAt",
+                 updated_at   AS "updatedAt",
+                 ROWID        AS "objId"
+        FROM     rob_apm_mach_work_center
+        WHERE    contract = :contract
+        AND      work_center_api.get_department_no(contract, work_center_no) = :departmentid
+        and      status = 'Active'
+        ORDER BY work_center_no
+    `;
+      const results = await getConnection().query(sql, [
+        contract,
+        departmentId
+      ]);
+      return results;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MachineWorkCenterView])
   @UseMiddleware(isAuth)
-  async getUnassignedWorkCentersByContract(
-    @Arg('contract') contract: string
+  async getUnassignedWorkCentersByContractDeptId(
+    @Arg('contract') contract: string,
+    @Arg('departmentId') departmentId: string
   ): Promise<MachineWorkCenterView[] | undefined> {
     try {
       const sql = `
@@ -45,6 +82,8 @@ export class MachineWorkCenterResolver {
                  ROWID          AS "objId"
         FROM     ROB_APM_MACH_WORK_CENTER ramwc
         WHERE    ramwc.contract = :contract
+        AND      ramwc.status = 'Active'
+        AND      work_center_api.get_department_no(ramwc.contract, ramwc.work_center_no) = :departmentid
         AND      (ramwc.contract, ramwc.work_center_no) NOT IN (SELECT ram.contract,
                                                                        ram.work_center_no
                                                                 FROM   rob_apm_machine ram
@@ -52,7 +91,10 @@ export class MachineWorkCenterResolver {
                                                                 AND    ram.work_center_no IS NOT NULL)
         ORDER BY ramwc.work_center_no
     `;
-      const results = await getConnection().query(sql, [contract]);
+      const results = await getConnection().query(sql, [
+        contract,
+        departmentId
+      ]);
       return results;
     } catch (err) {
       throw new Error(mapError(err));
@@ -78,6 +120,7 @@ export class MachineWorkCenterResolver {
         FROM     rob_apm_mach_work_center ramwc,
                  rob_apm_machine          ram
         WHERE    ram.contract = ramwc.contract
+        AND      ramwc.status = 'Active'
         AND      ram.work_center_no = ramwc.work_center_no
       `;
       let formattedContract = '';
@@ -104,11 +147,99 @@ export class MachineWorkCenterResolver {
 
   @Query(() => [MachineWorkCenterView])
   @UseMiddleware(isAuth)
-  async getAvailMachWcForHeadLoomByContract(
-    @Arg('contract') contract: string
+  async getAvailMachWorkCentersByContractDeptId(
+    @Arg('contract') contract: string,
+    @Arg('departmentId') departmentId: string
   ): Promise<MachineWorkCenterView[] | undefined> {
+    let formattedWorkCenters = '';
     try {
-      const sql = `
+      const sqlToGetUnavailbleWC = `
+        SELECT   ram.contract AS "contract",
+                 ram.work_center_no AS "workCenterNo",
+                 COUNT(*) AS "quantity"
+        FROM     rob_apm_machine ram
+        WHERE    ram.contract = :contract
+        AND      ram.contract != 'AGT'
+        AND      work_center_api.get_department_no(ram.contract, ram.work_center_no) NOT IN ('TN1', 'TN2')
+        AND      ram.work_center_no IS NOT NULL
+        GROUP BY ram.contract, ram.work_center_no
+        UNION
+        SELECT   ram.contract AS "contract",
+                 ram.work_center_no AS "workCenterNo",
+                 COUNT(*) AS "quantity"
+        FROM     rob_apm_machine ram
+        WHERE    ram.contract = :contract
+        AND      ram.contract != 'AGT'
+        AND      work_center_api.get_department_no(ram.contract, ram.work_center_no) IN ('TN1', 'TN2')
+        AND      ram.work_center_no IS NOT NULL
+        GROUP BY ram.contract, ram.work_center_no
+        HAVING   COUNT(*) >= 2
+        UNION
+        SELECT   ram.contract AS "contract",
+                 ram.work_center_no AS "workCenterNo",
+                 COUNT(*) AS "quantity"
+        FROM     rob_apm_machine ram
+        WHERE    ram.contract = :contract
+        AND      'AGT' = :contract
+        AND      work_center_api.get_department_no@ifs8agt(ram.contract, ram.work_center_no) NOT IN ('CTG')
+        AND      ram.work_center_no IS NOT NULL
+        GROUP BY ram.contract, ram.work_center_no
+        UNION
+        SELECT   ram.contract AS "contract",
+                 ram.work_center_no AS "workCenterNo",
+                 COUNT(*) AS "quantity"
+        FROM     rob_apm_machine ram
+        WHERE    ram.contract = :contract
+        AND      'AGT' = :contract
+        AND      work_center_api.get_department_no@ifs8agt(ram.contract, ram.work_center_no) NOT IN ('CTG')
+        AND      ram.work_center_no IS NOT NULL
+        GROUP BY ram.contract, ram.work_center_no
+        HAVING   COUNT(*) >= 3
+    `;
+      const unavailableWC = await getConnection().query(sqlToGetUnavailbleWC, [
+        contract
+      ]);
+      let sql = `
+        SELECT   work_center_no AS "workCenterNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 status       AS "status",
+                 created_at   AS "createdAt",
+                 updated_at   AS "updatedAt",
+                 ROWID        AS "objId"
+        FROM     rob_apm_mach_work_center
+        WHERE    contract = :contract
+        AND      status = 'Active'
+        AND      work_center_api.get_department_no(contract, work_center_no) = :departmentId
+      `;
+      unavailableWC.map((item: any, index: number) => {
+        formattedWorkCenters = `${formattedWorkCenters}${
+          index > 0 ? ',' : ''
+        } '${item.workCenterNo}'`;
+      });
+      formattedWorkCenters.slice(0, formattedWorkCenters.length - 1);
+      sql = `${sql}  AND      work_center_no NOT IN (${formattedWorkCenters} )`;
+      const results = await getConnection().query(sql, [
+        contract,
+        departmentId
+      ]);
+      return results;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [MachineWorkCenterView])
+  @UseMiddleware(isAuth)
+  async getAvailMachWcForHeadLoomByContract(
+    @Arg('contract') contract: string,
+    @Arg('departmentId', () => [String]) departmentId: string[],
+    @Arg('categoryId', () => [String]) categoryId: string[]
+  ): Promise<MachineWorkCenterView[] | undefined> {
+    let formattedDepartmentId = '';
+    let formattedCategoryId = '';
+    try {
+      let sql = `
         SELECT work_center_no AS "workCenterNo",
                contract       AS "contract",
                description    AS "description",
@@ -118,6 +249,7 @@ export class MachineWorkCenterResolver {
                ROWID          AS "objId"
         FROM   rob_apm_mach_work_center ramwc
         WHERE  ramwc.contract = :contract
+        AND    ramwc.status = 'Active'
         AND    (ramwc.contract, ramwc.work_center_no) IN
                 (SELECT ram.contract,
                         ram.work_center_no
@@ -128,6 +260,20 @@ export class MachineWorkCenterResolver {
                  AND    ram.category_id NOT IN ('HD', 'HJ'))
         ORDER BY ramwc.work_center_no
     `;
+      departmentId.map((item, index) => {
+        formattedDepartmentId = `${formattedDepartmentId}${
+          index > 0 ? ',' : ''
+        } '${item}'`;
+      });
+      formattedDepartmentId.slice(0, formattedDepartmentId.length - 1);
+      sql = `${sql}  AND      work_center_api.get_department_no(ram.contract,ram.work_center_no) IN (${formattedDepartmentId} )`;
+      categoryId.map((item, index) => {
+        formattedCategoryId = `${formattedCategoryId}${
+          index > 0 ? ',' : ''
+        } '${item}'`;
+      });
+      formattedCategoryId.slice(0, formattedCategoryId.length - 1);
+      sql = `${sql}  AND      ram.category_id NOT IN (${formattedCategoryId} )`;
       const results = await getConnection().query(sql, [contract]);
       return results;
     } catch (err) {
@@ -159,6 +305,7 @@ export class MachineWorkCenterResolver {
         WHERE    ram.contract = ramwc.contract
         AND      ram.work_center_no = ramwc.work_center_no
         AND      ramwc.contract = :contract
+        AND      ramwc.status = 'Active'
         AND      (ramwc.contract, ramwc.work_center_no) NOT IN
                   (SELECT ramt.contract,
                           rob_apm_machine_api.get_work_center_no(ramt.machine_id, ramt.contract)
