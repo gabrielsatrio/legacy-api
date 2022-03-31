@@ -27,22 +27,10 @@ export class DepartmentResolver {
   ): Promise<DepartmentView[] | undefined> {
     try {
       const sql = `
-        SELECT   DISTINCT d.department_id AS "departmentId",
-                 d.description AS "description"
-        FROM     atj_department_v d,
-                 work_center    wc
-        WHERE    wc.department_no = d.department_id
-        AND      wc.contract = :contract
-        AND      wc.contract != 'AGT'
-        UNION
-        SELECT   DISTINCT d.department_id AS "departmentId",
-                 d.description AS "description"
-        FROM     atj_department_v@ifs8agt d,
-                 work_center@ifs8agt    wc
-        WHERE    wc.department_no = d.department_id
-        AND      wc.contract = :contract
-        AND      wc.contract = 'AGT'
-        ORDER BY 1
+        SELECT   department_id AS "departmentId",
+                 description   AS "description"
+        FROM     atj_prod_department_v
+        WHERE    contract = :contract
       `;
       const results = await getConnection().query(sql, [contract]);
       return results;
