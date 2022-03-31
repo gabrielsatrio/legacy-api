@@ -11,4 +11,9 @@ export class DepartmentView extends BaseEntity {
   @Field()
   @Column({ name: 'DESCRIPTION' })
   description!: string;
+
+  @Field()
+  altDescription(): string {
+    return `${this.description} (${this.departmentId})`;
+  }
 }
