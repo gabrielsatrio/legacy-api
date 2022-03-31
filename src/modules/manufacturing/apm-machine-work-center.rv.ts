@@ -13,72 +13,23 @@ export class MachineWorkCenterResolver {
     @Arg('contract') contract: string,
     @Arg('departmentNo') departmentNo: string
   ): Promise<WorkCenterView[] | undefined> {
-    let formattedWorkCenters = '';
     try {
-      const sqlToGetUnavailableWC = `
-        SELECT   ram.contract AS "contract",
-                 ram.work_center_no AS "workCenterNo",
-                 COUNT(*) AS "quantity"
-        FROM     rob_apm_machine ram
-        WHERE    ram.contract = :contract
-        AND      ram.contract != 'AGT'
-        AND      work_center_api.get_department_no(ram.contract, ram.work_center_no) NOT IN ('TN1', 'TN2')
-        AND      ram.work_center_no IS NOT NULL
-        GROUP BY ram.contract, ram.work_center_no
-        UNION
-        SELECT   ram.contract AS "contract",
-                 ram.work_center_no AS "workCenterNo",
-                 COUNT(*) AS "quantity"
-        FROM     rob_apm_machine ram
-        WHERE    ram.contract = :contract
-        AND      ram.contract != 'AGT'
-        AND      work_center_api.get_department_no(ram.contract, ram.work_center_no) IN ('TN1', 'TN2')
-        AND      ram.work_center_no IS NOT NULL
-        GROUP BY ram.contract, ram.work_center_no
-        HAVING   COUNT(*) >= 2
-        UNION
-        SELECT   ram.contract AS "contract",
-                 ram.work_center_no AS "workCenterNo",
-                 COUNT(*) AS "quantity"
-        FROM     rob_apm_machine ram
-        WHERE    ram.contract = :contract
-        AND      'AGT' = :contract
-        AND      work_center_api.get_department_no@ifs8agt(ram.contract, ram.work_center_no) NOT IN ('CTG')
-        AND      ram.work_center_no IS NOT NULL
-        GROUP BY ram.contract, ram.work_center_no
-        UNION
-        SELECT   ram.contract AS "contract",
-                 ram.work_center_no AS "workCenterNo",
-                 COUNT(*) AS "quantity"
-        FROM     rob_apm_machine ram
-        WHERE    ram.contract = :contract
-        AND      'AGT' = :contract
-        AND      work_center_api.get_department_no@ifs8agt(ram.contract, ram.work_center_no) NOT IN ('CTG')
-        AND      ram.work_center_no IS NOT NULL
-        GROUP BY ram.contract, ram.work_center_no
-        HAVING   COUNT(*) >= 3
-    `;
-      const unavailableWC = await getConnection().query(sqlToGetUnavailableWC, [
-        contract
-      ]);
-      let sql = `
+      const sql = `
         SELECT   work_center_no  AS "workCenterNo",
                  contract        AS "contract",
                  description     AS "description",
                  department_no   AS "departmentNo",
-                 objId           AS "objId"
+                 objid           AS "objId"
         FROM     atj_work_center_v
         WHERE    contract = :contract
         AND      department_no = :departmentNo
+        AND      (contract, work_center_no) NOT IN (
+                   SELECT   contract,
+                            work_center_no AS "workCenterNo"
+                   FROM     rob_apm_unavailable_wc_v
+                   WHERE    contract = :contract
+                 )
       `;
-      unavailableWC.map((item: any, index: number) => {
-        formattedWorkCenters = `${formattedWorkCenters}${
-          index > 0 ? ',' : ''
-        } '${item.workCenterNo}'`;
-      });
-      formattedWorkCenters.slice(0, formattedWorkCenters.length - 1);
-      sql = `${sql}  AND      work_center_no NOT IN (${formattedWorkCenters} )`;
-      sql = `${sql}  ORDER BY work_center_no`;
       const results = await getConnection().query(sql, [
         contract,
         departmentNo
@@ -102,7 +53,7 @@ export class MachineWorkCenterResolver {
                  department_no     AS "departmentNo",
                  ram.machine_id    AS "machineId",
                  ram.description   AS "machineDescription",
-                 wc.objId          AS "objId"
+                 wc.objid          AS "objId"
         FROM     work_center       wc,
                  rob_apm_machine   ram
         WHERE    ram.contract = wc.contract
@@ -146,7 +97,7 @@ export class MachineWorkCenterResolver {
                  department_no     AS "departmentNo",
                  ram.machine_id    AS "machineId",
                  ram.description   AS "machineDescription",
-                 wc.objId          AS "objId"
+                 wc.objid          AS "objId"
         FROM     atj_work_center_v  wc,
                  rob_apm_machine    ram
         WHERE    ram.contract = wc.contract
