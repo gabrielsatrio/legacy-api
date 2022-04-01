@@ -42,7 +42,7 @@ export class MachineWorkCenterResolver {
 
   @Query(() => [MachineWorkCenter])
   @UseMiddleware(isAuth)
-  async getAssignedMachWcByContract(
+  async getAssignedMachWcByContractDept(
     @Arg('contract', () => [String]) contract: string[],
     @Arg('departmentNo', { nullable: true }) departmentNo: string
   ): Promise<MachineWorkCenter[] | undefined> {
