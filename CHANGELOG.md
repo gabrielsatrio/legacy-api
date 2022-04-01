@@ -1,3 +1,11 @@
+<a name="1.20.1"></a>
+
+# [1.20.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/110) (2022-04-01)
+
+### Bug Fixes
+
+- [**M001**] **machine-work-center**: rename resovler.
+
 <a name="1.20.0"></a>
 
 # [1.20.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/108) (2022-04-01)
