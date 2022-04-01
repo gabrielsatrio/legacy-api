@@ -47,4 +47,9 @@ export class EmployeeView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'SUPERVISOR_LV_2' })
   supervisorLv2?: string;
+
+  @Field()
+  displayName(): string {
+    return `${this.name} (${this.employeeId})`;
+  }
 }

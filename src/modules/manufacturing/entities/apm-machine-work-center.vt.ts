@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-export class MachWorkCenter {
+export class MachineWorkCenter {
   @Field()
   workCenterNo!: string;
 
@@ -12,7 +12,7 @@ export class MachWorkCenter {
   description!: string;
 
   @Field()
-  status!: string;
+  departmentNo!: string;
 
   @Field()
   machineId!: string;
@@ -21,11 +21,15 @@ export class MachWorkCenter {
   machineDescription!: string;
 
   @Field()
-  createdAt!: Date;
-
-  @Field()
-  updatedAt!: Date;
-
-  @Field()
   objId!: string;
+
+  @Field()
+  altDescription(): string {
+    return `${this.description} (${this.workCenterNo})`;
+  }
+
+  @Field()
+  altMachineDescription(): string {
+    return `${this.machineDescription} (${this.machineId})`;
+  }
 }

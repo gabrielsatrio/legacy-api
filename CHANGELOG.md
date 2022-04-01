@@ -1,3 +1,17 @@
+<a name="1.20.0"></a>
+
+# [1.20.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/108) (2022-04-01)
+
+### Features
+
+- **employee**: add new custom field resolver to get display name for **Select's** **labelKey** prop.
+- **department**: add new resolvers.
+- **department**: add new custom field resolver to get alternate description for **Select's** **labelKey** prop.
+
+### Bug Fixes
+
+- [**M001**] **machine-work-center**: removed and replaced by IFS work center.
+
 <a name="1.19.0"></a>
 
 # [1.19.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/106) (2022-03-28)
