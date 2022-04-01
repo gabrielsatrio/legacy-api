@@ -43,23 +43,43 @@ export class MachineWorkCenterResolver {
   @Query(() => [MachineWorkCenter])
   @UseMiddleware(isAuth)
   async getAssignedMachWcByContract(
-    @Arg('contract', () => [String]) contract: string[]
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('departmentNo', { nullable: true }) departmentNo: string
   ): Promise<MachineWorkCenter[] | undefined> {
+    let sql = '';
+    let formattedContract = '';
     try {
-      let sql = `
-        SELECT   wc.work_center_no AS "workCenterNo",
-                 wc.contract       AS "contract",
-                 wc.description    AS "description",
-                 department_no     AS "departmentNo",
-                 ram.machine_id    AS "machineId",
-                 ram.description   AS "machineDescription",
-                 wc.objid          AS "objId"
-        FROM     work_center       wc,
-                 rob_apm_machine   ram
-        WHERE    ram.contract = wc.contract
-        AND      ram.work_center_no = wc.work_center_no
-      `;
-      let formattedContract = '';
+      if (contract[0] === 'AGT') {
+        sql = `
+          SELECT   wc.work_center_no AS "workCenterNo",
+                   wc.contract       AS "contract",
+                   wc.description    AS "description",
+                   wc.department_no  AS "departmentNo",
+                   ram.machine_id    AS "machineId",
+                   ram.description   AS "machineDescription",
+                   wc.objid          AS "objId"
+          FROM     work_center@ifs8agt  wc,
+                   rob_apm_machine      ram
+          WHERE    ram.contract = wc.contract
+          AND      ram.work_center_no = wc.work_center_no
+          AND      wc.department_no LIKE :departmentNo
+        `;
+      } else {
+        sql = `
+          SELECT   wc.work_center_no AS "workCenterNo",
+                   wc.contract       AS "contract",
+                   wc.description    AS "description",
+                   wc.department_no  AS "departmentNo",
+                   ram.machine_id    AS "machineId",
+                   ram.description   AS "machineDescription",
+                   wc.objid          AS "objId"
+          FROM     work_center       wc,
+                   rob_apm_machine   ram
+          WHERE    ram.contract = wc.contract
+          AND      ram.work_center_no = wc.work_center_no
+          AND      wc.department_no LIKE :departmentNo
+        `;
+      }
       contract.map((item, index) => {
         formattedContract = `${formattedContract}${
           index > 0 ? ',' : ''
@@ -67,12 +87,14 @@ export class MachineWorkCenterResolver {
       });
       formattedContract.slice(0, formattedContract.length - 1);
       sql = `${sql}  AND      wc.contract IN (${formattedContract} )`;
-      let results = await getConnection().query(sql);
+      let results = await getConnection().query(sql, [
+        departmentNo ? departmentNo : '%'
+      ]);
       if (results) {
         results = results
           .slice()
           .sort((a: Record<string, any>, b: Record<string, any>) =>
-            a.workCenterNo > b.workCenterNo ? 1 : -1
+            a.description > b.description ? 1 : -1
           );
       }
       return results;
