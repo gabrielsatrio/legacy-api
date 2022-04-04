@@ -39,9 +39,7 @@ export class DailyReportDygResolver {
         lotCelup
       }
     });
-
     if (!data) throw new Error('No data found.');
-
     return data;
   }
 
@@ -53,7 +51,6 @@ export class DailyReportDygResolver {
     try {
       const sql = `SELECT nvl(max(row_id)+1,1) as "id" from CHR_DAILY_REPORT_DYG`;
       const result = await getConnection().query(sql);
-
       const data = DailyReportDyg.create({
         ...input,
         rowId: result[0].id

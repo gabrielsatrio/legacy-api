@@ -96,10 +96,10 @@ export class UserResolver {
         );
       } else if (newPassword != confirmPassword) {
         throw new Error(
-          'New Password and confirm Password must have same value'
+          'Confirm Password does not match.'
         );
       } else if (!check) {
-        throw new Error('current Password does not match with current value');
+        throw new Error('Invalid current password.');
       }
 
       const hashedPassword = await argon2.hash(newPassword);
