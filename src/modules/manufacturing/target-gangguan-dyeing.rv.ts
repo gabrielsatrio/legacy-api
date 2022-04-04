@@ -27,10 +27,8 @@ export class TargetGangguanDyeingResolver {
       contract: In(contract),
       partNo
     });
-
     if (data.length > 1)
-      throw new Error(`part ${partNo} memiliki lebih dari 1 target`);
-
+      throw new Error(`Part ${partNo} memiliki lebih dari 1 target`);
     return data;
   }
 
@@ -46,9 +44,7 @@ export class TargetGangguanDyeingResolver {
         waktu: input.waktu,
         meter: input.meter
       });
-
-      if (check) throw new Error('Data Already Exists');
-
+      if (check) throw new Error('Data already exists');
       const data = TargetGangguan.create({
         ...input
       });

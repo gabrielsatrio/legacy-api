@@ -27,9 +27,7 @@ export class KeteranganLostTimeResolver {
         contract: input.contract,
         lostTime: input.lostTime
       });
-
-      if (check) throw new Error('Data Already Exists');
-
+      if (check) throw new Error('Data already exists.');
       const data = KeteranganLostTime.create({
         ...input
       });

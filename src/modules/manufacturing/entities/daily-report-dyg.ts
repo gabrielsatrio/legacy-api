@@ -7,6 +7,7 @@ export class DailyReportDyg extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ROW_ID' })
   rowId!: number;
+
   @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
