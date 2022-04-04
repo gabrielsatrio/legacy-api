@@ -197,4 +197,40 @@ export class AuthResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => User)
+  async changeUserPassword(
+    @Arg('username') username: string,
+    @Arg('currentPassword') currentPassword: string,
+    @Arg('newPassword') newPassword: string,
+    @Arg('confirmPassword') confirmPassword: string
+  ): Promise<User | undefined> {
+    try {
+      const data = await User.findOne({
+        username: username
+      });
+
+      if (!data) throw new Error('No data found.');
+      const check = await argon2.verify(data.password, currentPassword);
+
+      if (newPassword.length < 3) {
+        throw new Error(
+          'Password must be longer than or equal to 3 characters.'
+        );
+      } else if (newPassword != confirmPassword) {
+        throw new Error(
+          'New Password and confirm Password must have same value'
+        );
+      } else if (!check) {
+        throw new Error('current Password does not match with current value');
+      }
+
+      const hashedPassword = await argon2.hash(newPassword);
+      User.merge(data, { password: hashedPassword });
+      const results = await User.save(data);
+      return results;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
