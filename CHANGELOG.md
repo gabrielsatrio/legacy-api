@@ -1,3 +1,15 @@
+<a name="1.21.0"></a>
+
+# [1.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/110) (2022-04-04)
+
+### BREAKING CHANGES
+
+- add resolver for change password (all user).
+
+### Features
+
+- [**M012**] **daily-report-dyg**: add new project.
+
 <a name="1.20.1"></a>
 
 # [1.20.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/110) (2022-04-01)
