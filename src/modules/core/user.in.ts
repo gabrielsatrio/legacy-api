@@ -9,9 +9,10 @@ export class UserInput implements Partial<User> {
   username!: string;
 
   @Field()
-  @MinLength(3, {
-    message: 'Password is too short'
+  @MinLength(6, {
+    message: 'Password must be at least 6 characters.'
   })
+  @MaxLength(30)
   password!: string;
 
   @Field()

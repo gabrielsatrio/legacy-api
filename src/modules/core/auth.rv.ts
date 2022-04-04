@@ -162,9 +162,9 @@ export class AuthResolver {
   ): Promise<User | undefined> {
     try {
       const tokenKey = `${FORGET_PASSWORD_PREFIX}${token}`;
-      if (newPassword.length < 3) {
+      if (newPassword.length < 6) {
         throw new Error(
-          'Password must be longer than or equal to 3 characters.'
+          'Password must be at least 6 characters.'
         );
       }
       const username = await redis.get(tokenKey);
@@ -193,6 +193,39 @@ export class AuthResolver {
       await redis.del(tokenKey);
       req.session.username = outUsername;
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => User)
+  async changeUserPassword(
+    @Arg('username') username: string,
+    @Arg('currentPassword') currentPassword: string,
+    @Arg('newPassword') newPassword: string,
+    @Arg('confirmPassword') confirmPassword: string
+  ): Promise<User | undefined> {
+    try {
+      const data = await User.findOne({
+        username
+      });
+      if (!data) throw new Error('Username does not exists.');
+      const valid = await argon2.verify(data.password, currentPassword);
+      if (newPassword.length < 6) {
+        throw new Error(
+          'Password must be at least 6 characters.'
+        );
+      } else if (newPassword != confirmPassword) {
+        throw new Error(
+          'Confirm password does not match.'
+        );
+      } else if (!valid) {
+        throw new Error('Invalid current password.');
+      }
+      const hashedPassword = await argon2.hash(newPassword);
+      User.merge(data, { password: hashedPassword });
+      const results = await User.save(data);
+      return results;
     } catch (err) {
       throw new Error(mapError(err));
     }
