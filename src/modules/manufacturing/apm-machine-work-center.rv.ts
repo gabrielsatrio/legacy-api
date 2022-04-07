@@ -176,9 +176,11 @@ export class MachineWorkCenterResolver {
         `;
       }
       const results = await getConnection().query(sql, [contract]);
+      const excludedMachCategory = ['HD', 'HJ'];
       let filteredResults = results.filter(
         (data: MachineWorkCenter) =>
-          !unavailableWCArray.includes(data.workCenterNo)
+          !unavailableWCArray.includes(data.workCenterNo) &&
+          !excludedMachCategory.includes(data.machineId.substring(0, 2))
       );
       if (filteredResults) {
         filteredResults = filteredResults
