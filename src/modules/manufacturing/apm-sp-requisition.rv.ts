@@ -225,7 +225,7 @@ export class SparePartRequisitionResolver {
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv1?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
-            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
+            You can find all the details about this request by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
             Please confirm your approval.</p>`
           );
           break;
@@ -235,7 +235,7 @@ export class SparePartRequisitionResolver {
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv2?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
-            You can find all the details about this request by clicking <a href="${config.client.url}/m/001/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
+            You can find all the details about this request by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</br>
             Please confirm your approval.</p>`
           );
           break;

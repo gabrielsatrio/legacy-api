@@ -1,6 +1,14 @@
+<a name="1.21.1"></a>
+
+# [1.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/114) (2022-04-07)
+
+### Bug Fixes
+
+- [**M013**] **sp-requisitions**: fix invalid path.
+
 <a name="1.21.0"></a>
 
-# [1.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/112 (2022-04-04)
+# [1.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/112) (2022-04-04)
 
 ### Features
 

@@ -163,9 +163,7 @@ export class AuthResolver {
     try {
       const tokenKey = `${FORGET_PASSWORD_PREFIX}${token}`;
       if (newPassword.length < 6) {
-        throw new Error(
-          'Password must be at least 6 characters.'
-        );
+        throw new Error('Password must be at least 6 characters.');
       }
       const username = await redis.get(tokenKey);
       if (!username) {
@@ -212,13 +210,9 @@ export class AuthResolver {
       if (!data) throw new Error('Username does not exists.');
       const valid = await argon2.verify(data.password, currentPassword);
       if (newPassword.length < 6) {
-        throw new Error(
-          'Password must be at least 6 characters.'
-        );
+        throw new Error('Password must be at least 6 characters.');
       } else if (newPassword != confirmPassword) {
-        throw new Error(
-          'Confirm password does not match.'
-        );
+        throw new Error('Confirm password does not match.');
       } else if (!valid) {
         throw new Error('Invalid current password.');
       }
