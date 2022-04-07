@@ -1,3 +1,24 @@
+<a name="1.21.1"></a>
+
+# [1.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/114) (2022-04-07)
+
+### Bug Fixes
+
+- [**M013**] **sp-requisitions**: fix invalid path.
+
+<a name="1.21.0"></a>
+
+# [1.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/112) (2022-04-04)
+
+### Features
+
+- add resolver to change user password (all users).
+- [**M012**] **daily-report-dyg**: add new project.
+
+### Other Changes
+
+- set password minimum length to 6 characters.
+
 <a name="1.20.1"></a>
 
 # [1.20.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/110) (2022-04-01)
