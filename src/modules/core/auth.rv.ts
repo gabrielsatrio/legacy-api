@@ -53,9 +53,14 @@ export class AuthResolver {
       const contract = [];
       if (!userContract) contract.push('');
       else {
-        userContract.map((rec: UserContractView) => {
-          contract.push(rec.contract);
-        });
+        const excludedContracts = ['AT3', 'AT5'];
+        userContract
+          .filter(
+            (uc: UserContractView) => !excludedContracts.includes(uc.contract)
+          )
+          .map((rec: UserContractView) => {
+            contract.push(rec.contract);
+          });
         /**
          ** Grant additional access to AGT site for the following users:
          ** - ATEJA    : Super User
