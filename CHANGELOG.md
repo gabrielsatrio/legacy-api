@@ -1,3 +1,13 @@
+<a name="1.21.2"></a>
+
+# [1.21.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/116) (2022-04-07)
+
+### Bug Fixes
+
+- [**CORE**] **auth**: remove **AT3** and **AT5** from contract list.
+- [**M001**] **apm-work-center**: fix ORA-02046.
+- [**M001**] **apm-work-center**: exclude data with category **HD** and **HJ**.
+
 <a name="1.21.1"></a>
 
 # [1.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/114) (2022-04-07)
