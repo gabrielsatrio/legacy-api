@@ -1,11 +1,12 @@
 import config from '@/config/main';
+import { isAuth } from '@/middlewares/is-auth';
 import { UploadResponse } from '@/types/upload-response';
 import { getDateString } from '@/utils/get-date-string';
 import { mapError } from '@/utils/map-error';
 import crypto from 'crypto';
 import fs from 'fs';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { Arg, Mutation } from 'type-graphql';
+import { Arg, Mutation, UseMiddleware } from 'type-graphql';
 import { File } from './entities/file';
 
 const isProd = config.env === 'production';
@@ -13,7 +14,7 @@ const isTest = config.env === 'test';
 
 export class UploadFileResolver {
   @Mutation(() => File)
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async uploadFile(
     @Arg('file', () => GraphQLUpload) file: FileUpload,
     @Arg('uploadDirectory') uploadDirectory: string
