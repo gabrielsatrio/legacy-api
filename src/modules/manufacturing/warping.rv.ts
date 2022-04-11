@@ -24,6 +24,7 @@ export class ProdWarpingResolver {
       contract: In(contract)
     });
   }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(
