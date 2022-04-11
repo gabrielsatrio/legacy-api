@@ -37,6 +37,18 @@ export class SparePartRequisitionResolver {
     }
   }
 
+  @Query(() => [SparePartRequisition])
+  @UseMiddleware(isAuth)
+  async getSPRequisitions(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<SparePartRequisition[] | undefined> {
+    return await SparePartRequisition.find({
+      relations: ['requisitionLines'],
+      where: { contract: In(contract) },
+      order: { requisitionId: 'ASC' }
+    });
+  }
+
   @Query(() => [SparePartRequisitionView])
   @UseMiddleware(isAuth)
   async getSPRequisitionsByContract(

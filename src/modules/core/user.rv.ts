@@ -11,14 +11,20 @@ import { UserInput } from './user.in';
 export class UserResolver {
   @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getAllUsers(): Promise<User[]> {
-    return await User.find({ order: { username: 'ASC' } });
+  async getUsers(): Promise<User[]> {
+    return await User.find({
+      relations: ['contracts'],
+      order: { username: 'ASC' }
+    });
   }
 
   @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   async getUser(@Arg('username') username: string): Promise<User | undefined> {
-    return await User.findOne(username);
+    return await User.findOne({
+      relations: ['contracts'],
+      where: { username }
+    });
   }
 
   @Mutation(() => User)

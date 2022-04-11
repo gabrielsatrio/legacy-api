@@ -1,5 +1,6 @@
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
+import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import compression from 'compression';
 import connectRedis from 'connect-redis';
@@ -36,7 +37,13 @@ export default class apolloServer {
         origin: config.client.url
       })
     );
-    app.use(express.json());
+    app.use(
+      bodyParser.urlencoded({
+        limit: '50mb',
+        extended: true,
+        parameterLimit: 50000
+      })
+    );
     app.use(
       helmet({
         contentSecurityPolicy: isProd || isTest ? undefined : false

@@ -1,5 +1,13 @@
 import { Field, Int, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryColumn
+} from 'typeorm';
+import { SparePartReqLine } from './apm-sp-requisition-line';
 
 @Entity('ROB_APM_SPAREPART_REQ')
 @ObjectType()
@@ -87,4 +95,13 @@ export class SparePartRequisition extends BaseEntity {
   @Field()
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
+
+  @Field(() => [SparePartReqLine], { nullable: true })
+  @OneToMany(
+    () => SparePartReqLine,
+    (requisitionLines) => requisitionLines.requisition,
+    { nullable: true }
+  )
+  @JoinColumn({ name: 'REQUISITION_ID', referencedColumnName: 'requisitionId' })
+  requisitionLines?: SparePartReqLine[];
 }
