@@ -1,8 +1,9 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { OpnameStatus } from './entities/opname-status';
 import { OpnameStatusInput } from './opname-status.in';
 
@@ -10,10 +11,8 @@ import { OpnameStatusInput } from './opname-status.in';
 export class OpnameStatusResolver {
   @Query(() => OpnameStatus, { nullable: true })
   @UseMiddleware(isAuth)
-  async getOpname(
-    @Arg('objId') objId: string
-  ): Promise<OpnameStatus | undefined> {
-    return await OpnameStatus.findOne({ objId });
+  async getOpname(@Arg('objId') objId: string): Promise<OpnameStatus | null> {
+    return await OpnameStatus.findOneBy({ objId });
   }
 
   @Query(() => OpnameStatus, { nullable: true })
@@ -25,11 +24,7 @@ export class OpnameStatusResolver {
   ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_STATUS(:contract, :username, :tanggal) as "status" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        tanggal
-      ]);
+      const result = await ifs.query(sql, [contract, username, tanggal]);
       const status = result[0].status;
       return { status };
     } catch (err) {
@@ -46,11 +41,7 @@ export class OpnameStatusResolver {
   ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_OPNAME_TYPE(:contract, :username, :tanggal) as "opnameType" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        tanggal
-      ]);
+      const result = await ifs.query(sql, [contract, username, tanggal]);
       const opnameType = result[0].opnameType;
       return { opnameType };
     } catch (err) {
@@ -67,11 +58,7 @@ export class OpnameStatusResolver {
   ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_NUM_OF_LOC(:contract, :username, :tanggal) as "numOfLoc" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        tanggal
-      ]);
+      const result = await ifs.query(sql, [contract, username, tanggal]);
       const numOfLoc = result[0].numOfLoc;
       return { numOfLoc };
     } catch (err) {
@@ -88,11 +75,7 @@ export class OpnameStatusResolver {
   ): Promise<Record<string, string | undefined>> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_LOCATION(:contract, :username, :tanggal) as "locationNo" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        tanggal
-      ]);
+      const result = await ifs.query(sql, [contract, username, tanggal]);
       const locationNo = result[0].locationNo;
       return { locationNo };
     } catch (err) {
@@ -124,12 +107,7 @@ export class OpnameStatusResolver {
   ): Promise<number> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_EXPECTED_PERCENTAGE(:contract, :username, :dept, :location) as "percentage" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        dept,
-        location
-      ]);
+      const result = await ifs.query(sql, [contract, username, dept, location]);
       return result[0].percentage;
     } catch (err) {
       throw new Error(mapError(err));
@@ -146,12 +124,7 @@ export class OpnameStatusResolver {
   ): Promise<number> {
     try {
       const sql = `SELECT GBR_STOCK_OPNAME_API.GET_EXPECTED_ROLL(:contract, :username, :dept, :location) as "roll" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        contract,
-        username,
-        dept,
-        location
-      ]);
+      const result = await ifs.query(sql, [contract, username, dept, location]);
       return result[0].roll;
     } catch (err) {
       throw new Error(mapError(err));
@@ -162,10 +135,10 @@ export class OpnameStatusResolver {
   @UseMiddleware(isAuth)
   async startOpname(
     @Arg('input') input: OpnameStatusInput
-  ): Promise<OpnameStatus | undefined> {
+  ): Promise<OpnameStatus | null> {
     try {
       const sql = `BEGIN GBR_FREEZE_OPNAME_API.Freeze_WIP_Ezio(:objId, :contract, :username, :dept, :periode, :time, :opnameType, :numOfLocation, :locationNo, :outObjId); END;`;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.objId,
         input.contract,
         input.username,
@@ -179,7 +152,7 @@ export class OpnameStatusResolver {
       ]);
       const outObjId = result[0] as string;
 
-      const data = OpnameStatus.findOne(outObjId);
+      const data = OpnameStatus.findOneBy({ objId: outObjId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -192,10 +165,10 @@ export class OpnameStatusResolver {
     @Arg('contract') contract: string,
     @Arg('periode') periode: Date,
     @Arg('username') username: string
-  ): Promise<OpnameStatus | undefined> {
+  ): Promise<OpnameStatus | null> {
     try {
       const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username, :outObjId); END;`;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         contract,
         periode,
         username,
@@ -203,7 +176,7 @@ export class OpnameStatusResolver {
       ]);
 
       const outObjId = result[0] as string;
-      const data = OpnameStatus.findOne(outObjId);
+      const data = OpnameStatus.findOneBy({ objId: outObjId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

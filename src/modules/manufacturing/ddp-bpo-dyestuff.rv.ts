@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -10,7 +11,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { BPODyestuffInput } from './ddp-bpo-dyestuff.in';
 import { BPODyestuff } from './entities/ddp-bpo-dyestuff';
 
@@ -24,7 +25,7 @@ export class BPODyestuffResolver {
     @Arg('idNo') idNo: string,
     @Arg('kuCount') kuCount: number
   ): Promise<BPODyestuff[] | undefined> {
-    return await BPODyestuff.find({
+    return await BPODyestuff.findBy({
       contract: In(contract),
       idNo,
       kuCount
@@ -35,7 +36,7 @@ export class BPODyestuffResolver {
   @UseMiddleware(isAuth)
   async createBPODyestuff(
     @Arg('input') input: BPODyestuffInput
-  ): Promise<BPODyestuff | undefined> {
+  ): Promise<BPODyestuff | null> {
     const sql = `
     BEGIN
     CHR_DDT_DYESTUFF_API.create_BPO_dyestuff(
@@ -59,7 +60,7 @@ export class BPODyestuffResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.idNo,
         input.partNo,
@@ -84,7 +85,7 @@ export class BPODyestuffResolver {
     const outIdNo = result[1] as string;
     const outKuCount = result[2] as number;
 
-    const data = BPODyestuff.findOne({
+    const data = BPODyestuff.findOneBy({
       contract: outContract,
       idNo: outIdNo,
       kuCount: outKuCount
@@ -96,8 +97,8 @@ export class BPODyestuffResolver {
   @UseMiddleware(isAuth)
   async updateBPODyestuff(
     @Arg('input') input: BPODyestuffInput
-  ): Promise<BPODyestuff | undefined> {
-    const BPO = await BPODyestuff.findOne({
+  ): Promise<BPODyestuff | null> {
+    const BPO = await BPODyestuff.findOneBy({
       contract: input.contract,
       idNo: input.idNo,
       kuCount: input.kuCount,
@@ -129,7 +130,7 @@ export class BPODyestuffResolver {
     `;
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.idNo,
         input.partNo,
@@ -155,7 +156,7 @@ export class BPODyestuffResolver {
     const outIdNo = result[1] as string;
     const outKuCount = result[2] as number;
 
-    const data = BPODyestuff.findOne({
+    const data = BPODyestuff.findOneBy({
       contract: outContract,
       idNo: outIdNo,
       kuCount: outKuCount,
@@ -173,7 +174,7 @@ export class BPODyestuffResolver {
     @Arg('partNo') partNo: string
   ): Promise<BPODyestuff> {
     try {
-      const material = await BPODyestuff.findOne({
+      const material = await BPODyestuff.findOneBy({
         contract,
         idNo,
         kuCount,
@@ -194,7 +195,7 @@ export class BPODyestuffResolver {
       END;
     `;
 
-      await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
+      await ifs.query(sql, [contract, idNo, partNo, kuCount]);
 
       return material;
     } catch (err) {
@@ -213,7 +214,7 @@ export class BPODyestuffResolver {
     @Ctx() { req }: Context
   ): Promise<BPODyestuff> {
     try {
-      const material = await BPODyestuff.findOne({
+      const material = await BPODyestuff.findOneBy({
         contract,
         idNo,
         kuCount,
@@ -237,7 +238,7 @@ export class BPODyestuffResolver {
       END;
     `;
 
-      await getConnection().query(sql, [
+      await ifs.query(sql, [
         contract,
         idNo,
         orderNo,

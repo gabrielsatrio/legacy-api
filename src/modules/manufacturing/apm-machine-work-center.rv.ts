@@ -1,9 +1,11 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 import { MachineWorkCenter } from './entities/apm-machine-work-center.vt';
+import { IfsWorkCenterView } from './entities/ifs-work-center.vw';
 import { WorkCenterView } from './entities/work-center.vw';
 
 @Resolver()
@@ -51,74 +53,33 @@ export class MachineWorkCenterResolver {
                    )
         `;
       }
-      const results = await getConnection().query(sql, [
-        contract,
-        departmentNo
-      ]);
-      return results;
+      const result = await ifs.query(sql, [contract, departmentNo]);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [MachineWorkCenter])
+  @Query(() => [IfsWorkCenterView])
   @UseMiddleware(isAuth)
   async getAssignedMachWcByContractDept(
     @Arg('contract', () => [String]) contract: string[],
-    @Arg('departmentNo', { nullable: true }) departmentNo: string
-  ): Promise<MachineWorkCenter[] | undefined> {
+    @Arg('departmentNo', { defaultValue: '%', nullable: true })
+    departmentNo: string
+  ): Promise<IfsWorkCenterView[] | undefined> {
     try {
-      let sql = '';
-      let formattedContract = '';
-      if (contract[0] === 'AGT') {
-        sql = `
-          SELECT   wc.work_center_no AS "workCenterNo",
-                   wc.contract       AS "contract",
-                   wc.description    AS "description",
-                   wc.department_no  AS "departmentNo",
-                   ram.machine_id    AS "machineId",
-                   ram.description   AS "machineDescription",
-                   wc.objid          AS "objId"
-          FROM     work_center@ifs8agt  wc,
-                   rob_apm_machine      ram
-          WHERE    ram.contract = wc.contract
-          AND      ram.work_center_no = wc.work_center_no
-          AND      wc.department_no LIKE :departmentNo
-        `;
-      } else {
-        sql = `
-          SELECT   wc.work_center_no AS "workCenterNo",
-                   wc.contract       AS "contract",
-                   wc.description    AS "description",
-                   wc.department_no  AS "departmentNo",
-                   ram.machine_id    AS "machineId",
-                   ram.description   AS "machineDescription",
-                   wc.objid          AS "objId"
-          FROM     work_center       wc,
-                   rob_apm_machine   ram
-          WHERE    ram.contract = wc.contract
-          AND      ram.work_center_no = wc.work_center_no
-          AND      wc.department_no LIKE :departmentNo
-        `;
-      }
-      contract.map((item, index) => {
-        formattedContract = `${formattedContract}${
-          index > 0 ? ',' : ''
-        } '${item}'`;
+      const results = await WorkCenterView.find({
+        relations: { machines: true },
+        select: {
+          workCenterNo: true,
+          contract: true,
+          description: true
+        },
+        where: { contract: In(contract), departmentNo: Like(departmentNo) },
+        order: { workCenterNo: 'ASC' }
       });
-      formattedContract.slice(0, formattedContract.length - 1);
-      sql = `${sql}  AND      wc.contract IN (${formattedContract} )`;
-      let results = await getConnection().query(sql, [
-        departmentNo ? departmentNo : '%'
-      ]);
-      if (results) {
-        results = results
-          .slice()
-          .sort((a: Record<string, any>, b: Record<string, any>) =>
-            a.description > b.description ? 1 : -1
-          );
-      }
-      return results;
+      const filteredResults = results.filter((data) => data?.machines !== null);
+      return filteredResults;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -134,7 +95,7 @@ export class MachineWorkCenterResolver {
   ): Promise<MachineWorkCenter[] | undefined> {
     try {
       const unavailableWC = await MachineMaintenanceView.find({
-        select: ['workCenterNo'],
+        select: { workCenterNo: true },
         where: {
           contract,
           prNo: requisitionNo,
@@ -175,9 +136,9 @@ export class MachineWorkCenterResolver {
           AND      wc.contract = :contract
         `;
       }
-      const results = await getConnection().query(sql, [contract]);
+      const result = await ifs.query(sql, [contract]);
       const excludedMachCategory = ['HD', 'HJ'];
-      let filteredResults = results.filter(
+      let filteredResults = result.filter(
         (data: MachineWorkCenter) =>
           !unavailableWCArray.includes(data.workCenterNo) &&
           !excludedMachCategory.includes(data.machineId.substring(0, 2))

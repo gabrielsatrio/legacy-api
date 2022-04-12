@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -8,7 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { BPPFInput } from './bppf.in';
 import { BPPF } from './entities/bppf';
 
@@ -19,7 +20,7 @@ export class BPPFResolver {
   async getBPPF(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<BPPF[] | undefined> {
-    return await BPPF.find({
+    return await BPPF.findBy({
       contract: In(contract)
     });
   }
@@ -29,7 +30,7 @@ export class BPPFResolver {
   async createBPPF(@Arg('input') input: BPPFInput): Promise<BPPF | undefined> {
     try {
       const sql = `SELECT nvl(max(id_no)+1,1) as "id" from CHR_BPPF`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = BPPF.create({
         ...input,
         idNo: result[0].id
@@ -47,12 +48,12 @@ export class BPPFResolver {
     @Arg('input') input: BPPFInput
   ): Promise<BPPF | undefined | number> {
     try {
-      const data = await BPPF.findOne({
+      const data = await BPPF.findOneBy({
         contract: input.contract,
         idNo: input.idNo
       });
       if (!data) throw new Error('No data found.');
-      BPPF.merge(data, input);
+      BPPF.merge(data, { ...input });
       const results = await BPPF.save(data);
       return results;
     } catch (err) {
@@ -67,7 +68,7 @@ export class BPPFResolver {
     @Arg('contract') contract: string
   ): Promise<BPPF> {
     try {
-      const data = await BPPF.findOne({
+      const data = await BPPF.findOneBy({
         idNo,
         contract
       });

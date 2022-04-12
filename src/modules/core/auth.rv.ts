@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import config from '@/config/main';
 import { redis } from '@/providers/redis';
 import { mapError } from '@/utils/map-error';
@@ -13,7 +14,6 @@ import {
   Resolver,
   Root
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import { User } from './entities/user';
@@ -27,7 +27,7 @@ export class AuthResolver {
   @FieldResolver(() => String, { nullable: true })
   async defaultContract(@Root() user: User): Promise<string | null> {
     try {
-      const userContract = await UserContractView.find({
+      const userContract = await UserContractView.findBy({
         username: user.ifsUsername,
         usernameDb: user.usernameDb
       });
@@ -46,7 +46,7 @@ export class AuthResolver {
   @FieldResolver(() => [String], { nullable: true })
   async contract(@Root() user: User): Promise<string[] | null> {
     try {
-      const userContract = await UserContractView.find({
+      const userContract = await UserContractView.findBy({
         username: user.ifsUsername,
         usernameDb: user.usernameDb
       });
@@ -83,7 +83,7 @@ export class AuthResolver {
       if (!username) {
         throw new Error('You need to login first.');
       }
-      const user = await User.findOne({ where: { username } });
+      const user = await User.findOneBy({ username });
       if (!user || user?.status === 'Inactive') return null;
       return user;
     } catch (err) {
@@ -95,9 +95,9 @@ export class AuthResolver {
   async login(
     @Arg('input') input: LoginInput,
     @Ctx() { req }: Context
-  ): Promise<User | undefined> {
+  ): Promise<User | null> {
     try {
-      const user = await User.findOne({ username: input.username });
+      const user = await User.findOneBy({ username: input.username });
       if (!user) {
         throw new Error('Invalid username.');
       }
@@ -105,7 +105,7 @@ export class AuthResolver {
       if (!valid) {
         throw new Error('Invalid password.');
       }
-      const data = await User.findOne({ username: input.username });
+      const data = await User.findOneBy({ username: input.username });
       req.session.username = user.username;
       return data;
     } catch (err) {
@@ -137,7 +137,7 @@ export class AuthResolver {
   @Mutation(() => Boolean)
   async forgotPassword(@Arg('username') username: string): Promise<boolean> {
     try {
-      const user = await User.findOne(username);
+      const user = await User.findOneBy({ username });
       if (!user) {
         return true;
       }
@@ -145,7 +145,7 @@ export class AuthResolver {
       await redis.set(
         `${FORGET_PASSWORD_PREFIX}${token}`,
         user.username,
-        'ex',
+        'ex' as any,
         1000 * 60 * 60 * 24
       ); // 1 day expiration
       await sendEmail(
@@ -164,7 +164,7 @@ export class AuthResolver {
     @Arg('token') token: string,
     @Arg('newPassword') newPassword: string,
     @Ctx() { req }: Context
-  ): Promise<User | undefined> {
+  ): Promise<User | null> {
     try {
       const tokenKey = `${FORGET_PASSWORD_PREFIX}${token}`;
       if (newPassword.length < 6) {
@@ -174,7 +174,7 @@ export class AuthResolver {
       if (!username) {
         throw new Error('Token expired.');
       }
-      const user = await User.findOne(username);
+      const user = await User.findOneBy({ username });
       if (!user) {
         throw new Error('User no longer exists.');
       }
@@ -186,13 +186,13 @@ export class AuthResolver {
             :outUsername);
         END;
       `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         username,
         hashedPassword,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outUsername = result[0] as string;
-      const data = User.findOne({ username: outUsername });
+      const data = User.findOneBy({ username: outUsername });
       await redis.del(tokenKey);
       req.session.username = outUsername;
       return data;
@@ -209,9 +209,7 @@ export class AuthResolver {
     @Arg('confirmPassword') confirmPassword: string
   ): Promise<User | undefined> {
     try {
-      const data = await User.findOne({
-        username
-      });
+      const data = await User.findOneBy({ username });
       if (!data) throw new Error('Username does not exists.');
       const valid = await argon2.verify(data.password, currentPassword);
       if (newPassword.length < 6) {

@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -10,7 +11,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { AssignDetail } from './entities/spt-assign-detail';
 import { AssignDetailInput } from './spt-assign-detail.in';
 
@@ -27,8 +27,8 @@ export class AssignDetailResolver {
   async getAssignDetail(
     @Arg('assignId') assignId: string,
     @Arg('reqNo') reqNo: string
-  ): Promise<AssignDetail | undefined> {
-    return await AssignDetail.findOne({
+  ): Promise<AssignDetail | null> {
+    return await AssignDetail.findOneBy({
       assignId: assignId,
       reqNo: reqNo
     });
@@ -41,7 +41,7 @@ export class AssignDetailResolver {
     @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
   ): Promise<any | undefined> {
-    return await AssignDetail.findOne({
+    return await AssignDetail.findOneBy({
       assignId,
       assignDate,
       reqNo,
@@ -59,7 +59,7 @@ export class AssignDetailResolver {
   ): Promise<any | undefined> {
     try {
       const sql = `SELECT GBR_SPT_API.CALCULATE_TARIF(:reqNo, :expeditionId, :vehicleId, :isNormalPrice) as "totalPrice" from dual`;
-      let totalPrice = await getConnection().query(sql, [
+      let totalPrice = await ifs.query(sql, [
         reqNo,
         expeditionId,
         vehicleId,
@@ -81,7 +81,7 @@ export class AssignDetailResolver {
   ): Promise<any | undefined> {
     try {
       const sql = `SELECT GBR_SPT_API.IS_NORMAL_PRICE(:reqNo, :expeditionId, :vehicleId) as "isNormalPrice" from dual`;
-      let isNormalPrice = await getConnection().query(sql, [
+      let isNormalPrice = await ifs.query(sql, [
         reqNo,
         expeditionId,
         vehicleId
@@ -97,14 +97,14 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async createAssignDetail(
     @Arg('input') input: AssignDetailInput
-  ): Promise<AssignDetail | undefined> {
+  ): Promise<AssignDetail | null> {
     try {
       const sql = `
       BEGIN
         GBR_SPT_API.Create_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -118,7 +118,7 @@ export class AssignDetailResolver {
       const outReqNo = result[1] as string;
       const outAssignDate = result[2] as Date;
       const outRequisitionDate = result[3] as Date;
-      const data = AssignDetail.findOne({
+      const data = AssignDetail.findOneBy({
         assignId: outAssignId,
         reqNo: outReqNo,
         assignDate: outAssignDate,
@@ -135,7 +135,7 @@ export class AssignDetailResolver {
   async createNewAssign(
     @Arg('input') input: AssignDetailInput,
     @Ctx() { req }: Context
-  ): Promise<AssignDetail | undefined> {
+  ): Promise<AssignDetail | null> {
     try {
       const createdBy: string = req.session.username;
       const sql = `
@@ -143,7 +143,7 @@ export class AssignDetailResolver {
         GBR_SPT_API.Create_NEW_ASSIGN(:assignId, :assignDate, :createdBy, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         createdBy,
@@ -158,7 +158,7 @@ export class AssignDetailResolver {
       const outReqNo = result[1] as string;
       const outAssignDate = result[2] as Date;
       const outRequisitionDate = result[3] as Date;
-      const data = AssignDetail.findOne({
+      const data = AssignDetail.findOneBy({
         assignId: outAssignId,
         reqNo: outReqNo,
         assignDate: outAssignDate,
@@ -174,7 +174,7 @@ export class AssignDetailResolver {
   @UseMiddleware(isAuth)
   async updateAssignDetail(
     @Arg('input') input: AssignDetailInput
-  ): Promise<AssignDetail | undefined> {
+  ): Promise<AssignDetail | null> {
     try {
       const sql = `
       BEGIN
@@ -183,7 +183,7 @@ export class AssignDetailResolver {
           :totalPrice, :nopolLangsir, :ppn, :price, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,
@@ -207,7 +207,7 @@ export class AssignDetailResolver {
       const outAssignDate = result[1] as Date;
       const outReqNo = result[2] as string;
       const outRequisitionDate = result[3] as Date;
-      const data = AssignDetail.findOne({
+      const data = AssignDetail.findOneBy({
         assignId: outAssignId,
         assignDate: outAssignDate,
         reqNo: outReqNo,
@@ -230,13 +230,13 @@ export class AssignDetailResolver {
         GBR_SPT_API.Delete_Assign_Detail(:assignId, :assignDate, :reqNo, :requisitionDate, :outAssignId, :outReqNo, :outAssignDate, :outRequisitionDate);
       END;
     `;
-      const data = await AssignDetail.findOne({
+      const data = await AssignDetail.findOneBy({
         assignId: input.assignId,
         reqNo: input.reqNo,
         assignDate: input.assignDate
       });
       if (!data) throw new Error('No data found.');
-      await getConnection().query(sql, [
+      await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         input.reqNo,

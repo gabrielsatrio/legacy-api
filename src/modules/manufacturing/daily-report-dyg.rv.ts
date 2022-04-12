@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -8,7 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { DailyReportDygInput } from './daily-report-dyg.in';
 import { DailyReportDyg } from './entities/daily-report-dyg';
 import { DDPBPO } from './entities/ddp-bpo';
@@ -20,7 +21,7 @@ export class DailyReportDygResolver {
   async getDailyReportDyg(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<DailyReportDyg[] | undefined> {
-    return await DailyReportDyg.find({
+    return await DailyReportDyg.findBy({
       contract: In(contract)
     });
   }
@@ -33,7 +34,10 @@ export class DailyReportDygResolver {
     @Arg('lotCelup') lotCelup: string
   ): Promise<DDPBPO | undefined> {
     const data = await DDPBPO.findOne({
-      relations: ['dyestuffsUses', 'auxiliariesUses'],
+      relations: {
+        dyestuffsUses: true,
+        auxiliariesUses: true
+      },
       where: {
         contract: In(contract),
         lotCelup
@@ -50,7 +54,7 @@ export class DailyReportDygResolver {
   ): Promise<DailyReportDyg | undefined> {
     try {
       const sql = `SELECT nvl(max(row_id)+1,1) as "id" from CHR_DAILY_REPORT_DYG`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = DailyReportDyg.create({
         ...input,
         rowId: result[0].id
@@ -69,12 +73,12 @@ export class DailyReportDygResolver {
     @Arg('rowId', () => Int) rowId: number
   ): Promise<DailyReportDyg | undefined | number> {
     try {
-      const data = await DailyReportDyg.findOne({
+      const data = await DailyReportDyg.findOneBy({
         contract: input.contract,
         rowId: rowId
       });
       if (!data) throw new Error('No data found.');
-      DailyReportDyg.merge(data, input);
+      DailyReportDyg.merge(data, { ...input });
       const results = await DailyReportDyg.save(data);
       return results;
     } catch (err) {
@@ -89,7 +93,7 @@ export class DailyReportDygResolver {
     @Arg('contract') contract: string
   ): Promise<DailyReportDyg> {
     try {
-      const data = await DailyReportDyg.findOne({
+      const data = await DailyReportDyg.findOneBy({
         rowId,
         contract
       });

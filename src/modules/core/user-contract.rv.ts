@@ -14,7 +14,7 @@ export class UserContractResolver {
   @UseMiddleware(isAuth)
   async getAllUserContractsByUsername(
     @Arg('username') username: string,
-    @Arg('usernameDb') usernameDb: string
+    @Arg('usernameDb') usernameDb: 'AT' | 'AG'
   ): Promise<UserContractView[]> {
     return await UserContractView.find({
       where: { username, usernameDb },
