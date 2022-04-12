@@ -7,6 +7,6 @@ export class YarnEmpResolver {
   @Query(() => [YarnEmp], { nullable: true })
   @UseMiddleware(isAuth)
   async getAllYarnEmp(): Promise<YarnEmp[] | undefined> {
-    return await YarnEmp.find({});
+    return await YarnEmp.find();
   }
 }

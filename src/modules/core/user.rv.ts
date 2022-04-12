@@ -1,9 +1,9 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import argon2 from 'argon2';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { User } from './entities/user';
 import { UserInput } from './user.in';
 
@@ -11,19 +11,25 @@ import { UserInput } from './user.in';
 export class UserResolver {
   @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getAllUsers(): Promise<User[]> {
-    return await User.find({ order: { username: 'ASC' } });
+  async getUsers(): Promise<User[]> {
+    return await User.find({
+      relations: { contracts: true },
+      order: { username: 'ASC' }
+    });
   }
 
   @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
-  async getUser(@Arg('username') username: string): Promise<User | undefined> {
-    return await User.findOne(username);
+  async getUser(@Arg('username') username: string): Promise<User | null> {
+    return await User.findOne({
+      relations: { contracts: true },
+      where: { username }
+    });
   }
 
   @Mutation(() => User)
   @UseMiddleware(isAuth)
-  async createUser(@Arg('input') input: UserInput): Promise<User | undefined> {
+  async createUser(@Arg('input') input: UserInput): Promise<User | null> {
     try {
       const hashedPassword = await argon2.hash(input.password);
       const sql = `
@@ -36,7 +42,7 @@ export class UserResolver {
             :outUsername);
         END;
       `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.username,
         hashedPassword,
         input.departmentId,
@@ -45,7 +51,7 @@ export class UserResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outUsername = result[0] as string;
-      const data = User.findOne({ username: outUsername });
+      const data = User.findOneBy({ username: outUsername });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -61,7 +67,7 @@ export class UserResolver {
           'Password must be longer than or equal to 3 characters.'
         );
       }
-      const data = await User.findOne({
+      const data = await User.findOneBy({
         username: input.username
       });
       if (!data) throw new Error('No data found.');
@@ -78,7 +84,7 @@ export class UserResolver {
   @UseMiddleware(isAuth)
   async deleteUser(@Arg('username') username: string): Promise<User> {
     try {
-      const data = await User.findOne(username);
+      const data = await User.findOneBy({ username });
       if (!data) throw new Error('No data found.');
       await User.delete(username);
       return data;

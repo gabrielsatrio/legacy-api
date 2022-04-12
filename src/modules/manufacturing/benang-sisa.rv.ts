@@ -19,7 +19,7 @@ export class BenangSisaResolver {
   async getBenangSisa(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<BenangSisa[] | undefined> {
-    return await BenangSisa.find({
+    return await BenangSisa.findBy({
       contract: In(contract)
     });
   }
@@ -30,7 +30,7 @@ export class BenangSisaResolver {
     @Arg('input') input: BenangSisaInput
   ): Promise<BenangSisa | undefined> {
     try {
-      const check = await BenangSisa.findOne({
+      const check = await BenangSisa.findOneBy({
         contract: input.contract,
         tanggal: input.tanggal,
         noPalet: input.noPalet,
@@ -55,14 +55,14 @@ export class BenangSisaResolver {
     @Arg('input') input: BenangSisaInput
   ): Promise<BenangSisa | undefined | number> {
     try {
-      const data = await BenangSisa.findOne({
+      const data = await BenangSisa.findOneBy({
         contract: input.contract,
         tanggal: input.tanggal,
         noPalet: input.noPalet,
         noDus: input.noDus
       });
       if (!data) throw new Error('No data found.');
-      BenangSisa.merge(data, input);
+      BenangSisa.merge(data, { ...input });
       const results = await BenangSisa.save(data);
       return results;
     } catch (err) {
@@ -79,7 +79,7 @@ export class BenangSisaResolver {
     @Arg('noDus', () => Int) noDus: number
   ): Promise<BenangSisa> {
     try {
-      const data = await BenangSisa.findOne({
+      const data = await BenangSisa.findOneBy({
         contract,
         tanggal,
         noPalet,

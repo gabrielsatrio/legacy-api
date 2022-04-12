@@ -1,8 +1,9 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { MappingKuans } from './entities/map-kuans';
 import { MappingKuansInput } from './map-kuans.in';
 
@@ -13,7 +14,7 @@ export class MappingKuansResolver {
   async getMappingKuans(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MappingKuans[] | undefined> {
-    return await MappingKuans.find({
+    return await MappingKuans.findBy({
       contract: In(contract)
     });
   }
@@ -24,7 +25,7 @@ export class MappingKuansResolver {
     @Arg('contract', () => [String]) contract: string[],
     @Arg('partNo') partNo: string
   ): Promise<MappingKuans[] | undefined> {
-    return await MappingKuans.find({
+    return await MappingKuans.findBy({
       contract: In(contract),
       partNo
     });
@@ -34,7 +35,7 @@ export class MappingKuansResolver {
   @UseMiddleware(isAuth)
   async createMappingKuans(
     @Arg('input') input: MappingKuansInput
-  ): Promise<MappingKuans | undefined> {
+  ): Promise<MappingKuans | null> {
     const sql = `
       BEGIN
       ROB_TRANS_TO_KUAN_MAP_API.create_mapping_kuans(:contract, :partNo, :rackId, :rackDescription, :activeStatus, :lampNo, :pwdType, :pwdKind, :pwdConc, :colorName, :oldContract, :oldPartNo, :outContract, :outPartNo);
@@ -42,7 +43,7 @@ export class MappingKuansResolver {
     `;
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.rackId,
@@ -77,8 +78,8 @@ export class MappingKuansResolver {
   @UseMiddleware(isAuth)
   async updateMappingKuans(
     @Arg('input') input: MappingKuansInput
-  ): Promise<MappingKuans | undefined> {
-    const machine = await MappingKuans.findOne({
+  ): Promise<MappingKuans | null> {
+    const machine = await MappingKuans.findOneBy({
       contract: input.contract,
       partNo: input.partNo
     });
@@ -96,7 +97,7 @@ export class MappingKuansResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.rackId,
@@ -119,7 +120,7 @@ export class MappingKuansResolver {
     const outContract = result[0] as string;
     const outPartNo = result[1] as string;
 
-    const data = await MappingKuans.findOne({
+    const data = await MappingKuans.findOneBy({
       contract: outContract,
       partNo: outPartNo
     });
@@ -134,7 +135,7 @@ export class MappingKuansResolver {
     @Arg('partNo') partNo: string
   ): Promise<MappingKuans> {
     try {
-      const Resep = await MappingKuans.findOne({
+      const Resep = await MappingKuans.findOneBy({
         contract,
         partNo
       });
@@ -149,7 +150,7 @@ export class MappingKuansResolver {
       END;
      `;
 
-      await getConnection().query(sql, [contract, partNo]);
+      await ifs.query(sql, [contract, partNo]);
       return Resep;
     } catch (err) {
       throw new Error(mapError(err));

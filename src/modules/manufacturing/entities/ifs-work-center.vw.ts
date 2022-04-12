@@ -9,16 +9,16 @@ import {
 } from 'typeorm';
 import { MachineView } from './apm-machine.vw';
 
-@Entity('ATJ_WORK_CENTER_V')
+@Entity('WORK_CENTER')
 @ObjectType()
-export class WorkCenterView extends BaseEntity {
-  @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
-  contract!: string;
-
+export class IfsWorkCenterView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'WORK_CENTER_NO' })
   workCenterNo!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
   @Column({ name: 'DESCRIPTION' })
@@ -29,24 +29,12 @@ export class WorkCenterView extends BaseEntity {
   departmentNo?: string;
 
   @Field()
-  @Column({ name: 'UOM' })
-  uom!: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'USAGE_CODE' })
-  usageCode?: string;
-
-  @Field()
-  @Column({ name: 'CREATE_DATE' })
-  createDate!: Date;
-
-  @Field()
   @Column({ name: 'OBJID' })
   objId!: string;
 
   @Field()
   altDescription(): string {
-    return `${this.workCenterNo} - ${this.description}`;
+    return `${this.description} (${this.workCenterNo})`;
   }
 
   @Field(() => MachineView, { nullable: true })

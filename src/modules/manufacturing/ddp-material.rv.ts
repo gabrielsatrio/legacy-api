@@ -1,8 +1,9 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { MaterialInput } from './ddp-material.in';
 import { Material } from './entities/ddp-material';
 
@@ -42,8 +43,8 @@ export class MaterialResolver {
   async getMaterialByOrderNo(
     @Arg('contract', () => [String]) contract: string[],
     @Arg('orderNo') orderNo: string
-  ): Promise<Material | undefined> {
-    return await Material.findOne({
+  ): Promise<Material | null> {
+    return await Material.findOneBy({
       contract: In(contract),
       orderNo
     });
@@ -53,7 +54,7 @@ export class MaterialResolver {
   @UseMiddleware(isAuth)
   async createMaterial(
     @Arg('input') input: MaterialInput
-  ): Promise<Material | undefined> {
+  ): Promise<Material | null> {
     const sql = `
     BEGIN
     CHR_DDT_MATERIAL_API.CREATE_MATERIAL(:contract,
@@ -84,7 +85,7 @@ export class MaterialResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.jenisCelup,
         input.idNo,
@@ -115,7 +116,7 @@ export class MaterialResolver {
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
 
-    const data = Material.findOne({ contract: outContract, idNo: outIdNo });
+    const data = Material.findOneBy({ contract: outContract, idNo: outIdNo });
     return data;
   }
 
@@ -123,8 +124,8 @@ export class MaterialResolver {
   @UseMiddleware(isAuth)
   async UpdateMaterial(
     @Arg('input') input: MaterialInput
-  ): Promise<Material | undefined> {
-    const material = await Material.findOne({
+  ): Promise<Material | null> {
+    const material = await Material.findOneBy({
       contract: input.contract,
       idNo: input.idNo
     });
@@ -161,7 +162,7 @@ export class MaterialResolver {
     `;
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.jenisCelup,
         input.idNo,
@@ -192,7 +193,7 @@ export class MaterialResolver {
     const outContract = result[0] as string;
     const outIdNo = result[1] as string;
 
-    const data = Material.findOne({ contract: outContract, idNo: outIdNo });
+    const data = Material.findOneBy({ contract: outContract, idNo: outIdNo });
     return data;
   }
 
@@ -203,7 +204,7 @@ export class MaterialResolver {
     @Arg('idNo') idNo: string
   ): Promise<Material> {
     try {
-      const material = await Material.findOne({
+      const material = await Material.findOneBy({
         contract,
         idNo
       });
@@ -218,7 +219,7 @@ export class MaterialResolver {
       END;
      `;
 
-      await getConnection().query(sql, [contract, idNo]);
+      await ifs.query(sql, [contract, idNo]);
       return material;
     } catch (err) {
       throw new Error(mapError(err));

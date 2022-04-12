@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -9,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { JadwalEmad } from './entities/jadwal-emad';
 import { JadwalEmadInput } from './jadwal-emad.in';
 
@@ -20,7 +21,7 @@ export class JadwalEmadResolver {
   async getJadwalEmad(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<JadwalEmad[] | undefined> {
-    return await JadwalEmad.find({
+    return await JadwalEmad.findBy({
       contract: In(contract)
     });
   }
@@ -32,7 +33,7 @@ export class JadwalEmadResolver {
   ): Promise<JadwalEmad> {
     try {
       const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_JADWAL_EMAD`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = JadwalEmad.create({
         ...input,
         createdBy: req.session.username,
@@ -52,12 +53,12 @@ export class JadwalEmadResolver {
     @Arg('input') input: JadwalEmadInput
   ): Promise<JadwalEmad> {
     try {
-      const data = await JadwalEmad.findOne({
+      const data = await JadwalEmad.findOneBy({
         id: input.id,
         contract: input.contract
       });
       if (!data) throw new Error('No data found.');
-      JadwalEmad.merge(data, input);
+      JadwalEmad.merge(data, { ...input });
       const results = await JadwalEmad.save(data);
       return results;
     } catch (err) {
@@ -72,7 +73,7 @@ export class JadwalEmadResolver {
     @Arg('contract') contract: string
   ): Promise<JadwalEmad> {
     try {
-      const data = await JadwalEmad.findOne({
+      const data = await JadwalEmad.findOneBy({
         id,
         contract
       });

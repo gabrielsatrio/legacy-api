@@ -13,7 +13,7 @@ export class ShopOrderResolver {
     @Arg('userName') userName: string,
     @Arg('jenisTimbang') jenisTimbang: string
   ): Promise<string | undefined> {
-    const path = await MapTimbangan.find({
+    const path = await MapTimbangan.findBy({
       contract: In(contract),
       userName,
       jenisTimbang
@@ -29,7 +29,7 @@ export class ShopOrderResolver {
     @Arg('userName') userName: string,
     @Arg('jenisTimbang') jenisTimbang: string
   ): Promise<string | undefined> {
-    const path = await MapTimbangan.find({
+    const path = await MapTimbangan.findBy({
       contract: In(contract),
       userName,
       jenisTimbang

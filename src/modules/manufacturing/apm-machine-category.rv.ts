@@ -15,7 +15,7 @@ export class MachineCategoryResolver {
   @UseMiddleware(isAuth)
   async getMachCategory(
     @Arg('categoryId') categoryId: string
-  ): Promise<MachineCategoryView | undefined> {
-    return await MachineCategoryView.findOne({ categoryId });
+  ): Promise<MachineCategoryView | null> {
+    return await MachineCategoryView.findOneBy({ categoryId });
   }
 }

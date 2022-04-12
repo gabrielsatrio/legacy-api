@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { Vehicle } from './entities/spt-vehicle';
 import { VehicleInput } from './spt-vehicle.in';
 
@@ -18,29 +18,29 @@ export class VehicleResolver {
   @UseMiddleware(isAuth)
   async getVehicle(
     @Arg('vehicleId') vehicleId: string
-  ): Promise<Vehicle | undefined> {
-    return await Vehicle.findOne(vehicleId);
+  ): Promise<Vehicle | null> {
+    return await Vehicle.findOneBy({ vehicleId });
   }
 
   @Mutation(() => Vehicle)
   @UseMiddleware(isAuth)
   async createVehicle(
     @Arg('input') input: VehicleInput
-  ): Promise<Vehicle | undefined> {
+  ): Promise<Vehicle | null> {
     try {
       const sql = `
     BEGIN
       GBR_SPT_API.Create_Vehicle(:vehicleId, :vehicleName, :weightCapacity, :outVehicleId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.vehicleId,
         input.vehicleName,
         input.weightCapacity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outVehicleId = result[0] as string;
-      const data = Vehicle.findOne(outVehicleId);
+      const data = Vehicle.findOneBy({ vehicleId: outVehicleId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -51,23 +51,23 @@ export class VehicleResolver {
   @UseMiddleware(isAuth)
   async updateVehicle(
     @Arg('input') input: VehicleInput
-  ): Promise<Vehicle | undefined> {
+  ): Promise<Vehicle | null> {
     try {
-      const vehicle = await Vehicle.findOne({ vehicleId: input.vehicleId });
+      const vehicle = await Vehicle.findOneBy({ vehicleId: input.vehicleId });
       if (!vehicle) throw new Error('No data found.');
       const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_VEHICLE(:vehicleId, :vehicleName, :weightCapacity, :outVehicleId);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.vehicleId,
         input.vehicleName,
         input.weightCapacity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outVehicleId = result[0];
-      const data = Vehicle.findOne({ vehicleId: outVehicleId });
+      const data = Vehicle.findOneBy({ vehicleId: outVehicleId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
@@ -78,7 +78,7 @@ export class VehicleResolver {
   @UseMiddleware(isAuth)
   async deleteVehicle(@Arg('vehicleId') vehicleId: string): Promise<Vehicle> {
     try {
-      const vehicle = await Vehicle.findOne({ vehicleId });
+      const vehicle = await Vehicle.findOneBy({ vehicleId });
       if (!vehicle) throw new Error('No data found.');
       await Vehicle.delete({ vehicleId });
       return vehicle;

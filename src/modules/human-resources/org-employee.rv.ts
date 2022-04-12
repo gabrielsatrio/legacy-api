@@ -16,16 +16,16 @@ export class EmployeeResolver {
   @UseMiddleware(isAuth)
   async getEmployee(
     @Arg('employeeId') employeeId: string
-  ): Promise<EmployeeView | undefined> {
-    return await EmployeeView.findOne({ employeeId });
+  ): Promise<EmployeeView | null> {
+    return await EmployeeView.findOneBy({ employeeId });
   }
 
   @Query(() => EmployeeView)
   @UseMiddleware(isAuth)
   async getEmployeeWithCustomEmail(
     @Arg('employeeId') employeeId: string
-  ): Promise<EmployeeView | undefined> {
-    const employee = await EmployeeView.findOne({ employeeId });
+  ): Promise<EmployeeView | null> {
+    const employee = await EmployeeView.findOneBy({ employeeId });
     if (employee) employee.email = customEmail(employee.email);
     return employee;
   }

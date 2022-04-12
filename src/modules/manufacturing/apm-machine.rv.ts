@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -9,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { MachineInput } from './apm-machine.in';
 import { Machine } from './entities/apm-machine';
 import { MachineView } from './entities/apm-machine.vw';
@@ -31,7 +32,7 @@ export class MachineResolver {
     @Arg('contract') contract: string,
     @Arg('description') description: string
   ): Promise<boolean> {
-    return (await MachineView.findOne({ contract, description }))
+    return (await MachineView.findOneBy({ contract, description }))
       ? true
       : false;
   }
@@ -42,6 +43,7 @@ export class MachineResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({
+      relations: { workCenters: true },
       where: { contract: In(contract) },
       order: { machineId: 'ASC' }
     });
@@ -52,8 +54,8 @@ export class MachineResolver {
   async getMachine(
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string
-  ): Promise<MachineView | undefined> {
-    return await MachineView.findOne({ machineId, contract });
+  ): Promise<MachineView | null> {
+    return await MachineView.findOneBy({ machineId, contract });
   }
 
   @Query(() => String)
@@ -64,7 +66,7 @@ export class MachineResolver {
   ): Promise<string> {
     try {
       const sql = `SELECT ROB_APM_Machine_API.Get_New_ID(:contract, :categoryId) AS "newMachineId" FROM DUAL`;
-      const result = await getConnection().query(sql, [contract, categoryId]);
+      const result = await ifs.query(sql, [contract, categoryId]);
       return result[0].newMachineId;
     } catch (err) {
       throw new Error(mapError(err));
@@ -100,7 +102,7 @@ export class MachineResolver {
     @Ctx() { req }: Context
   ): Promise<Machine | undefined> {
     try {
-      const existingData = await Machine.findOne({
+      const existingData = await Machine.findOneBy({
         machineId: input.machineId,
         contract: input.contract
       });
@@ -124,7 +126,7 @@ export class MachineResolver {
     @Arg('input') input: MachineInput
   ): Promise<Machine | undefined> {
     try {
-      const data = await Machine.findOne({
+      const data = await Machine.findOneBy({
         machineId: input.machineId,
         contract: input.contract
       });
@@ -144,7 +146,7 @@ export class MachineResolver {
     @Arg('contract') contract: string
   ): Promise<Machine> {
     try {
-      const data = await Machine.findOne({ machineId, contract });
+      const data = await Machine.findOneBy({ machineId, contract });
       if (!data) throw new Error('No data found.');
       await Machine.delete({ machineId, contract });
       return data;

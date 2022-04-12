@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import config from '@/config/main';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
@@ -13,7 +14,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { EmployeeResolver } from './../human-resources/org-employee.rv';
 import { SparePartReqLineResolver } from './apm-sp-requisition-line.rv';
 import { SparePartRequisitionInput } from './apm-sp-requisition.in';
@@ -30,11 +31,23 @@ export class SparePartRequisitionResolver {
   ): Promise<boolean> {
     try {
       const sql = `SELECT ROB_APM_Sparepart_Req_API.Check_Valid(:requisitionId) AS "checkValid" FROM DUAL`;
-      const result = await getConnection().query(sql, [requistionId]);
+      const result = await ifs.query(sql, [requistionId]);
       return result[0].checkValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [SparePartRequisition])
+  @UseMiddleware(isAuth)
+  async getSPRequisitions(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<SparePartRequisition[] | undefined> {
+    return await SparePartRequisition.find({
+      relations: { requisitionLines: true },
+      where: { contract: In(contract) },
+      order: { requisitionId: 'ASC' }
+    });
   }
 
   @Query(() => [SparePartRequisitionView])
@@ -52,8 +65,8 @@ export class SparePartRequisitionResolver {
   @UseMiddleware(isAuth)
   async getSPRequisition(
     @Arg('requisitionId', () => Int) requisitionId: number
-  ): Promise<SparePartRequisitionView | undefined> {
-    return await SparePartRequisitionView.findOne({ requisitionId });
+  ): Promise<SparePartRequisitionView | null> {
+    return await SparePartRequisitionView.findOneBy({ requisitionId });
   }
 
   @Query(() => Int)
@@ -61,7 +74,7 @@ export class SparePartRequisitionResolver {
   async getNewSPRequisId(): Promise<number> {
     try {
       const sql = `SELECT ROB_APM_SP_REQUISITION_SEQ.NEXTVAL AS "newId" FROM DUAL`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       return result[0].newId;
     } catch (err) {
       throw new Error(mapError(err));
@@ -109,7 +122,7 @@ export class SparePartRequisitionResolver {
     @Arg('input') input: SparePartRequisitionInput
   ): Promise<SparePartRequisition | undefined> {
     try {
-      const data = await SparePartRequisition.findOne({
+      const data = await SparePartRequisition.findOneBy({
         requisitionId: input.requisitionId
       });
       if (!data) throw new Error('No data found.');
@@ -130,7 +143,7 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        let result = await getConnection().query(sql, [
+        let result = await ifs.query(sql, [
           input.contract,
           input.intCustomerNo,
           input.destinationId,
@@ -141,7 +154,7 @@ export class SparePartRequisitionResolver {
         outOrderNo = result[0] as string;
         if (outOrderNo) {
           input.orderNo = outOrderNo;
-          const requisLines = await SparePartReqLine.find({
+          const requisLines = await SparePartReqLine.findBy({
             requisitionId: input.requisitionId
           });
           await Promise.all(
@@ -166,7 +179,7 @@ export class SparePartRequisitionResolver {
                     RAISE;
                 END;
               `;
-              result = await getConnection().query(sql, [
+              result = await ifs.query(sql, [
                 outOrderNo,
                 item.contract,
                 'INT',
@@ -191,11 +204,11 @@ export class SparePartRequisitionResolver {
                   RAISE;
               END;
             `;
-            await getConnection().query(sql, [outOrderNo]);
+            await ifs.query(sql, [outOrderNo]);
           }
         }
       }
-      SparePartRequisition.merge(data, input);
+      SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
       const { requisitionId, orderNo, createdBy } = result;
       if (input.status === 'Approved') {
@@ -208,7 +221,7 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        await getConnection().query(sql, [orderNo]);
+        await ifs.query(sql, [orderNo]);
       }
       const employee = new EmployeeResolver();
       const creator = await employee.getEmployeeWithCustomEmail(createdBy);
@@ -270,9 +283,9 @@ export class SparePartRequisitionResolver {
     @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartRequisition> {
     try {
-      const data = await SparePartRequisition.findOne({ requisitionId });
+      const data = await SparePartRequisition.findOneBy({ requisitionId });
       if (!data) throw new Error('No data found.');
-      const detailData = await SparePartReqLine.find({ requisitionId });
+      const detailData = await SparePartReqLine.findBy({ requisitionId });
       const SPReqLine = new SparePartReqLineResolver();
       await Promise.all(
         detailData.map(async (item) => {

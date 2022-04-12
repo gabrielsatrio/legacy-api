@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
@@ -9,7 +10,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { MachineMaintenanceSyncInput } from './apm-machine-maintenance-sync.in';
 import { MachineMaintenanceInput } from './apm-machine-maintenance.in';
 import { MachineMaintenance } from './entities/apm-machine-maintenance';
@@ -24,7 +24,7 @@ export class MachineMaintenanceResolver {
     @Arg('lineNo') lineNo: string,
     @Arg('releaseNo') releaseNo: string
   ): Promise<MachineMaintenanceView[] | undefined> {
-    return await MachineMaintenanceView.find({
+    return await MachineMaintenanceView.findBy({
       prNo: requisitionNo,
       prLineNo: lineNo,
       prReleaseNo: releaseNo
@@ -47,16 +47,16 @@ export class MachineMaintenanceResolver {
   @UseMiddleware(isAuth)
   async createMachMaintenance(
     @Arg('input') input: MachineMaintenanceInput
-  ): Promise<MachineMaintenanceView | undefined> {
+  ): Promise<MachineMaintenanceView | null> {
     try {
       const sql = `SELECT ROB_APM_Maintenance_API.Get_New_Id() AS "newId" FROM DUAL`;
-      const res = await getConnection().query(sql);
+      const res = await ifs.query(sql);
       const data = MachineMaintenance.create({
         ...input,
         maintenanceId: res[0].newId
       });
       await MachineMaintenance.save(data);
-      const result = await MachineMaintenanceView.findOne({
+      const result = await MachineMaintenanceView.findOneBy({
         maintenanceId: res[0].newId
       });
       return result;
@@ -70,13 +70,13 @@ export class MachineMaintenanceResolver {
   async updateMachMaintenance(
     @Arg('maintenanceId', () => Int) maintenanceId: number,
     @Arg('input') input: MachineMaintenanceInput
-  ): Promise<MachineMaintenanceView | undefined> {
+  ): Promise<MachineMaintenanceView | null> {
     try {
-      const data = await MachineMaintenance.findOne({ maintenanceId });
+      const data = await MachineMaintenance.findOneBy({ maintenanceId });
       if (!data) throw new Error('No data found.');
-      MachineMaintenance.merge(data, input);
+      MachineMaintenance.merge(data, { ...input });
       const response = await MachineMaintenance.save(data);
-      const result = await MachineMaintenanceView.findOne({
+      const result = await MachineMaintenanceView.findOneBy({
         maintenanceId: response.maintenanceId
       });
       return result;
@@ -91,7 +91,7 @@ export class MachineMaintenanceResolver {
     @Arg('maintenanceId', () => Int) maintenanceId: number
   ): Promise<MachineMaintenanceView | undefined> {
     try {
-      const data = await MachineMaintenanceView.findOne({ maintenanceId });
+      const data = await MachineMaintenanceView.findOneBy({ maintenanceId });
       if (!data) throw new Error('No data found.');
       await MachineMaintenance.delete({ maintenanceId });
       return data;
@@ -104,7 +104,7 @@ export class MachineMaintenanceResolver {
   @UseMiddleware(isAuth)
   async syncMachMaintenanceForMr(
     @Arg('input') input: MachineMaintenanceSyncInput
-  ): Promise<MachineMaintenanceView | undefined> {
+  ): Promise<MachineMaintenanceView | null> {
     try {
       const sql = `
         BEGIN
@@ -134,7 +134,7 @@ export class MachineMaintenanceResolver {
             RAISE;
         END;
       `;
-      const res = await getConnection().query(sql, [
+      const res = await ifs.query(sql, [
         input.contract,
         input.machineId,
         input.maintenanceDate,
@@ -154,7 +154,7 @@ export class MachineMaintenanceResolver {
         input.newQuantity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
-      const result = await MachineMaintenanceView.findOne({
+      const result = await MachineMaintenanceView.findOneBy({
         maintenanceId: res[0] as number
       });
       return result;

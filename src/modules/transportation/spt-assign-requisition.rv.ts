@@ -33,8 +33,8 @@ export class AssignRequisitionResolver {
   async getAssignRequisitionView(
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
-  ): Promise<AssignRequisitionView | undefined> {
-    return await AssignRequisitionView.findOne({
+  ): Promise<AssignRequisitionView | null> {
+    return await AssignRequisitionView.findOneBy({
       assignId,
       assignDate
     });
@@ -45,8 +45,8 @@ export class AssignRequisitionResolver {
   async getAssignRequisitionViewByReqNo(
     @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
-  ): Promise<AssignRequisitionView | undefined> {
-    return await AssignRequisitionView.findOne({
+  ): Promise<AssignRequisitionView | null> {
+    return await AssignRequisitionView.findOneBy({
       reqNo,
       requisitionDate
     });

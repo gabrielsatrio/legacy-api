@@ -10,7 +10,7 @@ export class YarnInterruptionTransViewResolver {
   async getYarnInterruptionTransView(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnInterruptionTransView[] | undefined> {
-    return await YarnInterruptionTransView.find({
+    return await YarnInterruptionTransView.findBy({
       contract: In(contract)
     });
   }
@@ -22,7 +22,7 @@ export class YarnInterruptionTransViewResolver {
     @Arg('machine') machine: string,
     @Arg('reportDate') reportDate: Date
   ): Promise<YarnInterruptionTransView[] | undefined> {
-    return await YarnInterruptionTransView.find({
+    return await YarnInterruptionTransView.findBy({
       contract: In(contract),
       machine,
       reportDate

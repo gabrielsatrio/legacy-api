@@ -1,7 +1,7 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { DepartmentView } from './entities/department.vw';
 
 @Resolver(DepartmentView)
@@ -16,8 +16,8 @@ export class DepartmentResolver {
   @UseMiddleware(isAuth)
   async getDepartment(
     @Arg('departmentId') departmentId: string
-  ): Promise<DepartmentView | undefined> {
-    return await DepartmentView.findOne({ departmentId });
+  ): Promise<DepartmentView | null> {
+    return await DepartmentView.findOneBy({ departmentId });
   }
 
   @Query(() => [DepartmentView])
@@ -32,7 +32,7 @@ export class DepartmentResolver {
         FROM     atj_prod_department_v
         WHERE    contract = :contract
       `;
-      const results = await getConnection().query(sql, [contract]);
+      const results = await ifs.query(sql, [contract]);
       return results;
     } catch (err) {
       throw new Error(mapError(err));

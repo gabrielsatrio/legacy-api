@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { Expedition } from './entities/spt-expedition';
 import { ExpeditionInput } from './spt-expedition.in';
 
@@ -18,28 +18,28 @@ export class ExpeditionResolver {
   @UseMiddleware(isAuth)
   async getExpedition(
     @Arg('expeditionId') expeditionId: string
-  ): Promise<Expedition | undefined> {
-    return await Expedition.findOne(expeditionId);
+  ): Promise<Expedition | null> {
+    return await Expedition.findOneBy({ expeditionId });
   }
 
   @Mutation(() => Expedition)
   @UseMiddleware(isAuth)
   async createExpedition(
     @Arg('input') input: ExpeditionInput
-  ): Promise<Expedition | undefined> {
+  ): Promise<Expedition | null> {
     try {
       const sql = `
     BEGIN
       GBR_SPT_API.Create_Expedition(:expeditionId, :expeditionName, :outExpeditionId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.expeditionId,
         input.expeditionName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outExpeditionId = result[0] as string;
-      const data = Expedition.findOne({
+      const data = Expedition.findOneBy({
         expeditionId: outExpeditionId
       });
       return data;
@@ -52,9 +52,9 @@ export class ExpeditionResolver {
   @UseMiddleware(isAuth)
   async updateExpedition(
     @Arg('input') input: ExpeditionInput
-  ): Promise<Expedition | undefined> {
+  ): Promise<Expedition | null> {
     try {
-      const expedition = await Expedition.findOne({
+      const expedition = await Expedition.findOneBy({
         expeditionId: input.expeditionId
       });
       if (!expedition) throw new Error('No data found.');
@@ -63,13 +63,13 @@ export class ExpeditionResolver {
       GBR_SPT_API.UPDATE_EXPEDITION(:expeditionId, :expeditionName, :outExpeditionId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.expeditionId,
         input.expeditionName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outExpeditionId = result[0];
-      const data = Expedition.findOne({
+      const data = Expedition.findOneBy({
         expeditionId: outExpeditionId
       });
       return data;
@@ -84,7 +84,7 @@ export class ExpeditionResolver {
     @Arg('expeditionId') expeditionId: string
   ): Promise<Expedition> {
     try {
-      const expedition = await Expedition.findOne({
+      const expedition = await Expedition.findOneBy({
         expeditionId
       });
       if (!expedition) throw new Error('No data found.');

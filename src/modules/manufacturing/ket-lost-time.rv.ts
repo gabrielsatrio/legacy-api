@@ -12,7 +12,7 @@ export class KeteranganLostTimeResolver {
   async getKeteranganLostTime(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<KeteranganLostTime[] | undefined> {
-    return await KeteranganLostTime.find({
+    return await KeteranganLostTime.findBy({
       contract: In(contract)
     });
   }
@@ -23,7 +23,7 @@ export class KeteranganLostTimeResolver {
     @Arg('input') input: KeteranganLostTimeInput
   ): Promise<KeteranganLostTime | undefined> {
     try {
-      const check = await KeteranganLostTime.findOne({
+      const check = await KeteranganLostTime.findOneBy({
         contract: input.contract,
         lostTime: input.lostTime
       });
@@ -44,12 +44,12 @@ export class KeteranganLostTimeResolver {
     @Arg('input') input: KeteranganLostTimeInput
   ): Promise<KeteranganLostTime | undefined | number> {
     try {
-      const data = await KeteranganLostTime.findOne({
+      const data = await KeteranganLostTime.findOneBy({
         contract: input.contract,
         lostTime: input.lostTime
       });
       if (!data) throw new Error('No data found.');
-      KeteranganLostTime.merge(data, input);
+      KeteranganLostTime.merge(data, { ...input });
       const results = await KeteranganLostTime.save(data);
       return results;
     } catch (err) {
@@ -64,7 +64,7 @@ export class KeteranganLostTimeResolver {
     @Arg('lostTime') lostTime: string
   ): Promise<KeteranganLostTime> {
     try {
-      const data = await KeteranganLostTime.findOne({
+      const data = await KeteranganLostTime.findOneBy({
         contract,
         lostTime
       });

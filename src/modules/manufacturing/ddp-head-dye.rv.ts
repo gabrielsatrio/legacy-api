@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { HeadDyeInput } from './ddp-head-dye.in';
 import { HeadDye } from './entities/ddp-head-dye';
 
@@ -12,7 +12,7 @@ export class HeadDyeResolver {
   @UseMiddleware(isAuth)
   async createHeadDye(
     @Arg('input') input: HeadDyeInput
-  ): Promise<HeadDye | undefined> {
+  ): Promise<HeadDye | null> {
     const sql = `
     BEGIN
     CHR_DDT_MASTER_RESEP_DYE_API.CREATE_RESEP_DYE(:contract, :partNo, :alternate,
@@ -28,7 +28,7 @@ export class HeadDyeResolver {
 
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.alternate,
@@ -49,7 +49,7 @@ export class HeadDyeResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    const data = HeadDye.findOne({
+    const data = HeadDye.findOneBy({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -62,8 +62,8 @@ export class HeadDyeResolver {
   @UseMiddleware(isAuth)
   async updateHeadDye(
     @Arg('input') input: HeadDyeInput
-  ): Promise<HeadDye | undefined> {
-    const masterResep = await HeadDye.findOne({
+  ): Promise<HeadDye | null> {
+    const masterResep = await HeadDye.findOneBy({
       contract: input.contract,
       partNo: input.partNo,
       alternate: input.alternate,
@@ -91,7 +91,7 @@ export class HeadDyeResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.alternate,
@@ -113,7 +113,7 @@ export class HeadDyeResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    const data = HeadDye.findOne({
+    const data = HeadDye.findOneBy({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -131,7 +131,7 @@ export class HeadDyeResolver {
     @Arg('no') no: number
   ): Promise<HeadDye> {
     try {
-      const Resep = await HeadDye.findOne({
+      const Resep = await HeadDye.findOneBy({
         contract: contract,
         partNo: partNo,
         alternate: alternate,
@@ -148,7 +148,7 @@ export class HeadDyeResolver {
       END;
      `;
 
-      await getConnection().query(sql, [contract, partNo, alternate, no]);
+      await ifs.query(sql, [contract, partNo, alternate, no]);
       return Resep;
     } catch (err) {
       throw new Error(mapError(err));

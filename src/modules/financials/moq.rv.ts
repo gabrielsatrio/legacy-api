@@ -29,15 +29,15 @@ export class MachineResolver {
     @Arg('orderNo') orderNo: string,
     @Arg('lineNo') lineNo: string,
     @Arg('relNo') relNo: string
-  ): Promise<MoqView | undefined> {
-    return await MoqView.findOne({ orderNo, lineNo, relNo });
+  ): Promise<MoqView | null> {
+    return await MoqView.findOneBy({ orderNo, lineNo, relNo });
   }
 
   @Mutation(() => Moq)
   @UseMiddleware(isAuth)
   async createMoq(@Arg('input') input: MoqInput): Promise<Moq | undefined> {
     try {
-      const existingData = await Moq.findOne({
+      const existingData = await Moq.findOneBy({
         orderNo: input.orderNo,
         lineNo: input.lineNo,
         relNo: input.relNo
@@ -57,13 +57,13 @@ export class MachineResolver {
   @UseMiddleware(isAuth)
   async updateMoq(@Arg('input') input: MoqInput): Promise<Moq | undefined> {
     try {
-      const data = await Moq.findOne({
+      const data = await Moq.findOneBy({
         orderNo: input.orderNo,
         lineNo: input.lineNo,
         relNo: input.relNo
       });
       if (!data) throw new Error('No data found.');
-      Moq.merge(data, input);
+      Moq.merge(data, { ...input });
       const result = await Moq.save(data);
       return result;
     } catch (err) {
@@ -79,7 +79,7 @@ export class MachineResolver {
     @Arg('relNo') relNo: string
   ): Promise<Moq> {
     try {
-      const data = await Moq.findOne({ orderNo, lineNo, relNo });
+      const data = await Moq.findOneBy({ orderNo, lineNo, relNo });
       if (!data) throw new Error('No data found.');
       await Moq.delete({ orderNo, lineNo, relNo });
       return data;

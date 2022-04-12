@@ -206,6 +206,6 @@ export class Machine extends BaseEntity {
 
   @Field(() => MachineCategory)
   @OneToOne(() => MachineCategory)
-  @JoinColumn({ name: 'CATEGORY_ID' })
+  @JoinColumn({ name: 'CATEGORY_ID', referencedColumnName: 'categoryId' })
   category!: MachineCategory;
 }
