@@ -1,7 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { YarnType } from './entities/yarn-type';
 import { YarnTypeInput } from './yarn-type.in';
 
@@ -12,7 +13,7 @@ export class YarnTypeResolver {
   async getYarnType(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnType[] | undefined> {
-    return await YarnType.find({
+    return await YarnType.findBy({
       contract: In(contract)
     });
   }
@@ -24,7 +25,7 @@ export class YarnTypeResolver {
   ): Promise<YarnType | undefined> {
     try {
       const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_YARN_TYPE`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = YarnType.create({
         ...input,
         id: result[0].id
@@ -42,11 +43,11 @@ export class YarnTypeResolver {
     @Arg('input') input: YarnTypeInput
   ): Promise<YarnType | undefined> {
     try {
-      const data = await YarnType.findOne({
+      const data = await YarnType.findOneBy({
         id: input.id
       });
       if (!data) throw new Error('No data found.');
-      YarnType.merge(data, input);
+      YarnType.merge(data, { ...input });
       const results = await YarnType.save(data);
       return results;
     } catch (err) {
@@ -58,7 +59,7 @@ export class YarnTypeResolver {
   @UseMiddleware(isAuth)
   async deleteYarnType(@Arg('id') id: number): Promise<YarnType> {
     try {
-      const data = await YarnType.findOne({
+      const data = await YarnType.findOneBy({
         id: id
       });
       if (!data) throw new Error('No data found.');

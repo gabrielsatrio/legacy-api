@@ -12,7 +12,7 @@ export class DailyProdATEResolver {
   async getDailyProdATE(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<DailyProdATE[] | undefined> {
-    return await DailyProdATE.find({
+    return await DailyProdATE.findBy({
       contract: In(contract)
     });
   }
@@ -39,11 +39,11 @@ export class DailyProdATEResolver {
     @Arg('input') input: DailyProdATEInput
   ): Promise<DailyProdATE | undefined> {
     try {
-      const data = await DailyProdATE.findOne({
+      const data = await DailyProdATE.findOneBy({
         objId: input.objId
       });
       if (!data) throw new Error('No data found.');
-      DailyProdATE.merge(data, input);
+      DailyProdATE.merge(data, { ...input });
       const results = await DailyProdATE.save(data);
       return results;
     } catch (err) {
@@ -55,7 +55,7 @@ export class DailyProdATEResolver {
   @UseMiddleware(isAuth)
   async deleteDailyProdATE(@Arg('objId') objId: string): Promise<DailyProdATE> {
     try {
-      const data = await DailyProdATE.findOne({
+      const data = await DailyProdATE.findOneBy({
         objId
       });
       if (!data) throw new Error('No data found.');

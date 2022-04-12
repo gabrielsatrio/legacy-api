@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -10,7 +11,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { BPOAuxiliariesInput } from './ddp-bpo-auxiliaries.in';
 import { BPOAuxiliaries } from './entities/ddp-bpo-auxiliaries';
 
@@ -24,7 +25,7 @@ export class BPOAuxiliariesResolver {
     @Arg('idNo') idNo: string,
     @Arg('kuCount') kuCount: number
   ): Promise<BPOAuxiliaries[] | undefined> {
-    return await BPOAuxiliaries.find({
+    return await BPOAuxiliaries.findBy({
       contract: In(contract),
       idNo,
       kuCount
@@ -35,7 +36,7 @@ export class BPOAuxiliariesResolver {
   @UseMiddleware(isAuth)
   async createBPOAuxiliaries(
     @Arg('input') input: BPOAuxiliariesInput
-  ): Promise<BPOAuxiliaries | undefined> {
+  ): Promise<BPOAuxiliaries | null> {
     const sql = `
     BEGIN
     CHR_DDT_AUXILIARIES_API.create_BPO_auxiliaries(
@@ -60,7 +61,7 @@ export class BPOAuxiliariesResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.idNo,
         input.partNo,
@@ -86,7 +87,7 @@ export class BPOAuxiliariesResolver {
     const outIdNo = result[1] as string;
     const outKuCount = result[2] as number;
 
-    const data = BPOAuxiliaries.findOne({
+    const data = BPOAuxiliaries.findOneBy({
       contract: outContract,
       idNo: outIdNo,
       kuCount: outKuCount
@@ -98,8 +99,8 @@ export class BPOAuxiliariesResolver {
   @UseMiddleware(isAuth)
   async updateBPOAuxiliaries(
     @Arg('input') input: BPOAuxiliariesInput
-  ): Promise<BPOAuxiliaries | undefined> {
-    const BPO = await BPOAuxiliaries.findOne({
+  ): Promise<BPOAuxiliaries | null> {
+    const BPO = await BPOAuxiliaries.findOneBy({
       contract: input.contract,
       idNo: input.idNo,
       kuCount: input.kuCount,
@@ -134,7 +135,7 @@ export class BPOAuxiliariesResolver {
     `;
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.idNo,
         input.partNo,
@@ -162,7 +163,7 @@ export class BPOAuxiliariesResolver {
     const outIdNo = result[1];
     const outKuCount = result[2];
 
-    const data = BPOAuxiliaries.findOne({
+    const data = BPOAuxiliaries.findOneBy({
       contract: outContract as string,
       idNo: outIdNo as string,
       kuCount: outKuCount as number,
@@ -180,7 +181,7 @@ export class BPOAuxiliariesResolver {
     @Arg('partNo') partNo: string
   ): Promise<BPOAuxiliaries> {
     try {
-      const material = await BPOAuxiliaries.findOne({
+      const material = await BPOAuxiliaries.findOneBy({
         contract,
         idNo,
         kuCount,
@@ -201,7 +202,7 @@ export class BPOAuxiliariesResolver {
       END;
     `;
 
-      await getConnection().query(sql, [contract, idNo, partNo, kuCount]);
+      await ifs.query(sql, [contract, idNo, partNo, kuCount]);
       return material;
     } catch (err) {
       throw new Error(mapError(err));
@@ -219,7 +220,7 @@ export class BPOAuxiliariesResolver {
     @Ctx() { req }: Context
   ): Promise<BPOAuxiliaries> {
     try {
-      const material = await BPOAuxiliaries.findOne({
+      const material = await BPOAuxiliaries.findOneBy({
         contract,
         idNo,
         kuCount,
@@ -243,7 +244,7 @@ export class BPOAuxiliariesResolver {
       END;
     `;
 
-      await getConnection().query(sql, [
+      await ifs.query(sql, [
         contract,
         idNo,
         orderNo,

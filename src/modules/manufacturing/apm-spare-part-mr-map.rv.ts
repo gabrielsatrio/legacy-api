@@ -1,7 +1,7 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { SparePartMrMapPkInput } from './apm-spare-part-mr-map-pk.in';
 import { SparePartMrMapSyncInput } from './apm-spare-part-mr-map-sync.in';
 import { SparePartMrMapView } from './entities/apm-spare-part-mr-map.vw';
@@ -13,7 +13,7 @@ export class SparePartMrMapResolver {
   async getSparePartMrMap(
     @Arg('input') input: SparePartMrMapPkInput
   ): Promise<SparePartMrMapView | undefined | null> {
-    return await SparePartMrMapView.findOne({ ...input });
+    return await SparePartMrMapView.findOneBy({ ...input });
   }
 
   @Query(() => [SparePartMrMapView])
@@ -22,14 +22,14 @@ export class SparePartMrMapResolver {
     @Arg('contract') contract: string,
     @Arg('workCenterNo') workCenterNo: string
   ): Promise<SparePartMrMapView[] | undefined> {
-    return await SparePartMrMapView.find({ contract, workCenterNo });
+    return await SparePartMrMapView.findBy({ contract, workCenterNo });
   }
 
   @Mutation(() => SparePartMrMapView)
   @UseMiddleware(isAuth)
   async syncSparePartMrMap(
     @Arg('input') input: SparePartMrMapSyncInput
-  ): Promise<SparePartMrMapView | undefined> {
+  ): Promise<SparePartMrMapView | null> {
     try {
       const sql = `
         BEGIN
@@ -52,7 +52,7 @@ export class SparePartMrMapResolver {
             RAISE;
         END;
       `;
-      await getConnection().query(sql, [
+      await ifs.query(sql, [
         input.contract,
         input.orderNo,
         input.lineNo,
@@ -65,7 +65,7 @@ export class SparePartMrMapResolver {
         input.newMachineId,
         input.newQuantity
       ]);
-      const result = await SparePartMrMapView.findOne({
+      const result = await SparePartMrMapView.findOneBy({
         contract: input.contract,
         orderNo: input.orderNo,
         lineNo: input.lineNo,

@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -10,7 +11,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
 import { Assign } from './entities/spt-assign';
 import { AssignInput } from './spt-assign.in';
 
@@ -18,11 +18,8 @@ import { AssignInput } from './spt-assign.in';
 export class AssignResolver {
   @Query(() => [Assign])
   @UseMiddleware(isAuth)
-  async getAllAssigns(
-    @Arg('contract', () => [String])
-    contract: string[]
-  ): Promise<Assign[] | undefined> {
-    return await Assign.find({ where: { contract: In(contract) } });
+  async getAllAssigns(): Promise<Assign[] | undefined> {
+    return await Assign.find();
   }
 
   @Query(() => Assign, { nullable: true })
@@ -30,8 +27,8 @@ export class AssignResolver {
   async getAssign(
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
-  ): Promise<Assign | undefined> {
-    return await Assign.findOne({ assignId, assignDate });
+  ): Promise<Assign | null> {
+    return await Assign.findOneBy({ assignId, assignDate });
   }
 
   @Query(() => Assign, { nullable: true })
@@ -42,7 +39,7 @@ export class AssignResolver {
   ): Promise<any | undefined> {
     try {
       const sql = `SELECT GBR_SPT_API.GET_NEXT_ASSIGN_ID(:tipe, :assignDate) AS "assignId" FROM DUAL`;
-      const result = await getConnection().query(sql, [tipe, assignDate]);
+      const result = await ifs.query(sql, [tipe, assignDate]);
       const assignId = result[0].assignId;
       return { assignId };
     } catch (err) {
@@ -55,7 +52,7 @@ export class AssignResolver {
   async getAssignIdByDate(
     @Arg('assignDate') assignDate: Date
   ): Promise<Assign[] | undefined> {
-    return await Assign.find({ assignDate: assignDate });
+    return await Assign.findBy({ assignDate: assignDate });
   }
 
   @Mutation(() => Assign)
@@ -63,7 +60,7 @@ export class AssignResolver {
   async createAssign(
     @Arg('input') input: AssignInput,
     @Ctx() { req }: Context
-  ): Promise<Assign | undefined> {
+  ): Promise<Assign | null> {
     try {
       const createdBy: string = req.session.username;
       const sql = `
@@ -71,7 +68,7 @@ export class AssignResolver {
         GBR_SPT_API.Create_Assign(:assignId, :assignDate, :tipe, :createdBy, :outAssignId);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         input.tipe,
@@ -79,7 +76,7 @@ export class AssignResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outAssignId = result[0] as string;
-      const data = Assign.findOne({
+      const data = Assign.findOneBy({
         assignId: outAssignId,
         assignDate: input.assignDate
       });
@@ -91,11 +88,9 @@ export class AssignResolver {
 
   @Mutation(() => Assign, { nullable: true })
   @UseMiddleware(isAuth)
-  async updateAssign(
-    @Arg('input') input: AssignInput
-  ): Promise<Assign | undefined> {
+  async updateAssign(@Arg('input') input: AssignInput): Promise<Assign | null> {
     try {
-      const assign = await Assign.findOne({
+      const assign = await Assign.findOneBy({
         assignId: input.assignId
       });
       if (!assign) throw new Error('No data found');
@@ -104,14 +99,14 @@ export class AssignResolver {
       GBR_SPT_API.Update_Assign(:assignId, :assignDate,  :tipe, :outAssignId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.assignId,
         input.assignDate,
         input.tipe,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outAssignId = result[0];
-      const data = Assign.findOne({
+      const data = Assign.findOneBy({
         assignId: outAssignId,
         assignDate: input.assignDate
       });
@@ -128,13 +123,13 @@ export class AssignResolver {
     @Arg('assignDate') assignDate: Date
   ): Promise<Assign> {
     try {
-      const assign = await Assign.findOne({
+      const assign = await Assign.findOneBy({
         assignId,
         assignDate
       });
       if (!assign) throw new Error('No data found.');
       const sql = `BEGIN GBR_SPT_API.DELETE_ASSIGN(:assignId, :assignDate); END;`;
-      await getConnection().query(sql, [assignId, assignDate]);
+      await ifs.query(sql, [assignId, assignDate]);
       return assign;
     } catch (err) {
       throw new Error(mapError(err));

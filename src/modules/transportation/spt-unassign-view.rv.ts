@@ -18,7 +18,7 @@ export class UnassignViewResolver {
   @UseMiddleware(isAuth)
   async getUnassignView(
     @Arg('reqNo') reqNo: number
-  ): Promise<UnassignView | undefined> {
-    return await UnassignView.findOne(reqNo);
+  ): Promise<UnassignView | null> {
+    return await UnassignView.findOneBy({ reqNo: reqNo.toString() });
   }
 }

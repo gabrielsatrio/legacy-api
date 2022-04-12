@@ -12,7 +12,7 @@ export class YarnEffResolver {
   async getYarnEff(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnEff[] | undefined> {
-    return await YarnEff.find({
+    return await YarnEff.findBy({
       contract: In(contract)
     });
   }
@@ -39,11 +39,11 @@ export class YarnEffResolver {
     @Arg('input') input: YarnEffInput
   ): Promise<YarnEff | undefined> {
     try {
-      const data = await YarnEff.findOne({
+      const data = await YarnEff.findOneBy({
         objId: input.objId
       });
       if (!data) throw new Error('No data found.');
-      YarnEff.merge(data, input);
+      YarnEff.merge(data, { ...input });
       const results = await YarnEff.save(data);
       return results;
     } catch (err) {
@@ -55,7 +55,7 @@ export class YarnEffResolver {
   @UseMiddleware(isAuth)
   async deleteYarnEff(@Arg('objId') objId: string): Promise<YarnEff> {
     try {
-      const data = await YarnEff.findOne({
+      const data = await YarnEff.findOneBy({
         objId
       });
       if (!data) throw new Error('No data found.');

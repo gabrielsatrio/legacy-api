@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -8,7 +9,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { SparePartReqLineMachInput } from './apm-sp-requisition-line-mach.in';
 import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mach.vw';
@@ -19,7 +19,7 @@ export class SparePartReqLineMachResolver {
   @UseMiddleware(isAuth)
   async getSPRequisLineMachsByReqIdLineNo(
     @Arg('requisitionId', () => Int) requisitionId: number,
-    @Arg('lineItemNo', () => Int) lineItemNo: string
+    @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineMachView[] | undefined> {
     return await SparePartReqLineMachView.find({
       where: { requisitionId, lineItemNo },
@@ -33,8 +33,8 @@ export class SparePartReqLineMachResolver {
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number,
     @Arg('mapNo', () => Int) mapNo: number
-  ): Promise<SparePartReqLineMachView | undefined> {
-    return await SparePartReqLineMachView.findOne({
+  ): Promise<SparePartReqLineMachView | null> {
+    return await SparePartReqLineMachView.findOneBy({
       requisitionId,
       lineItemNo,
       mapNo
@@ -49,10 +49,7 @@ export class SparePartReqLineMachResolver {
   ): Promise<number> {
     try {
       const sql = `SELECT ROB_APM_SPart_Req_Line_Mac_API.Get_New_Map_No(:requisitionId, :lineItemNo) AS "newMapNo" FROM DUAL`;
-      const result = await getConnection().query(sql, [
-        requistionId,
-        lineItemNo
-      ]);
+      const result = await ifs.query(sql, [requistionId, lineItemNo]);
       return result[0].newMapNo;
     } catch (err) {
       throw new Error(mapError(err));
@@ -65,7 +62,7 @@ export class SparePartReqLineMachResolver {
     @Arg('input') input: SparePartReqLineMachInput
   ): Promise<SparePartReqLineMach | undefined> {
     try {
-      const existingData = await SparePartReqLineMach.findOne({
+      const existingData = await SparePartReqLineMach.findOneBy({
         requisitionId: input.requisitionId,
         lineItemNo: input.lineItemNo,
         mapNo: input.mapNo
@@ -89,13 +86,13 @@ export class SparePartReqLineMachResolver {
     @Arg('input') input: SparePartReqLineMachInput
   ): Promise<SparePartReqLineMach | undefined> {
     try {
-      const data = await SparePartReqLineMach.findOne({
+      const data = await SparePartReqLineMach.findOneBy({
         requisitionId: input.requisitionId,
         lineItemNo: input.lineItemNo,
         mapNo: input.mapNo
       });
       if (!data) throw new Error('No data found.');
-      SparePartReqLineMach.merge(data, input);
+      SparePartReqLineMach.merge(data, { ...input });
       const result = await SparePartReqLineMach.save(data);
       return result;
     } catch (err) {
@@ -111,7 +108,7 @@ export class SparePartReqLineMachResolver {
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMach> {
     try {
-      const data = await SparePartReqLineMach.findOne({
+      const data = await SparePartReqLineMach.findOneBy({
         requisitionId,
         lineItemNo,
         mapNo

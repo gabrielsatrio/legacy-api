@@ -11,7 +11,7 @@ export class DDPMachineResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<DDPMachine[] | undefined> {
-    return await DDPMachine.find({ contract: In(contract) });
+    return await DDPMachine.findBy({ contract: In(contract) });
   }
 
   @Query(() => DDPMachine, { nullable: true })
@@ -20,7 +20,7 @@ export class DDPMachineResolver {
     @Arg('contract', () => [String])
     contract: string[],
     @Arg('mesin') mesin: string
-  ): Promise<DDPMachine | undefined> {
-    return await DDPMachine.findOne({ contract: In(contract), mesin });
+  ): Promise<DDPMachine | null> {
+    return await DDPMachine.findOneBy({ contract: In(contract), mesin });
   }
 }

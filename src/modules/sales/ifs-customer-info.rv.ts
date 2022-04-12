@@ -14,7 +14,7 @@ export class CustomerInfoResolver {
   @UseMiddleware(isAuth)
   async getCustomerInfo(
     @Arg('customerId') customerId: string
-  ): Promise<CustomerInfo | undefined> {
-    return await CustomerInfo.findOne(customerId);
+  ): Promise<CustomerInfo | null> {
+    return await CustomerInfo.findOneBy({ customerId });
   }
 }

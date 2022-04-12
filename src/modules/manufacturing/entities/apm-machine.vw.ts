@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { IfsWorkCenterView } from './ifs-work-center.vw';
 
 @Entity('ROB_APM_MACHINE_V')
 @ObjectType()
@@ -221,4 +224,17 @@ export class MachineView extends BaseEntity {
   @Field()
   @Column({ name: 'OBJ_ID' })
   objId!: string;
+
+  @Field()
+  altDescription(): string {
+    return `${this.description} (${this.machineId})`;
+  }
+
+  @Field(() => [IfsWorkCenterView], { nullable: true })
+  @OneToMany(() => IfsWorkCenterView, (workCenter) => workCenter.machines, {
+    nullable: true
+  })
+  @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
+  @JoinColumn({ name: 'WORK_CENTER_NO', referencedColumnName: 'workCenterNo' })
+  workCenters?: IfsWorkCenterView[];
 }

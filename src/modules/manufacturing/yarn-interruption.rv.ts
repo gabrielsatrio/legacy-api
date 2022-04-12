@@ -10,7 +10,7 @@ export class YarnInterruptionResolver {
   async getYarnInterruption(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnInterruption[] | undefined> {
-    return await YarnInterruption.find({
+    return await YarnInterruption.findBy({
       contract: In(contract)
     });
   }

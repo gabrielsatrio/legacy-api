@@ -1,7 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { InspekQcMesin } from './entities/inspek-qc-mesin';
 import { InspekQcMesinInput } from './inspek-qc-mesin.in';
 
@@ -12,7 +13,7 @@ export class InspekMesinResolver {
   async getInspekQcMesin(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<InspekQcMesin[] | undefined> {
-    return await InspekQcMesin.find({
+    return await InspekQcMesin.findBy({
       contract: In(contract)
     });
   }
@@ -23,7 +24,7 @@ export class InspekMesinResolver {
   ): Promise<InspekQcMesin> {
     try {
       const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_INSPEK_MESIN`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = InspekQcMesin.create({
         ...input,
         id: result[0].id
@@ -41,12 +42,12 @@ export class InspekMesinResolver {
     @Arg('input') input: InspekQcMesinInput
   ): Promise<InspekQcMesin> {
     try {
-      const data = await InspekQcMesin.findOne({
+      const data = await InspekQcMesin.findOneBy({
         id: input.id,
         contract: input.contract
       });
       if (!data) throw new Error('No data found.');
-      InspekQcMesin.merge(data, input);
+      InspekQcMesin.merge(data, { ...input });
       const results = await InspekQcMesin.save(data);
       return results;
     } catch (err) {
@@ -61,7 +62,7 @@ export class InspekMesinResolver {
     @Arg('contract') contract: string
   ): Promise<InspekQcMesin> {
     try {
-      const data = await InspekQcMesin.findOne({
+      const data = await InspekQcMesin.findOneBy({
         id,
         contract
       });
