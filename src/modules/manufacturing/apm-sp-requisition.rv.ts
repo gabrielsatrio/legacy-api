@@ -44,7 +44,6 @@ export class SparePartRequisitionResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<SparePartRequisition[] | undefined> {
     return await SparePartRequisition.find({
-      relations: { requisitionLines: true },
       where: { contract: In(contract) },
       order: { requisitionId: 'ASC' }
     });
