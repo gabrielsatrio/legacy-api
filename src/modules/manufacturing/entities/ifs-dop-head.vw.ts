@@ -14,11 +14,11 @@ export class IfsDopHeadView extends BaseEntity {
 
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
-  contract!: Date;
+  contract!: string;
 
   @Field()
   @PrimaryColumn({ name: 'PART_NO' })
-  partNo!: Date;
+  partNo!: string;
 
   @Field()
   @Column({ name: 'DESCRIPTION' })

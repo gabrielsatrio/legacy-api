@@ -25,6 +25,18 @@ export class ProdWarpingResolver {
     });
   }
 
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getFyPartNo(@Arg('dopId') dopId: string): Promise<string> {
+    try {
+      const sql = `SELECT FY_PART_NO as "fyPartNo" FROM JIN_QR_6012_V WHERE DOP_ID = :dopId`;
+      const result = await getConnection().query(sql, [dopId]);
+      return result[0].fyPartNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(

@@ -107,4 +107,24 @@ export class IfsInventoryPartResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAttrValue(
+    @Arg('partNo') partNo: string,
+    @Arg('contract') contract: string,
+    @Arg('attrValue') attrValue: string
+  ): Promise<string> {
+    try {
+      const sql = `select ATJ_INVENTORY_PART_API.GET_ATTR_VALUE(:partNo, :contract, :attrValue) as "attrValue" from dual`;
+      const result = await getConnection().query(sql, [
+        partNo,
+        contract,
+        attrValue
+      ]);
+      return result[0].attrValue;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
