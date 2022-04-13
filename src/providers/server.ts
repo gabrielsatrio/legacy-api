@@ -39,13 +39,14 @@ export default class apolloServer {
     app.use(express.json());
     app.use(
       helmet({
-        contentSecurityPolicy: isProd || isTest ? undefined : false
+        contentSecurityPolicy: isProd || isTest ? undefined : false,
+        crossOriginResourcePolicy: false
       })
     );
     app.use(
       session({
         store: new RedisStore({
-          client: redis,
+          client: redis as any,
           disableTouch: true
         }),
         name: config.cookie.name,

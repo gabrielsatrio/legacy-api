@@ -1,6 +1,6 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { TargetGangguan } from './entities/target_gangguan_dyeing';
+import { TargetGangguan } from './entities/target-gangguan-dyeing';
 
 @InputType()
 export class TargetGangguanInput implements Partial<TargetGangguan> {

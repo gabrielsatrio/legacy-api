@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { Destination } from './entities/spt-destination';
 import { DestinationInput } from './spt-destination.in';
 
@@ -18,28 +18,28 @@ export class DestinationResolver {
   @UseMiddleware(isAuth)
   async getDestination(
     @Arg('destinationId') destinationId: string
-  ): Promise<Destination | undefined> {
-    return await Destination.findOne(destinationId);
+  ): Promise<Destination | null> {
+    return await Destination.findOneBy({ destinationId });
   }
 
   @Mutation(() => Destination)
   @UseMiddleware(isAuth)
   async createDestination(
     @Arg('input') input: DestinationInput
-  ): Promise<Destination | undefined> {
+  ): Promise<Destination | null> {
     try {
       const sql = `
     BEGIN
       GBR_SPT_API.Create_Destination(:destinationId, :destinationName, :outDestinationId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.destinationId,
         input.destinationName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outDestinationId = result[0] as string;
-      const data = Destination.findOne({
+      const data = Destination.findOneBy({
         destinationId: outDestinationId
       });
       return data;
@@ -52,9 +52,9 @@ export class DestinationResolver {
   @UseMiddleware(isAuth)
   async updateDestination(
     @Arg('input') input: DestinationInput
-  ): Promise<Destination | undefined> {
+  ): Promise<Destination | null> {
     try {
-      const destination = await Destination.findOne({
+      const destination = await Destination.findOneBy({
         destinationId: input.destinationId
       });
       if (!destination) {
@@ -65,13 +65,13 @@ export class DestinationResolver {
       GBR_SPT_API.Update_Destination(:destinationId, :destinationName,  :outDestinationId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.destinationId,
         input.destinationName,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outDestinationId = result[0];
-      const data = Destination.findOne({
+      const data = Destination.findOneBy({
         destinationId: outDestinationId
       });
       return data;
@@ -86,7 +86,7 @@ export class DestinationResolver {
     @Arg('destinationId') destinationId: string
   ): Promise<Destination> {
     try {
-      const destination = await Destination.findOne({
+      const destination = await Destination.findOneBy({
         destinationId
       });
       if (!destination) throw new Error('No data found.');

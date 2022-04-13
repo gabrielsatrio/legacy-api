@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import moduleAlias from 'module-alias';
-import { createConnection } from 'typeorm';
+import { ifs } from './config/data-sources';
 import config from './config/main';
 import apolloServer from './providers/server';
 
@@ -17,7 +17,7 @@ const startup = async () => {
   console.log(chalk.blue.bold('Starting server...\n'));
   try {
     console.log('Initializing database connection...');
-    await createConnection();
+    await ifs.initialize();
     console.log('Initializing Apollo server...');
     await apolloServer.initialize();
   } catch (error) {
@@ -69,6 +69,6 @@ if (config.env === 'production') {
   process.on('unhandledRejection', (err) => {
     console.log(chalk.red('Uncaught rejection'));
     console.error(err);
-    shutdown(err);
+    shutdown(err as Error | Record<string, unknown> | null | undefined);
   });
 }

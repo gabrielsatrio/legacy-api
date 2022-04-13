@@ -2,7 +2,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
-import { TargetGangguan } from './entities/target_gangguan_dyeing';
+import { TargetGangguan } from './entities/target-gangguan-dyeing';
 import { TargetGangguanInput } from './target_gangguan_dyeing.in';
 
 @Resolver(TargetGangguan)
@@ -12,7 +12,7 @@ export class TargetGangguanDyeingResolver {
   async getTargetGangguanDyeing(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<TargetGangguan[] | undefined> {
-    return await TargetGangguan.find({
+    return await TargetGangguan.findBy({
       contract: In(contract)
     });
   }
@@ -23,7 +23,7 @@ export class TargetGangguanDyeingResolver {
     @Arg('contract', () => [String]) contract: string[],
     @Arg('partNo') partNo: string
   ): Promise<TargetGangguan[] | undefined> {
-    const data = await TargetGangguan.find({
+    const data = await TargetGangguan.findBy({
       contract: In(contract),
       partNo
     });
@@ -38,7 +38,7 @@ export class TargetGangguanDyeingResolver {
     @Arg('input') input: TargetGangguanInput
   ): Promise<TargetGangguan | undefined> {
     try {
-      const check = await TargetGangguan.findOne({
+      const check = await TargetGangguan.findOneBy({
         contract: input.contract,
         partNo: input.partNo,
         waktu: input.waktu,
@@ -61,12 +61,12 @@ export class TargetGangguanDyeingResolver {
     @Arg('input') input: TargetGangguanInput
   ): Promise<TargetGangguan | undefined | number> {
     try {
-      const data = await TargetGangguan.findOne({
+      const data = await TargetGangguan.findOneBy({
         contract: input.contract,
         partNo: input.partNo
       });
       if (!data) throw new Error('No data found.');
-      TargetGangguan.merge(data, input);
+      TargetGangguan.merge(data, { ...input });
       const results = await TargetGangguan.save(data);
       return results;
     } catch (err) {
@@ -81,7 +81,7 @@ export class TargetGangguanDyeingResolver {
     @Arg('partNo') partNo: string
   ): Promise<TargetGangguan> {
     try {
-      const data = await TargetGangguan.findOne({
+      const data = await TargetGangguan.findOneBy({
         contract,
         partNo
       });

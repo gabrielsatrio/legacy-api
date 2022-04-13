@@ -1,8 +1,9 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { SuratJalan } from './entities/spt-surat-jalan';
 import { SuratJalanInput } from './spt-surat-jalan.in';
 
@@ -21,16 +22,16 @@ export class SuratJalanResolver {
   @UseMiddleware(isAuth)
   async updateSuratJalan(
     @Arg('input') input: SuratJalanInput
-  ): Promise<SuratJalan | undefined> {
+  ): Promise<SuratJalan | null> {
     try {
-      const suratJalan = await SuratJalan.findOne({ reqNo: input.reqNo });
+      const suratJalan = await SuratJalan.findOneBy({ reqNo: input.reqNo });
       if (!suratJalan) throw new Error('No data found');
       const sql = `
       BEGIN
         GBR_SPT_API.UPDATE_SURAT_JALAN(:reqNo, :rollQty, :meter, :weight, :volume, :notes, :licensePlate, :nopolLangsir, :driverName, :outReqNo);
       END;
     `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.reqNo,
         input.rollQty,
         input.meter,
@@ -43,7 +44,7 @@ export class SuratJalanResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outReqNo = result[0];
-      const data = SuratJalan.findOne({ reqNo: outReqNo });
+      const data = SuratJalan.findOneBy({ reqNo: outReqNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

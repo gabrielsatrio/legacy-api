@@ -5,8 +5,8 @@
 ### GRAPHQL
 
 ```
-query GetAllUsers {
-  getAllUsers {
+query GetUsers {
+  getUsers {
     username
     name
     email
@@ -101,7 +101,6 @@ mutation DeleteUser {
   }
 }
 ```
-
 
 ## AUTH
 

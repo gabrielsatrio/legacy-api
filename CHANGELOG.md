@@ -1,3 +1,27 @@
+<a name="2.0.0"></a>
+
+# [2.0.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/118) (2022-04-12)
+
+### BREAKING CHANGES
+
+- chore: upgrade all dependencies
+- follow [this](https://github.com/typeorm/typeorm/pull/8616) guideline to use new version of **TypeORM**.
+- follow [this](https://www.conventionalcommits.org/en/v1.0.0/) guideline to create a commit message.
+
+### Bug Fixes
+
+- [**M001**] **machines**: fix permission.
+
+<a name="1.21.2"></a>
+
+# [1.21.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/116) (2022-04-07)
+
+### Bug Fixes
+
+- [**CORE**] **auth**: remove **AT3** and **AT5** from contract list.
+- [**M001**] **apm-work-center**: fix ORA-02046.
+- [**M001**] **apm-work-center**: exclude data with category **HD** and **HJ**.
+
 <a name="1.21.1"></a>
 
 # [1.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/114) (2022-04-07)

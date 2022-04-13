@@ -18,7 +18,7 @@ export class AssignResolver {
   @UseMiddleware(isAuth)
   async getAssignView(
     @Arg('assignId') assignId: string
-  ): Promise<AssignView | undefined> {
-    return await AssignView.findOne(assignId);
+  ): Promise<AssignView | null> {
+    return await AssignView.findOneBy({ assignId });
   }
 }

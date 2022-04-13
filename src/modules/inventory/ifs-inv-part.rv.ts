@@ -1,7 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Brackets, getConnection, In, Like } from 'typeorm';
+import { Brackets, In, Like } from 'typeorm';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 
 @Resolver(IfsInventoryPartView)
@@ -77,15 +78,15 @@ export class IfsInventoryPartResolver {
   @UseMiddleware(isAuth)
   async getInventoryPartByObjId(
     @Arg('objId') objId: string
-  ): Promise<IfsInventoryPartView | undefined> {
-    return await IfsInventoryPartView.findOne(objId);
+  ): Promise<IfsInventoryPartView | null> {
+    return await IfsInventoryPartView.findOneBy({ objId });
   }
 
   @Query(() => [IfsInventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getSparePartsByContract(
     @Arg('contract', () => [String]) contract: string[]
-  ): Promise<IfsInventoryPartView[] | undefined> {
+  ): Promise<IfsInventoryPartView[] | null> {
     return await IfsInventoryPartView.find({
       where: { contract: In(contract), partStatus: 'A', partNo: Like('S__-%') },
       order: { partNo: 'ASC', contract: 'ASC' }
@@ -100,7 +101,7 @@ export class IfsInventoryPartResolver {
     try {
       const sql = `SELECT inventory_part_api.get_description(shop_ord_api.get_contract( :orderno, '*', '*'), shop_ord_api.get_part_no( :orderno, '*', '*')) as "description"
       FROM   DUAL`;
-      const result = await getConnection().query(sql, [orderNo]);
+      const result = await ifs.query(sql, [orderNo]);
       const description = result[0].description;
       return { description };
     } catch (err) {

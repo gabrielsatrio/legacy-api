@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { HeadAuxInput } from './ddp-head-aux.in';
 import { HeadAux } from './entities/ddp-head-aux';
 
@@ -12,7 +12,7 @@ export class HeadAuxResolver {
   @UseMiddleware(isAuth)
   async createHeadAux(
     @Arg('input') input: HeadAuxInput
-  ): Promise<HeadAux | undefined> {
+  ): Promise<HeadAux | null> {
     const sql = `
     BEGIN
     CHR_DDT_MASTER_RESEP_AUX_API.CREATE_RESEP_AUX(:contract, :partNo, :alternate,
@@ -29,7 +29,7 @@ export class HeadAuxResolver {
 
     let result;
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.alternate,
@@ -51,7 +51,7 @@ export class HeadAuxResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    const data = HeadAux.findOne({
+    const data = HeadAux.findOneBy({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -68,8 +68,8 @@ export class HeadAuxResolver {
   @UseMiddleware(isAuth)
   async updateHeadAux(
     @Arg('input') input: HeadAuxInput
-  ): Promise<HeadAux | undefined> {
-    const masterResep = await HeadAux.findOne({
+  ): Promise<HeadAux | null> {
+    const masterResep = await HeadAux.findOneBy({
       contract: input.contract,
       partNo: input.partNo,
       alternate: input.alternate,
@@ -98,7 +98,7 @@ export class HeadAuxResolver {
     let result;
 
     try {
-      result = await getConnection().query(sql, [
+      result = await ifs.query(sql, [
         input.contract,
         input.partNo,
         input.alternate,
@@ -121,7 +121,7 @@ export class HeadAuxResolver {
     const outAlternate = result[2] as number;
     const outNo = result[3] as number;
 
-    const data = HeadAux.findOne({
+    const data = HeadAux.findOneBy({
       contract: outContract,
       partNo: outPartNo,
       alternate: outAlternate,
@@ -139,7 +139,7 @@ export class HeadAuxResolver {
     @Arg('no') no: number
   ): Promise<HeadAux> {
     try {
-      const Resep = await HeadAux.findOne({
+      const Resep = await HeadAux.findOneBy({
         contract: contract,
         partNo: partNo,
         alternate: alternate,
@@ -156,7 +156,7 @@ export class HeadAuxResolver {
       END;
      `;
 
-      await getConnection().query(sql, [contract, partNo, alternate, no]);
+      await ifs.query(sql, [contract, partNo, alternate, no]);
 
       return Resep;
     } catch (err) {

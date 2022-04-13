@@ -1,8 +1,8 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { getConnection } from 'typeorm';
 import { Customer } from './entities/spt-customer';
 import { CustomerInput } from './spt-customer.in';
 
@@ -18,22 +18,22 @@ export class CustomerResolver {
   @UseMiddleware(isAuth)
   async getCustomer(
     @Arg('customerId') customerId: string
-  ): Promise<Customer | undefined> {
-    return await Customer.findOne(customerId);
+  ): Promise<Customer | null> {
+    return await Customer.findOneBy({ customerId });
   }
 
   @Mutation(() => Customer)
   @UseMiddleware(isAuth)
   async createCustomer(
     @Arg('input') input: CustomerInput
-  ): Promise<Customer | undefined> {
+  ): Promise<Customer | null> {
     try {
       const sql = `
     BEGIN
       GBR_SPT_API.Create_Customer(:customerId, :customerName, :address, :phone :outCustomerId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.customerId,
         input.customerName,
         input.address,
@@ -41,7 +41,7 @@ export class CustomerResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outCustomerId = result[0] as string;
-      const data = Customer.findOne({
+      const data = Customer.findOneBy({
         customerId: outCustomerId
       });
       return data;
@@ -54,9 +54,9 @@ export class CustomerResolver {
   @UseMiddleware(isAuth)
   async updateCustomer(
     @Arg('input') input: CustomerInput
-  ): Promise<Customer | undefined> {
+  ): Promise<Customer | null> {
     try {
-      const customer = await Customer.findOne({
+      const customer = await Customer.findOneBy({
         customerId: input.customerId
       });
       if (!customer) throw new Error('No data found.');
@@ -65,7 +65,7 @@ export class CustomerResolver {
       GBR_SPT_API.Update_Customer(:customerId, :customerName,  :address, :phone, :outCustomerId);
     END;
   `;
-      const result = await getConnection().query(sql, [
+      const result = await ifs.query(sql, [
         input.customerId,
         input.customerName,
         input.address,
@@ -73,7 +73,7 @@ export class CustomerResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outCustomerId = result[0];
-      const data = Customer.findOne({
+      const data = Customer.findOneBy({
         customerId: outCustomerId
       });
       return data;
@@ -88,7 +88,7 @@ export class CustomerResolver {
     @Arg('customerId') customerId: string
   ): Promise<Customer> {
     try {
-      const customer = await Customer.findOne({
+      const customer = await Customer.findOneBy({
         customerId
       });
       if (!customer) throw new Error('No data found.');
