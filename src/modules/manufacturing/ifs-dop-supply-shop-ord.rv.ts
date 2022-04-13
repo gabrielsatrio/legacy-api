@@ -9,6 +9,6 @@ export class IfsDopSupplyShopOrdResolver {
   async getDopSupplyShopOrdByOrderNo(
     @Arg('orderNo') orderNo: string
   ): Promise<IfsDopSupplyShopOrdView[] | undefined> {
-    return await IfsDopSupplyShopOrdView.find({ orderNo });
+    return await IfsDopSupplyShopOrdView.findBy({ orderNo });
   }
 }

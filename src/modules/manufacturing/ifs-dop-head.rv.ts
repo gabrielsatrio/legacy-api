@@ -9,6 +9,6 @@ export class IfsDopHeadResolver {
   async getDopHeadByDopId(
     @Arg('dopId') dopId: string
   ): Promise<IfsDopHeadView[] | undefined> {
-    return await IfsDopHeadView.find({ dopId });
+    return await IfsDopHeadView.findBy({ dopId });
   }
 }

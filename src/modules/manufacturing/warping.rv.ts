@@ -1,3 +1,4 @@
+import { ifs } from '@/config/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
@@ -9,7 +10,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { getConnection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { ProdWarping } from './entities/warping';
 import { ProdWarpingInput } from './warping.in';
 
@@ -20,7 +21,7 @@ export class ProdWarpingResolver {
   async getProdWarping(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<ProdWarping[] | undefined> {
-    return await ProdWarping.find({
+    return await ProdWarping.findBy({
       contract: In(contract)
     });
   }
@@ -30,8 +31,23 @@ export class ProdWarpingResolver {
   async getFyPartNo(@Arg('dopId') dopId: string): Promise<string> {
     try {
       const sql = `SELECT FY_PART_NO as "fyPartNo" FROM JIN_QR_6012_V WHERE DOP_ID = :dopId`;
-      const result = await getConnection().query(sql, [dopId]);
+      const result = await ifs.query(sql, [dopId]);
       return result[0].fyPartNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getCompPart(
+    @Arg('partNo') partNo: string,
+    @Arg('contract') contract: string
+  ): Promise<string> {
+    try {
+      const sql = `select component_part as "componentPart" from prod_structure where contract = :contract and part_no = :partNo`;
+      const result = await ifs.query(sql, [contract, partNo]);
+      return result[0].componentPart;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -45,7 +61,7 @@ export class ProdWarpingResolver {
   ): Promise<ProdWarping> {
     try {
       const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_PROD_WARPING`;
-      const result = await getConnection().query(sql);
+      const result = await ifs.query(sql);
       const data = ProdWarping.create({
         ...input,
         createdBy: req.session.username,
@@ -65,12 +81,12 @@ export class ProdWarpingResolver {
     @Arg('input') input: ProdWarpingInput
   ): Promise<ProdWarping> {
     try {
-      const data = await ProdWarping.findOne({
+      const data = await ProdWarping.findOneBy({
         id: input.id,
         contract: input.contract
       });
       if (!data) throw new Error('No data found.');
-      ProdWarping.merge(data, input);
+      ProdWarping.merge(data, { ...input });
       const results = await ProdWarping.save(data);
       return results;
     } catch (err) {
@@ -85,7 +101,7 @@ export class ProdWarpingResolver {
     @Arg('contract') contract: string
   ): Promise<ProdWarping> {
     try {
-      const data = await ProdWarping.findOne({
+      const data = await ProdWarping.findOneBy({
         id,
         contract
       });

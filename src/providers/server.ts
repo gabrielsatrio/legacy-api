@@ -40,7 +40,10 @@ export default class apolloServer {
     app.use(
       helmet({
         contentSecurityPolicy: isProd || isTest ? undefined : false,
-        crossOriginResourcePolicy: false
+        crossOriginEmbedderPolicy: false,
+        crossOriginResourcePolicy: false,
+        crossOriginOpenerPolicy: false,
+        originAgentCluster: false
       })
     );
     app.use(
