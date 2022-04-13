@@ -115,14 +115,10 @@ export class IfsInventoryPartResolver {
     @Arg('partNo') partNo: string,
     @Arg('contract') contract: string,
     @Arg('attrValue') attrValue: string
-  ): Promise<string> {
+  ): Promise<string | undefined> {
     try {
       const sql = `select ATJ_INVENTORY_PART_API.GET_ATTR_VALUE(:partNo, :contract, :attrValue) as "attrValue" from dual`;
-      const result = await getConnection().query(sql, [
-        partNo,
-        contract,
-        attrValue
-      ]);
+      const result = await ifs.query(sql, [partNo, contract, attrValue]);
       return result[0].attrValue;
     } catch (err) {
       throw new Error(mapError(err));
