@@ -1,5 +1,5 @@
-import { ifs } from '@/config/data-sources';
 import config from '@/config/main';
+import { ifs } from '@/database/data-sources';
 import { redis } from '@/providers/redis';
 import { mapError } from '@/utils/map-error';
 import { sendEmail } from '@/utils/send-email';

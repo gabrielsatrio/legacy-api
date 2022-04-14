@@ -1,5 +1,5 @@
-import { ifs } from '@/config/data-sources';
 import config from '@/config/main';
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';

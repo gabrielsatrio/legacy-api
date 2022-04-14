@@ -1,13 +1,13 @@
 import { join } from 'path';
 import { DataSource } from 'typeorm';
-import config from './main';
+import config from '../config/main';
 
 const {
   env,
   deploy,
   db: { host, logging, password, port, sid, username }
 } = config;
-const sourcePath = env === 'development' && !deploy ? 'src' : '.';
+const sourcePath = env === 'development' && !deploy ? 'src/../..' : './..';
 
 export const ifs = new DataSource({
   type: 'oracle',
@@ -20,13 +20,9 @@ export const ifs = new DataSource({
   logging,
   connectString: `${host}:${port}/${sid}`,
   entities: [
-    join(__dirname, sourcePath, '../../modules/**/entities/!(*.test).{ts,js}')
+    join(__dirname, sourcePath, 'modules/**/entities/!(*.test).{ts,js}')
   ],
   migrations: [
-    join(
-      __dirname,
-      sourcePath,
-      '../../database/migrations/**/!(*.test).{ts,js}'
-    )
+    join(__dirname, sourcePath, 'database/migrations/**/!(*.test).{ts,js}')
   ]
 });
