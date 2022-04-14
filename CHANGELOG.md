@@ -1,3 +1,17 @@
+<a name="2.1.0"></a>
+
+# [2.1.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/120) (2022-04-12)
+
+### Features
+
+- [**M014**] **warping**: add entity and resolver.
+- Add ifs-shop-material-alloc entity and resolver.
+- Add ifs-dop-head entity and resolver.
+- Add ifs-dop-supply-shop-ord entity and resolver.
+- Add query getStockByContractPartLocation at ifs-inv-part-in-stock resolver.
+- Add query getAttrValue at ifs-inv-part resolver.
+
+
 <a name="2.0.0"></a>
 
 # [2.0.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/118) (2022-04-12)

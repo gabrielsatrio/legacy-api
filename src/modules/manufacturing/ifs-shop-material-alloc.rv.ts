@@ -7,7 +7,7 @@ import { IfsShopMaterialAllocView } from './entities/ifs-shop-material-alloc.vw'
 export class IfsShopMaterialAllocResolver {
   @Query(() => [IfsShopMaterialAllocView], { nullable: true })
   @UseMiddleware(isAuth)
-  async getShopMaterialAlloc(
+  async getShopMaterialAllocByOrderNoPartNo(
     @Arg('contract', () => [String]) contract: string[],
     @Arg('orderNo') orderNo: string,
     @Arg('partNo') partNo: string

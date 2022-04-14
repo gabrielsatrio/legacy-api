@@ -54,7 +54,7 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
 
   @Field({ nullable: true })
   @MaxLength(20)
-  segmen1?: string;
+  segmen?: string;
 
   @Field({ nullable: true })
   @IsNumber()
@@ -74,7 +74,7 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
 
   @Field({ nullable: true })
   @MaxLength(50)
-  lotBenang2?: string;
+  lotBatchNo?: string;
 
   @Field({ nullable: true })
   @MaxLength(20)

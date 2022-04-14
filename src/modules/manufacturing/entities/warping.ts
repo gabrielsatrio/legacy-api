@@ -53,8 +53,8 @@ export class ProdWarping extends BaseEntity {
   seriBeam1?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'SEGMEN_1' })
-  segmen1?: string;
+  @Column({ name: 'SEGMEN' })
+  segmen?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'JUMLAH_LUSI_1' })
@@ -73,8 +73,8 @@ export class ProdWarping extends BaseEntity {
   jenisBenang2?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'LOT_BENANG_2' })
-  lotBenang2?: string;
+  @Column({ name: 'LOT_BATCH_NO' })
+  lotBatchNo?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'JUMLAH_HELAI_LUSI_2' })
