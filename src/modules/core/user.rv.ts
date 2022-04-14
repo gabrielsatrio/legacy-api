@@ -1,4 +1,4 @@
-import { ifs } from '@/config/data-sources';
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import argon2 from 'argon2';

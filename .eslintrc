@@ -44,6 +44,7 @@
     "import/resolver": {
       "alias": [
         ["@/config", "./src/config"],
+        ["@/database", "./src/database"],
         ["@/middlewares", "./src/middlewares"],
         ["@/modules", "./src/modules"],
         ["@/providers", "./src/providers"],

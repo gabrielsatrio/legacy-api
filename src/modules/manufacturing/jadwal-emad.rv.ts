@@ -1,4 +1,4 @@
-import { ifs } from '@/config/data-sources';
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
