@@ -1,8 +1,8 @@
-import { ifs } from '@/config/data-sources';
 import chalk from 'chalk';
 import oracledb from 'oracledb';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import { ifs } from './data-sources';
 
 const db: Record<any, any> = {};
 

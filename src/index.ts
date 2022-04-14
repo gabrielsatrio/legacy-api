@@ -1,11 +1,12 @@
 import chalk from 'chalk';
 import moduleAlias from 'module-alias';
-import { ifs } from './config/data-sources';
 import config from './config/main';
+import { ifs } from './database/data-sources';
 import apolloServer from './providers/server';
 
 moduleAlias.addAliases({
   '@/config': `${__dirname}/config`,
+  '@/database': `${__dirname}/database`,
   '@/middlewares': `${__dirname}/middlewares`,
   '@/modules': `${__dirname}/modules`,
   '@/providers': `${__dirname}/providers`,

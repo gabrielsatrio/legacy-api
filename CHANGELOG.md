@@ -1,3 +1,23 @@
+<a name="2.0.1"></a>
+
+# [2.0.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/120) (2022-04-14)
+
+### BREAKING CHANGES
+
+- refactor: move `data-sources.ts` from `config` to `database`.
+
+### Bug Fixes
+
+- fix: cannot find data source.
+- fix: helmet issue after updating to latest version.
+- fix: remove duplicate line.
+
+### Other Changes
+
+- build: implement vscode project settings.
+- ci: add new configuration and improvement.
+- docs: reorder `package.json`.
+
 <a name="2.0.0"></a>
 
 # [2.0.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/118) (2022-04-12)
