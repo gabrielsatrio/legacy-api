@@ -41,8 +41,8 @@ export default class apolloServer {
       helmet({
         contentSecurityPolicy: isProd || isTest ? undefined : false,
         crossOriginEmbedderPolicy: false,
-        crossOriginResourcePolicy: false,
         crossOriginOpenerPolicy: false,
+        crossOriginResourcePolicy: false,
         originAgentCluster: false
       })
     );

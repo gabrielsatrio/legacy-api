@@ -1,6 +1,6 @@
-import { ifs } from '@/config/data-sources';
 import { User } from '@/modules/core/entities/user';
 import Chance from 'chance';
+import { ifs } from '../data-sources';
 
 const chance = new Chance();
 

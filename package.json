@@ -1,12 +1,12 @@
 {
   "name": "ezio-api",
-  "version": "2.0.0",
+  "author": "ATJDEV Team",
   "description": "EZIO - API Server",
+  "version": "2.0.1",
+  "private": true,
+  "license": "ATJ",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "author": "ATJDEV Team",
-  "license": "ATJ",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/atjdev/ezio-api.git"
@@ -101,6 +101,11 @@
     "ts-node": "^10.7.0",
     "ts-node-dev": "^1.0.0-pre.63",
     "typescript": "^4.6.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0",
+    "yarn": ">=1.22.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
