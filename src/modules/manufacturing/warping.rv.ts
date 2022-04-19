@@ -12,6 +12,7 @@ import {
 } from 'type-graphql';
 import { In } from 'typeorm';
 import { ProdWarping } from './entities/warping';
+import { ProdWarpingView } from './entities/warping.vw';
 import { ProdWarpingInput } from './warping.in';
 
 @Resolver(ProdWarping)
@@ -22,6 +23,16 @@ export class ProdWarpingResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<ProdWarping[] | undefined> {
     return await ProdWarping.findBy({
+      contract: In(contract)
+    });
+  }
+
+  @Query(() => [ProdWarpingView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getProdWarpingView(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<ProdWarpingView[] | undefined> {
+    return await ProdWarpingView.findBy({
       contract: In(contract)
     });
   }
@@ -48,6 +59,19 @@ export class ProdWarpingResolver {
       const sql = `select component_part as "componentPart" from prod_structure where contract = :contract and part_no = :partNo`;
       const result = await ifs.query(sql, [contract, partNo]);
       return result[0].componentPart;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getJumlahHelaiLusi(@Arg('partDesc') partDesc: string): Promise<string> {
+    try {
+      const sql = `SELECT SUBSTR(:partDesc, INSTR(:partDesc,' ',-1) + 1) as "jumlahHelaiLusi"
+      FROM dual`;
+      const result = await ifs.query(sql, [partDesc]);
+      return result[0].jumlahHelaiLusi;
     } catch (err) {
       throw new Error(mapError(err));
     }

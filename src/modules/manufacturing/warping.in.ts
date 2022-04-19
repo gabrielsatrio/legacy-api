@@ -34,7 +34,7 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
 
   @Field()
   @MaxLength(50)
-  mesin!: string;
+  machineId!: string;
 
   @Field({ nullable: true })
   @MaxLength(50)

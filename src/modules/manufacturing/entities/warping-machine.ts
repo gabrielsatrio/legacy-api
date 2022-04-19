@@ -5,12 +5,12 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class WarpingMachine extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'ID' })
-  id!: number;
+  @PrimaryColumn({ name: 'MACHINE_ID' })
+  machineId!: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'NAME' })
-  name?: string;
+  @Column({ name: 'MACHINE_NAME' })
+  machineName?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'CONTRACT' })
