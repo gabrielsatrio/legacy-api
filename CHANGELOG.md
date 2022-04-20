@@ -1,6 +1,15 @@
-<a name="2.0.1"></a>
+<a name="2.1.1"></a>
 
-# [2.0.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/120) (2022-04-14)
+# [2.1.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/122) (2022-04-20)
+
+### Bug Fixes
+
+- fix: add new column department for benang sisa.
+- fix: get user department from session to add value for department column.
+
+<a name="2.1.0"></a>
+
+# [2.1.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/120) (2022-04-14)
 
 ### BREAKING CHANGES
 

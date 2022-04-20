@@ -1,7 +1,15 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { In } from 'typeorm';
 import { BenangSisaDoInput } from './benang-sisa-do.in';
 import { BenangSisaDo } from './entities/benang-sisa-do';
@@ -21,7 +29,8 @@ export class BenangSisaDoResolver {
   @Mutation(() => BenangSisaDo)
   @UseMiddleware(isAuth)
   async createBenangSisaDo(
-    @Arg('input') input: BenangSisaDoInput
+    @Arg('input') input: BenangSisaDoInput,
+    @Ctx() { req }: Context
   ): Promise<BenangSisaDo | undefined> {
     try {
       const check = await BenangSisaDo.findOneBy({
@@ -44,8 +53,13 @@ export class BenangSisaDoResolver {
       if (result[0].total !== 0)
         throw new Error('DO untuk bulan terkait sudah ada');
 
+      const sqlUser = `select department_id as "department" from atj_app_user
+        where username = :p_username`;
+      const username = await ifs.query(sqlUser, [req.session.username]);
+
       const data = BenangSisaDo.create({
-        ...input
+        ...input,
+        department: username[0].department
       });
       const results = await BenangSisaDo.save(data);
       return results;
