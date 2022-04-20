@@ -53,6 +53,10 @@ export class BenangSisa extends BaseEntity {
   keterangan?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT' })
+  department?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'ROW_ID' })
   rowId?: string;
 }
