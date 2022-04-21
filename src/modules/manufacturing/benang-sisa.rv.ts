@@ -1,7 +1,10 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import {
   Arg,
+  Ctx,
   Int,
   Mutation,
   Query,
@@ -27,7 +30,8 @@ export class BenangSisaResolver {
   @Mutation(() => BenangSisa)
   @UseMiddleware(isAuth)
   async createBenangSisa(
-    @Arg('input') input: BenangSisaInput
+    @Arg('input') input: BenangSisaInput,
+    @Ctx() { req }: Context
   ): Promise<BenangSisa | undefined> {
     try {
       const check = await BenangSisa.findOneBy({
@@ -37,10 +41,15 @@ export class BenangSisaResolver {
         noDus: input.noDus
       });
 
+      const sql = `select department_id as "department" from atj_app_user
+      where username = :p_username`;
+      const username = await ifs.query(sql, [req.session.username]);
+
       if (check) throw new Error('Data Already Exists');
 
       const data = BenangSisa.create({
-        ...input
+        ...input,
+        department: username[0].department
       });
       const results = await BenangSisa.save(data);
       return results;
