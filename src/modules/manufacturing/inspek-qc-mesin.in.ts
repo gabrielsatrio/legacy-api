@@ -39,4 +39,8 @@ export class InspekQcMesinInput implements Partial<InspekQcMesin> {
   @Field()
   @IsNumber()
   rjShift3!: number;
+
+  @Field({ nullable: true })
+  @MaxLength(200)
+  keterangan?: string;
 }

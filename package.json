@@ -2,7 +2,7 @@
   "name": "ezio-api",
   "author": "ATJDEV Team",
   "description": "EZIO - API Server",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "private": true,
   "license": "ATJ",
   "main": "dist/src/index.js",
@@ -36,7 +36,7 @@
     "build:deploy:dev": "./scripts/build-deploy-dev.sh",
     "build:deploy:test": "./scripts/build-deploy-test.sh",
     "build:deploy:prod": "./scripts/build-deploy-prod.sh",
-    "prepare": "husky install"
+    "prepare": "node -e \"try { require('husky').install(); } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e; }\""
   },
   "dependencies": {
     "@types/request": "^2.48.8",
