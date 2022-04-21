@@ -9,15 +9,15 @@ export class IfsDopHeadView extends BaseEntity {
   dopId!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'CREATE_DATE' })
+  @Column({ name: 'CREATE_DATE' })
   createDate!: Date;
 
   @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
+  @Column({ name: 'CONTRACT' })
   contract!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'PART_NO' })
+  @Column({ name: 'PART_NO' })
   partNo!: string;
 
   @Field()
