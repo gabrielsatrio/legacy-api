@@ -7,6 +7,7 @@ export class EffBraiding extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'TGL' })
   tgl!: Date;
+  
   @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
