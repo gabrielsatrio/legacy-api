@@ -1,3 +1,17 @@
+<a name="2.4.0"></a>
+
+# [2.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/128) (2022-04-25)
+
+### Features
+
+- [**M013**] **apm-spare-part-mr-map**: add new optional parameter for spare part mr mapping.
+
+### Bug Fixes
+
+- [**CORE**] **package.json**: revert back the `prepare` script.
+- [**M001**] **apm-machine**: increase the max size of type field for machine input.
+- [**M001**] **apm-machine-work-center**: no value for `departmentNo`.
+
 <a name="2.3.0"></a>
 
 # [2.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/126) (2022-04-25)
