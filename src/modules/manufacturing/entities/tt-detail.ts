@@ -13,12 +13,16 @@ import { TransportTaskHead } from './tt-header';
 @ObjectType()
 export class TransportTaskBody extends BaseEntity {
   @Field()
-  @Column({ name: 'CONTRACT' })
-  contract!: string;
-
-  @Field()
   @PrimaryColumn({ name: 'TRANSPORT_TASK_ID' })
   transportTaskId!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
+  lotBatchNo!: string;
+
+  @Field()
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
   @Column({ name: 'PART_NO' })
@@ -29,12 +33,16 @@ export class TransportTaskBody extends BaseEntity {
   locationNo!: string;
 
   @Field()
-  @Column({ name: 'QTY' })
-  qty!: number;
+  @Column({ name: 'LOCATION_TO' })
+  locationTo!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
-  lotBatchNo!: string;
+  @Column({ name: 'TYPE' })
+  type!: string;
+
+  @Field()
+  @Column({ name: 'QTY' })
+  qty!: number;
 
   @Field()
   @Column({ name: 'RECEIPT_DATE' })

@@ -6,12 +6,12 @@ import { TransportTaskBody } from './tt-detail';
 @ObjectType()
 export class TransportTaskHead extends BaseEntity {
   @Field()
-  @Column({ name: 'CONTRACT' })
-  contract!: string;
-
-  @Field()
   @PrimaryColumn({ name: 'TRANSPORT_TASK_ID' })
   transportTaskId!: string;
+
+  @Field()
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
   @Column({ name: 'STATUS' })

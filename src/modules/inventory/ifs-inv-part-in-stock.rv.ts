@@ -18,4 +18,18 @@ export class IfsInventoryPartInStockResolver {
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
       .getMany();
   }
+
+  async getStockByContractAndPartAndLoc(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string,
+    @Arg('locationNo') locationNo: string
+  ): Promise<IfsInventoryPartInStockView[] | undefined> {
+    return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
+      .where('IPIS.CONTRACT = :contract', { contract: contract })
+      .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
+      .andWhere('IPIS.LOCATION_NO like :locationNo', { locationNo: locationNo })
+      .andWhere('IPIS.QTY_ONHAND > 0')
+      .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
+      .getMany();
+  }
 }
