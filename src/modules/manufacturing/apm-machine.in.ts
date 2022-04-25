@@ -21,7 +21,7 @@ export class MachineInput implements Partial<Machine> {
   categoryId!: string;
 
   @Field()
-  @Length(1, 15)
+  @Length(1, 50)
   type!: string;
 
   @Field()

@@ -2,6 +2,7 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { Like } from 'typeorm';
 import { SparePartMrMapPkInput } from './apm-spare-part-mr-map-pk.in';
 import { SparePartMrMapSyncInput } from './apm-spare-part-mr-map-sync.in';
 import { SparePartMrMapView } from './entities/apm-spare-part-mr-map.vw';
@@ -20,9 +21,21 @@ export class SparePartMrMapResolver {
   @UseMiddleware(isAuth)
   async getSparePartMrMapByWorkCenterNo(
     @Arg('contract') contract: string,
-    @Arg('workCenterNo') workCenterNo: string
+    @Arg('workCenterNo') workCenterNo: string,
+    @Arg('includeAssigned', { defaultValue: true, nullable: true })
+    includeAssigned: boolean
   ): Promise<SparePartMrMapView[] | undefined> {
-    return await SparePartMrMapView.findBy({ contract, workCenterNo });
+    const result = await SparePartMrMapView.findBy({
+      contract,
+      workCenterNo: Like(workCenterNo)
+    });
+    let filteredResult = result;
+    if (!includeAssigned) {
+      filteredResult = result.filter(
+        (data) => data.maintenanceDescription === null
+      );
+    }
+    return filteredResult;
   }
 
   @Mutation(() => SparePartMrMapView)
