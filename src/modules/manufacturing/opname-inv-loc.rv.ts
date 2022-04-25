@@ -8,14 +8,15 @@ export class OpnameInventoryLocationViewResolver {
   @UseMiddleware(isAuth)
   async getRandomLocation(
     @Arg('contract') contract: string,
+    @Arg('username') username: string,
     @Arg('numOfLoc') numOfLoc: number,
     @Arg('dept') dept: string,
     @Arg('exclude') exclude: string
   ): Promise<OpnameInventoryLocationView[] | undefined> {
     return await OpnameInventoryLocationView.createQueryBuilder('IL')
       .where(
-        `IL.CONTRACT = CASE WHEN :contract = 'AT3' and :dept = 'FG1' then 'AT1' else :contract end`,
-        { contract }
+        `IL.CONTRACT = CASE WHEN :username = 'AT3GAP02' and :dept = 'FG1' then 'AT1' else :contract end`,
+        { username, contract }
       )
       .andWhere('ROWNUM <= :numOfLoc', { numOfLoc })
       .andWhere(
@@ -23,7 +24,7 @@ export class OpnameInventoryLocationViewResolver {
         { dept }
       )
       .andWhere(
-        `LOCATION_NO LIKE (CASE WHEN :contract = 'AT3' and :dept = 'FG1' THEN '%AT3%' ELSE '%' END)`
+        `LOCATION_NO LIKE (CASE WHEN :username = 'AT3GAP02' and :dept = 'FG1' THEN '%AT3%' ELSE '%' END)`
       )
       .andWhere(`DEPT = :dept`)
       .andWhere(

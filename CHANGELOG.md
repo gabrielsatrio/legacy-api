@@ -1,3 +1,11 @@
+<a name="2.5.0"></a>
+
+# [2.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/130) (2022-04-25)
+
+### Features
+
+- [**M003**] **opname**: modify getRandomLocation query for AT3.
+
 <a name="2.4.0"></a>
 
 # [2.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/128) (2022-04-25)
