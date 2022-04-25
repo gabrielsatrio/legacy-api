@@ -1,3 +1,11 @@
+<a name="2.3.0"></a>
+
+# [2.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/126) (2022-04-25)
+
+### Features
+
+- [**M016**] **Eff Braiding**: create module to input output.
+
 <a name="2.2.0"></a>
 
 # [2.2.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/124) (2022-04-21)
