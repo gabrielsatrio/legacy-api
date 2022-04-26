@@ -31,6 +31,10 @@ export class DepartmentResolver {
                  description   AS "description"
         FROM     atj_prod_department_v
         WHERE    contract = :contract
+        UNION
+        SELECT   'MTC'         AS "departmentId",
+                 'Maintenance' AS "description"
+        FROM     dual
       `;
       const results = await ifs.query(sql, [contract]);
       return results;
