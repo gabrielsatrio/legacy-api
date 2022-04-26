@@ -1,3 +1,11 @@
+<a name="2.6.0"></a>
+
+# [2.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/136) (2022-04-26)
+
+### Features
+
+- [**M015**] **Transport-Task**: finish transport task module.
+
 <a name="2.5.2"></a>
 
 # [2.5.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/134) (2022-04-26)
