@@ -1,3 +1,23 @@
+<a name="2.5.2"></a>
+
+# [2.5.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/134) (2022-04-26)
+
+### Bug Fixes
+
+- [**HRIS**] **technician**: fix invalid table source.
+
+<a name="2.5.1"></a>
+
+# [2.5.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/132) (2022-04-26)
+
+### Bug Fixes
+
+- [**HRIS**] **employee**: replace `GetMaintenancePerson` resolver with `GetTechnicians`.
+
+### Other Changes
+
+- [**M016**] **braiding-output**: add white-space.
+
 <a name="2.5.0"></a>
 
 # [2.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/130) (2022-04-25)
