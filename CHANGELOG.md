@@ -1,6 +1,14 @@
+<a name="2.5.2"></a>
+
+# [2.5.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/134) (2022-04-26)
+
+### Bug Fixes
+
+- [**HRIS**] **technician**: fix invalid table source.
+
 <a name="2.5.1"></a>
 
-# [2.5.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/132) (2022-04-25)
+# [2.5.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/132) (2022-04-26)
 
 ### Bug Fixes
 
