@@ -2,6 +2,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { EmployeeView } from '@/modules/human-resources/entities/org-employee.vw';
 import { customEmail } from '@/utils/custom-email';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { TechnicianView } from './entities/techinician.vw';
 
 @Resolver()
 export class TechnicianResolver {
@@ -10,11 +11,13 @@ export class TechnicianResolver {
   async getTechnicians(
     @Arg('workLocation') workLocation: string
   ): Promise<EmployeeView[]> {
-    const employees = await EmployeeView.find({
+    const tecnicians = await TechnicianView.find({
       where: { workLocation },
       order: { name: 'ASC' }
     });
-    employees.map((employee) => (employee.email = customEmail(employee.email)));
-    return employees;
+    tecnicians.map(
+      (employee) => (employee.email = customEmail(employee.email))
+    );
+    return tecnicians;
   }
 }
