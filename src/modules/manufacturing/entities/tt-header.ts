@@ -25,6 +25,10 @@ export class TransportTaskHead extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
+  @Field()
+  @Column({ name: 'LOCATION_TO' })
+  locationTo!: string;
+
   @Field(() => [TransportTaskBody], { nullable: true })
   @OneToMany(
     () => TransportTaskBody,
