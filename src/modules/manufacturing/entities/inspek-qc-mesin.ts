@@ -39,4 +39,8 @@ export class InspekQcMesin extends BaseEntity {
   @Field()
   @Column({ name: 'RJ_SHIFT3' })
   rjShift3!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'KETERANGAN' })
+  keterangan?: string;
 }

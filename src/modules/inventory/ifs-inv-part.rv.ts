@@ -97,13 +97,29 @@ export class IfsInventoryPartResolver {
   @UseMiddleware(isAuth)
   async getPartDescByOrderNo(
     @Arg('orderNo') orderNo: string
-  ): Promise<Record<string, string | undefined>> {
+  ): Promise<Record<string, string | null>> {
     try {
       const sql = `SELECT inventory_part_api.get_description(shop_ord_api.get_contract( :orderno, '*', '*'), shop_ord_api.get_part_no( :orderno, '*', '*')) as "description"
       FROM   DUAL`;
       const result = await ifs.query(sql, [orderNo]);
       const description = result[0].description;
       return { description };
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAttrValue(
+    @Arg('partNo') partNo: string,
+    @Arg('contract') contract: string,
+    @Arg('attrValue') attrValue: string
+  ): Promise<string | null> {
+    try {
+      const sql = `select ATJ_INVENTORY_PART_API.GET_ATTR_VALUE(:partNo, :contract, :attrValue) as "attrValue" from dual`;
+      const result = await ifs.query(sql, [partNo, contract, attrValue]);
+      return result[0].attrValue;
     } catch (err) {
       throw new Error(mapError(err));
     }

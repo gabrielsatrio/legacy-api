@@ -53,7 +53,7 @@ export class AuthResolver {
       const contract = [];
       if (!userContract) contract.push('');
       else {
-        const excludedContracts = ['AT3', 'AT5'];
+        const excludedContracts = ['AT5'];
         userContract
           .filter(
             (uc: UserContractView) => !excludedContracts.includes(uc.contract)

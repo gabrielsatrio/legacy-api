@@ -73,7 +73,8 @@ export class MachineWorkCenterResolver {
         select: {
           workCenterNo: true,
           contract: true,
-          description: true
+          description: true,
+          departmentNo: true
         },
         where: { contract: In(contract), departmentNo: Like(departmentNo) },
         order: { workCenterNo: 'ASC' }

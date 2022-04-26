@@ -19,7 +19,9 @@ export class IfsInventoryPartInStockResolver {
       .getMany();
   }
 
-  async getStockByContractAndPartAndLoc(
+  @Query(() => [IfsInventoryPartInStockView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getStockByContractPartLocation(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string,
     @Arg('locationNo') locationNo: string
@@ -27,7 +29,9 @@ export class IfsInventoryPartInStockResolver {
     return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
-      .andWhere('IPIS.LOCATION_NO like :locationNo', { locationNo: locationNo })
+      .andWhere(`IPIS.LOCATION_NO like :locationNo||'%'`, {
+        locationNo: locationNo
+      })
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
       .getMany();

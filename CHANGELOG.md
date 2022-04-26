@@ -1,3 +1,46 @@
+<a name="2.5.0"></a>
+
+# [2.5.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/130) (2022-04-25)
+
+### Features
+
+- [**M003**] **opname**: modify getRandomLocation query for AT3.
+
+<a name="2.4.0"></a>
+
+# [2.4.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/128) (2022-04-25)
+
+### Features
+
+- [**M013**] **apm-spare-part-mr-map**: add new optional parameter for spare part mr mapping.
+
+### Bug Fixes
+
+- [**CORE**] **package.json**: revert back the `prepare` script.
+- [**M001**] **apm-machine**: increase the max size of type field for machine input.
+- [**M001**] **apm-machine-work-center**: no value for `departmentNo`.
+
+<a name="2.3.0"></a>
+
+# [2.3.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/126) (2022-04-25)
+
+### Features
+
+- [**M016**] **Eff Braiding**: create module to input output.
+
+<a name="2.2.0"></a>
+
+# [2.2.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/124) (2022-04-21)
+
+### Features
+
+- [**M014**] **warping**: add entity and resolver.
+- Add ifs-shop-material-alloc entity and resolver.
+- Add ifs-dop-head entity and resolver.
+- Add ifs-dop-supply-shop-ord entity and resolver.
+- Add query getStockByContractPartLocation at ifs-inv-part-in-stock resolver.
+- Add query getAttrValue at ifs-inv-part resolver.
+
 <a name="2.1.1"></a>
 
 # [2.1.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/122) (2022-04-20)
