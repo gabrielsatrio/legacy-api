@@ -66,7 +66,7 @@ export class TTBodyResolver {
     });
 
     if (!TTDetail) {
-      throw new Error('No data foundssss.');
+      throw new Error('No data found.');
     }
 
     const sql = `
