@@ -1,3 +1,11 @@
+<a name="2.6.1"></a>
+
+# [2.6.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/138) (2022-04-26)
+
+### Bug Fixes
+
+- [**M001**] **apm-machine**: fix query to get utility machines.
+
 <a name="2.6.0"></a>
 
 # [2.6.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/136) (2022-04-26)

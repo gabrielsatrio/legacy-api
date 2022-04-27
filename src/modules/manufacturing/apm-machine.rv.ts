@@ -78,7 +78,7 @@ export class MachineResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
     return await MachineView.find({
-      where: { contract: In(contract), departmentId: 'MTC' },
+      where: { contract: In(contract), departmentId: 'UTL' },
       order: { machineId: 'ASC' }
     });
   }
