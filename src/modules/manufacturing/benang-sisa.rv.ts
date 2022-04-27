@@ -20,10 +20,12 @@ export class BenangSisaResolver {
   @Query(() => [BenangSisa], { nullable: true })
   @UseMiddleware(isAuth)
   async getBenangSisa(
-    @Arg('contract', () => [String]) contract: string[]
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('department') department: string
   ): Promise<BenangSisa[] | undefined> {
     return await BenangSisa.findBy({
-      contract: In(contract)
+      contract: In(contract),
+      department
     });
   }
 
@@ -38,7 +40,8 @@ export class BenangSisaResolver {
         contract: input.contract,
         tanggal: input.tanggal,
         noPalet: input.noPalet,
-        noDus: input.noDus
+        noDus: input.noDus,
+        department: input.department
       });
 
       const sql = `select department_id as "department" from atj_app_user
@@ -68,7 +71,8 @@ export class BenangSisaResolver {
         contract: input.contract,
         tanggal: input.tanggal,
         noPalet: input.noPalet,
-        noDus: input.noDus
+        noDus: input.noDus,
+        department: input.department
       });
       if (!data) throw new Error('No data found.');
       BenangSisa.merge(data, { ...input });
@@ -85,17 +89,25 @@ export class BenangSisaResolver {
     @Arg('contract') contract: string,
     @Arg('tanggal') tanggal: Date,
     @Arg('noPalet') noPalet: string,
-    @Arg('noDus', () => Int) noDus: number
+    @Arg('noDus', () => Int) noDus: number,
+    @Arg('department') department: string
   ): Promise<BenangSisa> {
     try {
       const data = await BenangSisa.findOneBy({
         contract,
         tanggal,
         noPalet,
-        noDus
+        noDus,
+        department
       });
       if (!data) throw new Error('No data found.');
-      await BenangSisa.delete({ contract, tanggal, noPalet, noDus });
+      await BenangSisa.delete({
+        contract,
+        tanggal,
+        noPalet,
+        noDus,
+        department
+      });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

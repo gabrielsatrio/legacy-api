@@ -1,3 +1,11 @@
+<a name="2.6.2"></a>
+
+# [2.6.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/140) (2022-04-27)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: Add logic for part with same lot batch no.
+
 <a name="2.6.1"></a>
 
 # [2.6.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/138) (2022-04-26)

@@ -20,8 +20,12 @@ export class TransportTaskBodyInput implements Partial<TransportTaskBody> {
   quantity!: number;
 
   @Field()
-  @MaxLength(100)
+  @MaxLength(200)
   locationNo!: string;
+
+  @Field()
+  @MaxLength(200)
+  locationFr!: string;
 
   @Field()
   @MaxLength(50)

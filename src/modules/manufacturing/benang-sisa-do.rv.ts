@@ -19,10 +19,12 @@ export class BenangSisaDoResolver {
   @Query(() => [BenangSisaDo], { nullable: true })
   @UseMiddleware(isAuth)
   async getBenangSisaDo(
-    @Arg('contract', () => [String]) contract: string[]
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('department') department: string
   ): Promise<BenangSisaDo[] | undefined> {
     return await BenangSisaDo.findBy({
-      contract: In(contract)
+      contract: In(contract),
+      department
     });
   }
 
@@ -35,23 +37,11 @@ export class BenangSisaDoResolver {
     try {
       const check = await BenangSisaDo.findOneBy({
         contract: input.contract,
-        tanggal: input.tanggal
+        tanggal: input.tanggal,
+        department: input.department
       });
 
       if (check) throw new Error('Data Already Exists');
-
-      const sql = `select count(*) as "total" from CHR_BENANG_SISA_DO
-      where extract ( year from tanggal) = extract ( year from :p_date)
-      and extract ( month from tanggal) = extract ( month from :p_date)
-      and contract = :p_contract`;
-      const result = await ifs.query(sql, [
-        input.tanggal,
-        input.tanggal,
-        input.contract
-      ]);
-
-      if (result[0].total !== 0)
-        throw new Error('DO untuk bulan terkait sudah ada');
 
       const sqlUser = `select department_id as "department" from atj_app_user
         where username = :p_username`;
@@ -76,7 +66,8 @@ export class BenangSisaDoResolver {
     try {
       const data = await BenangSisaDo.findOneBy({
         contract: input.contract,
-        tanggal: input.tanggal
+        tanggal: input.tanggal,
+        department: input.department
       });
       if (!data) throw new Error('No data found.');
       BenangSisaDo.merge(data, { ...input });
@@ -91,15 +82,17 @@ export class BenangSisaDoResolver {
   @UseMiddleware(isAuth)
   async deleteBenangSisaDo(
     @Arg('contract') contract: string,
-    @Arg('tanggal') tanggal: Date
+    @Arg('tanggal') tanggal: Date,
+    @Arg('department') department: string
   ): Promise<BenangSisaDo> {
     try {
       const data = await BenangSisaDo.findOneBy({
         contract,
-        tanggal
+        tanggal,
+        department
       });
       if (!data) throw new Error('No data found.');
-      await BenangSisaDo.delete({ contract, tanggal });
+      await BenangSisaDo.delete({ contract, tanggal, department });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
