@@ -23,6 +23,7 @@ export class TTBodyResolver {
       :locationNo,
       :user,
       :type,
+      :locationFr,
       :outLotBatchNo, :outTransportTaskId);
     END;
   `;
@@ -38,6 +39,7 @@ export class TTBodyResolver {
         input.locationNo,
         input.user,
         input.type,
+        input.locationFr,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -66,7 +68,7 @@ export class TTBodyResolver {
     });
 
     if (!TTDetail) {
-      throw new Error('No data foundssss.');
+      throw new Error('No data found.');
     }
 
     const sql = `
@@ -78,6 +80,7 @@ export class TTBodyResolver {
       :locationNo,
       :user,
       :type,
+      :locationFr,
       :outLotBatchNo, :outTransportTaskId);
     END;
     `;
@@ -92,6 +95,7 @@ export class TTBodyResolver {
         input.locationNo,
         input.user,
         input.type,
+        input.locationFr,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
@@ -113,7 +117,8 @@ export class TTBodyResolver {
   @UseMiddleware(isAuth)
   async deleteTTLine(
     @Arg('transportTaskId') transportTaskId: string,
-    @Arg('lotBatchNo') lotBatchNo: string
+    @Arg('lotBatchNo') lotBatchNo: string,
+    @Arg('locationFr') locationFr: string
   ): Promise<TransportTaskBody> {
     try {
       const ttLine = await TransportTaskBody.findOneBy({
@@ -129,11 +134,12 @@ export class TTBodyResolver {
       BEGIN
       ATJ_TRANSPORT_TASK_API.delete_line_tt(
         :transportTaskId,
-        :lotBatchNo);
+        :lotBatchNo,
+        :locationFr);
       END;
     `;
 
-      await ifs.query(sql, [transportTaskId, lotBatchNo]);
+      await ifs.query(sql, [transportTaskId, lotBatchNo, locationFr]);
 
       return ttLine;
     } catch (err) {
