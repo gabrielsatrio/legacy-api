@@ -1,6 +1,6 @@
 <a name="2.6.2"></a>
 
-# [2.6.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/140) (2022-04-26)
+# [2.6.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/140) (2022-04-27)
 
 ### Bug Fixes
 
