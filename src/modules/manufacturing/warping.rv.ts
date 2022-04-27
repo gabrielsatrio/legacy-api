@@ -77,6 +77,18 @@ export class ProdWarpingResolver {
     }
   }
 
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getWarnaLusi(@Arg('dopId') dopId: string): Promise<string> {
+    try {
+      const sql = `SELECT GBR_PROD_WARPING_API.GET_WARNA_LUSI(:dopId) as "warnaLusi" FROM DUAL`;
+      const result = await ifs.query(sql, [dopId]);
+      return result[0].warnaLusi;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(
