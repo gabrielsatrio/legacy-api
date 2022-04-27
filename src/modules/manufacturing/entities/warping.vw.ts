@@ -105,6 +105,50 @@ export class ProdWarpingView extends BaseEntity {
   noMcTenun2?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'SO_BEAM_4' })
+  soBeam4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SO_TENUN_4' })
+  soTenun4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CORAK_KAIN_4' })
+  corakKain4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'WARNA_LUSI_4' })
+  warnaLusi4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BENANG_PER_BOBIN_4' })
+  benangPerBobin4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MC_BENANG_4' })
+  mcBenang4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'METER_BEAM_4' })
+  meterBeam4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'JML_PASANG_4' })
+  jmlPasang4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LEBAR_BEAM_4' })
+  lebarBeam4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LEBAR_BAN_4' })
+  lebarBan4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'FEED_MESIN_4' })
+  feedMesin4?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 
