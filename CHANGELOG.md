@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- [**M015**] **apm-machine**: Add logic for part with same lot batch no.
+- [**M015**] **Transport-Task**: Add logic for part with same lot batch no.
 
 <a name="2.6.1"></a>
 
