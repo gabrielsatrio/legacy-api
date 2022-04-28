@@ -57,6 +57,10 @@ export class ProdWarping extends BaseEntity {
   segmen?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'LUSI_1' })
+  lusi1?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'JUMLAH_LUSI_1' })
   jumlahLusi1?: number;
 
