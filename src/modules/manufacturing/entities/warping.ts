@@ -12,9 +12,9 @@ export class ProdWarping extends BaseEntity {
   @Column({ name: 'CONTRACT' })
   contract?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })
-  orderNo!: string;
+  orderNo?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'PART_NO' })
@@ -32,9 +32,9 @@ export class ProdWarping extends BaseEntity {
   @Column({ name: 'SHIFT' })
   shift!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'MACHINE_ID' })
-  machineId!: string;
+  machineId?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'JOB_ORDER_1' })
@@ -55,6 +55,10 @@ export class ProdWarping extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'SEGMEN' })
   segmen?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LUSI_1' })
+  lusi1?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'JUMLAH_LUSI_1' })
@@ -99,6 +103,54 @@ export class ProdWarping extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NO_MC_TENUN_2' })
   noMcTenun2?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SO_BEAM_4' })
+  soBeam4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SO_TENUN_4' })
+  soTenun4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CORAK_KAIN_4' })
+  corakKain4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'WARNA_LUSI_4' })
+  warnaLusi4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_ORDER_4' })
+  qtyOrder4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BENANG_PER_BOBIN_4' })
+  benangPerBobin4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MC_BENANG_4' })
+  mcBenang4?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'METER_BEAM_4' })
+  meterBeam4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'JML_PASANG_4' })
+  jmlPasang4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LEBAR_BEAM_4' })
+  lebarBeam4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LEBAR_BAN_4' })
+  lebarBan4?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'FEED_MESIN_4' })
+  feedMesin4?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })
