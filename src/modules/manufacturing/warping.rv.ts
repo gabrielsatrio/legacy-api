@@ -89,6 +89,65 @@ export class ProdWarpingResolver {
     }
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getSettingPerBobin(
+    @Arg('site') site: string,
+    @Arg('dopId') dopId: string,
+    @Arg('qtyOrder') qtyOrder: number
+  ): Promise<string> {
+    try {
+      const sql = `select GBR_PROD_WARPING_API.GET_SETTING_PER_BOBIN(:site, :dopId, :qtyOrder) as "settingBobin" FROM DUAL`;
+      const result = await ifs.query(sql, [site, dopId, qtyOrder]);
+      return result[0].settingBobin;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getQtyBeamWarping(
+    @Arg('site') site: string,
+    @Arg('dopId') dopId: string,
+    @Arg('qtyOrder') qtyOrder: number
+  ): Promise<string> {
+    try {
+      const sql = `select GBR_PROD_WARPING_API.GET_QTY_BEAM_WARPING(:site, :dopId, :qtyOrder) as "beamWarping" FROM DUAL`;
+      const result = await ifs.query(sql, [site, dopId, qtyOrder]);
+      return result[0].beamWarping;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getMcBenang(@Arg('lotBatchNo') lotBatchNo: string): Promise<string> {
+    try {
+      const sql = `SELECT REGEXP_SUBSTR (:lotBatchNo,'/{1}([^/]+)', 1, 1,NULL, 1) as "mcBenang" FROM DUAL`;
+      const result = await ifs.query(sql, [lotBatchNo]);
+      return result[0].mcBenang;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getJumlahBan(
+    @Arg('site') site: string,
+    @Arg('partNo') partNo: string
+  ): Promise<string> {
+    try {
+      const sql = `SELECT JUMLAH_BAN as "jumlahBan" FROM GBR_MASTER_KP_PART WHERE CONTRACT = :site and PART_NO = :partNo`;
+      const result = await ifs.query(sql, [site, partNo]);
+      return result[0].jumlahBan;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(

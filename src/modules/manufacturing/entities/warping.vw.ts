@@ -12,7 +12,7 @@ export class ProdWarpingView extends BaseEntity {
   @Column({ name: 'CONTRACT' })
   contract?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })
   orderNo!: string;
 
@@ -32,11 +32,11 @@ export class ProdWarpingView extends BaseEntity {
   @Column({ name: 'SHIFT' })
   shift!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'MACHINE_ID' })
   machineId!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'MACHINE_NAME' })
   machineName!: string;
 
@@ -121,8 +121,12 @@ export class ProdWarpingView extends BaseEntity {
   warnaLusi4?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'QTY_ORDER_4' })
+  qtyOrder4?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'BENANG_PER_BOBIN_4' })
-  benangPerBobin4?: string;
+  benangPerBobin4?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'MC_BENANG_4' })

@@ -117,8 +117,10 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   warnaLusi4?: string;
 
   @Field({ nullable: true })
-  @MaxLength(10)
-  benangPerBobin4?: string;
+  qtyOrder4?: number;
+
+  @Field({ nullable: true })
+  benangPerBobin4?: number;
 
   @Field({ nullable: true })
   @MaxLength(10)
