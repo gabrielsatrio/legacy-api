@@ -2,12 +2,43 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
-import { Arg, Mutation, Resolver, UseMiddleware } from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { IfsInventoryPartInStockView } from '../inventory/entities/ifs-inv-part-in-stock.vw';
 import { TransportTaskBody } from './entities/tt-detail';
 import { TransportTaskBodyInput } from './tt-body.in';
 
 @Resolver(TransportTaskBody)
 export class TTBodyResolver {
+  @Query(() => [IfsInventoryPartInStockView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getStockTransportTask(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string,
+    @Arg('locationNo') locationNo: string
+  ): Promise<IfsInventoryPartInStockView[] | undefined> {
+    return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
+      .where('IPIS.CONTRACT = :contract', { contract: contract })
+      .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
+      .andWhere(`IPIS.LOCATION_NO like :locationNo||'%'`, {
+        locationNo: locationNo
+      })
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%NG' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%QA1' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%RTR' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%QA2' else 'NULL' end`
+      )
+      .andWhere('IPIS.QTY_ONHAND > 0')
+      .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
+      .getMany();
+  }
+
   @Mutation(() => TransportTaskBody)
   @UseMiddleware(isAuth)
   async createTTBody(

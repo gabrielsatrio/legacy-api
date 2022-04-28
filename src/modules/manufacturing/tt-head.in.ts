@@ -26,4 +26,8 @@ export class TransportTaskHeadInput implements Partial<TransportTaskHead> {
   @Field()
   @MaxLength(50)
   type!: string;
+
+  @Field()
+  @MaxLength(50)
+  transportTaskId?: string;
 }
