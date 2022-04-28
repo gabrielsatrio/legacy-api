@@ -12,9 +12,9 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   @MaxLength(5)
   contract?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @MaxLength(10)
-  orderNo!: string;
+  orderNo?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)

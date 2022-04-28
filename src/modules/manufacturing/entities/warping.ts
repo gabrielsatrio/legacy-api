@@ -14,7 +14,7 @@ export class ProdWarping extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })
-  orderNo!: string;
+  orderNo?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'PART_NO' })
@@ -34,7 +34,7 @@ export class ProdWarping extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'MACHINE_ID' })
-  machineId!: string;
+  machineId?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'JOB_ORDER_1' })
