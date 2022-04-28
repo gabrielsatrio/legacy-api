@@ -21,16 +21,16 @@ export class TransportTaskBody extends BaseEntity {
   lotBatchNo!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'LOCATION_NO' })
+  locationNo!: string;
+
+  @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;
 
   @Field()
   @Column({ name: 'PART_NO' })
   partNo!: string;
-
-  @Field()
-  @Column({ name: 'LOCATION_NO' })
-  locationNo!: string;
 
   @Field()
   @Column({ name: 'LOCATION_TO' })
