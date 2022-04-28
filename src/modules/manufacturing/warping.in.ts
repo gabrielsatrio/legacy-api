@@ -58,6 +58,10 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
 
   @Field({ nullable: true })
   @IsNumber()
+  lusi1?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
   jumlahLusi1?: number;
 
   @Field({ nullable: true })
