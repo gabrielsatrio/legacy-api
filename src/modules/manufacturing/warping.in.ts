@@ -12,9 +12,9 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   @MaxLength(5)
   contract?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @MaxLength(10)
-  orderNo!: string;
+  orderNo?: string;
 
   @Field({ nullable: true })
   @MaxLength(50)
@@ -58,6 +58,10 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
 
   @Field({ nullable: true })
   @IsNumber()
+  lusi1?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
   jumlahLusi1?: number;
 
   @Field({ nullable: true })
@@ -73,7 +77,7 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   jenisBenang2?: string;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(30)
   lotBatchNo?: string;
 
   @Field({ nullable: true })
@@ -99,6 +103,52 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   @Field({ nullable: true })
   @MaxLength(20)
   noMcTenun2?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(20)
+  soBeam4?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(20)
+  soTenun4?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  corakKain4?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(20)
+  warnaLusi4?: string;
+
+  @Field({ nullable: true })
+  qtyOrder4?: number;
+
+  @Field({ nullable: true })
+  benangPerBobin4?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(10)
+  mcBenang4?: string;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  meterBeam4?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  jmlPasang4?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  lebarBeam4?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  lebarBan4?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  feedMesin4?: number;
 
   @Field({ nullable: true })
   @MaxLength(200)
