@@ -1,3 +1,11 @@
+<a name="2.6.3"></a>
+
+# [2.6.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/143) (2022-04-28)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: spliting update TT auto from create.
+
 <a name="2.6.2"></a>
 
 # [2.6.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/140) (2022-04-27)
