@@ -44,25 +44,23 @@ export class TTBodyResolver {
   async createTTBody(
     @Arg('input') input: TransportTaskBodyInput
   ): Promise<TransportTaskBody | null> {
-    const sql = `
-    BEGIN
-    ATJ_TRANSPORT_TASK_API.CREATE_TT_LINE(
-      :trasportTaskId,
-      :lotBatchNo,
-      :partNo,
-      :quantity,
-      :locationNo,
-      :user,
-      :type,
-      :locationFr,
-      :outLotBatchNo, :outTransportTaskId);
-    END;
-  `;
-
-    let result;
-
     try {
-      result = await ifs.query(sql, [
+      const sql = `
+      BEGIN
+      ATJ_TRANSPORT_TASK_API.CREATE_TT_LINE(
+        :trasportTaskId,
+        :lotBatchNo,
+        :partNo,
+        :quantity,
+        :locationNo,
+        :user,
+        :type,
+        :locationFr,
+        :outLotBatchNo, :outTransportTaskId);
+      END;
+    `;
+
+      const result = await ifs.query(sql, [
         input.transportTaskId,
         input.lotBatchNo,
         input.partNo,
@@ -74,18 +72,19 @@ export class TTBodyResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+
+      const outLotBatchNo = result[0] as string;
+      const outTransportTaskId = result[1] as string;
+
+      const data = await TransportTaskBody.findOneBy({
+        lotBatchNo: outLotBatchNo,
+        transportTaskId: outTransportTaskId
+      });
+
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outLotBatchNo = result[0] as string;
-    const outTransportTaskId = result[1] as string;
-
-    const data = await TransportTaskBody.findOneBy({
-      lotBatchNo: outLotBatchNo,
-      transportTaskId: outTransportTaskId
-    });
-
-    return data;
   }
 
   @Mutation(() => TransportTaskBody, { nullable: true })
@@ -93,33 +92,31 @@ export class TTBodyResolver {
   async updateTTBody(
     @Arg('input') input: TransportTaskBodyInput
   ): Promise<TransportTaskBody | null> {
-    const TTDetail = await TransportTaskBody.findOneBy({
-      transportTaskId: input.transportTaskId,
-      lotBatchNo: input.lotBatchNo
-    });
-
-    if (!TTDetail) {
-      throw new Error('No data found.');
-    }
-
-    const sql = `
-    BEGIN
-    ATJ_TRANSPORT_TASK_API.UPDATE_TT_LINE(
-      :trasportTaskId,
-      :lotBatchNo,
-      :quantity,
-      :locationNo,
-      :user,
-      :type,
-      :locationFr,
-      :outLotBatchNo, :outTransportTaskId);
-    END;
-    `;
-
-    let result;
-
     try {
-      result = await ifs.query(sql, [
+      const TTDetail = await TransportTaskBody.findOneBy({
+        transportTaskId: input.transportTaskId,
+        lotBatchNo: input.lotBatchNo
+      });
+
+      if (!TTDetail) {
+        throw new Error('No data found.');
+      }
+
+      const sql = `
+      BEGIN
+      ATJ_TRANSPORT_TASK_API.UPDATE_TT_LINE(
+        :trasportTaskId,
+        :lotBatchNo,
+        :quantity,
+        :locationNo,
+        :user,
+        :type,
+        :locationFr,
+        :outLotBatchNo, :outTransportTaskId);
+      END;
+      `;
+
+      const result = await ifs.query(sql, [
         input.transportTaskId,
         input.lotBatchNo,
         input.quantity,
@@ -130,18 +127,18 @@ export class TTBodyResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+
+      const outLotBatchNo = result[0] as string;
+      const outTransportTaskId = result[1] as string;
+
+      const data = TransportTaskBody.findOneBy({
+        transportTaskId: outTransportTaskId,
+        lotBatchNo: outLotBatchNo
+      });
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-
-    const outLotBatchNo = result[0] as string;
-    const outTransportTaskId = result[1] as string;
-
-    const data = TransportTaskBody.findOneBy({
-      transportTaskId: outTransportTaskId,
-      lotBatchNo: outLotBatchNo
-    });
-    return data;
   }
 
   @Mutation(() => TransportTaskBody)
