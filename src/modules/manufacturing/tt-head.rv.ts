@@ -49,7 +49,8 @@ export class TTHeadResolver {
   async createTTAuto(
     @Arg('input') input: TransportTaskHeadInput
   ): Promise<TransportTaskHead | null> {
-    const sql = `
+    try {
+      const sql = `
     BEGIN
     ATJ_TRANSPORT_TASK_API.CREATE_TT_AUTO(
       :contract,
@@ -62,10 +63,7 @@ export class TTHeadResolver {
     END;
   `;
 
-    let result;
-
-    try {
-      result = await ifs.query(sql, [
+      const result = await ifs.query(sql, [
         input.contract,
         input.orderQty,
         input.partNo,
@@ -75,18 +73,72 @@ export class TTHeadResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
+      const outContract = result[0] as string;
+      const outTransportTaskId = result[1] as string;
+
+      const data = await TransportTaskHead.findOneBy({
+        contract: outContract,
+        transportTaskId: outTransportTaskId
+      });
+
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
-    const outContract = result[0] as string;
-    const outTransportTaskId = result[1] as string;
+  }
 
-    const data = await TransportTaskHead.findOneBy({
-      contract: outContract,
-      transportTaskId: outTransportTaskId
-    });
+  @Mutation(() => TransportTaskHead, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateTTAuto(
+    @Arg('input') input: TransportTaskHeadInput
+  ): Promise<TransportTaskHead | null> {
+    try {
+      const TTHead = await TransportTaskHead.findOneBy({
+        transportTaskId: input.transportTaskId,
+        contract: input.contract
+      });
 
-    return data;
+      if (!TTHead) {
+        throw new Error('No data found.');
+      }
+
+      const sql = `
+      BEGIN
+      ATJ_TRANSPORT_TASK_API.UPDATE_TT_AUTO(
+        :contract,
+        :transportTaskId,
+        :orderQty,
+        :partNo,
+        :locationNo,
+        :user,
+        :type,
+        :outContract, :outTransportTaskId);
+      END;
+      `;
+
+      const result = await ifs.query(sql, [
+        input.contract,
+        input.transportTaskId,
+        input.orderQty,
+        input.partNo,
+        input.locationNo,
+        input.user,
+        input.type,
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      ]);
+
+      const outContract = result[0] as string;
+      const outTransportTaskId = result[1] as string;
+
+      const data = TransportTaskHead.findOneBy({
+        transportTaskId: outTransportTaskId,
+        contract: outContract
+      });
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => TransportTaskHead)
