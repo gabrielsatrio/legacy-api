@@ -44,6 +44,14 @@ export class SparePartMrMapView extends BaseEntity {
   @Column({ name: 'WORK_CENTER' })
   workCenter?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT_ID' })
+  departmentId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT' })
+  department?: string;
+
   @Field()
   @Column({ name: 'PART_NO' })
   partNo!: string;

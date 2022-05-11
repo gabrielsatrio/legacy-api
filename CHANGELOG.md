@@ -1,3 +1,15 @@
+<a name="2.7.0"></a>
+
+# [2.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/145) (2022-05-11)
+
+### Features
+
+- [**M013**] **apm-requsitions**: can filter the data by department id.
+
+### Bug Fixes
+
+- [**M001**] **apm-machine-categories**: order the machine category data by description.
+
 <a name="2.6.4"></a>
 
 # [2.6.4](https://gitlab.com/atjdev/ezio-api/-/merge_requests/143) (2022-04-29)
