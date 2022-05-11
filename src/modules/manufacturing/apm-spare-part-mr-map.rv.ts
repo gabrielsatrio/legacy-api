@@ -19,23 +19,37 @@ export class SparePartMrMapResolver {
 
   @Query(() => [SparePartMrMapView])
   @UseMiddleware(isAuth)
-  async getSparePartMrMapByWorkCenterNo(
+  async getSparePartMrMapByDeptWorkCenterNo(
     @Arg('contract') contract: string,
+    @Arg('departmentId') departmentId: string,
     @Arg('workCenterNo') workCenterNo: string,
     @Arg('includeAssigned', { defaultValue: true, nullable: true })
     includeAssigned: boolean
   ): Promise<SparePartMrMapView[] | undefined> {
-    const result = await SparePartMrMapView.findBy({
-      contract,
-      workCenterNo: Like(workCenterNo)
-    });
-    let filteredResult = result;
-    if (!includeAssigned) {
-      filteredResult = result.filter(
-        (data) => data.maintenanceDescription === null
-      );
+    try {
+      let result;
+      if (departmentId === '%') {
+        result = await SparePartMrMapView.findBy({
+          contract,
+          workCenterNo: Like(workCenterNo)
+        });
+      } else {
+        result = await SparePartMrMapView.findBy({
+          contract,
+          departmentId,
+          workCenterNo: Like(workCenterNo)
+        });
+      }
+      let filteredResult = result;
+      if (!includeAssigned) {
+        filteredResult = result.filter(
+          (data) => data.maintenanceDescription === null
+        );
+      }
+      return filteredResult;
+    } catch (err) {
+      throw new Error(mapError(err));
     }
-    return filteredResult;
   }
 
   @Mutation(() => SparePartMrMapView)
