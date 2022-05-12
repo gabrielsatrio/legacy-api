@@ -1,3 +1,11 @@
+<a name="2.8.0"></a>
+
+# [2.8.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/148) (2022-05-12)
+
+### Features
+
+- [**M015**] **Transport-Task**: add new feature at form to check total available.
+
 <a name="2.7.0"></a>
 
 # [2.7.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/145) (2022-05-11)
