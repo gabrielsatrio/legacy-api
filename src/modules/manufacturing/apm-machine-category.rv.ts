@@ -8,7 +8,9 @@ export class MachineCategoryResolver {
   @Query(() => [MachineCategoryView])
   @UseMiddleware(isAuth)
   async getAllMachCategories(): Promise<MachineCategoryView[] | undefined> {
-    return await MachineCategoryView.find();
+    return await MachineCategoryView.find({
+      order: { description: 'ASC' }
+    });
   }
 
   @Query(() => MachineCategoryView, { nullable: true })
