@@ -51,7 +51,7 @@ export class TTHeadResolver {
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
   ): Promise<string | undefined> {
-    const test = await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
+    const data = await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .select('SUM(IPIS.QTY_ONHAND - IPIS.QTY_RESERVED)', 'qtyAvail')
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
@@ -72,7 +72,7 @@ export class TTHeadResolver {
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
       .getRawOne();
 
-    return test.qtyAvail;
+    return data.qtyAvail;
   }
 
   @Mutation(() => TransportTaskHead)
