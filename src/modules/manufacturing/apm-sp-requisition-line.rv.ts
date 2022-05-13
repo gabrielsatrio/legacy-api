@@ -19,12 +19,12 @@ export class SparePartReqLineResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
   async checkSPReqLineValid(
-    @Arg('requisitionId', () => Int) requistionId: number,
+    @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<boolean> {
     try {
       const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Check_Valid(:requisitionId, :lineItemNo) AS "isValid" FROM DUAL`;
-      const result = await ifs.query(sql, [requistionId, lineItemNo]);
+      const result = await ifs.query(sql, [requisitionId, lineItemNo]);
       return result[0].isValid === 1 ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
@@ -54,11 +54,11 @@ export class SparePartReqLineResolver {
   @Query(() => Int)
   @UseMiddleware(isAuth)
   async getNewSPReqLineNo(
-    @Arg('requisitionId', () => Int) requistionId: number
+    @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<number> {
     try {
       const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Get_New_Line_No(:requisitionId) AS "newLineNo" FROM DUAL`;
-      const result = await ifs.query(sql, [requistionId]);
+      const result = await ifs.query(sql, [requisitionId]);
       return result[0].newLineNo;
     } catch (err) {
       throw new Error(mapError(err));
