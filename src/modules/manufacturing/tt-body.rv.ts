@@ -36,6 +36,7 @@ export class TTBodyResolver {
       )
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
+      .addOrderBy('IPIS.RECEIPT_DATE', 'ASC')
       .getMany();
   }
 
