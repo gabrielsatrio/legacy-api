@@ -1,3 +1,11 @@
+<a name="2.8.1"></a>
+
+# [2.8.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/150) (2022-05-18)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: add NW as material.
+
 <a name="2.8.0"></a>
 
 # [2.8.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/148) (2022-05-12)
