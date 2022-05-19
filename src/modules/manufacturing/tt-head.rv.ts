@@ -4,6 +4,7 @@ import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { Brackets, In } from 'typeorm';
+import { IfsInventoryPartInStockView } from '../inventory/entities/ifs-inv-part-in-stock.vw';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 import { TransportTaskHead } from './entities/tt-header';
 import { TransportTaskHeadInput } from './tt-head.in';
@@ -37,11 +38,42 @@ export class TTHeadResolver {
             .orWhere("IP.PART_NO like 'MY%'")
             .orWhere("IP.PART_NO like 'C%'")
             .orWhere("IP.PART_NO like 'BPPL%'")
+            .orWhere("IP.PART_NO like 'NW%'")
             .orWhere("IP.PART_NO like 'BPRK%'");
         })
       )
       .andWhere(`ip.PART_STATUS in('A','I')`)
       .getMany();
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getStockAllAvailStock(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string
+  ): Promise<string | undefined> {
+    const data = await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
+      .where('IPIS.CONTRACT = :contract', { contract: contract })
+      .select('SUM(IPIS.QTY_ONHAND - IPIS.QTY_RESERVED)', 'qtyAvail')
+      .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
+      .andWhere(`IPIS.LOCATION_NO like 'RM%'`)
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%NG' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA1' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%RTR' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA2' else 'NULL' end`
+      )
+      .andWhere('IPIS.QTY_ONHAND > 0')
+      .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
+      .getRawOne();
+
+    return data.qtyAvail;
   }
 
   @Mutation(() => TransportTaskHead)

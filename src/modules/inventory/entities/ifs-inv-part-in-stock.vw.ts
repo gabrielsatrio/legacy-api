@@ -29,6 +29,10 @@ export class IfsInventoryPartInStockView extends BaseEntity {
   qtyReserved!: number;
 
   @Field()
+  @Column({ name: 'RECEIPT_DATE' })
+  receiptDate!: Date;
+
+  @Field()
   @Column({ name: 'OBJID' })
   objId!: string;
 }
