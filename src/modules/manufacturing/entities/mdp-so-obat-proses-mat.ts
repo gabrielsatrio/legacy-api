@@ -5,9 +5,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn
 } from 'typeorm';
 import { SoObatProses } from './mdp-so-obat-proses';
+import { SoObatReserve } from './mdp-so-obat-reserve';
 
 @Entity('CHR_SO_OBAT_PROSES_MATERIAL')
 @ObjectType()
@@ -59,4 +61,10 @@ export class SoObatProsesMaterial extends BaseEntity {
   @ManyToOne(() => SoObatProses, (SoObatProses) => SoObatProses.details)
   @JoinColumn({ name: 'ORDER_NO', referencedColumnName: 'orderNo' })
   master!: SoObatProses;
+
+  @Field(() => [SoObatReserve], { nullable: true })
+  @OneToMany(() => SoObatReserve, (SoObatReserve) => SoObatReserve.masterLine, {
+    nullable: true
+  })
+  detailReserve?: SoObatReserve[];
 }

@@ -100,6 +100,8 @@ export class SoObatProsesResolver {
         lineItemNo: lineItemNo
       });
 
+      if (!data) throw new Error('No data found.');
+
       const sql = `
                     BEGIN
                     CHR_SO_OBAT_API.DELETE_MATERIAL(
