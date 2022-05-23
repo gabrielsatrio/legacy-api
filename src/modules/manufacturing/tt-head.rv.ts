@@ -39,6 +39,9 @@ export class TTHeadResolver {
             .orWhere("IP.PART_NO like 'C%'")
             .orWhere("IP.PART_NO like 'BPPL%'")
             .orWhere("IP.PART_NO like 'NW%'")
+            .orWhere("IP.PART_NO like 'BA%'")
+            .orWhere("IP.PART_NO like 'MWV%'")
+            .orWhere("IP.PART_NO like 'MNV%'")
             .orWhere("IP.PART_NO like 'BPRK%'");
         })
       )
