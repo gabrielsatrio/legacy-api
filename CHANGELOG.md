@@ -1,3 +1,11 @@
+<a name="2.8.2"></a>
+
+# [2.8.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/152) (2022-05-23)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: add missing material
+
 <a name="2.8.1"></a>
 
 # [2.8.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/150) (2022-05-18)
