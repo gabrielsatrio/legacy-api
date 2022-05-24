@@ -276,14 +276,14 @@ export class SparePartRequisitionResolver {
     }
   }
 
-  @Mutation(() => SparePartRequisition)
+  @Mutation(() => SparePartRequisition, { nullable: true })
   @UseMiddleware(isAuth)
   async deleteSPRequisition(
     @Arg('requisitionId', () => Int) requisitionId: number
-  ): Promise<SparePartRequisition> {
+  ): Promise<SparePartRequisition | null> {
     try {
       const data = await SparePartRequisition.findOneBy({ requisitionId });
-      if (!data) throw new Error('No data found.');
+      if (!data) return null;
       const detailData = await SparePartReqLine.findBy({ requisitionId });
       const SPReqLine = new SparePartReqLineResolver();
       await Promise.all(
