@@ -37,4 +37,8 @@ export class SoObatProsesMaterialInput
   @Field({ nullable: true })
   @IsNumber()
   qtyRequired?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  lotBatchNo?: string;
 }

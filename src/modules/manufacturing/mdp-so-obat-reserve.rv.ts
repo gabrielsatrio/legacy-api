@@ -10,7 +10,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { SoObatReserve } from './entities/mdp-so-obat-reserve';
-import { SoObatReserveInput } from './mdp-so-obat-reserve.in';
 
 @Resolver(SoObatReserve)
 export class SoObatReserveResolver {
@@ -30,7 +29,10 @@ export class SoObatReserveResolver {
   @Mutation(() => SoObatReserve)
   @UseMiddleware(isAuth)
   async createReserveMaterial(
-    @Arg('input') input: SoObatReserveInput
+    @Arg('contract') contract: string,
+    @Arg('orderNo') orderNo: string,
+    @Arg('lineNo', () => Int) lineNo: number,
+    @Arg('lotBooking') lotBooking: string
   ): Promise<SoObatReserve | null> {
     try {
       const sql = `
@@ -43,17 +45,12 @@ export class SoObatReserveResolver {
     END;
   `;
 
-      await ifs.query(sql, [
-        input.contract,
-        input.orderNo,
-        input.lineNo,
-        input.lotBooking
-      ]);
+      await ifs.query(sql, [contract, orderNo, lineNo, lotBooking]);
 
       const data = await SoObatReserve.findOneBy({
-        orderNo: input.orderNo,
-        lineNo: input.lineNo,
-        lotBooking: input.lotBooking
+        orderNo: orderNo,
+        lineNo: lineNo,
+        lotBooking: lotBooking
       });
 
       return data;

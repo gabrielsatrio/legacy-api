@@ -35,4 +35,8 @@ export class SoObatProsesInput implements Partial<SoObatProses> {
   @Field()
   @MaxLength(25)
   mesin!: string;
+
+  @Field({ nullable: true })
+  @MaxLength(25)
+  orderNo?: string;
 }
