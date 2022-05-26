@@ -41,4 +41,8 @@ export class SoObatProsesMaterialInput
   @Field({ nullable: true })
   @MaxLength(50)
   lotBatchNo?: string;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  berat?: number;
 }

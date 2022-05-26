@@ -22,6 +22,7 @@ export class SoObatProsesResolver {
       :qtyRequired,
       :scrapFactor,
       :scrapComponent,
+      :berat,
       :structureLineNo);
     END;
   `;
@@ -33,6 +34,7 @@ export class SoObatProsesResolver {
         input.qtyRequired,
         input.scrapFactor,
         input.scrapComponent,
+        input.berat,
         input.structureLineNo
       ]);
 
@@ -66,6 +68,7 @@ export class SoObatProsesResolver {
       :contract,
       :orderNo,
       :lineItemNo,
+      :berat,
       :qtyRequired);
     END;
   `;
@@ -74,6 +77,7 @@ export class SoObatProsesResolver {
         input.contract,
         input.orderNo,
         input.lineItemNo,
+        input.berat,
         input.qtyRequired
       ]);
 
