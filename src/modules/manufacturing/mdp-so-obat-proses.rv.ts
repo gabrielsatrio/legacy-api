@@ -24,6 +24,45 @@ export class SoObatProsesResolver {
 
   @Mutation(() => SoObatProses)
   @UseMiddleware(isAuth)
+  async receiveSoObatProses(
+    @Arg('orderNo') orderNo: string,
+    @Arg('qtyReceive') qtyReceive: number,
+    @Arg('lotReceive') lotReceive: string,
+    @Arg('locationReceive') locationReceive: string,
+    @Arg('lotSourceReceive') lotSourceReceive: string
+  ): Promise<SoObatProses | null> {
+    try {
+      const sql = `
+    BEGIN
+    CHR_SO_OBAT_API.ISSUE_RECEIVE_SO(
+      :orderNo,
+      :qtyReceive,
+      :lotReceive,
+      :locationReceive,
+      :lotSourceReceive);
+    END;
+  `;
+
+      await ifs.query(sql, [
+        orderNo,
+        qtyReceive,
+        lotReceive,
+        locationReceive,
+        lotSourceReceive
+      ]);
+
+      const data = await SoObatProses.findOneBy({
+        orderNo: orderNo
+      });
+
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => SoObatProses)
+  @UseMiddleware(isAuth)
   async createSoObatProses(
     @Arg('input') input: SoObatProsesInput
   ): Promise<SoObatProses | null> {
