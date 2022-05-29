@@ -32,6 +32,10 @@ export class EmployeeView extends BaseEntity {
   @Column({ name: 'ORGANIZATION_NAME' })
   organizationName!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT_ID' })
+  departmentId?: string;
+
   @Field()
   @Column({ name: 'GRADE' })
   grade!: number;
