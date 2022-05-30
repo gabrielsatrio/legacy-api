@@ -204,23 +204,27 @@ export class AuthResolver {
   @Mutation(() => User)
   async changeUserPassword(
     @Arg('username') username: string,
-    @Arg('currentPassword') currentPassword: string,
+    @Arg('currentPassword', { nullable: true }) currentPassword: string,
     @Arg('newPassword') newPassword: string,
     @Arg('confirmPassword') confirmPassword: string
   ): Promise<User | undefined> {
     try {
       const data = await User.findOneBy({ username });
       if (!data) throw new Error('Username does not exists.');
-      const valid = await argon2.verify(data.password, currentPassword);
+      if (currentPassword) {
+        const valid = await argon2.verify(data.password, currentPassword);
+        if (!valid) throw new Error('Invalid current password.');
+      }
       if (newPassword.length < 6) {
         throw new Error('Password must be at least 6 characters.');
-      } else if (newPassword != confirmPassword) {
+      } else if (newPassword !== confirmPassword) {
         throw new Error('Confirm password does not match.');
-      } else if (!valid) {
-        throw new Error('Invalid current password.');
       }
       const hashedPassword = await argon2.hash(newPassword);
-      User.merge(data, { password: hashedPassword });
+      User.merge(data, {
+        password: hashedPassword,
+        forceChgPassw: false
+      });
       const results = await User.save(data);
       return results;
     } catch (err) {
