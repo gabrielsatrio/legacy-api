@@ -17,7 +17,7 @@ export class ServicePrMapView extends BaseEntity {
   releaseNo!: string;
 
   @Field()
-  @Column({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
 
   @Field({ nullable: true })

@@ -26,4 +26,7 @@ export class UserInput implements Partial<User> {
   @MinLength(5)
   @MaxLength(8)
   ifsUsername!: string;
+
+  @Field()
+  forceChgPassw!: boolean;
 }
