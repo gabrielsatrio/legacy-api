@@ -48,8 +48,6 @@ export class SoObatProsesResolver {
         lineItemNo: maxLine[0].max
       });
 
-      console.log(maxLine[0].max);
-
       return data;
     } catch (err) {
       throw new Error(mapError(err));
