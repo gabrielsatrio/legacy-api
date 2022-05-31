@@ -42,6 +42,11 @@ export class User extends BaseEntity {
 
   @Field()
   @Index()
+  @Column({ name: 'FORCE_CHG_PASSW', default: 1 })
+  forceChgPassw!: boolean;
+
+  @Field()
+  @Index()
   @Column({ name: 'STATUS', default: 'Active' })
   status!: 'Active' | 'Inactive';
 
