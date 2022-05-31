@@ -7,6 +7,7 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
 import { SoObatProses } from './entities/mdp-so-obat-proses';
 import { SoObatProsesInput } from './mdp-so-obat-proses.in';
+import { SoObatProsesReceiveInput } from './mdp-so-obat-receive.in';
 
 @Resolver(SoObatProses)
 export class SoObatProsesResolver {
@@ -22,14 +23,21 @@ export class SoObatProsesResolver {
     });
   }
 
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getGenerateLot(
+    @Arg('orderNo') orderNo: string
+  ): Promise<string | undefined> {
+    const sql = `select ATJ_LOT_BATCH_API.generate(:p_order_no) as "department" from dual `;
+    const username = await ifs.query(sql, [orderNo]);
+
+    return username[0].department;
+  }
+
   @Mutation(() => SoObatProses)
   @UseMiddleware(isAuth)
   async receiveSoObatProses(
-    @Arg('orderNo') orderNo: string,
-    @Arg('qtyReceive') qtyReceive: number,
-    @Arg('lotReceive') lotReceive: string,
-    @Arg('locationReceive') locationReceive: string,
-    @Arg('lotSourceReceive') lotSourceReceive: string
+    @Arg('input') input: SoObatProsesReceiveInput
   ): Promise<SoObatProses | null> {
     try {
       const sql = `
@@ -44,15 +52,15 @@ export class SoObatProsesResolver {
   `;
 
       await ifs.query(sql, [
-        orderNo,
-        qtyReceive,
-        lotReceive,
-        locationReceive,
-        lotSourceReceive
+        input.orderNo,
+        input.qtyReceive,
+        input.lotReceive,
+        input.locationReceive,
+        input.lotSourceReceive
       ]);
 
       const data = await SoObatProses.findOneBy({
-        orderNo: orderNo
+        orderNo: input.orderNo
       });
 
       return data;
