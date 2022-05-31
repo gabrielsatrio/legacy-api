@@ -1,0 +1,26 @@
+import { Field, ObjectType } from 'type-graphql';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+
+@Entity('ANG_BON_MAKAN_WEND_V')
+@ObjectType()
+export class BonMakanWeekendView extends BaseEntity {
+  @Field()
+  @PrimaryColumn({ name: 'ID' })
+  id!: number;
+
+  @Field()
+  @Column({ name: 'DEPT' })
+  dept!: string;
+
+  @Field()
+  @Column({ name: 'PLANT' })
+  plant!: string;
+
+  @Field()
+  @Column({ name: 'TANGGAL' })
+  tanggal!: Date;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
+}

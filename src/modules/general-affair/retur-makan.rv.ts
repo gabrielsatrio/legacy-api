@@ -1,0 +1,78 @@
+import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { ReturMakan } from './entities/retur-makan';
+import { ReturMakanView } from './entities/retur-makan.vw';
+import { ReturMakanInput } from './retur-makan.in';
+
+@Resolver(ReturMakan)
+export class ReturMakanResolver {
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async checkReturMakanExist(@Arg('id') id: number): Promise<boolean> {
+    return (await this.getReturMakan(id)) ? true : false;
+  }
+
+  @Query(() => [ReturMakanView])
+  @UseMiddleware(isAuth)
+  async getAllReturMakan(): Promise<ReturMakanView[] | undefined> {
+    return await ReturMakan.find();
+  }
+
+  @Query(() => ReturMakanView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getReturMakan(@Arg('id') id: number): Promise<ReturMakanView | null> {
+    return await ReturMakanView.findOneBy({ id });
+  }
+
+  @Mutation(() => ReturMakan)
+  @UseMiddleware(isAuth)
+  async createReturMakan(
+    @Arg('input') input: ReturMakanInput
+  ): Promise<ReturMakan | undefined> {
+    try {
+      const existingData = await ReturMakan.findOneBy({
+        id: input.id
+      });
+      if (existingData) throw new Error('Data already exists.');
+      const data = ReturMakan.create({
+        ...input
+      });
+      const result = await ReturMakan.save(data);
+      return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ReturMakan, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateReturMakan(
+    @Arg('input') input: ReturMakanInput
+  ): Promise<ReturMakan | undefined> {
+    try {
+      const data = await ReturMakan.findOneBy({
+        id: input.id
+      });
+      if (!data) throw new Error('No data found.');
+      ReturMakan.merge(data, { ...input });
+      const result = await ReturMakan.save(data);
+      return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ReturMakan)
+  @UseMiddleware(isAuth)
+  async deleteReturMakan(@Arg('id') id: number): Promise<ReturMakan> {
+    try {
+      const data = await ReturMakan.findOneBy({ id });
+      if (!data) throw new Error('No data found.');
+      await ReturMakan.delete({ id });
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+}
