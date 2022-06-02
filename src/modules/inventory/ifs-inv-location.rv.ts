@@ -4,7 +4,7 @@ import { In, Like } from 'typeorm';
 import { IfsInvLocationView } from './entities/ifs-inv-location.vw';
 
 @Resolver(IfsInvLocationView)
-export class IfsInventoryPartResolver {
+export class IfsInventoryLocationResolver {
   @Query(() => [IfsInvLocationView], { nullable: true })
   @UseMiddleware(isAuth)
   async getInventoryLocationByDept(
