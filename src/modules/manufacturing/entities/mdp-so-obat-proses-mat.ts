@@ -40,7 +40,7 @@ export class SoObatProsesMaterial extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'QTY_ASM' })
-  qtyAsm?: number;
+  qtyPerAssembly?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'BERAT' })

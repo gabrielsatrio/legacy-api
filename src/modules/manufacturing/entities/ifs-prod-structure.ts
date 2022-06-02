@@ -18,7 +18,7 @@ export class IfsProdStructureView extends BaseEntity {
 
   @Field()
   @Column({ name: 'QTY_PER_ASSEMBLY' })
-  qtyAsm!: number;
+  qtyPerAssembly!: number;
 
   @Field()
   @Column({ name: 'COMPONENT_SCRAP' })
@@ -30,5 +30,5 @@ export class IfsProdStructureView extends BaseEntity {
 
   @Field()
   @Column({ name: 'ALTERNATIVE_NO' })
-  alternate!: string;
+  alternativeNo!: string;
 }

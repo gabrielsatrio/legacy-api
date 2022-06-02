@@ -10,7 +10,7 @@ export class IfsManufStructAlternateView extends BaseEntity {
 
   @Field()
   @Column({ name: 'ALTERNATIVE_NO' })
-  alternate!: string;
+  alternativeNo!: string;
 
   @Field()
   @Column({ name: 'STATE' })

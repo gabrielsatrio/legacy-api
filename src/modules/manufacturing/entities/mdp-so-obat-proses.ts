@@ -27,7 +27,7 @@ export class SoObatProses extends BaseEntity {
 
   @Field()
   @Column({ name: 'ALTERNATE' })
-  alternate!: string;
+  alternativeNo!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })

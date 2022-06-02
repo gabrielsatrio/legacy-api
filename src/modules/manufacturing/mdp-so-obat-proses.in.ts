@@ -22,7 +22,7 @@ export class SoObatProsesInput implements Partial<SoObatProses> {
 
   @Field()
   @MaxLength(5)
-  alternate!: string;
+  alternativeNo!: string;
 
   @Field({ nullable: true })
   @MaxLength(200)

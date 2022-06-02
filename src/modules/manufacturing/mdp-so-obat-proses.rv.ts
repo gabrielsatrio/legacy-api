@@ -28,10 +28,14 @@ export class SoObatProsesResolver {
   async getGenerateLot(
     @Arg('orderNo') orderNo: string
   ): Promise<string | undefined> {
-    const sql = `select ATJ_LOT_BATCH_API.generate(:p_order_no) as "department" from dual `;
-    const username = await ifs.query(sql, [orderNo]);
+    try {
+      const sql = `select ATJ_LOT_BATCH_API.generate(:p_order_no) as "lot" from dual `;
+      const generate = await ifs.query(sql, [orderNo]);
 
-    return username[0].department;
+      return generate[0].lot;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => SoObatProses)
@@ -82,7 +86,7 @@ export class SoObatProsesResolver {
       :partNo,
       :needDate,
       :qty,
-      :alternate,
+      :alternativeNo,
       :note,
       :tipe,
       :mesin,
@@ -95,7 +99,7 @@ export class SoObatProsesResolver {
         input.partNo,
         moment(input.needDate).format('MM/DD/YY'),
         input.qty,
-        input.alternate,
+        input.alternativeNo,
         input.note,
         input.tipe,
         input.mesin,
