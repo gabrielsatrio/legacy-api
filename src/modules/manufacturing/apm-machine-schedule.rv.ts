@@ -4,25 +4,26 @@ import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { MachineScheduleInput } from './apm-machine-schedule.in';
 import { MachineSchedule } from './entities/apm-machine-schedule';
+import { MachineScheduleView } from './entities/apm-machine-schedule.vw';
 
 @Resolver(MachineSchedule)
 export class MachineScheduleResolver {
-  @Query(() => [MachineSchedule])
+  @Query(() => [MachineScheduleView])
   @UseMiddleware(isAuth)
   async getMachScheduleByContract(
     @Arg('contract') contract: string
-  ): Promise<MachineSchedule[] | undefined> {
-    return await MachineSchedule.find({
+  ): Promise<MachineScheduleView[] | undefined> {
+    return await MachineScheduleView.find({
       where: { contract },
       order: { scheduleId: 'ASC' }
     });
   }
 
-  @Mutation(() => MachineSchedule)
+  @Mutation(() => MachineScheduleView)
   @UseMiddleware(isAuth)
   async createMachSchedule(
     @Arg('input') input: MachineScheduleInput
-  ): Promise<MachineSchedule | null> {
+  ): Promise<MachineScheduleView | null> {
     try {
       const sql = `SELECT ROB_APM_Schedule_SEQ.NEXTVAL AS "id" FROM DUAL`;
       const response = await ifs.query(sql);
@@ -33,7 +34,7 @@ export class MachineScheduleResolver {
         updatedAt: new Date()
       });
       await MachineSchedule.save(data);
-      const result = await MachineSchedule.findOneBy({
+      const result = await MachineScheduleView.findOneBy({
         scheduleId: response[0].id
       });
       return result;
@@ -42,30 +43,33 @@ export class MachineScheduleResolver {
     }
   }
 
-  @Mutation(() => MachineSchedule, { nullable: true })
+  @Mutation(() => MachineScheduleView, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMachSchedule(
     @Arg('scheduleId') scheduleId: number,
     @Arg('input') input: MachineScheduleInput
-  ): Promise<MachineSchedule | null> {
+  ): Promise<MachineScheduleView | null> {
     try {
       const data = await MachineSchedule.findOneBy({ scheduleId });
       if (!data) throw new Error('No data found.');
       MachineSchedule.merge(data, { ...input });
-      const result = await MachineSchedule.save(data);
+      const response = await MachineSchedule.save(data);
+      const result = await MachineScheduleView.findOneBy({
+        scheduleId: response.scheduleId
+      });
       return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => MachineSchedule)
+  @Mutation(() => MachineScheduleView)
   @UseMiddleware(isAuth)
   async deleteMachSchedule(
     @Arg('scheduleId') scheduleId: number
-  ): Promise<MachineSchedule> {
+  ): Promise<MachineScheduleView> {
     try {
-      const data = await MachineSchedule.findOneBy({ scheduleId });
+      const data = await MachineScheduleView.findOneBy({ scheduleId });
       if (!data) throw new Error('No data found.');
       await MachineSchedule.delete({ scheduleId });
       return data;
