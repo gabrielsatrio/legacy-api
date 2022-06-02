@@ -1,6 +1,14 @@
+<a name="2.10.0"></a>
+
+# [2.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-31)
+
+### Features
+
+- [**M017**] **MDP**: finish MDP module.
+
 <a name="2.9.0"></a>
 
-# [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-30)
+# [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/155) (2022-05-30)
 
 ### Features
 
@@ -18,7 +26,7 @@
 
 <a name="2.8.2"></a>
 
-# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/152) (2022-05-23)
+# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/153) (2022-05-23)
 
 ### Bug Fixes
 
