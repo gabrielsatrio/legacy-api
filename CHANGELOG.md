@@ -1,6 +1,32 @@
+<a name="2.10.0"></a>
+
+# [2.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-31)
+
+### Features
+
+- [**M017**] **MDP**: finish MDP module.
+
+<a name="2.9.0"></a>
+
+# [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/155) (2022-05-30)
+
+### Features
+
+- [**HR**] **employees**: add new info (**departmentId**).
+- [**HR**] **employees-mv**: add new entity and resolver for **ATJ_EMPLOYEE_MV**.
+- [**AUTH**] **login**: user can be forced to change the default password.
+
+### Bug Fixes
+
+- [**HR**] **technicians**: fix typo.
+- [**INV**] **internal-customers**: fix no data AGT included.
+- [**M001**] **apm-service-pr-map**: fix some data not found.
+- [**M001**] **apm-service-pr-map**: fix data filtering to show data NIP only.
+- [**M013**] **apm-requisitions**: fix return null when no data found.
+
 <a name="2.8.2"></a>
 
-# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/152) (2022-05-23)
+# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/153) (2022-05-23)
 
 ### Bug Fixes
 
