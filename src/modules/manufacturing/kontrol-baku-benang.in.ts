@@ -27,6 +27,7 @@ export class KontrolBakuBenangInput implements Partial<KontrolBakuBenang> {
   @Field()
   @MaxLength(10)
   diameter!: string;
+
   @Field()
   @IsDate()
   createdAt!: Date;

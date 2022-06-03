@@ -19,11 +19,21 @@ import { KontrolBakuBenangInput } from './kontrol-baku-benang.in';
 export class KontrolBakuBenangResolver {
   @Query(() => [KontrolBakuBenang], { nullable: true })
   @UseMiddleware(isAuth)
-  async getKontrolBakuBenang(
+  async getKontrolBakuBenangByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<KontrolBakuBenang[] | undefined> {
     return await KontrolBakuBenang.findBy({
       contract: In(contract)
+    });
+  }
+
+  @Query(() => KontrolBakuBenang, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getKontrolBakuBenang(
+    @Arg('id', () => Number) id: number
+  ): Promise<KontrolBakuBenang | null> {
+    return await KontrolBakuBenang.findOneBy({
+      id
     });
   }
 
