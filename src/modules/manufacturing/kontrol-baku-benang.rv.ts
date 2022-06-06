@@ -37,6 +37,16 @@ export class KontrolBakuBenangResolver {
     });
   }
 
+  @Query(() => KontrolBakuBenang, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getKontrolBakuBenangByOrderNo(
+    @Arg('orderNo', () => String) orderNo: string
+  ): Promise<KontrolBakuBenang | null> {
+    return await KontrolBakuBenang.findOneBy({
+      orderNo
+    });
+  }
+
   @Mutation(() => KontrolBakuBenang)
   @UseMiddleware(isAuth)
   async createKontrolBakuBenang(
