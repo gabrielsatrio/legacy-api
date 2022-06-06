@@ -1,3 +1,11 @@
+<a name="2.11.0"></a>
+
+# [2.11.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/158) (2022-06-06)
+
+### Features
+
+- [**M018**] **kontrol-baku-benang**: Add new module kontrol baku benang for yarn dept.
+
 <a name="2.10.0"></a>
 
 # [2.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-31)
