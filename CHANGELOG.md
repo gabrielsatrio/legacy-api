@@ -1,3 +1,11 @@
+<a name="2.11.1"></a>
+
+# [2.11.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/160) (2022-06-06)
+
+### Bug Fixes
+
+- [**M017**] **mdp**: add description entity.
+
 <a name="2.11.0"></a>
 
 # [2.11.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/158) (2022-06-06)

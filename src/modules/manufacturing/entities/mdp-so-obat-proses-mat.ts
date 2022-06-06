@@ -30,6 +30,10 @@ export class SoObatProsesMaterial extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
+  @Field()
+  @Column({ name: 'PART_DESCRIPTION' })
+  partDescription!: string;
+
   @Field({ nullable: true })
   @Column({ name: 'SCRAP_FACTOR' })
   scrapFactor?: number;
