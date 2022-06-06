@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('PROD_STRUCTURE')
+@Entity('ATJ_PROD_STRUCTURE_V')
 @ObjectType()
 export class IfsProdStructureView extends BaseEntity {
   @Field()
@@ -15,6 +15,10 @@ export class IfsProdStructureView extends BaseEntity {
   @Field()
   @Column({ name: 'COMPONENT_PART' })
   componentPart!: string;
+
+  @Field()
+  @Column({ name: 'COMP_DESC' })
+  componentDesc!: string;
 
   @Field()
   @Column({ name: 'QTY_PER_ASSEMBLY' })
