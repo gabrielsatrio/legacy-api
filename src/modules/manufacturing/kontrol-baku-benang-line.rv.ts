@@ -1,6 +1,6 @@
+import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { isAuth } from '../../middlewares/is-auth';
-import { mapError } from '../../utils/map-error';
 import { KontrolBakuBenangLine } from './entities/kontrol-baku-benang-line';
 import { KontrolBakuBenangLineInput } from './kontrol-baku-benang-line.in';
 

@@ -45,7 +45,4 @@ export class KontrolBakuBenangLineInput
   @Field({ nullable: true })
   @IsNumber()
   remainingQty?: number;
-  @Field({ nullable: true })
-  @IsDate()
-  createdAt?: Date;
 }

@@ -1,4 +1,7 @@
+import { ifs } from '@/database/data-sources';
+import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
+import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -9,9 +12,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { ifs } from '../../database/data-sources';
-import { isAuth } from '../../middlewares/is-auth';
-import { mapError } from '../../utils/map-error';
 import { KontrolBakuBenang } from './entities/kontrol-baku-benang';
 import { KontrolBakuBenangInput } from './kontrol-baku-benang.in';
 
