@@ -1,3 +1,11 @@
+<a name="2.12.0"></a>
+
+# [2.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/162) (2022-06-07)
+
+### Features
+
+- [**M017**] **mdp**: add Sync SO from IFS
+
 <a name="2.11.1"></a>
 
 # [2.11.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/160) (2022-06-06)
