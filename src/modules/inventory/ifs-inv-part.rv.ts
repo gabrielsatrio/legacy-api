@@ -2,7 +2,7 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Brackets, In, Like } from 'typeorm';
+import { Brackets, In, Like, Not } from 'typeorm';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 
 @Resolver(IfsInventoryPartView)
@@ -88,7 +88,11 @@ export class IfsInventoryPartResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<IfsInventoryPartView[] | null> {
     return await IfsInventoryPartView.find({
-      where: { contract: In(contract), partStatus: 'A', partNo: Like('S__-%') },
+      where: {
+        contract: In(contract),
+        partStatus: Not('O'),
+        partNo: Like('S__-%')
+      },
       order: { partNo: 'ASC', contract: 'ASC' }
     });
   }
