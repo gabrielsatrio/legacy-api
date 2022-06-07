@@ -119,6 +119,31 @@ export class SoObatProsesResolver {
 
   @Mutation(() => SoObatProses)
   @UseMiddleware(isAuth)
+  async syncSOIfs(
+    @Arg('orderNo') orderNo: string
+  ): Promise<SoObatProses | null> {
+    try {
+      const sql = `
+    BEGIN
+    CHR_SO_OBAT_API.MIRROR_SO_FR_IFS(
+      :orderNo);
+    END;
+  `;
+
+      await ifs.query(sql, [orderNo]);
+
+      const data = await SoObatProses.findOneBy({
+        orderNo: orderNo
+      });
+
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => SoObatProses)
+  @UseMiddleware(isAuth)
   async deleteSoObatProses(
     @Arg('orderNo') orderNo: string
   ): Promise<SoObatProses | null> {
