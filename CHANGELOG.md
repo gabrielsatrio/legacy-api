@@ -1,3 +1,11 @@
+<a name="2.13.1"></a>
+
+# [2.13.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/166) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix order by `lineItemNo` when query the data for **Spare Parts Requisition Lines**.
+
 <a name="2.13.0"></a>
 
 # [2.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/164) (2022-06-07)
