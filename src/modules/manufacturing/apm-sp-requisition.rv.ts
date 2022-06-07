@@ -154,8 +154,9 @@ export class SparePartRequisitionResolver {
         outOrderNo = result[0] as string;
         if (outOrderNo) {
           input.orderNo = outOrderNo;
-          const requisLines = await SparePartReqLine.findBy({
-            requisitionId: input.requisitionId
+          const requisLines = await SparePartReqLine.find({
+            where: { requisitionId: input.requisitionId },
+            order: { requisitionId: 'ASC', lineItemNo: 'ASC' }
           });
           await Promise.all(
             requisLines.map(async (item) => {
