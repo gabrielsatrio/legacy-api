@@ -1,3 +1,11 @@
+<a name="2.13.2"></a>
+
+# [2.13.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/168) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: all inactive parts will be included to be used in the spare part requisition.
+
 <a name="2.13.1"></a>
 
 # [2.13.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/166) (2022-06-07)
