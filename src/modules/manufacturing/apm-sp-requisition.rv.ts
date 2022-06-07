@@ -125,9 +125,10 @@ export class SparePartRequisitionResolver {
         requisitionId: input.requisitionId
       });
       if (!data) throw new Error('No data found.');
+      let sql: string;
       let outOrderNo: string;
-      if (input.status === 'Approved' || input.urgent) {
-        let sql = `
+      if (!input.orderNo && (input.status === 'Approved' || input.urgent)) {
+        sql = `
           BEGIN
             ATJ_Material_Requisition_API.New__(
               :contract,
@@ -193,19 +194,19 @@ export class SparePartRequisitionResolver {
               ]);
             })
           );
-          if (input.status === 'Approved') {
-            sql = `
-              BEGIN
-                ATJ_Material_Requisition_API.Release__(:orderNo);
-              EXCEPTION
-                WHEN OTHERS THEN
-                  ROLLBACK;
-                  RAISE;
-              END;
-            `;
-            await ifs.query(sql, [outOrderNo]);
-          }
         }
+      }
+      if (input.orderNo && input.status === 'Approved') {
+        sql = `
+          BEGIN
+            ATJ_Material_Requisition_API.Release__(:orderNo);
+          EXCEPTION
+            WHEN OTHERS THEN
+              ROLLBACK;
+              RAISE;
+          END;
+        `;
+        await ifs.query(sql, [input.orderNo]);
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);

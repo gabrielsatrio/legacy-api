@@ -1,3 +1,15 @@
+<a name="2.13.0"></a>
+
+# [2.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/164) (2022-06-07)
+
+### Features
+
+- [**M001**] **apm-maintenance-schedules**: add new services.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue which MR was created multiple times when user is selecting the Urgent option.
+
 <a name="2.12.0"></a>
 
 # [2.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/162) (2022-06-07)
