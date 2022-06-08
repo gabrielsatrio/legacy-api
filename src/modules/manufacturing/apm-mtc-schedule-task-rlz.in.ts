@@ -1,8 +1,9 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
+import { MtcScheduleTaskRlz } from './entities/apm-mtc-schedule-task-rlz';
 
 @InputType()
-export class MtcScheduleTaskRlz implements Partial<MtcScheduleTaskRlz> {
+export class MtcScheduleTaskRlzInput implements Partial<MtcScheduleTaskRlz> {
   @Field()
   @IsNumber()
   stId!: number;
