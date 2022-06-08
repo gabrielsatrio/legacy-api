@@ -1,3 +1,11 @@
+<a name="2.15.0"></a>
+
+# [2.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/172) (2022-06-08)
+
+### Features
+
+- [**M001**] **apm-schedules**: add new services for Maintenance Schedule Task Realization.
+
 <a name="2.14.0"></a>
 
 # [2.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/170) (2022-06-08)

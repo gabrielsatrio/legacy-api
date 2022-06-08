@@ -6,10 +6,6 @@ import { MtcScheduleTask } from './entities/apm-mtc-schedule-task';
 export class MtcScheduleTaskInput implements Partial<MtcScheduleTask> {
   @Field()
   @IsNumber()
-  stId!: number;
-
-  @Field()
-  @IsNumber()
   scheduleId!: number;
 
   @Field()
@@ -35,7 +31,4 @@ export class MtcScheduleTaskInput implements Partial<MtcScheduleTask> {
   @Field({ nullable: true })
   @MaxLength(5)
   performedBy?: string;
-  @Field()
-  @IsDate()
-  createdAt!: Date;
 }
