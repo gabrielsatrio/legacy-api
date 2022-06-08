@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { customEmail } from '@/utils/custom-email';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { In } from 'typeorm';
 import { User } from '../core/entities/user';
 import { EmployeeMaterializedView } from './entities/employee.mv';
 
@@ -31,5 +32,17 @@ export class EmployeeMaterializedViewResolver {
       (employee) => (employee.email = customEmail(employee.email))
     );
     return unregisteredUsers;
+  }
+
+  @Query(() => [EmployeeMaterializedView])
+  @UseMiddleware(isAuth)
+  async getEmployeesByGradeWorkLocation(
+    @Arg('grade', () => [String]) grade: string[],
+    @Arg('workLocation', () => [String]) workLocation: string[]
+  ): Promise<EmployeeMaterializedView[]> {
+    return await EmployeeMaterializedView.find({
+      where: { grade: In(grade), workLocation: In(workLocation) },
+      order: { name: 'ASC' }
+    });
   }
 }
