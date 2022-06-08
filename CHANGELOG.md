@@ -1,8 +1,8 @@
-<a name="2.13.3"></a>
+<a name="2.14.0"></a>
 
-# [2.13.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/170) (2022-06-08)
+# [2.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/170) (2022-06-08)
 
-### Other Changes
+### BREAKING CHANGES
 
 - [**HR**] **employees**: move `getEmployeesByGradeWorkLocation` to the MV resolver.
 
