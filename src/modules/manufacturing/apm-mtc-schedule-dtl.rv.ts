@@ -68,12 +68,13 @@ export class MtcScheduleDtlDtlResolver {
   @Mutation(() => MtcScheduleDtlView, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMtcScheduleDtl(
-    @Arg('scheduleId') scheduleId: number,
-    @Arg('periodId') periodId: string,
     @Arg('input') input: MtcScheduleDtlInput
   ): Promise<MtcScheduleDtlView | null> {
     try {
-      const data = await MtcScheduleDtl.findOneBy({ scheduleId, periodId });
+      const data = await MtcScheduleDtl.findOneBy({
+        scheduleId: input.scheduleId,
+        periodId: input.periodId
+      });
       if (!data) throw new Error('No data found.');
       MtcScheduleDtl.merge(data, { ...input });
       const response = await MtcScheduleDtl.save(data);

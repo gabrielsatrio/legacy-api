@@ -258,7 +258,8 @@ export class SparePartRequisitionResolver {
             creator?.email || '',
             `Spare Part Requisition No ${requisitionId} has been Approved`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</p>`
+            <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</br>
+            You can find all the details by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</p>`
           );
           break;
         case 'Rejected':
@@ -266,7 +267,8 @@ export class SparePartRequisitionResolver {
             creator?.email || '',
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</p>`
+            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</br>
+            You can find all the details by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</p>`
           );
           break;
         default:
