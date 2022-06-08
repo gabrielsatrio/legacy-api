@@ -43,18 +43,6 @@ export class EmployeeResolver {
 
   @Query(() => [EmployeeView])
   @UseMiddleware(isAuth)
-  async getEmployeesByGradeWorkLocation(
-    @Arg('grade', () => [String]) grade: string[],
-    @Arg('workLocation', () => [String]) workLocation: string[]
-  ): Promise<EmployeeView[]> {
-    return await EmployeeView.find({
-      where: { grade: In(grade), workLocation: In(workLocation) },
-      order: { name: 'ASC' }
-    });
-  }
-
-  @Query(() => [EmployeeView])
-  @UseMiddleware(isAuth)
   async getEmployeesByOrg(
     @Arg('workLocation') workLocation: string,
     @Arg('organizationName') organizationName: string
