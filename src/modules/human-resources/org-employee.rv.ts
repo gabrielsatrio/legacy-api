@@ -2,7 +2,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { getEmail } from '@/utils/get-email';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { EmployeeView } from './entities/org-employee.vw';
 
 @Resolver(EmployeeView)
@@ -43,6 +43,22 @@ export class EmployeeResolver {
     try {
       return await EmployeeView.find({
         where: { grade: In(grade) },
+        order: { name: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [EmployeeView])
+  @UseMiddleware(isAuth)
+  async getEmployeesByOrg(
+    @Arg('workLocation') workLocation: string,
+    @Arg('organizationName') organizationName: string
+  ): Promise<EmployeeView[]> {
+    try {
+      return await EmployeeView.find({
+        where: { workLocation, organizationName: Like(organizationName) },
         order: { name: 'ASC' }
       });
     } catch (err) {
