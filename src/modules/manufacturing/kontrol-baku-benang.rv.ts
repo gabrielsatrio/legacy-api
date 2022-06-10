@@ -22,9 +22,13 @@ export class KontrolBakuBenangResolver {
   async getKontrolBakuBenangByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<KontrolBakuBenang[] | undefined> {
-    return await KontrolBakuBenang.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await KontrolBakuBenang.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => KontrolBakuBenang, { nullable: true })
@@ -32,9 +36,13 @@ export class KontrolBakuBenangResolver {
   async getKontrolBakuBenang(
     @Arg('id', () => Number) id: number
   ): Promise<KontrolBakuBenang | null> {
-    return await KontrolBakuBenang.findOneBy({
-      id
-    });
+    try {
+      return await KontrolBakuBenang.findOneBy({
+        id
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => KontrolBakuBenang, { nullable: true })
@@ -42,9 +50,13 @@ export class KontrolBakuBenangResolver {
   async getKontrolBakuBenangByOrderNo(
     @Arg('orderNo', () => String) orderNo: string
   ): Promise<KontrolBakuBenang | null> {
-    return await KontrolBakuBenang.findOneBy({
-      orderNo
-    });
+    try {
+      return await KontrolBakuBenang.findOneBy({
+        orderNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => KontrolBakuBenang)

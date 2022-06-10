@@ -11,9 +11,13 @@ export class KontrolBakuBenangLineResolver {
   async getKontrolBakuBenangLine(
     @Arg('idKontrol', () => Number) idKontrol: number
   ): Promise<KontrolBakuBenangLine[] | undefined> {
-    return await KontrolBakuBenangLine.findBy({
-      idKontrol
-    });
+    try {
+      return await KontrolBakuBenangLine.findBy({
+        idKontrol
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => KontrolBakuBenangLine, { nullable: true })

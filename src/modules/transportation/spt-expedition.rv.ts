@@ -11,7 +11,11 @@ export class ExpeditionResolver {
   @Query(() => [Expedition])
   @UseMiddleware(isAuth)
   async getAllExpeditions(): Promise<Expedition[] | undefined> {
-    return await Expedition.find();
+    try {
+      return await Expedition.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Expedition, { nullable: true })
