@@ -1,7 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
-import { mapError } from '../../utils/map-error';
 import { AssignView } from './entities/spt-assign-view';
 
 @Resolver(AssignView)
