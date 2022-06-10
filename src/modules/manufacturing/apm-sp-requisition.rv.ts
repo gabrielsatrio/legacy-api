@@ -43,10 +43,14 @@ export class SparePartRequisitionResolver {
   async getSPRequisitions(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<SparePartRequisition[] | undefined> {
-    return await SparePartRequisition.find({
-      where: { contract: In(contract) },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartRequisition.find({
+        where: { contract: In(contract) },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [SparePartRequisitionView])
@@ -54,10 +58,14 @@ export class SparePartRequisitionResolver {
   async getSPRequisitionsByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<SparePartRequisitionView[] | undefined> {
-    return await SparePartRequisitionView.find({
-      where: { contract: In(contract) },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartRequisitionView.find({
+        where: { contract: In(contract) },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => SparePartRequisitionView, { nullable: true })
@@ -65,7 +73,11 @@ export class SparePartRequisitionResolver {
   async getSPRequisition(
     @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartRequisitionView | null> {
-    return await SparePartRequisitionView.findOneBy({ requisitionId });
+    try {
+      return await SparePartRequisitionView.findOneBy({ requisitionId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Int)

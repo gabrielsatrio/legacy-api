@@ -13,10 +13,14 @@ export class MachineScheduleResolver {
   async getMachScheduleByContract(
     @Arg('contract') contract: string
   ): Promise<MachineScheduleView[] | undefined> {
-    return await MachineScheduleView.find({
-      where: { contract },
-      order: { scheduleId: 'ASC' }
-    });
+    try {
+      return await MachineScheduleView.find({
+        where: { contract },
+        order: { scheduleId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => MachineScheduleView)

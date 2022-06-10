@@ -1,5 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { EmployeeView } from '@/modules/human-resources/entities/org-employee.vw';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { TechnicianView } from './entities/technician.vw';
 
@@ -10,10 +11,14 @@ export class TechnicianResolver {
   async getTechnicians(
     @Arg('workLocation') workLocation: string
   ): Promise<EmployeeView[]> {
-    const technicians = await TechnicianView.find({
-      where: { workLocation },
-      order: { name: 'ASC' }
-    });
-    return technicians;
+    try {
+      const technicians = await TechnicianView.find({
+        where: { workLocation },
+        order: { name: 'ASC' }
+      });
+      return technicians;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }

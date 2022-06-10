@@ -12,19 +12,27 @@ export class UserResolver {
   @Query(() => [User])
   @UseMiddleware(isAuth)
   async getUsers(): Promise<User[]> {
-    return await User.find({
-      relations: { contracts: true },
-      order: { username: 'ASC' }
-    });
+    try {
+      return await User.find({
+        relations: { contracts: true },
+        order: { username: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   async getUser(@Arg('username') username: string): Promise<User | null> {
-    return await User.findOne({
-      relations: { contracts: true },
-      where: { username }
-    });
+    try {
+      return await User.findOne({
+        relations: { contracts: true },
+        where: { username }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => User)
