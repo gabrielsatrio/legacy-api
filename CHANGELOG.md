@@ -10,6 +10,7 @@
 - [**M009**] **inspek-qc**: add try catch to resolvers.
 - [**M011**] **jadwal-emad**: add try catch to resolvers.
 - [**M014**] **warping**: add try catch to resolvers.
+- [**M018**] **kontrol-baku-benang**: add try catch to resolvers.
 - [**T001**] **spt**: add try catch to resolvers.
 
 <a name="2.15.1"></a>
