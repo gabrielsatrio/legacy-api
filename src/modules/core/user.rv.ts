@@ -36,6 +36,7 @@ export class UserResolver {
         BEGIN
           ATJ_AUTH_API.Register(:username,
             :password,
+            :email,
             :departmentId,
             :usernameDb,
             :ifsUsername,
@@ -45,6 +46,7 @@ export class UserResolver {
       const result = await ifs.query(sql, [
         input.username,
         hashedPassword,
+        input.email,
         input.departmentId,
         input.usernameDb,
         input.ifsUsername,
