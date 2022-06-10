@@ -24,11 +24,15 @@ export class MachineMaintenanceResolver {
     @Arg('lineNo') lineNo: string,
     @Arg('releaseNo') releaseNo: string
   ): Promise<MachineMaintenanceView[] | undefined> {
-    return await MachineMaintenanceView.findBy({
-      prNo: requisitionNo,
-      prLineNo: lineNo,
-      prReleaseNo: releaseNo
-    });
+    try {
+      return await MachineMaintenanceView.findBy({
+        prNo: requisitionNo,
+        prLineNo: lineNo,
+        prReleaseNo: releaseNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MachineMaintenanceView])
@@ -37,10 +41,14 @@ export class MachineMaintenanceResolver {
     @Arg('contract') contract: string,
     @Arg('machineId') machineId: string
   ): Promise<MachineMaintenanceView[] | undefined> {
-    return await MachineMaintenanceView.find({
-      where: { contract, machineId, categoryId: 'SNP' },
-      order: { maintenanceId: 'ASC' }
-    });
+    try {
+      return await MachineMaintenanceView.find({
+        where: { contract, machineId, categoryId: 'SNP' },
+        order: { maintenanceId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => MachineMaintenanceView)

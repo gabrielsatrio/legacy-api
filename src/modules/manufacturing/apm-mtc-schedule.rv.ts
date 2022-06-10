@@ -13,10 +13,14 @@ export class MtcScheduleResolver {
   async getMtcScheduleByContract(
     @Arg('contract') contract: string
   ): Promise<MtcScheduleView[] | undefined> {
-    return await MtcScheduleView.find({
-      where: { contract },
-      order: { scheduleId: 'ASC' }
-    });
+    try {
+      return await MtcScheduleView.find({
+        where: { contract },
+        order: { scheduleId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => MtcScheduleView)

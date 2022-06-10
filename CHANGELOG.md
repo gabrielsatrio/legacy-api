@@ -1,3 +1,33 @@
+<a name="2.16.0"></a>
+
+# [2.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/178) (2022-06-10)
+
+### Features
+
+- [**CORE**] **user**: add new field (`email`).
+
+### Other Changes
+
+- refactor: replace `custom-email` with `get-email` with new logic.
+- [**CORE**] **auth**: add `try-catch`.
+- [**CORE**] **user-contract**: add `try-catch`.
+- [**CORE**] **user**: add `try-catch`.
+- [**HR**] **technician**: perf: remove unnecessary lines of code.
+- [**HR**] **employee**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**FNA**] **moq**: add `try-catch`.
+- [**M001**] **apm-machine-category**: add `try-catch`.
+- [**M001**] **apm-machine-maintenance**: add `try-catch`.
+- [**M001**] **apm-machine**: add `try-catch`.
+- [**M001**] **apm-mtc-schedule**: add `try-catch`.
+- [**M001**] **apm-mtc-task-plan**: add `try-catch`.
+- [**M001**] **apm-mtc-task**: add `try-catch`.
+- [**M001**] **apm-service-pr-map**: add `try-catch`.
+- [**M001**] **apm-spare-part-mr-map**: add `try-catch`.
+- [**M013**] **apm-requisition-line-mach**: add `try-catch`.
+- [**M013**] **apm-requisition-line**: add `try-catch`.
+- [**M013**] **apm-requisition**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**M013**] **apm-requisition**: add `try-catch`.
+
 <a name="2.15.2"></a>
 
 # [2.15.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/176) (2022-06-10)

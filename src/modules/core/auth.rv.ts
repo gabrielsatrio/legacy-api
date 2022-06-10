@@ -115,23 +115,27 @@ export class AuthResolver {
 
   @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<boolean> {
-    return new Promise((resolve) =>
-      req.session.destroy((err: unknown) => {
-        const cookieName = config.cookie.name;
-        if (cookieName) {
-          res.clearCookie(cookieName, {
-            domain: config.cookie.domain,
-            path: '/'
-          });
-        }
-        if (err) {
-          console.error(err);
-          resolve(false);
-          return;
-        }
-        resolve(true);
-      })
-    );
+    try {
+      return new Promise((resolve) =>
+        req.session.destroy((err: unknown) => {
+          const cookieName = config.cookie.name;
+          if (cookieName) {
+            res.clearCookie(cookieName, {
+              domain: config.cookie.domain,
+              path: '/'
+            });
+          }
+          if (err) {
+            console.error(err);
+            resolve(false);
+            return;
+          }
+          resolve(true);
+        })
+      );
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Boolean)
