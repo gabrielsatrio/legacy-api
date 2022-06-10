@@ -39,6 +39,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@types/graphql-iso-date": "^3.4.0",
     "@types/request": "^2.48.8",
     "apollo-server-express": "^3.6.7",
     "argon2": "^0.28.5",
@@ -53,6 +54,7 @@
     "express": "^4.17.3",
     "express-session": "^1.17.1",
     "graphql": "15.8.0",
+    "graphql-iso-date": "^3.6.1",
     "graphql-upload": "^13.0.0",
     "helmet": "^5.0.2",
     "ioredis": "^5.0.4",

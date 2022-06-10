@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { SimpleDate } from '../../core/entities/simple-date';
 import { SoObatProsesMaterial } from './mdp-so-obat-proses-mat';
 
 @Entity('CHR_SO_OBAT_PROSES')
@@ -17,7 +18,8 @@ export class SoObatProses extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
-  @Field()
+  @Field(() => SimpleDate)
+  //@Field()
   @Column({ name: 'NEED_DATE' })
   needDate!: Date;
 

@@ -16,6 +16,8 @@ import { join } from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import config from '../config/main';
+import { SimpleDate } from '../modules/core/entities/simple-date';
+import { CustomDateScalar } from '../scalar/dateScalar';
 import { createUserLoader } from '../utils/create-user-loader';
 import { getReport } from '../utils/get-report';
 import { redis } from './redis';
@@ -117,7 +119,8 @@ export default class apolloServer {
       schema: await buildSchema({
         resolvers: [join(__dirname, '../modules/**/!(*.d).rv.{ts,js}')],
         authChecker: ({ context: { req } }) => !!req.session.username,
-        validate: true
+        validate: true,
+        scalarsMap: [{ type: SimpleDate, scalar: CustomDateScalar }]
       }),
       plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
       context: ({ req, res }) => ({
