@@ -1,3 +1,11 @@
+<a name="2.15.1"></a>
+
+# [2.15.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/174) (2022-06-09)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: get the email address from the User if the email from the Employee is invalid.
+
 <a name="2.15.0"></a>
 
 # [2.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/172) (2022-06-08)
