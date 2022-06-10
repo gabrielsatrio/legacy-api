@@ -10,13 +10,21 @@ export class MtcTaskResolver {
   @Query(() => [MtcTask])
   @UseMiddleware(isAuth)
   async getMtcTasks(): Promise<MtcTask[] | undefined> {
-    return await MtcTask.find({ order: { taskId: 'ASC' } });
+    try {
+      return await MtcTask.find({ order: { taskId: 'ASC' } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => MtcTask)
   @UseMiddleware(isAuth)
   async getMtcTask(@Arg('taskId') taskId: string): Promise<MtcTask | null> {
-    return await MtcTask.findOneBy({ taskId });
+    try {
+      return await MtcTask.findOneBy({ taskId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => String, { nullable: true })

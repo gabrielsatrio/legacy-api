@@ -14,7 +14,11 @@ export class SparePartMrMapResolver {
   async getSparePartMrMap(
     @Arg('input') input: SparePartMrMapPkInput
   ): Promise<SparePartMrMapView | undefined | null> {
-    return await SparePartMrMapView.findOneBy({ ...input });
+    try {
+      return await SparePartMrMapView.findOneBy({ ...input });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [SparePartMrMapView])

@@ -14,9 +14,13 @@ export class MtcTaskPlanResolver {
   @Query(() => [MtcTaskPlanView])
   @UseMiddleware(isAuth)
   async getMtcTaskPlans(): Promise<MtcTaskPlanView[] | undefined> {
-    return await MtcTaskPlanView.find({
-      order: { scheduleId: 'ASC', periodId: 'ASC', lineNo: 'ASC' }
-    });
+    try {
+      return await MtcTaskPlanView.find({
+        order: { scheduleId: 'ASC', periodId: 'ASC', lineNo: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MtcTaskPlanView])

@@ -23,7 +23,11 @@ export class MachineResolver {
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string
   ): Promise<boolean> {
-    return (await this.getMachine(machineId, contract)) ? true : false;
+    try {
+      return (await this.getMachine(machineId, contract)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Boolean)
@@ -32,9 +36,13 @@ export class MachineResolver {
     @Arg('contract') contract: string,
     @Arg('description') description: string
   ): Promise<boolean> {
-    return (await MachineView.findOneBy({ contract, description }))
-      ? true
-      : false;
+    try {
+      return (await MachineView.findOneBy({ contract, description }))
+        ? true
+        : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MachineView])
@@ -42,10 +50,14 @@ export class MachineResolver {
   async getMachinesByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
-    return await MachineView.find({
-      where: { contract: In(contract) },
-      order: { machineId: 'ASC' }
-    });
+    try {
+      return await MachineView.find({
+        where: { contract: In(contract) },
+        order: { machineId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => MachineView, { nullable: true })
@@ -54,7 +66,11 @@ export class MachineResolver {
     @Arg('machineId') machineId: string,
     @Arg('contract') contract: string
   ): Promise<MachineView | null> {
-    return await MachineView.findOneBy({ machineId, contract });
+    try {
+      return await MachineView.findOneBy({ machineId, contract });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => String)
@@ -77,10 +93,14 @@ export class MachineResolver {
   async getUtilityMachinesByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
-    return await MachineView.find({
-      where: { contract: In(contract), departmentId: 'UTL' },
-      order: { machineId: 'ASC' }
-    });
+    try {
+      return await MachineView.find({
+        where: { contract: In(contract), departmentId: 'UTL' },
+        order: { machineId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MachineView])
@@ -88,10 +108,14 @@ export class MachineResolver {
   async getMachinesForServicePRMap(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<MachineView[] | undefined> {
-    return await MachineView.find({
-      where: { contract: In(contract) },
-      order: { machineId: 'ASC' }
-    });
+    try {
+      return await MachineView.find({
+        where: { contract: In(contract) },
+        order: { machineId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Machine)
