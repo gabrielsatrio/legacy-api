@@ -1,4 +1,5 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
 import { UnassignView } from './entities/spt-unassign-view';
@@ -11,7 +12,11 @@ export class UnassignViewResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<UnassignView[] | undefined> {
-    return await UnassignView.find({ where: { contract: In(contract) } });
+    try {
+      return await UnassignView.find({ where: { contract: In(contract) } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => UnassignView, { nullable: true })
@@ -19,6 +24,10 @@ export class UnassignViewResolver {
   async getUnassignView(
     @Arg('reqNo') reqNo: number
   ): Promise<UnassignView | null> {
-    return await UnassignView.findOneBy({ reqNo: reqNo.toString() });
+    try {
+      return await UnassignView.findOneBy({ reqNo: reqNo.toString() });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }

@@ -14,9 +14,13 @@ export class YarnInterruptionTransResolver {
   async getYarnInterruptionTrans(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnInterruptionTrans[] | undefined> {
-    return await YarnInterruptionTrans.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await YarnInterruptionTrans.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => YarnInterruptionTrans)

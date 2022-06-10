@@ -13,9 +13,13 @@ export class InspekMesinResolver {
   async getInspekQcMesin(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<InspekQcMesin[] | undefined> {
-    return await InspekQcMesin.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await InspekQcMesin.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
   @Mutation(() => InspekQcMesin)
   @UseMiddleware(isAuth)

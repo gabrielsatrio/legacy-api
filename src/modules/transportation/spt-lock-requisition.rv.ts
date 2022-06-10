@@ -10,7 +10,11 @@ export class LockRequisitionResolver {
   @Query(() => [LockRequisition])
   @UseMiddleware(isAuth)
   async getAllLockRequisition(): Promise<LockRequisition[] | undefined> {
-    return await LockRequisition.find();
+    try {
+      return await LockRequisition.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => LockRequisition, { nullable: true })

@@ -11,7 +11,11 @@ export class VehicleResolver {
   @Query(() => [Vehicle])
   @UseMiddleware(isAuth)
   async getAllVehicles(): Promise<Vehicle[] | undefined> {
-    return await Vehicle.find();
+    try {
+      return await Vehicle.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Vehicle, { nullable: true })
@@ -19,7 +23,11 @@ export class VehicleResolver {
   async getVehicle(
     @Arg('vehicleId') vehicleId: string
   ): Promise<Vehicle | null> {
-    return await Vehicle.findOneBy({ vehicleId });
+    try {
+      return await Vehicle.findOneBy({ vehicleId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Vehicle)

@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
+import { mapError } from '../../utils/map-error';
 import { AssignView } from './entities/spt-assign-view';
 
 @Resolver(AssignView)
@@ -11,7 +12,11 @@ export class AssignResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<AssignView[] | undefined> {
-    return await AssignView.find({ where: { contract: In(contract) } });
+    try {
+      return await AssignView.find({ where: { contract: In(contract) } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => AssignView, { nullable: true })
@@ -19,6 +24,10 @@ export class AssignResolver {
   async getAssignView(
     @Arg('assignId') assignId: string
   ): Promise<AssignView | null> {
-    return await AssignView.findOneBy({ assignId });
+    try {
+      return await AssignView.findOneBy({ assignId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }

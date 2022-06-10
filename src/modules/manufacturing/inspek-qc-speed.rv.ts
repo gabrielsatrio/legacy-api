@@ -13,9 +13,13 @@ export class InspekSpeedResolver {
   async getInspekQcSpeed(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<InspekQcSpeed[] | undefined> {
-    return await InspekQcSpeed.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await InspekQcSpeed.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
   @Mutation(() => InspekQcSpeed)
   @UseMiddleware(isAuth)

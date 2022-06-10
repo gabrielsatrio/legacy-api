@@ -12,9 +12,13 @@ export class WarpingMachineResolver {
   async getWarpingMachine(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<WarpingMachine[] | undefined> {
-    return await WarpingMachine.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await WarpingMachine.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => WarpingMachine)
