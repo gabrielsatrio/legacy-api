@@ -15,8 +15,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { UserResolver } from '../core/user.rv';
-import { EmployeeResolver } from './../human-resources/org-employee.rv';
+import { EmployeeMaterializedViewResolver } from '../human-resources/employee-mv.rv';
 import { SparePartReqLineResolver } from './apm-sp-requisition-line.rv';
 import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
@@ -89,14 +88,10 @@ export class SparePartRequisitionResolver {
   ): Promise<SparePartRequisition | undefined> {
     try {
       const createdBy = req.session.username;
-      const employee = new EmployeeResolver();
-      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
-      const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        input.approverLv1
-      );
-      const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        input.approverLv2
-      );
+      const employeeObj = new EmployeeMaterializedViewResolver();
+      const creator = await employeeObj.getEmployeeMv(createdBy);
+      const approverLv1 = await employeeObj.getEmployeeMv(input.approverLv1);
+      const approverLv2 = await employeeObj.getEmployeeMv(input.approverLv2);
       const data = SparePartRequisition.create({
         ...input,
         nameApprLv1: approverLv1?.name,
@@ -225,34 +220,14 @@ export class SparePartRequisitionResolver {
         `;
         await ifs.query(sql, [orderNo]);
       }
-      const employee = new EmployeeResolver();
-      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
-      const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        result.approverLv1
-      );
-      const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        result.approverLv2
-      );
-      let creatorEmail = creator?.email;
-      let approverLv1Email = approverLv1?.email;
-      let approverLv2Email = approverLv2?.email;
-      const user = new UserResolver();
-      if (creatorEmail === 'oracle@ateja.co.id') {
-        const userCreator = await user.getUser(createdBy);
-        creatorEmail = userCreator?.email;
-      }
-      if (approverLv1Email === 'oracle@ateja.co.id') {
-        const userApproverLv1 = await user.getUser(result.approverLv1);
-        approverLv1Email = userApproverLv1?.email;
-      }
-      if (approverLv2Email === 'oracle@ateja.co.id') {
-        const userApproverLv2 = await user.getUser(result.approverLv2);
-        approverLv2Email = userApproverLv2?.email;
-      }
+      const employeeObj = new EmployeeMaterializedViewResolver();
+      const creator = await employeeObj.getEmployeeMv(createdBy);
+      const approverLv1 = await employeeObj.getEmployeeMv(result.approverLv1);
+      const approverLv2 = await employeeObj.getEmployeeMv(result.approverLv2);
       switch (input.status) {
         case 'Submitted':
           await sendEmail(
-            approverLv1Email || '',
+            approverLv1?.email || '',
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv1?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -262,7 +237,7 @@ export class SparePartRequisitionResolver {
           break;
         case 'Partially Approved':
           await sendEmail(
-            approverLv2Email || '',
+            approverLv2?.email || '',
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv2?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -272,7 +247,7 @@ export class SparePartRequisitionResolver {
           break;
         case 'Approved':
           await sendEmail(
-            creatorEmail || '',
+            creator?.email || '',
             `Spare Part Requisition No ${requisitionId} has been Approved`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</br>
@@ -281,7 +256,7 @@ export class SparePartRequisitionResolver {
           break;
         case 'Rejected':
           await sendEmail(
-            creatorEmail || '',
+            creator?.email || '',
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</br>
