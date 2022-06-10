@@ -6,6 +6,7 @@
 
 - [**M003**] **opname**: add try catch to resolvers.
 - [**M006**] **yarn-eff**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: remove yarn-emp entity and resolver.
 - [**M007**] **daily-prod-ATE**: add try catch to resolvers.
 - [**M009**] **inspek-qc**: add try catch to resolvers.
 - [**M011**] **jadwal-emad**: add try catch to resolvers.
