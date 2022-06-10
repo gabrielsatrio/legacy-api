@@ -11,13 +11,21 @@ export class PPNResolver {
   @Query(() => [PPN])
   @UseMiddleware(isAuth)
   async getAllPPN(): Promise<PPN[] | undefined> {
-    return await PPN.find();
+    try {
+      return await PPN.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => PPN, { nullable: true })
   @UseMiddleware(isAuth)
   async getPPN(@Arg('expeditionId') expeditionId: string): Promise<PPN | null> {
-    return await PPN.findOneBy({ expeditionId });
+    try {
+      return await PPN.findOneBy({ expeditionId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => PPN)

@@ -21,9 +21,13 @@ export class JadwalEmadResolver {
   async getJadwalEmad(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<JadwalEmad[] | undefined> {
-    return await JadwalEmad.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await JadwalEmad.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
   @Mutation(() => JadwalEmad)
   @UseMiddleware(isAuth)

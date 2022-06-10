@@ -12,9 +12,13 @@ export class KeteranganLostTimeResolver {
   async getKeteranganLostTime(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<KeteranganLostTime[] | undefined> {
-    return await KeteranganLostTime.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await KeteranganLostTime.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => KeteranganLostTime)

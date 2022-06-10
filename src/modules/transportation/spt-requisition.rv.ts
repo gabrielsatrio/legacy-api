@@ -25,7 +25,11 @@ export class RequisitionResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<Requisition[] | undefined> {
-    return await Requisition.find({ where: { contract: In(contract) } });
+    try {
+      return await Requisition.find({ where: { contract: In(contract) } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [RequisitionView])
@@ -34,7 +38,11 @@ export class RequisitionResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<RequisitionView[] | undefined> {
-    return await RequisitionView.find({ where: { contract: In(contract) } });
+    try {
+      return await RequisitionView.find({ where: { contract: In(contract) } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Requisition, { nullable: true })
@@ -42,7 +50,11 @@ export class RequisitionResolver {
   async getRequisition(
     @Arg('requisitionId') requisitionId: string
   ): Promise<Requisition | null> {
-    return await Requisition.findOneBy({ reqNo: requisitionId });
+    try {
+      return await Requisition.findOneBy({ reqNo: requisitionId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => String, { nullable: true })

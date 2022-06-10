@@ -1,4 +1,5 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { AssignRequisitionView } from './entities/spt-assign-requisition.vw';
 
@@ -12,12 +13,16 @@ export class AssignRequisitionResolver {
     @Arg('assignDate', () => Date)
     assignDate: Date
   ): Promise<AssignRequisitionView[] | undefined> {
-    return await AssignRequisitionView.find({
-      where: {
-        assignId,
-        assignDate
-      }
-    });
+    try {
+      return await AssignRequisitionView.find({
+        where: {
+          assignId,
+          assignDate
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [AssignRequisitionView])
@@ -25,7 +30,11 @@ export class AssignRequisitionResolver {
   async getAllAssignRequisitionViewsNoFilter(): Promise<
     AssignRequisitionView[] | undefined
   > {
-    return await AssignRequisitionView.find();
+    try {
+      return await AssignRequisitionView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => AssignRequisitionView, { nullable: true })
@@ -34,10 +43,14 @@ export class AssignRequisitionResolver {
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
   ): Promise<AssignRequisitionView | null> {
-    return await AssignRequisitionView.findOneBy({
-      assignId,
-      assignDate
-    });
+    try {
+      return await AssignRequisitionView.findOneBy({
+        assignId,
+        assignDate
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => AssignRequisitionView, { nullable: true })
@@ -46,9 +59,13 @@ export class AssignRequisitionResolver {
     @Arg('reqNo') reqNo: string,
     @Arg('requisitionDate') requisitionDate: Date
   ): Promise<AssignRequisitionView | null> {
-    return await AssignRequisitionView.findOneBy({
-      reqNo,
-      requisitionDate
-    });
+    try {
+      return await AssignRequisitionView.findOneBy({
+        reqNo,
+        requisitionDate
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }

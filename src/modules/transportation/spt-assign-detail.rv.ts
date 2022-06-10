@@ -19,7 +19,11 @@ export class AssignDetailResolver {
   @Query(() => [AssignDetail])
   @UseMiddleware(isAuth)
   async getAllAssignDetail(): Promise<AssignDetail[] | undefined> {
-    return await AssignDetail.find();
+    try {
+      return await AssignDetail.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => AssignDetail, { nullable: true })
