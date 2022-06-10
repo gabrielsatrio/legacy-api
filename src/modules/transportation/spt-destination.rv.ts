@@ -11,7 +11,11 @@ export class DestinationResolver {
   @Query(() => [Destination])
   @UseMiddleware(isAuth)
   async getAllDestinations(): Promise<Destination[] | undefined> {
-    return await Destination.find();
+    try {
+      return await Destination.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Destination, { nullable: true })
@@ -19,7 +23,11 @@ export class DestinationResolver {
   async getDestination(
     @Arg('destinationId') destinationId: string
   ): Promise<Destination | null> {
-    return await Destination.findOneBy({ destinationId });
+    try {
+      return await Destination.findOneBy({ destinationId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Destination)

@@ -13,9 +13,13 @@ export class YarnMachineResolver {
   async getYarnMachine(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnMachine[] | undefined> {
-    return await YarnMachine.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await YarnMachine.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => YarnMachine)

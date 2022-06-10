@@ -15,7 +15,11 @@ export class SuratJalanResolver {
     @Arg('contract', () => [String])
     contract: string[]
   ): Promise<SuratJalan[] | undefined> {
-    return await SuratJalan.find({ where: { contract: In(contract) } });
+    try {
+      return await SuratJalan.find({ where: { contract: In(contract) } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => SuratJalan, { nullable: true })

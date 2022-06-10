@@ -11,7 +11,11 @@ export class ShippingResolver {
   @Query(() => [Shipping])
   @UseMiddleware(isAuth)
   async getAllShippings(): Promise<Shipping[] | undefined> {
-    return await Shipping.find();
+    try {
+      return await Shipping.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Shipping, { nullable: true })
@@ -19,7 +23,11 @@ export class ShippingResolver {
   async getShipping(
     @Arg('shippingId') shippingId: string
   ): Promise<Shipping | null> {
-    return await Shipping.findOneBy({ shippingId });
+    try {
+      return await Shipping.findOneBy({ shippingId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Shipping, { nullable: true })

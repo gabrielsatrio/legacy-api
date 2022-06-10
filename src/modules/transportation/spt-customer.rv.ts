@@ -11,7 +11,11 @@ export class CustomerResolver {
   @Query(() => [Customer])
   @UseMiddleware(isAuth)
   async getAllCustomer(): Promise<Customer[] | undefined> {
-    return await Customer.find();
+    try {
+      return await Customer.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Customer, { nullable: true })
@@ -19,7 +23,11 @@ export class CustomerResolver {
   async getCustomer(
     @Arg('customerId') customerId: string
   ): Promise<Customer | null> {
-    return await Customer.findOneBy({ customerId });
+    try {
+      return await Customer.findOneBy({ customerId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Customer)

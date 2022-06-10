@@ -19,7 +19,11 @@ export class AssignResolver {
   @Query(() => [Assign])
   @UseMiddleware(isAuth)
   async getAllAssigns(): Promise<Assign[] | undefined> {
-    return await Assign.find();
+    try {
+      return await Assign.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Assign, { nullable: true })
@@ -28,7 +32,11 @@ export class AssignResolver {
     @Arg('assignId') assignId: string,
     @Arg('assignDate') assignDate: Date
   ): Promise<Assign | null> {
-    return await Assign.findOneBy({ assignId, assignDate });
+    try {
+      return await Assign.findOneBy({ assignId, assignDate });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Assign, { nullable: true })
@@ -52,7 +60,11 @@ export class AssignResolver {
   async getAssignIdByDate(
     @Arg('assignDate') assignDate: Date
   ): Promise<Assign[] | undefined> {
-    return await Assign.findBy({ assignDate: assignDate });
+    try {
+      return await Assign.findBy({ assignDate: assignDate });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Assign)

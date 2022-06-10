@@ -12,9 +12,13 @@ export class DailyProdATEResolver {
   async getDailyProdATE(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<DailyProdATE[] | undefined> {
-    return await DailyProdATE.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await DailyProdATE.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => DailyProdATE)
