@@ -1,3 +1,17 @@
+<a name="2.15.2"></a>
+
+# [2.15.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/176) (2022-06-10)
+
+### Bug Fixes
+
+- [**M003**] **opname**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: add try catch to resolvers.
+- [**M007**] **daily-prod-ATE**: add try catch to resolvers.
+- [**M009**] **inspek-qc**: add try catch to resolvers.
+- [**M011**] **jadwal-emad**: add try catch to resolvers.
+- [**M014**] **warping**: add try catch to resolvers.
+- [**T001**] **spt**: add try catch to resolvers.
+
 <a name="2.15.1"></a>
 
 # [2.15.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/174) (2022-06-09)
