@@ -1,3 +1,11 @@
+<a name="2.17.0"></a>
+
+# [2.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/180) (2022-06-13)
+
+### Features
+
+- [**CORE**] **framework**: implement custom scalar for date type.
+
 <a name="2.16.0"></a>
 
 # [2.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/178) (2022-06-10)
