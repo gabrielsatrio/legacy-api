@@ -1,3 +1,101 @@
+<a name="2.16.0"></a>
+
+# [2.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/178) (2022-06-10)
+
+### Features
+
+- [**CORE**] **user**: add new field (`email`).
+
+### Other Changes
+
+- refactor: replace `custom-email` with `get-email` with new logic.
+- [**CORE**] **auth**: add `try-catch`.
+- [**CORE**] **user-contract**: add `try-catch`.
+- [**CORE**] **user**: add `try-catch`.
+- [**HR**] **technician**: perf: remove unnecessary lines of code.
+- [**HR**] **employee**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**FNA**] **moq**: add `try-catch`.
+- [**M001**] **apm-machine-category**: add `try-catch`.
+- [**M001**] **apm-machine-maintenance**: add `try-catch`.
+- [**M001**] **apm-machine**: add `try-catch`.
+- [**M001**] **apm-mtc-schedule**: add `try-catch`.
+- [**M001**] **apm-mtc-task-plan**: add `try-catch`.
+- [**M001**] **apm-mtc-task**: add `try-catch`.
+- [**M001**] **apm-service-pr-map**: add `try-catch`.
+- [**M001**] **apm-spare-part-mr-map**: add `try-catch`.
+- [**M013**] **apm-requisition-line-mach**: add `try-catch`.
+- [**M013**] **apm-requisition-line**: add `try-catch`.
+- [**M013**] **apm-requisition**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**M013**] **apm-requisition**: add `try-catch`.
+
+<a name="2.15.2"></a>
+
+# [2.15.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/176) (2022-06-10)
+
+### Bug Fixes
+
+- [**M003**] **opname**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: remove yarn-emp entity and resolver.
+- [**M007**] **daily-prod-ATE**: add try catch to resolvers.
+- [**M009**] **inspek-qc**: add try catch to resolvers.
+- [**M011**] **jadwal-emad**: add try catch to resolvers.
+- [**M014**] **warping**: add try catch to resolvers.
+- [**M018**] **kontrol-baku-benang**: add try catch to resolvers.
+- [**T001**] **spt**: add try catch to resolvers.
+
+<a name="2.15.1"></a>
+
+# [2.15.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/174) (2022-06-09)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: get the email address from the User if the email from the Employee is invalid.
+
+<a name="2.15.0"></a>
+
+# [2.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/172) (2022-06-08)
+
+### Features
+
+- [**M001**] **apm-schedules**: add new services for Maintenance Schedule Task Realization.
+
+<a name="2.14.0"></a>
+
+# [2.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/170) (2022-06-08)
+
+### BREAKING CHANGES
+
+- [**HR**] **employees**: move `getEmployeesByGradeWorkLocation` to the MV resolver.
+
+<a name="2.13.2"></a>
+
+# [2.13.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/168) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: all inactive parts will be included to be used in the spare part requisition.
+
+<a name="2.13.1"></a>
+
+# [2.13.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/166) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix order by `lineItemNo` when query the data for **Spare Parts Requisition Lines**.
+
+<a name="2.13.0"></a>
+
+# [2.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/164) (2022-06-07)
+
+### Features
+
+- [**M001**] **apm-maintenance-schedules**: add new services.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue which MR was created multiple times when user is selecting the Urgent option.
+
 <a name="2.12.0"></a>
 
 # [2.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/162) (2022-06-07)

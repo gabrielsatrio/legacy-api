@@ -36,10 +36,14 @@ export class SparePartReqLineResolver {
   async getSPRequisLinesByReqId(
     @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartReqLineView[] | undefined> {
-    return await SparePartReqLineView.find({
-      where: { requisitionId },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartReqLineView.find({
+        where: { requisitionId },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => SparePartReqLineView, { nullable: true })
@@ -48,7 +52,14 @@ export class SparePartReqLineResolver {
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineView | null> {
-    return await SparePartReqLineView.findOneBy({ requisitionId, lineItemNo });
+    try {
+      return await SparePartReqLineView.findOneBy({
+        requisitionId,
+        lineItemNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Int)
