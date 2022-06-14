@@ -25,12 +25,12 @@ export class TransportTaskBody extends BaseEntity {
   locationNo!: string;
 
   @Field()
-  @Column({ name: 'CONTRACT' })
-  contract!: string;
+  @PrimaryColumn({ name: 'PART_NO' })
+  partNo!: string;
 
   @Field()
-  @Column({ name: 'PART_NO' })
-  partNo!: string;
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
   @Column({ name: 'LOCATION_TO' })
