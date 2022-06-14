@@ -2,6 +2,7 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
+import dayjs from 'dayjs';
 import {
   Arg,
   Ctx,
@@ -132,6 +133,7 @@ export class MachineResolver {
       if (existingData) throw new Error('Data already exists.');
       const data = Machine.create({
         ...input,
+        purchaseDate: dayjs(input.purchaseDate).format('YYYY-MM-DD'),
         createdBy: req.session.username,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -154,7 +156,10 @@ export class MachineResolver {
         contract: input.contract
       });
       if (!data) throw new Error('No data found.');
-      Machine.merge(data, input);
+      Machine.merge(data, {
+        ...input,
+        purchaseDate: dayjs(input.purchaseDate).format('YYYY-MM-DD')
+      });
       const result = await Machine.save(data);
       return result;
     } catch (err) {

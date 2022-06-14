@@ -1,7 +1,7 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
@@ -97,7 +97,7 @@ export class SoObatProsesResolver {
       const result = await ifs.query(sql, [
         input.contract,
         input.partNo,
-        moment(input.needDate).format('MM/DD/YY'),
+        dayjs(input.needDate).format('MM/DD/YY'),
         input.qty,
         input.alternativeNo,
         input.note,

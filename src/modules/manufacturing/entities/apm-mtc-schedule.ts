@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { GraphQLDateTime } from '../../core/entities/scalars';
 
 @Entity('ROB_APM_SCHEDULE')
 @ObjectType()
@@ -28,11 +29,11 @@ export class MtcSchedule extends BaseEntity {
   @Column({ name: 'STATUS' })
   status!: string;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 }

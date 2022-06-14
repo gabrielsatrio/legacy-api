@@ -1,7 +1,7 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { Like } from 'typeorm';
 import { MtcScheduleTaskInput } from './apm-mtc-schedule-task.in';
@@ -79,7 +79,7 @@ export class MtcScheduleTaskResolver {
       const data = MtcScheduleTask.create({
         ...input,
         stId,
-        planDate: moment(input.planDate).format('YYYY-MM-DD'),
+        planDate: dayjs(input.planDate).format('YYYY-MM-DD'),
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -102,7 +102,7 @@ export class MtcScheduleTaskResolver {
       if (!data) throw new Error('No data found.');
       MtcScheduleTask.merge(data, {
         ...input,
-        planDate: moment(input.planDate).format('YYYY-MM-DD')
+        planDate: dayjs(input.planDate).format('YYYY-MM-DD')
       });
       const response = await MtcScheduleTask.save(data);
       const result = await MtcScheduleTaskView.findOneBy({

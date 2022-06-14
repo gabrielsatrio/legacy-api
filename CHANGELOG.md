@@ -1,3 +1,19 @@
+<a name="2.17.1"></a>
+
+# [2.17.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/182) (2022-06-14)
+
+### Features
+
+- [**M015**] **Transport-Task**: change column type for transport task body.
+
+<a name="2.17.0"></a>
+
+# [2.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/180) (2022-06-13)
+
+### Features
+
+- [**CORE**] **framework**: implement custom scalar for date type.
+
 <a name="2.16.0"></a>
 
 # [2.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/178) (2022-06-10)
