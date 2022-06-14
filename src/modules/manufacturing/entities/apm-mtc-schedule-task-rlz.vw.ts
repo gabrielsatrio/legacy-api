@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { GraphQLDateTime } from '../../core/entities/scalars';
 
 @Entity('ROB_APM_SCHEDULE_TASK_RLZ_V')
 @ObjectType()
@@ -40,11 +41,11 @@ export class MtcScheduleTaskRlzView extends BaseEntity {
   @Column({ name: 'PERSON_NAME' })
   personName?: string;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 }

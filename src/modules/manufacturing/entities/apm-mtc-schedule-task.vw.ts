@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { GraphQLDate, GraphQLDateTime } from '../../core/entities/scalars';
 
 @Entity('ROB_APM_SCHEDULE_TASK_V')
 @ObjectType()
@@ -20,7 +21,7 @@ export class MtcScheduleTaskView extends BaseEntity {
   @Column({ name: 'PERIOD' })
   period?: string;
 
-  @Field()
+  @Field(() => GraphQLDate)
   @Column({ name: 'PLAN_DATE' })
   planDate!: Date;
 
@@ -32,7 +33,7 @@ export class MtcScheduleTaskView extends BaseEntity {
   @Column({ name: 'LATEST_EXEC_TIME' })
   latestExecTime?: string;
 
-  @Field({ nullable: true })
+  @Field(() => GraphQLDateTime, { nullable: true })
   @Column({ name: 'REAL_DATE' })
   realDate?: Date;
 
@@ -44,11 +45,11 @@ export class MtcScheduleTaskView extends BaseEntity {
   @Column({ name: 'PERSON_NAME' })
   personName?: string;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
-  @Field()
+  @Field(() => GraphQLDateTime)
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 }
