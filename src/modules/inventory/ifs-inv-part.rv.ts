@@ -2,7 +2,7 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { Brackets, In, Like, Not } from 'typeorm';
+import { Brackets, In } from 'typeorm';
 import { IfsInventoryPartView } from '../inventory/entities/ifs-inv-part.vw';
 
 @Resolver(IfsInventoryPartView)
@@ -12,10 +12,14 @@ export class IfsInventoryPartResolver {
   async getInventoryPartsByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<IfsInventoryPartView[] | undefined> {
-    return await IfsInventoryPartView.find({
-      where: { contract: In(contract), partStatus: 'A' },
-      order: { partNo: 'ASC', contract: 'ASC' }
-    });
+    try {
+      return await IfsInventoryPartView.find({
+        where: { contract: In(contract), partStatus: 'A' },
+        order: { partNo: 'ASC', contract: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [IfsInventoryPartView], { nullable: true })
@@ -23,20 +27,24 @@ export class IfsInventoryPartResolver {
   async getPartMaster(
     @Arg('contract') contract: string
   ): Promise<IfsInventoryPartView[] | undefined> {
-    return await IfsInventoryPartView.createQueryBuilder('IP')
-      .where('IP.CONTRACT = :contract', { contract: contract })
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where("IP.PART_NO like 'MFD%'")
-            .orWhere("IP.PART_NO like 'FD%'")
-            .orWhere("IP.PART_NO like 'Y%'")
-            .orWhere("IP.PART_NO like 'MY%'")
-            .orWhere("IP.PART_NO like 'BM%'")
-            .orWhere("IP.PART_NO like 'MM%'");
-        })
-      )
-      .andWhere(`ip.PART_STATUS = 'A'`)
-      .getMany();
+    try {
+      return await IfsInventoryPartView.createQueryBuilder('IP')
+        .where('IP.CONTRACT = :contract', { contract: contract })
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where("IP.PART_NO like 'MFD%'")
+              .orWhere("IP.PART_NO like 'FD%'")
+              .orWhere("IP.PART_NO like 'Y%'")
+              .orWhere("IP.PART_NO like 'MY%'")
+              .orWhere("IP.PART_NO like 'BM%'")
+              .orWhere("IP.PART_NO like 'MM%'");
+          })
+        )
+        .andWhere(`ip.PART_STATUS = 'A'`)
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [IfsInventoryPartView], { nullable: true })
@@ -46,19 +54,23 @@ export class IfsInventoryPartResolver {
     @Arg('partNoOne') partNoOne: string,
     @Arg('partNoTwo') partNoTwo: string
   ): Promise<IfsInventoryPartView[] | undefined> {
-    return await IfsInventoryPartView.createQueryBuilder('IP')
-      .where('IP.CONTRACT = :contract', { contract: contract })
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where('IP.PART_NO like :partNoOne', {
-            partNoOne: partNoOne + '%'
-          }).orWhere('IP.PART_NO like :partNoTwo', {
-            partNoTwo: partNoTwo + '%'
-          });
-        })
-      )
-      .andWhere(`IP.PART_STATUS = 'A'`)
-      .getMany();
+    try {
+      return await IfsInventoryPartView.createQueryBuilder('IP')
+        .where('IP.CONTRACT = :contract', { contract: contract })
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where('IP.PART_NO like :partNoOne', {
+              partNoOne: partNoOne + '%'
+            }).orWhere('IP.PART_NO like :partNoTwo', {
+              partNoTwo: partNoTwo + '%'
+            });
+          })
+        )
+        .andWhere(`IP.PART_STATUS = 'A'`)
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [IfsInventoryPartView], { nullable: true })
@@ -67,11 +79,15 @@ export class IfsInventoryPartResolver {
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
   ): Promise<IfsInventoryPartView[] | undefined> {
-    return await IfsInventoryPartView.createQueryBuilder('IP')
-      .where('IP.CONTRACT = :contract', { contract: contract })
-      .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
-      .andWhere(`IP.PART_STATUS = 'A'`)
-      .getMany();
+    try {
+      return await IfsInventoryPartView.createQueryBuilder('IP')
+        .where('IP.CONTRACT = :contract', { contract: contract })
+        .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
+        .andWhere(`IP.PART_STATUS = 'A'`)
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => IfsInventoryPartView, { nullable: true })
@@ -79,22 +95,52 @@ export class IfsInventoryPartResolver {
   async getInventoryPartByObjId(
     @Arg('objId') objId: string
   ): Promise<IfsInventoryPartView | null> {
-    return await IfsInventoryPartView.findOneBy({ objId });
+    try {
+      return await IfsInventoryPartView.findOneBy({ objId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [IfsInventoryPartView], { nullable: true })
   @UseMiddleware(isAuth)
   async getSparePartsByContract(
-    @Arg('contract', () => [String]) contract: string[]
+    @Arg('contract') contract: string
   ): Promise<IfsInventoryPartView[] | null> {
-    return await IfsInventoryPartView.find({
-      where: {
-        contract: In(contract),
-        partStatus: Not('O'),
-        partNo: Like('S__-%')
-      },
-      order: { partNo: 'ASC', contract: 'ASC' }
-    });
+    try {
+      let sql = '';
+      if (contract === 'AGT') {
+        sql = `
+          SELECT part_no      AS "partNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 unit_meas    AS "unitMeas",
+                 part_status  AS "partStatus",
+                 objid        AS "objId"
+          FROM   inventory_part@ifs8agt
+          WHERE  contract = :contract
+          AND    part_status != 'O'
+          AND    part_no LIKE 'S__-%'
+        `;
+      } else {
+        sql = `
+          SELECT part_no      AS "partNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 unit_meas    AS "unitMeas",
+                 part_status  AS "partStatus",
+                 objid        AS "objId"
+          FROM   inventory_part
+          WHERE  contract = :contract
+          AND    part_status != 'O'
+          AND    part_no LIKE 'S__-%'
+        `;
+      }
+      const result = await ifs.query(sql, [contract]);
+      return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => IfsInventoryPartView, { nullable: true })
