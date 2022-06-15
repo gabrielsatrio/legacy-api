@@ -1,3 +1,11 @@
+<a name="2.17.2"></a>
+
+# [2.17.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-15)
+
+### Bug Fixes
+
+- [**MANUF**] **inventory-part**: support get data from the AGT server.
+
 <a name="2.17.1"></a>
 
 # [2.17.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/182) (2022-06-14)
