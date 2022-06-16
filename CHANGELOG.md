@@ -1,6 +1,6 @@
 <a name="2.18.0"></a>
 
-# [2.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/186) (2022-06-16)
+# [2.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-16)
 
 ### Features
 
@@ -8,7 +8,7 @@
 
 <a name="2.17.2"></a>
 
-# [2.17.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-15)
+# [2.17.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/182) (2022-06-15)
 
 ### Bug Fixes
 
@@ -16,7 +16,7 @@
 
 <a name="2.17.1"></a>
 
-# [2.17.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/182) (2022-06-14)
+# [2.17.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/180) (2022-06-14)
 
 ### Features
 
