@@ -61,16 +61,19 @@ export class TTHeadResolver {
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
       .andWhere(`IPIS.LOCATION_NO like 'RM%'`)
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%NG' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AMI') then 'RM%JUAL' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA1' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI') then 'RM%NG' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%RTR' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA1' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA2' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AT1') then 'RM%RTR' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA2' else 'NULL' end`
       )
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
