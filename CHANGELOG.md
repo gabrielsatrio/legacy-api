@@ -1,3 +1,11 @@
+<a name="2.18.0"></a>
+
+# [2.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/186) (2022-06-16)
+
+### Features
+
+- [**M015**] **Transport-Task**: change resolver for all plant implementation.
+
 <a name="2.17.2"></a>
 
 # [2.17.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-15)
