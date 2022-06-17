@@ -1,3 +1,11 @@
+<a name="2.19.0"></a>
+
+# [2.19.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-17)
+
+### Features
+
+- [**M015**] **Transport-Task**: change resolver for fG1 all plant implementation (except AGT).
+
 <a name="2.18.0"></a>
 
 # [2.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-16)
