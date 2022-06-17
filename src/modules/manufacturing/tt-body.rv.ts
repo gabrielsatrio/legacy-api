@@ -3,6 +3,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { Brackets } from 'typeorm/query-builder/Brackets';
 import { IfsInventoryPartInStockView } from '../inventory/entities/ifs-inv-part-in-stock.vw';
 import { TransportTaskBody } from './entities/tt-detail';
 import { TransportTaskBodyInput } from './tt-body.in';
@@ -19,9 +20,13 @@ export class TTBodyResolver {
     return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
-      .andWhere(`IPIS.LOCATION_NO like :locationNo||'%'`, {
-        locationNo: locationNo
-      })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`IPIS.LOCATION_NO like :locationNo||'%'`, {
+            locationNo: locationNo
+          }).orWhere(`IPIS.LOCATION_NO like 'FG%'`);
+        })
+      )
       .andWhere(
         `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AMI') then 'RM%JUAL' else 'NULL' end`
       )
