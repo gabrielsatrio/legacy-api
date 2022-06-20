@@ -5,40 +5,37 @@ import argon2 from 'argon2';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { User } from './entities/user';
+import { UserView } from './entities/user.vw';
 import { UserInput } from './user.in';
 
 @Resolver(User)
 export class UserResolver {
-  @Query(() => [User])
+  @Query(() => [UserView])
   @UseMiddleware(isAuth)
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<UserView[]> {
     try {
-      return await User.find({
-        relations: { contracts: true },
-        order: { username: 'ASC' }
-      });
+      return await UserView.find({ order: { username: 'ASC' } });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => User, { nullable: true })
+  @Query(() => UserView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getUser(@Arg('username') username: string): Promise<User | null> {
+  async getUser(@Arg('username') username: string): Promise<UserView | null> {
     try {
-      return await User.findOne({
-        relations: { contracts: true },
-        where: { username }
-      });
+      return await UserView.findOneBy({ username });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserView)
   @UseMiddleware(isAuth)
-  async createUser(@Arg('input') input: UserInput): Promise<User | null> {
+  async createUser(@Arg('input') input: UserInput): Promise<UserView | null> {
     try {
+      const response = await UserView.findOneBy({ username: input.username });
+      if (response) throw new Error('User already exist.');
       const hashedPassword = await argon2.hash(input.password);
       const sql = `
         BEGIN
@@ -61,40 +58,39 @@ export class UserResolver {
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
       const outUsername = result[0] as string;
-      const data = User.findOneBy({ username: outUsername });
+      const data = UserView.findOneBy({ username: outUsername });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserView)
   @UseMiddleware(isAuth)
-  async updateUser(@Arg('input') input: UserInput): Promise<User | undefined> {
+  async updateUser(@Arg('input') input: UserInput): Promise<UserView | null> {
     try {
       if (input.password.length < 3) {
         throw new Error(
           'Password must be longer than or equal to 3 characters.'
         );
       }
-      const data = await User.findOneBy({
-        username: input.username
-      });
+      const data = await User.findOneBy({ username: input.username });
       if (!data) throw new Error('No data found.');
       const hashedPassword = await argon2.hash(input.password);
       User.merge(data, { ...input, password: hashedPassword });
-      const results = await User.save(data);
-      return results;
+      const response = await User.save(data);
+      const result = await UserView.findOneBy({ username: response.username });
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserView)
   @UseMiddleware(isAuth)
-  async deleteUser(@Arg('username') username: string): Promise<User> {
+  async deleteUser(@Arg('username') username: string): Promise<UserView> {
     try {
-      const data = await User.findOneBy({ username });
+      const data = await UserView.findOneBy({ username });
       if (!data) throw new Error('No data found.');
       await User.delete(username);
       return data;
