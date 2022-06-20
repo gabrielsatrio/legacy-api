@@ -42,6 +42,11 @@ export class TTHeadResolver {
             .orWhere("IP.PART_NO like 'BA%'")
             .orWhere("IP.PART_NO like 'MWV%'")
             .orWhere("IP.PART_NO like 'MNV%'")
+            .orWhere("IP.PART_NO like 'FA%'")
+            .orWhere("IP.PART_NO like 'FB%'")
+            .orWhere("IP.PART_NO like 'FX%'")
+            .orWhere("IP.PART_NO like 'FZ%'")
+            .orWhere("IP.PART_NO like 'MF%'")
             .orWhere("IP.PART_NO like 'BPRK%'");
         })
       )
@@ -59,7 +64,13 @@ export class TTHeadResolver {
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .select('SUM(IPIS.QTY_ONHAND - IPIS.QTY_RESERVED)', 'qtyAvail')
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
-      .andWhere(`IPIS.LOCATION_NO like 'RM%'`)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`IPIS.LOCATION_NO like 'RM%'`).orWhere(
+            `IPIS.LOCATION_NO like 'FG%'`
+          );
+        })
+      )
       .andWhere(
         `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AMI') then 'RM%JUAL' else 'NULL' end`
       )
