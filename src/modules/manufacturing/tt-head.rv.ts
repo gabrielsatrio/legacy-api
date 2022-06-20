@@ -54,6 +54,27 @@ export class TTHeadResolver {
       .getMany();
   }
 
+  @Query(() => [IfsInventoryPartView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getPartTTBahanAsync(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string
+  ): Promise<IfsInventoryPartView[] | undefined> {
+    return await IfsInventoryPartView.createQueryBuilder('IP')
+      .where('IP.CONTRACT = :contract', { contract: contract })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where("IP.PART_NO like '%'||UPPER(:partNo)||'%'", {
+            partNo: partNo
+          }).orWhere("IP.DESCRIPTION like '%'||UPPER(:partNo)||'%'", {
+            partNo: partNo
+          });
+        })
+      )
+      .andWhere(`ip.PART_STATUS in('A','I')`)
+      .getMany();
+  }
+
   @Query(() => String, { nullable: true })
   @UseMiddleware(isAuth)
   async getStockAllAvailStock(
