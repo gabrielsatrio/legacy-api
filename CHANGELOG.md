@@ -1,3 +1,11 @@
+<a name="2.19.1"></a>
+
+# [2.19.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/188) (2022-06-20)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: support for the AGT data.
+
 <a name="2.19.0"></a>
 
 # [2.19.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/186) (2022-06-17)
