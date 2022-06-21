@@ -1,3 +1,19 @@
+<a name="2.21.0"></a>
+
+# [2.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/192) (2022-06-21)
+
+### BREAKING CHANGES
+
+- **users**: refactor: replace `fieldResolver` with view-based entity.
+
+### Features
+
+- **to-array**: new utility to convert string into array by specific separator.
+
+### Bug Fixes
+
+- [**M001**] **apm-machines**: fix issue related to error message: `unable to serialized...`.
+
 <a name="2.20.0"></a>
 
 # [2.20.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/190) (2022-06-20)
