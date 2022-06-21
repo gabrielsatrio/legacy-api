@@ -7,6 +7,7 @@ import {
   OneToOne,
   PrimaryColumn
 } from 'typeorm';
+import { GraphQLDate } from '../../core/entities/scalars';
 import { MachineCategory } from './apm-machine-category';
 
 @Entity('ROB_APM_MACHINE')
@@ -44,7 +45,7 @@ export class Machine extends BaseEntity {
   @Column({ name: 'YEAR_MADE' })
   yearMade?: number;
 
-  @Field()
+  @Field(() => GraphQLDate)
   @Column({ name: 'PURCHASE_DATE' })
   purchaseDate!: Date;
 
