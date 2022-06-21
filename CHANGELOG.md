@@ -1,3 +1,11 @@
+<a name="2.20.0"></a>
+
+# [2.20.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/190) (2022-06-20)
+
+### Features
+
+- [**M015**] **Transport-Task**: add resolver for async part search.
+
 <a name="2.19.1"></a>
 
 # [2.19.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/188) (2022-06-20)
