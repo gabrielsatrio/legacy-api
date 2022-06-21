@@ -1,3 +1,11 @@
+<a name="2.21.1"></a>
+
+# [2.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/194) (2022-06-21)
+
+### Bug Fixes
+
+- [**M001**] **apm-machines**: remove max length of `makerId`.
+
 <a name="2.21.0"></a>
 
 # [2.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/192) (2022-06-21)
