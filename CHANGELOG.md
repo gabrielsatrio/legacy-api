@@ -1,3 +1,11 @@
+<a name="2.21.2"></a>
+
+# [2.21.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/196) (2022-06-22)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix validation check to create a new material requisition.
+
 <a name="2.21.1"></a>
 
 # [2.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/194) (2022-06-21)

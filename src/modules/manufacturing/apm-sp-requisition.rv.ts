@@ -135,7 +135,7 @@ export class SparePartRequisitionResolver {
       if (!data) throw new Error('No data found.');
       let sql: string;
       let outOrderNo: string;
-      if (!input.orderNo && (input.status === 'Approved' || input.urgent)) {
+      if (!data.orderNo && (input.status === 'Approved' || input.urgent)) {
         sql = `
           BEGIN
             ATJ_Material_Requisition_API.New__(
