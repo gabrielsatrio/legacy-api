@@ -1,6 +1,9 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { find, isArray } from 'lodash';
 import {
+  Ctx,
   FieldResolver,
   Query,
   Resolver,
@@ -110,9 +113,39 @@ export class MenuResolver {
 
   @Query(() => [FieldMenu], { nullable: true })
   @UseMiddleware(isAuth)
-  async getMenuSelfAssign(): Promise<Record<string, unknown>[]> {
-    const test = await Menu.find({ order: { id: 'ASC' } });
+  async getMenuSelfAssign(
+    @Ctx() { req }: Context
+  ): Promise<Record<string, unknown>[]> {
+    let test;
 
+    const sqlDept = `select department_id as "departmentId", ifs_username as "ifsUsername" from atj_app_user
+                    where username = :username`;
+    const dept = await ifs.query(sqlDept, [req.session.username]);
+
+    console.log(dept[0].departmentId);
+
+    if (dept[0].departmentId === 'MIS') {
+      test = await Menu.find({ order: { id: 'ASC' } });
+    } else {
+      const sql = `SELECT DISTINCT id AS "id",
+                  root AS "root",
+                  name AS "name",
+                  TYPE AS "type",
+                  to_link AS "toLink",
+                  icon AS "icon",
+                  parent AS "parent"
+              FROM   chr_menu_ezio
+              START WITH id IN (SELECT menu_id
+                                FROM   chr_ezio_role
+                                WHERE  dept = :dept
+                                union
+                                SELECT menu_id
+                                FROM   chr_ezio_user_role
+                                WHERE  username = :username)
+              CONNECT BY PRIOR parent = id
+              ORDER BY id`;
+      test = await ifs.query(sql, [dept[0].departmentId, dept[0].ifsUsername]);
+    }
     for (const product of test) {
       const checkParent = [];
 
@@ -180,7 +213,5 @@ export class MenuResolver {
     }
 
     return tagTree;
-
-    //  return JSON.stringify(tagTree);
   }
 }
