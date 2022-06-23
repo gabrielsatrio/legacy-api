@@ -1,3 +1,11 @@
+<a name="2.10.2"></a>
+
+# [2.10.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)
+
+### Feature
+
+- [**G001**] **Bon-Pemesanan-Makan**: create module to input bon makan & retur.
+
 <a name="2.9.0"></a>
 
 # [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-30)
