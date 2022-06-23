@@ -9,6 +9,22 @@
 - **ifs-dop-head**: add try catch.
 - **ifs-shop-ord-operation**: add try catch.
 
+<a name="2.22.0"></a>
+
+# [2.22.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)
+
+### Features
+
+- [**G001**] **Bon-Pemesanan-Makan**: create module to input bon makan & retur.
+
+<a name="2.21.2"></a>
+
+# [2.21.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/196) (2022-06-22)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix validation check to create a new material requisition.
+
 <a name="2.21.1"></a>
 
 # [2.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/194) (2022-06-21)
