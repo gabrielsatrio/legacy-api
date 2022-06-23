@@ -116,7 +116,7 @@ export class MenuResolver {
   async getMenuSelfAssign(
     @Ctx() { req }: Context
   ): Promise<Record<string, unknown>[]> {
-    let test;
+    let result;
 
     const sqlDept = `select department_id as "departmentId", ifs_username as "ifsUsername" from atj_app_user
                     where username = :username`;
@@ -125,7 +125,7 @@ export class MenuResolver {
     console.log(dept[0].departmentId);
 
     if (dept[0].departmentId === 'MIS') {
-      test = await Menu.find({ order: { id: 'ASC' } });
+      result = await Menu.find({ order: { id: 'ASC' } });
     } else {
       const sql = `SELECT DISTINCT id AS "id",
                   root AS "root",
@@ -134,22 +134,29 @@ export class MenuResolver {
                   to_link AS "toLink",
                   icon AS "icon",
                   parent AS "parent"
-              FROM   chr_menu_ezio
+              FROM   ATJ_APP_MENU
               START WITH id IN (SELECT menu_id
-                                FROM   chr_ezio_role
+                                FROM   atj_app_role
                                 WHERE  dept = :dept
                                 union
                                 SELECT menu_id
-                                FROM   chr_ezio_user_role
-                                WHERE  username = :username)
+                                FROM   atj_app_user_role
+                                WHERE  username = :username
+                                union
+                                select id
+                                FROM   ATJ_APP_MENU
+                                where  id in (1000,12000))
               CONNECT BY PRIOR parent = id
               ORDER BY id`;
-      test = await ifs.query(sql, [dept[0].departmentId, dept[0].ifsUsername]);
+      result = await ifs.query(sql, [
+        dept[0].departmentId,
+        req.session.username
+      ]);
     }
-    for (const product of test) {
+    for (const product of result) {
       const checkParent = [];
 
-      for (const check of test) {
+      for (const check of result) {
         if (check.parent === product.id) {
           checkParent.push(check);
         }
@@ -177,7 +184,7 @@ export class MenuResolver {
         }
       ]
     };
-    finalObj['tags'] = eval(JSON.stringify(test));
+    finalObj['tags'] = eval(JSON.stringify(result));
 
     const rootTags = [
       ...finalObj.tags
