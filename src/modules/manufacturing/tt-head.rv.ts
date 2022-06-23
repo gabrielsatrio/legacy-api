@@ -42,7 +42,33 @@ export class TTHeadResolver {
             .orWhere("IP.PART_NO like 'BA%'")
             .orWhere("IP.PART_NO like 'MWV%'")
             .orWhere("IP.PART_NO like 'MNV%'")
+            .orWhere("IP.PART_NO like 'FA%'")
+            .orWhere("IP.PART_NO like 'FB%'")
+            .orWhere("IP.PART_NO like 'FX%'")
+            .orWhere("IP.PART_NO like 'FZ%'")
+            .orWhere("IP.PART_NO like 'MF%'")
             .orWhere("IP.PART_NO like 'BPRK%'");
+        })
+      )
+      .andWhere(`ip.PART_STATUS in('A','I')`)
+      .getMany();
+  }
+
+  @Query(() => [IfsInventoryPartView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getPartTTBahanAsync(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string
+  ): Promise<IfsInventoryPartView[] | undefined> {
+    return await IfsInventoryPartView.createQueryBuilder('IP')
+      .where('IP.CONTRACT = :contract', { contract: contract })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where("IP.PART_NO like '%'||UPPER(:partNo)||'%'", {
+            partNo: partNo
+          }).orWhere("IP.DESCRIPTION like '%'||UPPER(:partNo)||'%'", {
+            partNo: partNo
+          });
         })
       )
       .andWhere(`ip.PART_STATUS in('A','I')`)
@@ -59,18 +85,27 @@ export class TTHeadResolver {
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .select('SUM(IPIS.QTY_ONHAND - IPIS.QTY_RESERVED)', 'qtyAvail')
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
-      .andWhere(`IPIS.LOCATION_NO like 'RM%'`)
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%NG' else 'NULL' end`
+        new Brackets((qb) => {
+          qb.where(`IPIS.LOCATION_NO like 'RM%'`).orWhere(
+            `IPIS.LOCATION_NO like 'FG%'`
+          );
+        })
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA1' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AMI') then 'RM%JUAL' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%RTR' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI') then 'RM%NG' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when contract ='AT2' then 'RM%QA2' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA1' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AT1') then 'RM%RTR' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA2' else 'NULL' end`
       )
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')

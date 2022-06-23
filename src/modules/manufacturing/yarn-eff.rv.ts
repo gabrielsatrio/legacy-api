@@ -12,9 +12,13 @@ export class YarnEffResolver {
   async getYarnEff(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnEff[] | undefined> {
-    return await YarnEff.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await YarnEff.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => YarnEff)

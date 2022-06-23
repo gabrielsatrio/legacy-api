@@ -22,9 +22,13 @@ export class ProdWarpingResolver {
   async getProdWarping(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<ProdWarping[] | undefined> {
-    return await ProdWarping.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await ProdWarping.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ProdWarpingView], { nullable: true })
@@ -32,9 +36,13 @@ export class ProdWarpingResolver {
   async getProdWarpingView(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<ProdWarpingView[] | undefined> {
-    return await ProdWarpingView.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await ProdWarpingView.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => String, { nullable: true })

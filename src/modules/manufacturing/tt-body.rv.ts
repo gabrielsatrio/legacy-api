@@ -3,6 +3,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { Brackets } from 'typeorm/query-builder/Brackets';
 import { IfsInventoryPartInStockView } from '../inventory/entities/ifs-inv-part-in-stock.vw';
 import { TransportTaskBody } from './entities/tt-detail';
 import { TransportTaskBodyInput } from './tt-body.in';
@@ -19,20 +20,27 @@ export class TTBodyResolver {
     return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
       .where('IPIS.CONTRACT = :contract', { contract: contract })
       .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
-      .andWhere(`IPIS.LOCATION_NO like :locationNo||'%'`, {
-        locationNo: locationNo
-      })
       .andWhere(
-        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%NG' else 'NULL' end`
+        new Brackets((qb) => {
+          qb.where(`IPIS.LOCATION_NO like :locationNo||'%'`, {
+            locationNo: locationNo
+          }).orWhere(`IPIS.LOCATION_NO like 'FG%'`);
+        })
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%QA1' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AMI') then 'RM%JUAL' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%RTR' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI') then 'RM%NG' else 'NULL' end`
       )
       .andWhere(
-        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT ='AT2' then 'RM%QA2' else 'NULL' end`
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA1' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AT1') then 'RM%RTR' else 'NULL' end`
+      )
+      .andWhere(
+        `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA2' else 'NULL' end`
       )
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')

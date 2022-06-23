@@ -14,13 +14,21 @@ export class MachineResolver {
     @Arg('lineNo') lineNo: string,
     @Arg('relNo') relNo: string
   ): Promise<boolean> {
-    return (await this.getMoq(orderNo, lineNo, relNo)) ? true : false;
+    try {
+      return (await this.getMoq(orderNo, lineNo, relNo)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [MoqView])
   @UseMiddleware(isAuth)
   async getAllMoq(): Promise<MoqView[] | undefined> {
-    return await MoqView.find();
+    try {
+      return await MoqView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => MoqView, { nullable: true })
@@ -30,7 +38,11 @@ export class MachineResolver {
     @Arg('lineNo') lineNo: string,
     @Arg('relNo') relNo: string
   ): Promise<MoqView | null> {
-    return await MoqView.findOneBy({ orderNo, lineNo, relNo });
+    try {
+      return await MoqView.findOneBy({ orderNo, lineNo, relNo });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => Moq)

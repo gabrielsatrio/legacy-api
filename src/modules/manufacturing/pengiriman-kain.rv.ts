@@ -21,9 +21,13 @@ export class PengirimanKainResolver {
   async getPengirimanKain(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<PengirimanKain[] | undefined> {
-    return await PengirimanKain.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await PengirimanKain.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
   @Mutation(() => PengirimanKain)
   @UseMiddleware(isAuth)

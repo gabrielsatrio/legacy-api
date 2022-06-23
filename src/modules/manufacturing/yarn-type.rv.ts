@@ -13,9 +13,13 @@ export class YarnTypeResolver {
   async getYarnType(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<YarnType[] | undefined> {
-    return await YarnType.findBy({
-      contract: In(contract)
-    });
+    try {
+      return await YarnType.findBy({
+        contract: In(contract)
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => YarnType)

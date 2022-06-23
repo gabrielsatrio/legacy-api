@@ -36,10 +36,24 @@ export class SparePartReqLineResolver {
   async getSPRequisLinesByReqId(
     @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartReqLineView[] | undefined> {
-    return await SparePartReqLineView.find({
-      where: { requisitionId },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      const data = await SparePartReqLineView.find({
+        where: { requisitionId },
+        order: { requisitionId: 'ASC' }
+      });
+      if (data.length > 0 && data[0].contract === 'AGT') {
+        await Promise.all(
+          data.map(async (item) => {
+            const sql = `SELECT Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo) AS "description" FROM DUAL`;
+            const result = await ifs.query(sql, [item.contract, item.partNo]);
+            item.partDesc = result[0].description;
+          })
+        );
+      }
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => SparePartReqLineView, { nullable: true })
@@ -48,7 +62,14 @@ export class SparePartReqLineResolver {
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineView | null> {
-    return await SparePartReqLineView.findOneBy({ requisitionId, lineItemNo });
+    try {
+      return await SparePartReqLineView.findOneBy({
+        requisitionId,
+        lineItemNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Int)

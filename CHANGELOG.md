@@ -1,14 +1,224 @@
+<a name="2.21.2"></a>
+
+# [2.21.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/196) (2022-06-22)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix validation check to create a new material requisition.
+
+<a name="2.21.1"></a>
+
+# [2.21.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/194) (2022-06-21)
+
+### Bug Fixes
+
+- [**M001**] **apm-machines**: remove max length of `makerId`.
+
+<a name="2.21.0"></a>
+
+# [2.21.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/192) (2022-06-21)
+
+### BREAKING CHANGES
+
+- **users**: refactor: replace `fieldResolver` with view-based entity.
+
+### Features
+
+- **to-array**: new utility to convert string into array by specific separator.
+
+### Bug Fixes
+
+- [**M001**] **apm-machines**: fix issue related to error message: `unable to serialized...`.
+
+<a name="2.20.0"></a>
+
+# [2.20.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/190) (2022-06-20)
+
+### Features
+
+- [**M015**] **Transport-Task**: add resolver for async part search.
+
+<a name="2.19.1"></a>
+
+# [2.19.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/188) (2022-06-20)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: support for the AGT data.
+
+<a name="2.19.0"></a>
+
+# [2.19.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/186) (2022-06-17)
+
+### Features
+
+- [**M015**] **Transport-Task**: change resolver for fG1 all plant implementation (except AGT).
+
+<a name="2.18.0"></a>
+
+# [2.18.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/184) (2022-06-16)
+
+### Features
+
+- [**M015**] **Transport-Task**: change resolver for all plant implementation.
+
+<a name="2.17.2"></a>
+
+# [2.17.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/182) (2022-06-15)
+
+### Bug Fixes
+
+- [**MANUF**] **inventory-part**: support get data from the AGT server.
+
+<a name="2.17.1"></a>
+
+# [2.17.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/180) (2022-06-14)
+
+### Features
+
+- [**M015**] **Transport-Task**: change column type for transport task body.
+
+<a name="2.17.0"></a>
+
+# [2.17.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/180) (2022-06-13)
+
+### Features
+
+- [**CORE**] **framework**: implement custom scalar for date type.
+
+<a name="2.16.0"></a>
+
+# [2.16.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/178) (2022-06-10)
+
+### Features
+
+- [**CORE**] **user**: add new field (`email`).
+
+### Other Changes
+
+- refactor: replace `custom-email` with `get-email` with new logic.
+- [**CORE**] **auth**: add `try-catch`.
+- [**CORE**] **user-contract**: add `try-catch`.
+- [**CORE**] **user**: add `try-catch`.
+- [**HR**] **technician**: perf: remove unnecessary lines of code.
+- [**HR**] **employee**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**FNA**] **moq**: add `try-catch`.
+- [**M001**] **apm-machine-category**: add `try-catch`.
+- [**M001**] **apm-machine-maintenance**: add `try-catch`.
+- [**M001**] **apm-machine**: add `try-catch`.
+- [**M001**] **apm-mtc-schedule**: add `try-catch`.
+- [**M001**] **apm-mtc-task-plan**: add `try-catch`.
+- [**M001**] **apm-mtc-task**: add `try-catch`.
+- [**M001**] **apm-service-pr-map**: add `try-catch`.
+- [**M001**] **apm-spare-part-mr-map**: add `try-catch`.
+- [**M013**] **apm-requisition-line-mach**: add `try-catch`.
+- [**M013**] **apm-requisition-line**: add `try-catch`.
+- [**M013**] **apm-requisition**: refactor: replace `custom-email` with `get-email` with new logic.
+- [**M013**] **apm-requisition**: add `try-catch`.
+
+<a name="2.15.2"></a>
+
+# [2.15.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/176) (2022-06-10)
+
+### Bug Fixes
+
+- [**M003**] **opname**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: add try catch to resolvers.
+- [**M006**] **yarn-eff**: remove yarn-emp entity and resolver.
+- [**M007**] **daily-prod-ATE**: add try catch to resolvers.
+- [**M009**] **inspek-qc**: add try catch to resolvers.
+- [**M011**] **jadwal-emad**: add try catch to resolvers.
+- [**M014**] **warping**: add try catch to resolvers.
+- [**M018**] **kontrol-baku-benang**: add try catch to resolvers.
+- [**T001**] **spt**: add try catch to resolvers.
+
+<a name="2.15.1"></a>
+
+# [2.15.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/174) (2022-06-09)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: get the email address from the User if the email from the Employee is invalid.
+
+<a name="2.15.0"></a>
+
+# [2.15.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/172) (2022-06-08)
+
+### Features
+
+- [**M001**] **apm-schedules**: add new services for Maintenance Schedule Task Realization.
+
+<a name="2.14.0"></a>
+
+# [2.14.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/170) (2022-06-08)
+
+### BREAKING CHANGES
+
+- [**HR**] **employees**: move `getEmployeesByGradeWorkLocation` to the MV resolver.
+
+<a name="2.13.2"></a>
+
+# [2.13.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/168) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: all inactive parts will be included to be used in the spare part requisition.
+
+<a name="2.13.1"></a>
+
+# [2.13.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/166) (2022-06-07)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix order by `lineItemNo` when query the data for **Spare Parts Requisition Lines**.
+
+<a name="2.13.0"></a>
+
+# [2.13.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/164) (2022-06-07)
+
+### Features
+
+- [**M001**] **apm-maintenance-schedules**: add new services.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue which MR was created multiple times when user is selecting the Urgent option.
+
+<a name="2.12.0"></a>
+
+# [2.12.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/162) (2022-06-07)
+
+### Features
+
+- [**M017**] **mdp**: add Sync SO from IFS
+
+<a name="2.11.1"></a>
+
+# [2.11.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/160) (2022-06-06)
+
+### Bug Fixes
+
+- [**M017**] **mdp**: add description entity.
+
+<a name="2.11.0"></a>
+
+# [2.11.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/158) (2022-06-06)
+
+### Features
+
+- [**M018**] **kontrol-baku-benang**: Add new module kontrol baku benang for yarn dept.
+
 <a name="2.10.0"></a>
 
-# [2.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)
+# [2.10.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-31)
 
-### Feature
+### Features
 
-- [**G001**] **Bon-Pemesanan-Makan**: create module to input bon makan & retur.
+- [**M017**] **MDP**: finish MDP module.
 
 <a name="2.9.0"></a>
 
-# [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/154) (2022-05-30)
+# [2.9.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/155) (2022-05-30)
 
 ### Features
 
@@ -26,7 +236,7 @@
 
 <a name="2.8.2"></a>
 
-# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/152) (2022-05-23)
+# [2.8.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/153) (2022-05-23)
 
 ### Bug Fixes
 

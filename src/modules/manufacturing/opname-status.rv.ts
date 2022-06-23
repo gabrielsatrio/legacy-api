@@ -12,7 +12,11 @@ export class OpnameStatusResolver {
   @Query(() => OpnameStatus, { nullable: true })
   @UseMiddleware(isAuth)
   async getOpname(@Arg('objId') objId: string): Promise<OpnameStatus | null> {
-    return await OpnameStatus.findOneBy({ objId });
+    try {
+      return await OpnameStatus.findOneBy({ objId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => OpnameStatus, { nullable: true })
@@ -89,12 +93,16 @@ export class OpnameStatusResolver {
     @Arg('contract', () => [String]) contract: string[],
     @Arg('username') username: string
   ): Promise<OpnameStatus[] | undefined> {
-    return await OpnameStatus.find({
-      where: {
-        contract: In(contract),
-        username: username
-      }
-    });
+    try {
+      return await OpnameStatus.find({
+        where: {
+          contract: In(contract),
+          username: username
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Number)

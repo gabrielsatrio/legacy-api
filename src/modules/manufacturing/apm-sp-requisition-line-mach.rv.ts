@@ -21,10 +21,14 @@ export class SparePartReqLineMachResolver {
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number
   ): Promise<SparePartReqLineMachView[] | undefined> {
-    return await SparePartReqLineMachView.find({
-      where: { requisitionId, lineItemNo },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartReqLineMachView.find({
+        where: { requisitionId, lineItemNo },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => SparePartReqLineMachView, { nullable: true })
@@ -34,11 +38,15 @@ export class SparePartReqLineMachResolver {
     @Arg('lineItemNo', () => Int) lineItemNo: number,
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMachView | null> {
-    return await SparePartReqLineMachView.findOneBy({
-      requisitionId,
-      lineItemNo,
-      mapNo
-    });
+    try {
+      return await SparePartReqLineMachView.findOneBy({
+        requisitionId,
+        lineItemNo,
+        mapNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Int)

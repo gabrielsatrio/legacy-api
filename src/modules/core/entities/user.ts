@@ -1,14 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  OneToMany,
-  PrimaryColumn
-} from 'typeorm';
-import { UserContractView } from './user-contract.vw';
+import { BaseEntity, Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
 @Entity('ATJ_APP_USER')
 @ObjectType()
@@ -57,11 +48,4 @@ export class User extends BaseEntity {
   @Field()
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
-
-  @Field(() => [UserContractView], { nullable: true })
-  @OneToMany(() => UserContractView, (userContract) => userContract.users, {
-    nullable: true
-  })
-  @JoinColumn({ name: 'IFS_USERNAME', referencedColumnName: 'username' })
-  contracts?: UserContractView[];
 }

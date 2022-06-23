@@ -15,7 +15,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { EmployeeResolver } from './../human-resources/org-employee.rv';
+import { EmployeeMaterializedViewResolver } from '../human-resources/employee-mv.rv';
 import { SparePartReqLineResolver } from './apm-sp-requisition-line.rv';
 import { SparePartRequisitionInput } from './apm-sp-requisition.in';
 import { SparePartRequisition } from './entities/apm-sp-requisition';
@@ -43,10 +43,14 @@ export class SparePartRequisitionResolver {
   async getSPRequisitions(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<SparePartRequisition[] | undefined> {
-    return await SparePartRequisition.find({
-      where: { contract: In(contract) },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartRequisition.find({
+        where: { contract: In(contract) },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [SparePartRequisitionView])
@@ -54,10 +58,14 @@ export class SparePartRequisitionResolver {
   async getSPRequisitionsByContract(
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<SparePartRequisitionView[] | undefined> {
-    return await SparePartRequisitionView.find({
-      where: { contract: In(contract) },
-      order: { requisitionId: 'ASC' }
-    });
+    try {
+      return await SparePartRequisitionView.find({
+        where: { contract: In(contract) },
+        order: { requisitionId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => SparePartRequisitionView, { nullable: true })
@@ -65,7 +73,11 @@ export class SparePartRequisitionResolver {
   async getSPRequisition(
     @Arg('requisitionId', () => Int) requisitionId: number
   ): Promise<SparePartRequisitionView | null> {
-    return await SparePartRequisitionView.findOneBy({ requisitionId });
+    try {
+      return await SparePartRequisitionView.findOneBy({ requisitionId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => Int)
@@ -88,14 +100,10 @@ export class SparePartRequisitionResolver {
   ): Promise<SparePartRequisition | undefined> {
     try {
       const createdBy = req.session.username;
-      const employee = new EmployeeResolver();
-      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
-      const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        input.approverLv1
-      );
-      const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        input.approverLv2
-      );
+      const employeeObj = new EmployeeMaterializedViewResolver();
+      const creator = await employeeObj.getEmployeeMv(createdBy);
+      const approverLv1 = await employeeObj.getEmployeeMv(input.approverLv1);
+      const approverLv2 = await employeeObj.getEmployeeMv(input.approverLv2);
       const data = SparePartRequisition.create({
         ...input,
         nameApprLv1: approverLv1?.name,
@@ -125,9 +133,10 @@ export class SparePartRequisitionResolver {
         requisitionId: input.requisitionId
       });
       if (!data) throw new Error('No data found.');
+      let sql: string;
       let outOrderNo: string;
-      if (input.status === 'Approved' || input.urgent) {
-        let sql = `
+      if (!data.orderNo && (input.status === 'Approved' || input.urgent)) {
+        sql = `
           BEGIN
             ATJ_Material_Requisition_API.New__(
               :contract,
@@ -153,8 +162,9 @@ export class SparePartRequisitionResolver {
         outOrderNo = result[0] as string;
         if (outOrderNo) {
           input.orderNo = outOrderNo;
-          const requisLines = await SparePartReqLine.findBy({
-            requisitionId: input.requisitionId
+          const requisLines = await SparePartReqLine.find({
+            where: { requisitionId: input.requisitionId },
+            order: { requisitionId: 'ASC', lineItemNo: 'ASC' }
           });
           await Promise.all(
             requisLines.map(async (item) => {
@@ -193,19 +203,19 @@ export class SparePartRequisitionResolver {
               ]);
             })
           );
-          if (input.status === 'Approved') {
-            sql = `
-              BEGIN
-                ATJ_Material_Requisition_API.Release__(:orderNo);
-              EXCEPTION
-                WHEN OTHERS THEN
-                  ROLLBACK;
-                  RAISE;
-              END;
-            `;
-            await ifs.query(sql, [outOrderNo]);
-          }
         }
+      }
+      if (input.orderNo && input.status === 'Approved') {
+        sql = `
+          BEGIN
+            ATJ_Material_Requisition_API.Release__(:orderNo);
+          EXCEPTION
+            WHEN OTHERS THEN
+              ROLLBACK;
+              RAISE;
+          END;
+        `;
+        await ifs.query(sql, [input.orderNo]);
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
@@ -222,14 +232,10 @@ export class SparePartRequisitionResolver {
         `;
         await ifs.query(sql, [orderNo]);
       }
-      const employee = new EmployeeResolver();
-      const creator = await employee.getEmployeeWithCustomEmail(createdBy);
-      const approverLv1 = await employee.getEmployeeWithCustomEmail(
-        result.approverLv1
-      );
-      const approverLv2 = await employee.getEmployeeWithCustomEmail(
-        result.approverLv2
-      );
+      const employeeObj = new EmployeeMaterializedViewResolver();
+      const creator = await employeeObj.getEmployeeMv(createdBy);
+      const approverLv1 = await employeeObj.getEmployeeMv(result.approverLv1);
+      const approverLv2 = await employeeObj.getEmployeeMv(result.approverLv2);
       switch (input.status) {
         case 'Submitted':
           await sendEmail(
@@ -256,7 +262,8 @@ export class SparePartRequisitionResolver {
             creator?.email || '',
             `Spare Part Requisition No ${requisitionId} has been Approved`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</p>`
+            <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</br>
+            You can find all the details by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</p>`
           );
           break;
         case 'Rejected':
@@ -264,7 +271,8 @@ export class SparePartRequisitionResolver {
             creator?.email || '',
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
-            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</p>`
+            <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</br>
+            You can find all the details by clicking <a href="${config.client.url}/m/013/sp-requisitions/add?requisitionId=${requisitionId}"><b>here</b></a>.</p>`
           );
           break;
         default:
