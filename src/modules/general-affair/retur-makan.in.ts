@@ -1,10 +1,10 @@
 import { IsDate, IsNumber } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { ReturMakan } from './entities/retur-makan';
 
 @InputType()
 export class ReturMakanInput implements Partial<ReturMakan> {
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   id!: number;
 

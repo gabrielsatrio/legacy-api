@@ -1,10 +1,10 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ANG_RETUR_ROTI_V')
 @ObjectType()
 export class ReturRotiView extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;
 

@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { ReturMakan } from './entities/retur-makan';
 import { ReturMakanView } from './entities/retur-makan.vw';
 import { ReturMakanInput } from './retur-makan.in';
@@ -9,7 +16,9 @@ import { ReturMakanInput } from './retur-makan.in';
 export class ReturMakanResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkReturMakanExist(@Arg('id') id: number): Promise<boolean> {
+  async checkReturMakanExist(
+    @Arg('id', () => Int) id: number
+  ): Promise<boolean> {
     return (await this.getReturMakan(id)) ? true : false;
   }
 
@@ -21,7 +30,9 @@ export class ReturMakanResolver {
 
   @Query(() => ReturMakanView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getReturMakan(@Arg('id') id: number): Promise<ReturMakanView | null> {
+  async getReturMakan(
+    @Arg('id', () => Int) id: number
+  ): Promise<ReturMakanView | null> {
     return await ReturMakanView.findOneBy({ id });
   }
 
@@ -65,7 +76,9 @@ export class ReturMakanResolver {
 
   @Mutation(() => ReturMakan)
   @UseMiddleware(isAuth)
-  async deleteReturMakan(@Arg('id') id: number): Promise<ReturMakan> {
+  async deleteReturMakan(
+    @Arg('id', () => Int) id: number
+  ): Promise<ReturMakan> {
     try {
       const data = await ReturMakan.findOneBy({ id });
       if (!data) throw new Error('No data found.');

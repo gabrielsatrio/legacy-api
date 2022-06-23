@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { ReturRotiDetail } from './entities/retur-roti-detail';
 import { ReturRotiDetailView } from './entities/retur-roti-detail.vw';
 import { ReturRotiDetailInput } from './retur-roti-detail.in';
@@ -9,7 +16,9 @@ import { ReturRotiDetailInput } from './retur-roti-detail.in';
 export class ReturRotiDetailResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkReturRotiDetailExist(@Arg('id') id: number): Promise<boolean> {
+  async checkReturRotiDetailExist(
+    @Arg('id', () => Int) id: number
+  ): Promise<boolean> {
     return (await this.getReturRotiDetail(id)) ? true : false;
   }
 
@@ -22,7 +31,7 @@ export class ReturRotiDetailResolver {
   @Query(() => [ReturRotiDetailView], { nullable: true })
   @UseMiddleware(isAuth)
   async getReturRotiByMaster(
-    @Arg('returRotiId') returRotiId: number
+    @Arg('returRotiId', () => Int) returRotiId: number
   ): Promise<ReturRotiDetailView[] | undefined> {
     return await ReturRotiDetailView.findBy({ returRotiId });
   }
@@ -30,7 +39,7 @@ export class ReturRotiDetailResolver {
   @Query(() => ReturRotiDetailView, { nullable: true })
   @UseMiddleware(isAuth)
   async getReturRotiDetail(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<ReturRotiDetailView | null> {
     return await ReturRotiDetail.findOneBy({ id });
   }
@@ -75,7 +84,9 @@ export class ReturRotiDetailResolver {
 
   @Mutation(() => ReturRotiDetail)
   @UseMiddleware(isAuth)
-  async deleteReturRotiDetail(@Arg('id') id: number): Promise<ReturRotiDetail> {
+  async deleteReturRotiDetail(
+    @Arg('id', () => Int) id: number
+  ): Promise<ReturRotiDetail> {
     try {
       const data = await ReturRotiDetail.findOneBy({ id });
       if (!data) throw new Error('No data found.');

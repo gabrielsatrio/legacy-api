@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { ReturMakanDetail } from './entities/retur-makan-detail';
 import { ReturMakanDetailView } from './entities/retur-makan-detail.vw';
 import { ReturMakanDetailInput } from './retur-makan-detail.in';
@@ -9,7 +16,9 @@ import { ReturMakanDetailInput } from './retur-makan-detail.in';
 export class ReturMakanDetailResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkReturMakanDetailExist(@Arg('id') id: number): Promise<boolean> {
+  async checkReturMakanDetailExist(
+    @Arg('id', () => Int) id: number
+  ): Promise<boolean> {
     return (await this.getReturMakanDetail(id)) ? true : false;
   }
 
@@ -22,7 +31,7 @@ export class ReturMakanDetailResolver {
   @Query(() => [ReturMakanDetailView], { nullable: true })
   @UseMiddleware(isAuth)
   async getReturMakanByMaster(
-    @Arg('returMakanId') returMakanId: number
+    @Arg('returMakanId', () => Int) returMakanId: number
   ): Promise<ReturMakanDetailView[] | undefined> {
     return await ReturMakanDetailView.findBy({ returMakanId });
   }
@@ -30,7 +39,7 @@ export class ReturMakanDetailResolver {
   @Query(() => ReturMakanDetailView, { nullable: true })
   @UseMiddleware(isAuth)
   async getReturMakanDetail(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<ReturMakanDetailView | null> {
     return await ReturMakanDetail.findOneBy({ id });
   }
@@ -76,7 +85,7 @@ export class ReturMakanDetailResolver {
   @Mutation(() => ReturMakanDetail)
   @UseMiddleware(isAuth)
   async deleteReturMakanDetail(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<ReturMakanDetail> {
     try {
       const data = await ReturMakanDetail.findOneBy({ id });

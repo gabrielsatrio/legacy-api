@@ -1,10 +1,10 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ANG_BONMAKAN_WDAYS_LINE_TAB')
 @ObjectType()
 export class BonMakanWeekdaysDetail extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;
 
@@ -64,7 +64,7 @@ export class BonMakanWeekdaysDetail extends BaseEntity {
   @Column({ name: 'ML_ROTI_12' })
   mlRoti12?: number;
 
-  @Field()
+  @Field(() => Int)
   @Column({ name: 'BON_MAKAN_WDAYS_ID' })
   bonMakanWdaysId!: number;
 }

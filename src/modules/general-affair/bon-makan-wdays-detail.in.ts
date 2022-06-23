@@ -1,12 +1,12 @@
 import { IsDate, IsNumber } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { BonMakanWeekdaysDetail } from './entities/bon-makan-wdays-detail';
 
 @InputType()
 export class BonMakanWeekdaysDetailInput
   implements Partial<BonMakanWeekdaysDetail>
 {
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   id!: number;
 
@@ -63,7 +63,7 @@ export class BonMakanWeekdaysDetailInput
   @IsNumber()
   mlRoti12?: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   bonMakanWdaysId!: number;
 }

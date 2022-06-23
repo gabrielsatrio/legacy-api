@@ -1,10 +1,10 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ANG_RETUR_MAKAN_LINE_TAB')
 @ObjectType()
 export class ReturMakanDetail extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;
 
@@ -36,7 +36,7 @@ export class ReturMakanDetail extends BaseEntity {
   @Column({ name: 'SELISIH' })
   selisih!: number;
 
-  @Field()
+  @Field(() => Int)
   @Column({ name: 'RETUR_MAKAN_ID' })
   returMakanId!: number;
 }

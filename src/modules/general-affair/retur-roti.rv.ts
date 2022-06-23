@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { ReturRoti } from './entities/retur-roti';
 import { ReturRotiView } from './entities/retur-roti.vw';
 import { ReturRotiInput } from './retur-roti.in';
@@ -9,7 +16,9 @@ import { ReturRotiInput } from './retur-roti.in';
 export class ReturRotiResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkReturRotiExist(@Arg('id') id: number): Promise<boolean> {
+  async checkReturRotiExist(
+    @Arg('id', () => Int) id: number
+  ): Promise<boolean> {
     return (await this.getReturRoti(id)) ? true : false;
   }
 
@@ -21,7 +30,9 @@ export class ReturRotiResolver {
 
   @Query(() => ReturRotiView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getReturRoti(@Arg('id') id: number): Promise<ReturRotiView | null> {
+  async getReturRoti(
+    @Arg('id', () => Int) id: number
+  ): Promise<ReturRotiView | null> {
     return await ReturRotiView.findOneBy({ id });
   }
 
@@ -65,7 +76,7 @@ export class ReturRotiResolver {
 
   @Mutation(() => ReturRoti)
   @UseMiddleware(isAuth)
-  async deleteReturRoti(@Arg('id') id: number): Promise<ReturRoti> {
+  async deleteReturRoti(@Arg('id', () => Int) id: number): Promise<ReturRoti> {
     try {
       const data = await ReturRoti.findOneBy({ id });
       if (!data) throw new Error('No data found.');

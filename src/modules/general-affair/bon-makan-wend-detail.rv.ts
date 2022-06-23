@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { BonMakanWeekendDetailInput } from './bon-makan-wend-detail.in';
 import { BonMakanWeekendDetail } from './entities/bon-makan-wend-detail';
 import { BonMakanWeekendDetailView } from './entities/bon-makan-wend-detail.vw';
@@ -10,7 +17,7 @@ export class BonMakanWeekendDetailResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
   async checkBonMakanWeekendDetailExist(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<boolean> {
     return (await this.getBonMakanWeekendDetail(id)) ? true : false;
   }
@@ -26,7 +33,7 @@ export class BonMakanWeekendDetailResolver {
   @Query(() => [BonMakanWeekendDetailView], { nullable: true })
   @UseMiddleware(isAuth)
   async getBonMakanWeekendByMaster(
-    @Arg('bonMakanWendId') bonMakanWendId: number
+    @Arg('bonMakanWendId', () => Int) bonMakanWendId: number
   ): Promise<BonMakanWeekendDetailView[] | undefined> {
     return await BonMakanWeekendDetailView.findBy({ bonMakanWendId });
   }
@@ -34,7 +41,7 @@ export class BonMakanWeekendDetailResolver {
   @Query(() => BonMakanWeekendDetailView, { nullable: true })
   @UseMiddleware(isAuth)
   async getBonMakanWeekendDetail(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<BonMakanWeekendDetailView | null> {
     return await BonMakanWeekendDetail.findOneBy({ id });
   }
@@ -80,7 +87,7 @@ export class BonMakanWeekendDetailResolver {
   @Mutation(() => BonMakanWeekendDetail)
   @UseMiddleware(isAuth)
   async deleteBonMakanWeekendDetail(
-    @Arg('id') id: number
+    @Arg('id', () => Int) id: number
   ): Promise<BonMakanWeekendDetail> {
     try {
       const data = await BonMakanWeekendDetail.findOneBy({ id });

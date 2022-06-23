@@ -1,10 +1,10 @@
 import { IsDate, IsNumber } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { ReturRotiDetail } from './entities/retur-roti-detail';
 
 @InputType()
 export class ReturRotiDetailInput implements Partial<ReturRotiDetail> {
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   id!: number;
 
@@ -42,7 +42,7 @@ export class ReturRotiDetailInput implements Partial<ReturRotiDetail> {
   @IsNumber()
   rRotiKecil!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   returRotiId!: number;
 }
