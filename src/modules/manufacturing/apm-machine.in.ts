@@ -25,7 +25,6 @@ export class MachineInput implements Partial<Machine> {
   type!: string;
 
   @Field()
-  @Length(2)
   makerId!: string;
 
   @Field()

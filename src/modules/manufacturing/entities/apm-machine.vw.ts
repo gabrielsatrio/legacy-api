@@ -9,6 +9,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { GraphQLDate } from '../../core/entities/scalars';
 import { IfsWorkCenterView } from './ifs-work-center.vw';
 
 @Entity('ROB_APM_MACHINE_V')
@@ -54,7 +55,7 @@ export class MachineView extends BaseEntity {
   @Column({ name: 'YEAR_MADE' })
   yearMade!: number;
 
-  @Field()
+  @Field(() => GraphQLDate)
   @Column({ name: 'PURCHASE_DATE' })
   purchaseDate!: Date;
 
