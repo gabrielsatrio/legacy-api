@@ -19,13 +19,21 @@ export class ReturMakanDetailResolver {
   async checkReturMakanDetailExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getReturMakanDetail(id)) ? true : false;
+    try {
+      return (await this.getReturMakanDetail(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturMakanDetailView])
   @UseMiddleware(isAuth)
   async getAllReturMakanDetail(): Promise<ReturMakanDetail[] | undefined> {
-    return await ReturMakanDetailView.find();
+    try {
+      return await ReturMakanDetailView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturMakanDetailView], { nullable: true })
@@ -33,7 +41,11 @@ export class ReturMakanDetailResolver {
   async getReturMakanByMaster(
     @Arg('returMakanId', () => Int) returMakanId: number
   ): Promise<ReturMakanDetailView[] | undefined> {
-    return await ReturMakanDetailView.findBy({ returMakanId });
+    try {
+      return await ReturMakanDetailView.findBy({ returMakanId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => ReturMakanDetailView, { nullable: true })
@@ -41,7 +53,11 @@ export class ReturMakanDetailResolver {
   async getReturMakanDetail(
     @Arg('id', () => Int) id: number
   ): Promise<ReturMakanDetailView | null> {
-    return await ReturMakanDetail.findOneBy({ id });
+    try {
+      return await ReturMakanDetail.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => ReturMakanDetail)

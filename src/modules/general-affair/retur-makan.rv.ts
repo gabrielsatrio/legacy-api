@@ -19,13 +19,21 @@ export class ReturMakanResolver {
   async checkReturMakanExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getReturMakan(id)) ? true : false;
+    try {
+      return (await this.getReturMakan(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturMakanView])
   @UseMiddleware(isAuth)
   async getAllReturMakan(): Promise<ReturMakanView[] | undefined> {
-    return await ReturMakan.find();
+    try {
+      return await ReturMakan.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => ReturMakanView, { nullable: true })
@@ -33,7 +41,11 @@ export class ReturMakanResolver {
   async getReturMakan(
     @Arg('id', () => Int) id: number
   ): Promise<ReturMakanView | null> {
-    return await ReturMakanView.findOneBy({ id });
+    try {
+      return await ReturMakanView.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => ReturMakan)

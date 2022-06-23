@@ -19,13 +19,21 @@ export class ReturRotiResolver {
   async checkReturRotiExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getReturRoti(id)) ? true : false;
+    try {
+      return (await this.getReturRoti(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturRotiView])
   @UseMiddleware(isAuth)
   async getAllReturRoti(): Promise<ReturRotiView[] | undefined> {
-    return await ReturRoti.find();
+    try {
+      return await ReturRoti.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => ReturRotiView, { nullable: true })
@@ -33,7 +41,11 @@ export class ReturRotiResolver {
   async getReturRoti(
     @Arg('id', () => Int) id: number
   ): Promise<ReturRotiView | null> {
-    return await ReturRotiView.findOneBy({ id });
+    try {
+      return await ReturRotiView.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => ReturRoti)

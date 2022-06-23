@@ -19,7 +19,11 @@ export class BonMakanWeekdaysDetailResolver {
   async checkBonMakanWeekdaysDetailExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getBonMakanWeekdaysDetail(id)) ? true : false;
+    try {
+      return (await this.getBonMakanWeekdaysDetail(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [BonMakanWeekdaysDetailView])
@@ -27,7 +31,11 @@ export class BonMakanWeekdaysDetailResolver {
   async getAllBonMakanWeekdaysDetail(): Promise<
     BonMakanWeekdaysDetail[] | undefined
   > {
-    return await BonMakanWeekdaysDetailView.find();
+    try {
+      return await BonMakanWeekdaysDetailView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [BonMakanWeekdaysDetailView], { nullable: true })
@@ -35,7 +43,11 @@ export class BonMakanWeekdaysDetailResolver {
   async getBonMakanWeekdaysByMaster(
     @Arg('bonMakanWdaysId', () => Int) bonMakanWdaysId: number
   ): Promise<BonMakanWeekdaysDetailView[] | undefined> {
-    return await BonMakanWeekdaysDetailView.findBy({ bonMakanWdaysId });
+    try {
+      return await BonMakanWeekdaysDetailView.findBy({ bonMakanWdaysId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => BonMakanWeekdaysDetailView, { nullable: true })
@@ -43,7 +55,11 @@ export class BonMakanWeekdaysDetailResolver {
   async getBonMakanWeekdaysDetail(
     @Arg('id', () => Int) id: number
   ): Promise<BonMakanWeekdaysDetailView | null> {
-    return await BonMakanWeekdaysDetail.findOneBy({ id });
+    try {
+      return await BonMakanWeekdaysDetail.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => BonMakanWeekdaysDetail)

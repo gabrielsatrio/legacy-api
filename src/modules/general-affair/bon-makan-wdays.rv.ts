@@ -19,13 +19,21 @@ export class BonMakanWeekdaysResolver {
   async checkBonMakanWeekdaysExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getBonMakanWeekdays(id)) ? true : false;
+    try {
+      return (await this.getBonMakanWeekdays(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [BonMakanWeekdaysView])
   @UseMiddleware(isAuth)
   async getAllBonMakanWeekdays(): Promise<BonMakanWeekdaysView[] | undefined> {
-    return await BonMakanWeekdays.find();
+    try {
+      return await BonMakanWeekdays.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => BonMakanWeekdaysView, { nullable: true })
@@ -33,7 +41,11 @@ export class BonMakanWeekdaysResolver {
   async getBonMakanWeekdays(
     @Arg('id', () => Int) id: number
   ): Promise<BonMakanWeekdaysView | null> {
-    return await BonMakanWeekdaysView.findOneBy({ id });
+    try {
+      return await BonMakanWeekdaysView.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => BonMakanWeekdays)

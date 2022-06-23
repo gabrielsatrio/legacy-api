@@ -19,13 +19,21 @@ export class ReturRotiDetailResolver {
   async checkReturRotiDetailExist(
     @Arg('id', () => Int) id: number
   ): Promise<boolean> {
-    return (await this.getReturRotiDetail(id)) ? true : false;
+    try {
+      return (await this.getReturRotiDetail(id)) ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturRotiDetailView])
   @UseMiddleware(isAuth)
   async getAllReturRotiDetail(): Promise<ReturRotiDetail[] | undefined> {
-    return await ReturRotiDetailView.find();
+    try {
+      return await ReturRotiDetailView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [ReturRotiDetailView], { nullable: true })
@@ -33,7 +41,11 @@ export class ReturRotiDetailResolver {
   async getReturRotiByMaster(
     @Arg('returRotiId', () => Int) returRotiId: number
   ): Promise<ReturRotiDetailView[] | undefined> {
-    return await ReturRotiDetailView.findBy({ returRotiId });
+    try {
+      return await ReturRotiDetailView.findBy({ returRotiId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => ReturRotiDetailView, { nullable: true })
@@ -41,7 +53,11 @@ export class ReturRotiDetailResolver {
   async getReturRotiDetail(
     @Arg('id', () => Int) id: number
   ): Promise<ReturRotiDetailView | null> {
-    return await ReturRotiDetail.findOneBy({ id });
+    try {
+      return await ReturRotiDetail.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Mutation(() => ReturRotiDetail)
