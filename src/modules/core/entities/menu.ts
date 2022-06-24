@@ -6,7 +6,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 export class Menu extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
-  id!: string;
+  id!: number;
 
   @Field()
   @Column({ name: 'ROOT' })
@@ -14,6 +14,7 @@ export class Menu extends BaseEntity {
   @Field()
   @Column({ name: 'NAME' })
   name!: string;
+
   @Field()
   @Column({ name: 'TYPE' })
   type!: string;
@@ -28,5 +29,5 @@ export class Menu extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'PARENT' })
-  parent?: string;
+  parent?: number;
 }

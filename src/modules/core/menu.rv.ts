@@ -2,9 +2,12 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { find, isArray } from 'lodash';
+import oracledb from 'oracledb';
 import {
+  Arg,
   Ctx,
   FieldResolver,
+  Mutation,
   Query,
   Resolver,
   Root,
@@ -13,6 +16,7 @@ import {
 import FieldMenu from '../../types/field-menu';
 import { mapError } from '../../utils/map-error';
 import { Menu } from './entities/menu';
+import { MenuInput } from './menu.in';
 
 @Resolver(Menu)
 export class MenuResolver {
@@ -38,77 +42,17 @@ export class MenuResolver {
   @Query(() => [Menu])
   @UseMiddleware(isAuth)
   async getAllMenu(): Promise<Menu[]> {
-    return await Menu.find();
+    return await Menu.find({
+      where: { type: 'Link' }
+    });
   }
 
-  @Query(() => [FieldMenu], { nullable: true })
+  @Query(() => [Menu])
   @UseMiddleware(isAuth)
-  async getMenu(): Promise<Record<string, unknown>[]> {
-    const test = await Menu.find({ order: { id: 'ASC' } });
-
-    for (const product of test) {
-      const isParent = await Menu.find({
-        where: { parent: product.id },
-        order: { id: 'ASC' }
-      });
-      const menus = [];
-      if (!isParent) menus.push('');
-      else {
-        isParent.map((rec: Menu) => {
-          menus.push(rec.id);
-        });
-      }
-      product['items'] = menus;
-    }
-    const finalObj = {
-      tags: [
-        {
-          id: 'Title',
-          items: ['a', 'b'],
-          root: 'root',
-          name: 'Apps',
-          type: 'Title',
-          to: null,
-          icon: null
-        }
-      ]
-    };
-    finalObj['tags'] = eval(JSON.stringify(test));
-
-    const rootTags = [
-      ...finalObj.tags
-        .map((obj) => obj)
-        .filter((tag) => tag.root === 'root' || tag.root === 'branch')
-    ];
-
-    const mapChildren = (
-      childId: any
-    ): Record<string, any> | undefined | any => {
-      const tag = find(finalObj.tags, (tag) => tag.id === childId) || null;
-
-      if (tag) {
-        if (
-          isArray(tag.items) &&
-          (tag.items.length > 0 || tag.root !== 'root')
-        ) {
-          return tag;
-        }
-      }
-    };
-
-    const tagTree = rootTags.map((tag) => {
-      tag.items = tag.items.map(mapChildren).filter((tag) => tag !== null);
-
-      return tag;
+  async getParentMenu(): Promise<Menu[]> {
+    return await Menu.find({
+      where: { type: 'Dropdown' }
     });
-
-    for (let i = tagTree.length - 1; i >= 0; i--) {
-      if (tagTree[i].root == 'branch') {
-        tagTree.splice(i, 1);
-      }
-    }
-
-    return tagTree;
   }
 
   @Query(() => [FieldMenu], { nullable: true })
@@ -145,7 +89,7 @@ export class MenuResolver {
                                 union
                                 select id
                                 FROM   ATJ_APP_MENU
-                                where  id in (1000,12000))
+                                where  id in (100000))
               CONNECT BY PRIOR parent = id
               ORDER BY id`;
       result = await ifs.query(sql, [
@@ -220,5 +164,99 @@ export class MenuResolver {
     }
 
     return tagTree;
+  }
+
+  @Mutation(() => Menu)
+  @UseMiddleware(isAuth)
+  async createMenu(@Arg('input') input: MenuInput): Promise<Menu | null> {
+    try {
+      const sql = `
+    BEGIN
+    atj_app_menu_api.add_menu_ezio(
+      :parent,
+      :name,
+      :path,
+      :icon,
+      :outMenuId);
+    END;
+  `;
+
+      const result = await ifs.query(sql, [
+        input.parent,
+        input.name,
+        input.to,
+        input.icon,
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+      ]);
+      const outMenuId = result[0] as number;
+
+      const data = await Menu.findOneBy({
+        id: outMenuId
+      });
+
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Menu, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateMenu(@Arg('input') input: MenuInput): Promise<Menu | null> {
+    try {
+      const TTHead = await Menu.findOneBy({
+        id: input.id
+      });
+
+      if (!TTHead) {
+        throw new Error('No data found.');
+      }
+
+      const sql = `
+      BEGIN
+      atj_app_menu_api.update_menu_Ezio(
+        :id,
+        :name,
+        :path,
+        :icon);
+      END;
+      `;
+
+      await ifs.query(sql, [input.id, input.name, input.to, input.icon]);
+
+      const data = Menu.findOneBy({
+        id: input.id
+      });
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Menu)
+  @UseMiddleware(isAuth)
+  async deleteMenu(@Arg('id') id: number): Promise<Menu> {
+    try {
+      const tt = await Menu.findOneBy({
+        id
+      });
+
+      if (!tt) {
+        throw new Error('No data found.');
+      }
+
+      const sql = `
+      BEGIN
+      atj_app_menu_api.delete_menu_Ezio(
+        :id);
+      END;
+    `;
+
+      await ifs.query(sql, [id]);
+
+      return tt;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }
