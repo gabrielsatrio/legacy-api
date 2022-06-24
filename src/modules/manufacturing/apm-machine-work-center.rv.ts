@@ -28,12 +28,6 @@ export class MachineWorkCenterResolver {
           FROM     work_center@ifs8agt
           WHERE    contract = :contract
           AND      department_no = :departmentNo
-          AND      (contract, work_center_no) NOT IN (
-                    SELECT   contract,
-                             work_center_no AS "workCenterNo"
-                    FROM     rob_apm_unavailable_wc_v
-                    WHERE    contract = :contract
-                   )
         `;
       } else {
         sql = `
@@ -45,12 +39,6 @@ export class MachineWorkCenterResolver {
           FROM     work_center
           WHERE    contract = :contract
           AND      department_no = :departmentNo
-          AND      (contract, work_center_no) NOT IN (
-                    SELECT   contract,
-                             work_center_no AS "workCenterNo"
-                    FROM     rob_apm_unavailable_wc_v
-                    WHERE    contract = :contract
-                   )
         `;
       }
       const result = await ifs.query(sql, [contract, departmentNo]);
