@@ -151,6 +151,10 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   feedMesin4?: number;
 
   @Field({ nullable: true })
+  @IsNumber()
+  netto4?: number;
+
+  @Field({ nullable: true })
   @MaxLength(200)
   notes?: string;
   @Field({ nullable: true })
