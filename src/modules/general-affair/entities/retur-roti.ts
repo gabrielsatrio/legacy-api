@@ -16,7 +16,7 @@ export class ReturRoti extends BaseEntity {
   @Column({ name: 'TANGGAL' })
   tanggal!: Date;
 
-  @Field(() => Int)
+  @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
 }
