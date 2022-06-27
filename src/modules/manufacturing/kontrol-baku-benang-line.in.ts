@@ -23,6 +23,10 @@ export class KontrolBakuBenangLineInput
   partNo?: string;
 
   @Field({ nullable: true })
+  @MaxLength(50)
+  partDesc?: string;
+
+  @Field({ nullable: true })
   @MaxLength(20)
   lotBatchNo?: string;
 
