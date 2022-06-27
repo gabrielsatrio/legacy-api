@@ -1,3 +1,29 @@
+<a name="2.24.0"></a>
+
+# [2.24.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/202) (2022-06-27)
+
+### Features
+
+- add new utility: `toCsvWithQuotes`. Convert an array of strings into comma-separated values with single quotes.
+
+### Bug Fixes
+
+- **navigation**: add the AGT site into the allowed contract list for ATEJA & CCU users.
+- [**M001**] **apm-machines**: remove work center usage limit.
+- [**M001**] **apm-work-centers**: fix an issue relate to the missing data.
+- [**G001**] **retur-roti**: fix mismatch GraphQL return type.
+
+<a name="2.23.0"></a>
+
+# [2.23.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/200) (2022-06-27)
+
+### Features
+
+- [**M011**] **jadwal-emad**: add new view fragment.
+- [**M014**] **warping**: add new field netto for AT4.
+- **ifs-dop-head**: add try catch.
+- **ifs-shop-ord-operation**: add try catch.
+
 <a name="2.22.0"></a>
 
 # [2.22.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)
