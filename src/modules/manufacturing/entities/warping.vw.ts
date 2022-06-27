@@ -157,6 +157,10 @@ export class ProdWarpingView extends BaseEntity {
   feedMesin4?: number;
 
   @Field({ nullable: true })
+  @Column({ name: 'NETTO_4' })
+  netto4?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 
