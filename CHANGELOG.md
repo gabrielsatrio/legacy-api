@@ -1,3 +1,14 @@
+<a name="2.23.0"></a>
+
+# [2.23.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/200) (2022-06-27)
+
+### Features
+
+- [**M011**] **jadwal-emad**: add new view fragment.
+- [**M014**] **warping**: add new field netto for AT4.
+- **ifs-dop-head**: add try catch.
+- **ifs-shop-ord-operation**: add try catch.
+
 <a name="2.22.0"></a>
 
 # [2.22.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)
