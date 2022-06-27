@@ -25,6 +25,9 @@ export class AuthResolver {
       }
       const user = await UserView.findOneBy({ username });
       if (!user || user?.status === 'Inactive') return null;
+      if (['ATEJA', 'CCU'].includes(user.ifsUsername)) {
+        user.allowedContract = `${user.allowedContract};AGT`;
+      }
       return user;
     } catch (err) {
       throw new Error(mapError(err));

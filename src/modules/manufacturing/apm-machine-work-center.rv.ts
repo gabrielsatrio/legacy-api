@@ -1,11 +1,10 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
+import { toCsvWithQuotes } from '@/utils/to-csv-with-quotes';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { In, Like } from 'typeorm';
 import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 import { MachineWorkCenter } from './entities/apm-machine-work-center.vt';
-import { IfsWorkCenterView } from './entities/ifs-work-center.vw';
 import { WorkCenterView } from './entities/work-center.vw';
 
 @Resolver()
@@ -28,12 +27,6 @@ export class MachineWorkCenterResolver {
           FROM     work_center@ifs8agt
           WHERE    contract = :contract
           AND      department_no = :departmentNo
-          AND      (contract, work_center_no) NOT IN (
-                    SELECT   contract,
-                             work_center_no AS "workCenterNo"
-                    FROM     rob_apm_unavailable_wc_v
-                    WHERE    contract = :contract
-                   )
         `;
       } else {
         sql = `
@@ -45,12 +38,6 @@ export class MachineWorkCenterResolver {
           FROM     work_center
           WHERE    contract = :contract
           AND      department_no = :departmentNo
-          AND      (contract, work_center_no) NOT IN (
-                    SELECT   contract,
-                             work_center_no AS "workCenterNo"
-                    FROM     rob_apm_unavailable_wc_v
-                    WHERE    contract = :contract
-                   )
         `;
       }
       const result = await ifs.query(sql, [contract, departmentNo]);
@@ -60,27 +47,42 @@ export class MachineWorkCenterResolver {
     }
   }
 
-  @Query(() => [IfsWorkCenterView])
+  @Query(() => [MachineWorkCenter])
   @UseMiddleware(isAuth)
   async getAssignedMachWcByContractDept(
     @Arg('contract', () => [String]) contract: string[],
     @Arg('departmentNo', { defaultValue: '%', nullable: true })
     departmentNo: string
-  ): Promise<IfsWorkCenterView[] | undefined> {
+  ): Promise<MachineWorkCenter[] | undefined> {
     try {
-      const results = await WorkCenterView.find({
-        relations: { machines: true },
-        select: {
-          workCenterNo: true,
-          contract: true,
-          description: true,
-          departmentNo: true
-        },
-        where: { contract: In(contract), departmentNo: Like(departmentNo) },
-        order: { workCenterNo: 'ASC' }
-      });
-      const filteredResults = results.filter((data) => data?.machines !== null);
-      return filteredResults;
+      const sql = `
+        SELECT  work_center_no                                                AS "workCenterNo",
+                contract                                                      AS "contract",
+                contract AS "contract",
+                CASE contract
+                  WHEN 'AGT' THEN work_center_api.get_description@ifs8agt(contract, work_center_no)
+                  ELSE work_center_api.get_description(contract, work_center_no)
+                END                                                           AS "description",
+                department_id                                                 AS "departmentNo",
+                machine_id                                                    AS "machineId",
+                description                                                   AS "machineDescription",
+                rowid                                                         AS "objId"
+        FROM    rob_apm_machine
+        WHERE   contract IN (${toCsvWithQuotes(contract)})
+        AND     department_id LIKE :departmentNo
+        AND     work_center_no IS NOT NULL
+      `;
+      let result = await ifs.query(sql, [departmentNo]);
+      if (result) {
+        result = result
+          .slice()
+          .sort(
+            (a: Record<string, any>, b: Record<string, any>) =>
+              b.description - a.description ||
+              a.machineId.localeCompare(b.machineId)
+          );
+      }
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
