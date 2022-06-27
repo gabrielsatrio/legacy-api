@@ -1,3 +1,12 @@
+<a name="2.24.2"></a>
+
+# [2.24.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/206) (2022-06-27)
+
+### Bug Fixes
+
+- **users**: trim the value for email before inserting/updating to the database.
+- [**M013**] **apm-requisitions**: release the IFS Material Requisition if only the Spare Part Requisition status is Approved.
+
 <a name="2.24.1"></a>
 
 # [2.24.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/204) (2022-06-27)
