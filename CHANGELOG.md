@@ -1,3 +1,11 @@
+<a name="2.24.1"></a>
+
+# [2.24.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/204) (2022-06-27)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: fix resolver for AGT transport task.
+
 <a name="2.24.0"></a>
 
 # [2.24.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/202) (2022-06-27)
