@@ -43,6 +43,7 @@ export class UserResolver {
             :password,
             :email,
             :departmentId,
+            :departmentAlt,
             :usernameDb,
             :ifsUsername,
             :outUsername);
@@ -53,6 +54,7 @@ export class UserResolver {
         hashedPassword,
         input.email,
         input.departmentId,
+        input.departmentAlt,
         input.usernameDb,
         input.ifsUsername,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }

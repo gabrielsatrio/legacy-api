@@ -62,11 +62,9 @@ export class MenuResolver {
   ): Promise<Record<string, unknown>[]> {
     let result;
 
-    const sqlDept = `select department_id as "departmentId", ifs_username as "ifsUsername" from atj_app_user
+    const sqlDept = `select department_alt as "departmentId", username as "ifsUsername" from atj_app_user
                     where username = :username`;
     const dept = await ifs.query(sqlDept, [req.session.username]);
-
-    console.log(dept[0].departmentId);
 
     if (dept[0].departmentId === 'MIS') {
       result = await Menu.find({ order: { id: 'ASC' } });
