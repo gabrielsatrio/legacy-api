@@ -1,3 +1,11 @@
+<a name="2.24.3"></a>
+
+# [2.24.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/208) (2022-06-28)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: RM2 add for some plant.
+
 <a name="2.24.2"></a>
 
 # [2.24.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/206) (2022-06-27)

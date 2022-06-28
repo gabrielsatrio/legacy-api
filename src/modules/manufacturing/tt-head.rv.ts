@@ -143,9 +143,9 @@ export class TTHeadResolver {
         .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
         .andWhere(
           new Brackets((qb) => {
-            qb.where(`IPIS.LOCATION_NO like 'RM%'`).orWhere(
-              `IPIS.LOCATION_NO like 'FG%'`
-            );
+            qb.where(`IPIS.LOCATION_NO like 'RM%'`)
+              .orWhere(`IPIS.LOCATION_NO like 'FG%'`)
+              .orWhere(`IPIS.LOCATION_NO like 'RM2%'`);
           })
         )
         .andWhere(
@@ -175,7 +175,8 @@ export class TTHeadResolver {
         WHERE  contract = :contract
         AND    part_no =: partNo
         AND    (location_no like 'RM%'
-                or location_no like 'FG%')
+                or location_no like 'FG%'
+                or location_no like 'RM2%')
         and location_no not like case when contract in('AMI') then 'RM%JUAL' else 'NULL' end
         and location_no not like case when contract in('AT2','AMI') then 'RM%NG' else 'NULL' end
         and location_no not like case when contract in('AT2','AMI','AT4','AT1','ATD','ATS','AGT') then 'RM%QA1' else 'NULL' end
