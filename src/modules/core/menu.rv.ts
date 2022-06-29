@@ -75,7 +75,7 @@ export class MenuResolver {
                   root AS "root",
                   name AS "name",
                   TYPE AS "type",
-                  to_link AS "toLink",
+                  to_link AS "to",
                   icon AS "icon",
                   parent AS "parent"
               FROM   ATJ_APP_MENU
@@ -92,11 +92,15 @@ export class MenuResolver {
                                 where  id in (100000))
               CONNECT BY PRIOR parent = id
               ORDER BY id`;
+
       result = await ifs.query(sql, [
         dept[0].departmentId,
         req.session.username
       ]);
     }
+
+    //console.log(result);
+
     for (const product of result) {
       const checkParent = [];
 
@@ -130,11 +134,15 @@ export class MenuResolver {
     };
     finalObj['tags'] = eval(JSON.stringify(result));
 
+    //console.log(finalObj['tags']);
+
     const rootTags = [
       ...finalObj.tags
         .map((obj) => obj)
         .filter((tag) => tag.root === 'root' || tag.root === 'branch')
     ];
+
+    //console.log(rootTags);
 
     const mapChildren = (
       childId: any
@@ -156,6 +164,8 @@ export class MenuResolver {
 
       return tag;
     });
+
+    //console.log(tagTree);
 
     for (let i = tagTree.length - 1; i >= 0; i--) {
       if (tagTree[i].root == 'branch') {
