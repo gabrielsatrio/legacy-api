@@ -15,4 +15,8 @@ export class MenuRole extends BaseEntity {
   @Field()
   @Column({ name: 'MENU_NAME' })
   menuName!: string;
+
+  @Field()
+  @Column({ name: 'OBJ_ID' })
+  objId!: string;
 }

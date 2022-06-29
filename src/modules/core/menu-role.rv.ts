@@ -10,7 +10,7 @@ export class MenuRoleResolver {
   @Query(() => [MenuRole])
   @UseMiddleware(isAuth)
   async getAllMenuRole(): Promise<MenuRole[]> {
-    return await MenuRole.find();
+    return await MenuRole.find({ order: { menuId: 'ASC' } });
   }
 
   @Mutation(() => MenuRole)

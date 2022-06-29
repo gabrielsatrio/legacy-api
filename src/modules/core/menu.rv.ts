@@ -43,7 +43,8 @@ export class MenuResolver {
   @UseMiddleware(isAuth)
   async getAllMenu(): Promise<Menu[]> {
     return await Menu.find({
-      where: { type: 'Link' }
+      where: { type: 'Link' },
+      order: { id: 'ASC' }
     });
   }
 
@@ -51,7 +52,8 @@ export class MenuResolver {
   @UseMiddleware(isAuth)
   async getParentMenu(): Promise<Menu[]> {
     return await Menu.find({
-      where: { type: 'Dropdown' }
+      where: { type: 'Dropdown' },
+      order: { id: 'ASC' }
     });
   }
 
