@@ -134,7 +134,10 @@ export class SparePartRequisitionResolver {
       });
       if (!data) throw new Error('No data found.');
       let sql: string;
-      if (!data.orderNo && (input.status === 'Approved' || input.urgent)) {
+      if (
+        data.orderNo === null &&
+        (input.status === 'Approved' || input.urgent)
+      ) {
         sql = `
           BEGIN
             ROB_APM_Sparepart_Req_API.Create_MR_By_Req_Id__(
@@ -155,7 +158,7 @@ export class SparePartRequisitionResolver {
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
       const { requisitionId, contract, orderNo, createdBy } = result;
-      if (orderNo && input.status === 'Approved') {
+      if (orderNo !== null && input.status === 'Approved') {
         sql = `
           BEGIN
             ATJ_Material_Requisition_API.Release__(:orderNo);
