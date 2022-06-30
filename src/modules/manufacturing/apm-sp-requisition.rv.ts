@@ -134,16 +134,11 @@ export class SparePartRequisitionResolver {
       });
       if (!data) throw new Error('No data found.');
       let sql: string;
-      let outOrderNo: string;
       if (!data.orderNo && (input.status === 'Approved' || input.urgent)) {
         sql = `
           BEGIN
-            ATJ_Material_Requisition_API.New__(
-              :contract,
-              :intCustomerNo,
-              :destinationId,
-              :dueDate,
-              :dateEntered,
+            ROB_APM_Sparepart_Req_API.Create_MR_By_Req_Id__(
+              :requisitionId,
               :outOrderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -151,59 +146,11 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        let result = await ifs.query(sql, [
-          input.contract,
-          input.intCustomerNo,
-          input.destinationId,
-          input.dueDate,
-          input.createdAt,
+        const result = await ifs.query(sql, [
+          input.requisitionId,
           { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         ]);
-        outOrderNo = result[0] as string;
-        if (outOrderNo) {
-          input.orderNo = outOrderNo;
-          const requisLines = await SparePartReqLine.find({
-            where: { requisitionId: input.requisitionId },
-            order: { requisitionId: 'ASC', lineItemNo: 'ASC' }
-          });
-          await Promise.all(
-            requisLines.map(async (item) => {
-              sql = `
-                BEGIN
-                  ATJ_Material_Requis_Line_API.New__(
-                    :orderNo,
-                    :contract,
-                    :orderClass,
-                    :partNo,
-                    :conditionCode,
-                    :qtyDue,
-                    :dueDate,
-                    :noteText,
-                    :supplyCode,
-                    :outLineItemNo,
-                    :outReleaseNo);
-                EXCEPTION
-                  WHEN OTHERS THEN
-                    ROLLBACK;
-                    RAISE;
-                END;
-              `;
-              result = await ifs.query(sql, [
-                outOrderNo,
-                item.contract,
-                'INT',
-                item.partNo,
-                item.conditionCode,
-                item.qtyDue,
-                input.dueDate,
-                item.note,
-                'Inventory Order',
-                { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-                { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-              ]);
-            })
-          );
-        }
+        input.orderNo = result[0] as string;
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
@@ -212,7 +159,7 @@ export class SparePartRequisitionResolver {
         sql = `
           BEGIN
             ATJ_Material_Requisition_API.Release__(:orderNo);
-            ROB_APM_MR_Sparepart_Map_API.insert_from_mr__(:orderNo);
+            ROB_APM_MR_Sparepart_Map_API.Insert_From_MR__(:orderNo);
           EXCEPTION
             WHEN OTHERS THEN
               ROLLBACK;
