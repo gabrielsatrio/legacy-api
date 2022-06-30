@@ -207,7 +207,7 @@ export class SparePartRequisitionResolver {
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
-      const { requisitionId, orderNo, createdBy } = result;
+      const { requisitionId, contract, orderNo, createdBy } = result;
       if (orderNo && input.status === 'Approved') {
         sql = `
           BEGIN
@@ -221,6 +221,35 @@ export class SparePartRequisitionResolver {
         `;
         await ifs.query(sql, [orderNo]);
       }
+      let cc = '';
+      switch (contract) {
+        case 'AT1':
+          cc = 'Admin Sparepart AT1 <adminspart@ateja.co.id>';
+          break;
+        case 'AT2':
+          cc = 'Admin Sparepart AT2 <sparepartat2@ateja.co.id>';
+          break;
+        case 'AT3':
+          cc = 'Admin Sparepart AT3 <adminpart3@ateja.co.id>';
+          break;
+        case 'AT4':
+          cc = 'Admin Sparepart AT4 <sparepartat4@ateja.co.id>';
+          break;
+        case 'AT4E':
+          cc = 'Admin Sparepart AT4E <gudangat4ext@ateja.co.id>';
+          break;
+        case 'AT6':
+          cc = 'Admin Sparepart AT6 <adminpart3@ateja.co.id>';
+          break;
+        case 'AMI':
+          cc = 'Unang Ridwan <unangridwan@ateja.co.id>';
+          break;
+        case 'AGT':
+          cc = 'Mulyadi <mulyadi@agtex.co.id>';
+          break;
+        default:
+          cc = '';
+      }
       const employeeObj = new EmployeeMaterializedViewResolver();
       const creator = await employeeObj.getEmployeeMv(createdBy);
       const approverLv1 = await employeeObj.getEmployeeMv(result.approverLv1);
@@ -228,7 +257,9 @@ export class SparePartRequisitionResolver {
       switch (input.status) {
         case 'Submitted':
           await sendEmail(
-            approverLv1?.email || '',
+            `${approverLv1?.name} <${approverLv1?.email}>` || '',
+            [],
+            [],
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv1?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -238,7 +269,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Partially Approved':
           await sendEmail(
-            approverLv2?.email || '',
+            `${approverLv2?.name} <${approverLv2?.email}>` || '',
+            [],
+            [],
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv2?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -248,7 +281,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Approved':
           await sendEmail(
-            creator?.email || '',
+            `${creator?.name} <${creator?.email}>` || '',
+            [cc],
+            [],
             `Spare Part Requisition No ${requisitionId} has been Approved`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</br>
@@ -257,7 +292,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Rejected':
           await sendEmail(
-            creator?.email || '',
+            `${creator?.name} <${creator?.email}>` || '',
+            [],
+            [],
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</br>
