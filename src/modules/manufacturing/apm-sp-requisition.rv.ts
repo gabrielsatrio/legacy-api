@@ -243,7 +243,7 @@ export class SparePartRequisitionResolver {
         case 'Rejected':
           await sendEmail(
             `${creator?.name} <${creator?.email}>` || '',
-            [],
+            [cc],
             [],
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
