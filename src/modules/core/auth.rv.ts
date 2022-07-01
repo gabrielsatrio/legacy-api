@@ -100,6 +100,8 @@ export class AuthResolver {
       ); // 1 day expiration
       await sendEmail(
         user.email,
+        [],
+        [],
         'Change Password',
         `<a href="${config.client.url}/auth/change-password/?token=${token}">Reset Password</a>`
       );
