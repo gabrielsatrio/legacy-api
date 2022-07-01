@@ -1,6 +1,6 @@
 <a name="2.25.0"></a>
 
-# [2.25.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/211) (2022-07-01)
+# [2.25.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
 
 ### BREAKING CHANGES
 
@@ -9,7 +9,7 @@
 ### Features
 
 - **current-user**: allow username 05251 to access the ATD site.
-- [**M013**] **apm-requisitions**: cc email to warehouse person after fully approved.
+- [**M013**] **apm-requisitions**: cc email to warehouse person after fully approved/rejected.
 
 ### Bug Fixes
 
