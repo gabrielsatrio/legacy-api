@@ -28,6 +28,9 @@ export class AuthResolver {
       if (['ATEJA', 'CCU'].includes(user.ifsUsername)) {
         user.allowedContract = `${user.allowedContract};AGT`;
       }
+      if (username === '05251') {
+        user.allowedContract = `${user.allowedContract};ATD`;
+      }
       return user;
     } catch (err) {
       throw new Error(mapError(err));
