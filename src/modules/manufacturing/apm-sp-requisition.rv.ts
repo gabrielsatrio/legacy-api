@@ -161,7 +161,7 @@ export class SparePartRequisitionResolver {
       if (orderNo !== null && input.status === 'Approved') {
         sql = `
           BEGIN
-            ATJ_Material_Requisition_API.Release__(:orderNo);
+            ROB_APM_Sparepart_Req_API.Release_MR_By_Req_Id__(:requisitionId);
             ROB_APM_MR_Sparepart_Map_API.Insert_From_MR__(:orderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -169,7 +169,7 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        await ifs.query(sql, [orderNo]);
+        await ifs.query(sql, [requisitionId, orderNo]);
       }
       let cc = '';
       switch (contract) {
