@@ -174,4 +174,31 @@ export class IfsInventoryPartResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getWidthId(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string
+  ): Promise<string | null> {
+    try {
+      const sql = `SELECT INVENTORY_PART_API.GET_WIDTH_ID(:contract, :partNo) as "widthId" FROM DUAL`;
+      const result = await ifs.query(sql, [contract, partNo]);
+      return result[0].widthId;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getColor(@Arg('partNo') partNo: string): Promise<string | null> {
+    try {
+      const sql = `SELECT INVENTORY_PART_API.GET_COLOR(:partNo) as "color" FROM DUAL`;
+      const result = await ifs.query(sql, [partNo]);
+      return result[0].color;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }

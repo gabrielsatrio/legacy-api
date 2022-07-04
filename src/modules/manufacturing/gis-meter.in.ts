@@ -1,6 +1,6 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { GisMeter } from './entities/gbr-gis-meter';
+import { GisMeter } from './entities/gis-meter';
 
 @InputType()
 export class GisMeterInput implements Partial<GisMeter> {
@@ -12,21 +12,21 @@ export class GisMeterInput implements Partial<GisMeter> {
   @IsNumber()
   lineNo!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
-  startingMeter?: number;
+  startingMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
-  finalMeter?: number;
+  finalMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(20)
-  defectId?: string;
+  defectId!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(20)
-  position?: string;
+  position!: string;
 
   @Field({ nullable: true })
   @MaxLength(100)

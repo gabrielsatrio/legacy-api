@@ -1,6 +1,6 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { GisOperator } from './entities/gbr-gis-operator';
+import { GisOperator } from './entities/gis-operator';
 
 @InputType()
 export class GisOperatorInput implements Partial<GisOperator> {
@@ -12,15 +12,15 @@ export class GisOperatorInput implements Partial<GisOperator> {
   @IsNumber()
   lineNo!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @MaxLength(10)
-  operatorId?: string;
+  employeeId!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
-  startingMeter?: number;
+  startingMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
-  finalMeter?: number;
+  finalMeter!: number;
 }

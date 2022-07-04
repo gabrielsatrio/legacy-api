@@ -1,8 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { ifs } from '../../../database/data-sources';
 import { GisOperatorInput } from './../gis-operator.in';
-import { GisOperator } from './gbr-gis-operator';
+import { GisOperator } from './gis-operator';
 
 @Resolver(GisOperator)
 export class GisOperatorResolver {
@@ -28,6 +29,21 @@ export class GisOperatorResolver {
       return await GisOperator.findBy({
         inspectId
       });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNewLineOperator(
+    @Arg('inspectId') inspectId: number
+  ): Promise<number> {
+    try {
+      const sql =
+        'SELECT NVL(MAX(LINE_NO)+1,1) as "lineNo" FROM GBR_GIS_OPERATOR WHERE INSPECT_ID = :inspectId';
+      const result = await ifs.query(sql, [inspectId]);
+      return result[0].lineNo;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -79,7 +95,7 @@ export class GisOperatorResolver {
     try {
       const data = await GisOperator.findOneBy({ inspectId, lineNo });
       if (!data) throw new Error('No data found.');
-      await GisOperator.delete({ inspectId });
+      await GisOperator.delete({ inspectId, lineNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

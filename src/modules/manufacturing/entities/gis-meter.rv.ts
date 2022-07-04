@@ -1,8 +1,9 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { ifs } from '../../../database/data-sources';
 import { GisMeterInput } from './../gis-meter.in';
-import { GisMeter } from './gbr-gis-meter';
+import { GisMeter } from './gis-meter';
 
 @Resolver(GisMeter)
 export class GisMeterResolver {
@@ -28,6 +29,19 @@ export class GisMeterResolver {
       return await GisMeter.findBy({
         inspectId
       });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNewLineMeter(@Arg('inspectId') inspectId: number): Promise<number> {
+    try {
+      const sql =
+        'SELECT NVL(MAX(LINE_NO)+1,1) as "lineNo" FROM GBR_GIS_METER WHERE INSPECT_ID = :inspectId';
+      const result = await ifs.query(sql, [inspectId]);
+      return result[0].lineNo;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -77,7 +91,7 @@ export class GisMeterResolver {
     try {
       const data = await GisMeter.findOneBy({ inspectId, lineNo });
       if (!data) throw new Error('No data found.');
-      await GisMeter.delete({ inspectId });
+      await GisMeter.delete({ inspectId, lineNo });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

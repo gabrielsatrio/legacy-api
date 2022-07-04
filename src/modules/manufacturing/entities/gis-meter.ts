@@ -12,21 +12,21 @@ export class GisMeter extends BaseEntity {
   @PrimaryColumn({ name: 'LINE_NO' })
   lineNo!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'STARTING_METER' })
-  startingMeter?: number;
+  startingMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'FINAL_METER' })
-  finalMeter?: number;
+  finalMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'DEFECT_ID' })
-  defectId?: string;
+  defectId!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'POSITION' })
-  position?: string;
+  position!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })

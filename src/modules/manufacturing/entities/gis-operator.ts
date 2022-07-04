@@ -12,15 +12,15 @@ export class GisOperator extends BaseEntity {
   @PrimaryColumn({ name: 'LINE_NO' })
   lineNo!: number;
 
-  @Field({ nullable: true })
-  @Column({ name: 'OPERATOR_ID' })
-  operatorId?: string;
+  @Field()
+  @Column({ name: 'EMPLOYEE_ID' })
+  employeeId!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'STARTING_METER' })
-  startingMeter?: number;
+  startingMeter!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'FINAL_METER' })
-  finalMeter?: number;
+  finalMeter!: number;
 }
