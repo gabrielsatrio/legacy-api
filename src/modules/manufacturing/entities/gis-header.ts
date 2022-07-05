@@ -76,6 +76,10 @@ export class GisHeader extends BaseEntity {
   @Column({ name: 'DEFECT_NAME_4' })
   defectName4?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'INSPECT_TYPE' })
+  inspectType?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;

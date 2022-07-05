@@ -75,4 +75,8 @@ export class GisHeaderInput implements Partial<GisHeader> {
   @Field({ nullable: true })
   @MaxLength(30)
   defectName4?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(30)
+  inspectType?: string;
 }
