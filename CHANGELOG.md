@@ -1,3 +1,16 @@
+<a name="2.26.0"></a>
+
+# [2.26.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add 2 new fields (`destinationId` and `destination`).
+- [**M013**] **technicians**: support array as a parameter.
+
+### Bug Fixes
+
+- [**M001**] **apm-work-centers**: fix an issue related to blank description, reordering, and removing unused resolver.
+
 <a name="2.25.0"></a>
 
 # [2.25.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
