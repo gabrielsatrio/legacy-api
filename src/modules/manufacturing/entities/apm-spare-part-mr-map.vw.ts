@@ -68,6 +68,14 @@ export class SparePartMrMapView extends BaseEntity {
   @Column({ name: 'UNIT_MEAS' })
   unitMeas?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DESTINATION_ID' })
+  destinationId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DESTINATION' })
+  destination?: string;
+
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
