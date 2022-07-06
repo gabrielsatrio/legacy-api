@@ -5,6 +5,8 @@ import { mapError } from './map-error';
 
 export const sendEmail = async (
   to: string,
+  cc: string[] = [],
+  bcc: string[] = [],
   subject: string,
   content: string
 ): Promise<void> => {
@@ -18,6 +20,8 @@ export const sendEmail = async (
     const info = await transporter.sendMail({
       from: mail.sender,
       to,
+      cc,
+      bcc,
       subject,
       html: content
     } as any);

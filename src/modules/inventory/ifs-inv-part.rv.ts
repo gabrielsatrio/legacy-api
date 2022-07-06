@@ -102,47 +102,6 @@ export class IfsInventoryPartResolver {
     }
   }
 
-  @Query(() => [IfsInventoryPartView], { nullable: true })
-  @UseMiddleware(isAuth)
-  async getSparePartsByContract(
-    @Arg('contract') contract: string
-  ): Promise<IfsInventoryPartView[] | null> {
-    try {
-      let sql = '';
-      if (contract === 'AGT') {
-        sql = `
-          SELECT part_no      AS "partNo",
-                 contract     AS "contract",
-                 description  AS "description",
-                 unit_meas    AS "unitMeas",
-                 part_status  AS "partStatus",
-                 objid        AS "objId"
-          FROM   inventory_part@ifs8agt
-          WHERE  contract = :contract
-          AND    part_status != 'O'
-          AND    part_no LIKE 'S__-%'
-        `;
-      } else {
-        sql = `
-          SELECT part_no      AS "partNo",
-                 contract     AS "contract",
-                 description  AS "description",
-                 unit_meas    AS "unitMeas",
-                 part_status  AS "partStatus",
-                 objid        AS "objId"
-          FROM   inventory_part
-          WHERE  contract = :contract
-          AND    part_status != 'O'
-          AND    part_no LIKE 'S__-%'
-        `;
-      }
-      const result = await ifs.query(sql, [contract]);
-      return result;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
   @Query(() => IfsInventoryPartView, { nullable: true })
   @UseMiddleware(isAuth)
   async getPartDescByOrderNo(

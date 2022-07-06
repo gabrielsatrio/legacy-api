@@ -13,6 +13,7 @@ import { SparePartReqLineInput } from './apm-sp-requisition-line.in';
 import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
+import { SpareParts } from './entities/apm-spare-parts.vt';
 
 @Resolver(SparePartReqLine)
 export class SparePartReqLineResolver {
@@ -81,6 +82,64 @@ export class SparePartReqLineResolver {
       const sql = `SELECT ROB_APM_Sparepart_Req_Line_API.Get_New_Line_No(:requisitionId) AS "newLineNo" FROM DUAL`;
       const result = await ifs.query(sql, [requisitionId]);
       return result[0].newLineNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [SpareParts], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getSparePartsByContractPartNo(
+    @Arg('contract') contract: string,
+    @Arg('partNo') partNo: string
+  ): Promise<SpareParts[] | null> {
+    try {
+      let sql = '';
+      if (contract === 'AGT') {
+        sql = `
+          SELECT part_no      AS "partNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 NVL((SELECT SUM(qty_onhand) - SUM(qty_reserved)
+                 FROM   inventory_part_in_stock@ifs8agt
+                 WHERE  contract = p.contract
+                 AND    part_no = p.part_no
+                 AND    qty_onhand > 0),
+                 0)           AS "qtyAvailable",
+                 unit_meas    AS "unitMeas",
+                 part_status  AS "partStatus",
+                 objid        AS "objId"
+          FROM   inventory_part@ifs8agt p
+          WHERE  contract = :contract
+          AND    (part_no LIKE '%' || UPPER(:part_no) || '%'
+          OR      description LIKE '%' || UPPER(:part_no) || '%')
+          AND    part_status IN ('A', 'I')
+          AND    part_no LIKE 'S__-%'
+        `;
+      } else {
+        sql = `
+          SELECT part_no      AS "partNo",
+                 contract     AS "contract",
+                 description  AS "description",
+                 NVL((SELECT SUM(qty_onhand) - SUM(qty_reserved)
+                 FROM   inventory_part_in_stock
+                 WHERE  contract = p.contract
+                 AND    part_no = p.part_no
+                 AND    qty_onhand > 0),
+                 0)           AS "qtyAvailable",
+                 unit_meas    AS "unitMeas",
+                 part_status  AS "partStatus",
+                 objid        AS "objId"
+          FROM   inventory_part p
+          WHERE  contract = :contract
+          AND    (part_no LIKE '%' || UPPER(:part_no) || '%'
+          OR      description LIKE '%' || UPPER(:part_no) || '%')
+          AND    part_status IN ('A', 'I')
+          AND    part_no LIKE 'S__-%'
+        `;
+      }
+      const result = await ifs.query(sql, [contract, partNo]);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
