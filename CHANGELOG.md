@@ -1,3 +1,11 @@
+<a name="2.27.0"></a>
+
+# [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-07)
+
+### Features
+
+- [**M017**] **MDP**: modify for finishing usage in AT server.
+
 <a name="2.26.0"></a>
 
 # [2.26.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
