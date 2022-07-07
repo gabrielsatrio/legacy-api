@@ -42,9 +42,9 @@ export class SoObatProsesInput implements Partial<SoObatProses> {
 
   @Field({ nullable: true })
   @IsNumber()
-  drum!: number;
+  drum?: number;
 
   @Field({ nullable: true })
   @IsNumber()
-  qtyDrum!: number;
+  qtyDrum?: number;
 }

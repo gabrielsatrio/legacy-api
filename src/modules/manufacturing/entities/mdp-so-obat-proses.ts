@@ -44,11 +44,11 @@ export class SoObatProses extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'DRUM' })
-  drum!: number;
+  drum?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'QTY_DRUM' })
-  qtyDrum!: number;
+  qtyDrum?: number;
 
   @Field(() => [SoObatProsesMaterial], { nullable: true })
   @OneToMany(
