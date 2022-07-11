@@ -90,7 +90,9 @@ export class SoObatProsesResolver {
       :note,
       :tipe,
       :mesin,
-      :outOrderNo);
+      :outOrderNo,
+      :drum,
+      :qtyDrum);
     END;
   `;
 
@@ -103,7 +105,9 @@ export class SoObatProsesResolver {
         input.note,
         input.tipe,
         input.mesin,
-        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+        { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+        input.drum,
+        input.qtyDrum
       ]);
       const outOrderNo = result[0] as string;
 
