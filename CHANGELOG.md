@@ -1,3 +1,12 @@
+<a name="2.28.0"></a>
+
+# [2.28.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/217) (2022-07-11)
+
+### Features
+
+- [**M019**] **GIS**: add new module greige inspection system.
+- [**T001**] **SPT**: enable user GAP-Transportation to edit calculated requisitions.
+
 <a name="2.27.0"></a>
 
 # [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/215) (2022-07-07)
