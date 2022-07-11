@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('GBR_GIS_HEADER')
+@Entity('GBR_GIS_HEADER_V')
 @ObjectType()
-export class GisHeader extends BaseEntity {
+export class GisHeaderView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'INSPECT_ID' })
   inspectId!: number;
@@ -79,6 +79,10 @@ export class GisHeader extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'INSPECT_TYPE' })
   inspectType?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TOTAL_METER' })
+  totalMeter?: number;
 
   @Field()
   @Column({ name: 'CREATED_BY' })

@@ -79,4 +79,7 @@ export class GisHeaderInput implements Partial<GisHeader> {
   @Field({ nullable: true })
   @MaxLength(30)
   inspectType?: string;
+
+  @Field({ nullable: true })
+  totalMeter?: number;
 }

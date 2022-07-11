@@ -13,28 +13,29 @@ import {
 import { In } from 'typeorm';
 import { GisHeaderInput } from './../gis-header.in';
 import { GisHeader } from './gis-header';
+import { GisHeaderView } from './gis-header.vw';
 
 @Resolver(GisHeader)
 export class GisHeaderResolver {
-  @Query(() => GisHeader, { nullable: true })
+  @Query(() => GisHeaderView, { nullable: true })
   @UseMiddleware(isAuth)
   async getGisHeader(
     @Arg('inspectId') inspectId: number
-  ): Promise<GisHeader | null> {
+  ): Promise<GisHeaderView | null> {
     try {
-      return await GisHeader.findOneBy({ inspectId });
+      return await GisHeaderView.findOneBy({ inspectId });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [GisHeader], { nullable: true })
+  @Query(() => [GisHeaderView], { nullable: true })
   @UseMiddleware(isAuth)
   async getGisHeaderByContract(
     @Arg('contract', () => [String]) contract: string[]
-  ): Promise<GisHeader[] | undefined> {
+  ): Promise<GisHeaderView[] | undefined> {
     try {
-      return await GisHeader.findBy({
+      return await GisHeaderView.findBy({
         contract: In(contract)
       });
     } catch (err) {
