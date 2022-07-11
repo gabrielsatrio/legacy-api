@@ -151,6 +151,20 @@ export class IfsInventoryPartResolver {
 
   @Query(() => String, { nullable: true })
   @UseMiddleware(isAuth)
+  async getWidthDescription(
+    @Arg('widthId') widthId: string
+  ): Promise<string | null> {
+    try {
+      const sql = `SELECT ATJ_INVENTORY_PART_API.GET_WIDTH_DESCRIPTION(:widthId) as "widthDescription" FROM DUAL`;
+      const result = await ifs.query(sql, [widthId]);
+      return result[0].widthDescription;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
   async getColor(@Arg('partNo') partNo: string): Promise<string | null> {
     try {
       const sql = `SELECT INVENTORY_PART_API.GET_COLOR(:partNo) as "color" FROM DUAL`;
