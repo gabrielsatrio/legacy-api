@@ -11,17 +11,18 @@ import {
 } from 'type-graphql';
 import { In } from 'typeorm';
 import { GisDefect } from './entities/gis-defect';
+import { GisDefectView } from './entities/gis-defect.vw';
 import { GisDefectInput } from './gis-defect.in';
 
 @Resolver(GisDefect)
 export class GisDefectResolver {
-  @Query(() => [GisDefect], { nullable: true })
+  @Query(() => [GisDefectView], { nullable: true })
   @UseMiddleware(isAuth)
   async getGisDefectByContract(
     @Arg('contract', () => [String]) contract: string[]
-  ): Promise<GisDefect[] | undefined> {
+  ): Promise<GisDefectView[] | undefined> {
     try {
-      return await GisDefect.findBy({
+      return await GisDefectView.findBy({
         contract: In(contract)
       });
     } catch (err) {

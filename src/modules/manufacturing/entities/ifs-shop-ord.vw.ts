@@ -27,4 +27,8 @@ export class IfsShopOrderView extends BaseEntity {
   @Field()
   @Column({ name: 'OBJID' })
   objId!: string;
+
+  @Field()
+  @Column({ name: 'JOB_ORDER' })
+  jobOrder!: string;
 }
