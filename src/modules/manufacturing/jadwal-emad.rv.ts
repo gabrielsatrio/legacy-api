@@ -12,17 +12,18 @@ import {
 } from 'type-graphql';
 import { In } from 'typeorm';
 import { JadwalEmad } from './entities/jadwal-emad';
+import { JadwalEmadView } from './entities/jadwal-emad.vw';
 import { JadwalEmadInput } from './jadwal-emad.in';
 
 @Resolver(JadwalEmad)
 export class JadwalEmadResolver {
-  @Query(() => [JadwalEmad], { nullable: true })
+  @Query(() => [JadwalEmadView], { nullable: true })
   @UseMiddleware(isAuth)
   async getJadwalEmad(
     @Arg('contract', () => [String]) contract: string[]
-  ): Promise<JadwalEmad[] | undefined> {
+  ): Promise<JadwalEmadView[] | undefined> {
     try {
-      return await JadwalEmad.findBy({
+      return await JadwalEmadView.findBy({
         contract: In(contract)
       });
     } catch (err) {

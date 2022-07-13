@@ -156,6 +156,22 @@ export class ProdWarpingResolver {
     }
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNetto(
+    @Arg('site') site: string,
+    @Arg('lotBatchNo') lotBatchNo: string
+  ): Promise<number> {
+    try {
+      const sql = `SELECT SUM(QUANTITY) as "netto" FROM INVENTORY_TRANSACTION_HIST2 WHERE TRANSACTION_CODE = 'OOREC' AND CONTRACT = :site and LOT_BATCH_NO = :lotBatchNo
+      and qty_reversed = 0 and rownum = 1`;
+      const result = await ifs.query(sql, [site, lotBatchNo]);
+      return result[0].netto;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(

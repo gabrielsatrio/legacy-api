@@ -2,6 +2,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { KontrolBakuBenangLine } from './entities/kontrol-baku-benang-line';
+import { KontrolBakuBenangLineView } from './entities/kontrol-baku-benang-line.vw';
 import { KontrolBakuBenangLineInput } from './kontrol-baku-benang-line.in';
 
 @Resolver(KontrolBakuBenangLine)
@@ -13,6 +14,20 @@ export class KontrolBakuBenangLineResolver {
   ): Promise<KontrolBakuBenangLine[] | undefined> {
     try {
       return await KontrolBakuBenangLine.findBy({
+        idKontrol
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [KontrolBakuBenangLineView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getKontrolBakuBenangLineView(
+    @Arg('idKontrol', () => Number) idKontrol: number
+  ): Promise<KontrolBakuBenangLineView[] | undefined> {
+    try {
+      return await KontrolBakuBenangLineView.findBy({
         idKontrol
       });
     } catch (err) {

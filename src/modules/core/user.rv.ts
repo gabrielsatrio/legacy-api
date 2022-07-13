@@ -52,7 +52,7 @@ export class UserResolver {
       const result = await ifs.query(sql, [
         input.username,
         hashedPassword,
-        input.email,
+        input.email.trim(),
         input.departmentId,
         input.departmentAlt,
         input.usernameDb,
@@ -79,7 +79,11 @@ export class UserResolver {
       const data = await User.findOneBy({ username: input.username });
       if (!data) throw new Error('No data found.');
       const hashedPassword = await argon2.hash(input.password);
-      User.merge(data, { ...input, password: hashedPassword });
+      User.merge(data, {
+        ...input,
+        email: input.email.trim(),
+        password: hashedPassword
+      });
       const response = await User.save(data);
       const result = await UserView.findOneBy({ username: response.username });
       return result;

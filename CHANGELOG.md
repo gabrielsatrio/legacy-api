@@ -1,3 +1,94 @@
+<a name="2.27.0"></a>
+
+# [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/215) (2022-07-07)
+
+### Features
+
+- [**M017**] **MDP**: modify for finishing usage in AT server.
+
+<a name="2.26.0"></a>
+
+# [2.26.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add 2 new fields (`destinationId` and `destination`).
+- [**M013**] **technicians**: support array as a parameter.
+
+### Bug Fixes
+
+- [**M001**] **apm-work-centers**: fix an issue related to blank description, reordering, and removing unused resolver.
+
+<a name="2.25.0"></a>
+
+# [2.25.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
+
+### BREAKING CHANGES
+
+- **send-email**: add cc and bcc as parameters.
+
+### Features
+
+- **current-user**: allow username 05251 to access the ATD site.
+- [**M013**] **apm-requisitions**: cc email to warehouse person after fully approved/rejected.
+
+### Bug Fixes
+
+- **auth**: parameters adjustment.
+- [**M013**] **apm-requisitions**: fix an issue related to sorting MR lines that are different from SPR lines.
+- [**M013**] **apm-requisitions**: fix an issue which MR was created multiple times unintentionally.
+
+<a name="2.24.3"></a>
+
+# [2.24.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/208) (2022-06-28)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: RM2 add for some plant.
+
+<a name="2.24.2"></a>
+
+# [2.24.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/206) (2022-06-27)
+
+### Bug Fixes
+
+- **users**: trim the value for email before inserting/updating to the database.
+- [**M013**] **apm-requisitions**: release the IFS Material Requisition if only the Spare Part Requisition status is Approved.
+
+<a name="2.24.1"></a>
+
+# [2.24.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/204) (2022-06-27)
+
+### Bug Fixes
+
+- [**M015**] **Transport-Task**: fix resolver for AGT transport task.
+
+<a name="2.24.0"></a>
+
+# [2.24.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/202) (2022-06-27)
+
+### Features
+
+- add new utility: `toCsvWithQuotes`. Convert an array of strings into comma-separated values with single quotes.
+
+### Bug Fixes
+
+- **navigation**: add the AGT site into the allowed contract list for ATEJA & CCU users.
+- [**M001**] **apm-machines**: remove work center usage limit.
+- [**M001**] **apm-work-centers**: fix an issue relate to the missing data.
+- [**G001**] **retur-roti**: fix mismatch GraphQL return type.
+
+<a name="2.23.0"></a>
+
+# [2.23.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/200) (2022-06-27)
+
+### Features
+
+- [**M011**] **jadwal-emad**: add new view fragment.
+- [**M014**] **warping**: add new field netto for AT4.
+- **ifs-dop-head**: add try catch.
+- **ifs-shop-ord-operation**: add try catch.
+
 <a name="2.22.0"></a>
 
 # [2.22.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/198) (2022-06-23)

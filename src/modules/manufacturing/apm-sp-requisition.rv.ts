@@ -134,16 +134,14 @@ export class SparePartRequisitionResolver {
       });
       if (!data) throw new Error('No data found.');
       let sql: string;
-      let outOrderNo: string;
-      if (!data.orderNo && (input.status === 'Approved' || input.urgent)) {
+      if (
+        data.orderNo === null &&
+        (input.status === 'Approved' || input.urgent)
+      ) {
         sql = `
           BEGIN
-            ATJ_Material_Requisition_API.New__(
-              :contract,
-              :intCustomerNo,
-              :destinationId,
-              :dueDate,
-              :dateEntered,
+            ROB_APM_Sparepart_Req_API.Create_MR_By_Req_Id__(
+              :requisitionId,
               :outOrderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -151,86 +149,56 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        let result = await ifs.query(sql, [
-          input.contract,
-          input.intCustomerNo,
-          input.destinationId,
-          input.dueDate,
-          input.createdAt,
+        const result = await ifs.query(sql, [
+          input.requisitionId,
           { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         ]);
-        outOrderNo = result[0] as string;
-        if (outOrderNo) {
-          input.orderNo = outOrderNo;
-          const requisLines = await SparePartReqLine.find({
-            where: { requisitionId: input.requisitionId },
-            order: { requisitionId: 'ASC', lineItemNo: 'ASC' }
-          });
-          await Promise.all(
-            requisLines.map(async (item) => {
-              sql = `
-                BEGIN
-                  ATJ_Material_Requis_Line_API.New__(
-                    :orderNo,
-                    :contract,
-                    :orderClass,
-                    :partNo,
-                    :conditionCode,
-                    :qtyDue,
-                    :dueDate,
-                    :noteText,
-                    :supplyCode,
-                    :outLineItemNo,
-                    :outReleaseNo);
-                EXCEPTION
-                  WHEN OTHERS THEN
-                    ROLLBACK;
-                    RAISE;
-                END;
-              `;
-              result = await ifs.query(sql, [
-                outOrderNo,
-                item.contract,
-                'INT',
-                item.partNo,
-                item.conditionCode,
-                item.qtyDue,
-                input.dueDate,
-                item.note,
-                'Inventory Order',
-                { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-                { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-              ]);
-            })
-          );
-        }
-      }
-      if (input.orderNo && input.status === 'Approved') {
-        sql = `
-          BEGIN
-            ATJ_Material_Requisition_API.Release__(:orderNo);
-          EXCEPTION
-            WHEN OTHERS THEN
-              ROLLBACK;
-              RAISE;
-          END;
-        `;
-        await ifs.query(sql, [input.orderNo]);
+        input.orderNo = result[0] as string;
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
-      const { requisitionId, orderNo, createdBy } = result;
-      if (input.status === 'Approved') {
-        const sql = `
+      const { requisitionId, contract, orderNo, createdBy } = result;
+      if (orderNo !== null && input.status === 'Approved') {
+        sql = `
           BEGIN
-            ROB_APM_MR_Sparepart_Map_API.insert_from_mr__(:orderNo);
+            ROB_APM_Sparepart_Req_API.Release_MR_By_Req_Id__(:requisitionId);
+            ROB_APM_MR_Sparepart_Map_API.Insert_From_MR__(:orderNo);
           EXCEPTION
             WHEN OTHERS THEN
               ROLLBACK;
               RAISE;
           END;
         `;
-        await ifs.query(sql, [orderNo]);
+        await ifs.query(sql, [requisitionId, orderNo]);
+      }
+      let cc = '';
+      switch (contract) {
+        case 'AT1':
+          cc = 'Admin Sparepart AT1 <adminspart@ateja.co.id>';
+          break;
+        case 'AT2':
+          cc = 'Admin Sparepart AT2 <sparepartat2@ateja.co.id>';
+          break;
+        case 'AT3':
+          cc = 'Admin Sparepart AT3 <adminpart3@ateja.co.id>';
+          break;
+        case 'AT4':
+          cc = 'Admin Sparepart AT4 <sparepartat4@ateja.co.id>';
+          break;
+        case 'AT4E':
+          cc = 'Admin Sparepart AT4E <gudangat4ext@ateja.co.id>';
+          break;
+        case 'AT6':
+          cc = 'Admin Sparepart AT6 <adminpart3@ateja.co.id>';
+          break;
+        case 'AMI':
+          cc = 'Unang Ridwan <unangridwan@ateja.co.id>';
+          break;
+        case 'AGT':
+          cc = 'Mulyadi <mulyadi@agtex.co.id>';
+          break;
+        default:
+          cc = '';
       }
       const employeeObj = new EmployeeMaterializedViewResolver();
       const creator = await employeeObj.getEmployeeMv(createdBy);
@@ -239,7 +207,9 @@ export class SparePartRequisitionResolver {
       switch (input.status) {
         case 'Submitted':
           await sendEmail(
-            approverLv1?.email || '',
+            `${approverLv1?.name} <${approverLv1?.email}>` || '',
+            [],
+            [],
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv1?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -249,7 +219,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Partially Approved':
           await sendEmail(
-            approverLv2?.email || '',
+            `${approverLv2?.name} <${approverLv2?.email}>` || '',
+            [],
+            [],
             `Approval Request for Spare Part Requisition No ${requisitionId}`,
             `<p>Dear Mr/Ms ${approverLv2?.name},</p>
             <p>A new Spare Part Requisition (No: ${requisitionId}) has been submitted for your approval.</br>
@@ -259,7 +231,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Approved':
           await sendEmail(
-            creator?.email || '',
+            `${creator?.name} <${creator?.email}>` || '',
+            [cc],
+            [],
             `Spare Part Requisition No ${requisitionId} has been Approved`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${requisitionId} has been approved and Material Requisition No ${orderNo} has been created in IFS Applications.</br>
@@ -268,7 +242,9 @@ export class SparePartRequisitionResolver {
           break;
         case 'Rejected':
           await sendEmail(
-            creator?.email || '',
+            `${creator?.name} <${creator?.email}>` || '',
+            [cc],
+            [],
             `Spare Part Requisition No ${result.requisitionId} has been Rejected`,
             `<p>Dear Mr/Ms ${creator?.name},</p>
             <p>Spare Part Requisition No: ${result.requisitionId} has been rejected.</br>
