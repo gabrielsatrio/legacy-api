@@ -23,4 +23,8 @@ export class GisOperator extends BaseEntity {
   @Field()
   @Column({ name: 'FINAL_METER' })
   finalMeter!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEFECT_ID' })
+  defectId?: string;
 }

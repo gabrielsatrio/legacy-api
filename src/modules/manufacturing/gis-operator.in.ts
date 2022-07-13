@@ -23,4 +23,7 @@ export class GisOperatorInput implements Partial<GisOperator> {
   @Field()
   @IsNumber()
   finalMeter!: number;
+
+  @Field({ nullable: true })
+  defectId?: string;
 }
