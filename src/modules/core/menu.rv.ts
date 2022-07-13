@@ -83,7 +83,15 @@ export class MenuResolver {
                                 FROM   atj_app_role
                                 WHERE  dept = :dept
                                 union
+                                SELECT title_id
+                                FROM   atj_app_role
+                                WHERE  dept = :dept
+                                union
                                 SELECT menu_id
+                                FROM   atj_app_user_role
+                                WHERE  username = :username
+                                union
+                                SELECT title_id
                                 FROM   atj_app_user_role
                                 WHERE  username = :username
                                 union
@@ -95,11 +103,11 @@ export class MenuResolver {
 
       result = await ifs.query(sql, [
         dept[0].departmentId,
+        dept[0].departmentId,
+        req.session.username,
         req.session.username
       ]);
     }
-
-    //console.log(result);
 
     for (const product of result) {
       const checkParent = [];

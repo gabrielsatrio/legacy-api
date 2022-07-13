@@ -30,4 +30,12 @@ export class Menu extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PARENT' })
   parent?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PARENT_NAME' })
+  parentName?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MENU_ALIAS' })
+  menuAlias?: string;
 }
