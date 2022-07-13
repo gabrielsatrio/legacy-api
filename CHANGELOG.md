@@ -7,6 +7,7 @@
 - [**M019**] **GIS**: add new module greige inspection system.
 - [**T001**] **SPT**: enable user GAP-Transportation to edit calculated requisitions.
 - **ifs-shop-ord-vw**: add job order column.
+- **org-employee-rv**: add query get employees by job id.
 
 <a name="2.27.0"></a>
 
