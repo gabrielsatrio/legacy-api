@@ -9,6 +9,7 @@
 - [**M003**] **opname**: add get opname by contract query.
 - **ifs-shop-ord-vw**: add job order column.
 - **org-employee-rv**: add query get employees by job id.
+- **ifs-inv-part.rv**: add query get width id, width description, and color.
 
 <a name="2.27.0"></a>
 
