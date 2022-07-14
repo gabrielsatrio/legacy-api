@@ -1,3 +1,11 @@
+<a name="2.28.0"></a>
+
+# [2.28.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/217) (2022-07-14)
+
+### Features
+
+- [**P001**] **buku-import**: Add module Import Expedition
+
 <a name="2.27.0"></a>
 
 # [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/215) (2022-07-07)
