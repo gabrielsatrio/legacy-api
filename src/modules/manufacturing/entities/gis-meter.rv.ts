@@ -1,7 +1,7 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { ifs } from '../../../database/data-sources';
 import { GisMeterInput } from './../gis-meter.in';
 import { GisMeter } from './gis-meter';
 
