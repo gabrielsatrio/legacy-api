@@ -10,6 +10,13 @@
 - **ifs-shop-ord-vw**: add job order column.
 - **org-employee-rv**: add query get employees by job id.
 - **ifs-inv-part.rv**: add query get width id, width description, and color.
+<a name="2.28.0"></a>
+
+# [2.28.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/217) (2022-07-14)
+
+### Features
+
+- [**P001**] **buku-import**: Add module Import Expedition
 
 <a name="2.27.0"></a>
 
