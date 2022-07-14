@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ANG_IMPORT_EXPEDITION_TAB')
+@Entity('ANG_IMPORT_EXPEDITION')
 @ObjectType()
 export class ImportExpedition extends BaseEntity {
   @Field(() => Int)
