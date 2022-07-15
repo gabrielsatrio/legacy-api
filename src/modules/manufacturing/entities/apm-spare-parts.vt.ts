@@ -12,6 +12,12 @@ export class SpareParts {
   description!: string;
 
   @Field()
+  conditionCode!: string;
+
+  @Field()
+  condition!: string;
+
+  @Field()
   qtyAvailable!: number;
 
   @Field()
