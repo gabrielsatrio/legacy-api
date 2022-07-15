@@ -23,6 +23,10 @@ export class User extends BaseEntity {
   @Column({ name: 'DEPARTMENT_ID' })
   departmentId!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT_ALT' })
+  departmentAlt!: string;
+
   @Field()
   @Column({ name: 'USERNAME_DB', default: 'AT' })
   usernameDb!: 'AT' | 'AG';

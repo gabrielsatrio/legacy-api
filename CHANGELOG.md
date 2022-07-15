@@ -1,3 +1,40 @@
+<a name="2.30.0"></a>
+
+# [2.30.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/221) (2022-07-15)
+
+### BREAKING CHANGES
+
+- [**CORE**] **MENU**: add new module menu and route management.
+
+<a name="2.29.0"></a>
+
+# [2.29.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/219) (2022-07-14)
+
+### Features
+
+- [**M019**] **GIS**: add new module greige inspection system.
+- [**T001**] **SPT**: enable user GAP-Transportation to edit calculated requisitions.
+- [**M003**] **opname**: add get opname by contract query.
+- **ifs-shop-ord-vw**: add job order column.
+- **org-employee-rv**: add query get employees by job id.
+- **ifs-inv-part.rv**: add query get width id, width description, and color.
+
+<a name="2.28.0"></a>
+
+# [2.28.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/217) (2022-07-14)
+
+### Features
+
+- [**P001**] **buku-import**: Add module Import Expedition
+
+<a name="2.27.0"></a>
+
+# [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/215) (2022-07-07)
+
+### Features
+
+- [**M017**] **MDP**: modify for finishing usage in AT server.
+
 <a name="2.26.0"></a>
 
 # [2.26.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
