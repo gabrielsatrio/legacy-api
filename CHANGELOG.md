@@ -1,3 +1,11 @@
+<a name="2.30.0"></a>
+
+# [2.30.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/221) (2022-07-15)
+
+### BREAKING CHANGES
+
+- [**CORE**] **MENU**: add new module menu and route management.
+
 <a name="2.29.0"></a>
 
 # [2.29.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/219) (2022-07-14)
