@@ -1,3 +1,51 @@
+<a name="2.28.0"></a>
+
+# [2.28.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/217) (2022-07-14)
+
+### Features
+
+- [**P001**] **buku-import**: Add module Import Expedition
+
+<a name="2.27.0"></a>
+
+# [2.27.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/215) (2022-07-07)
+
+### Features
+
+- [**M017**] **MDP**: modify for finishing usage in AT server.
+
+<a name="2.26.0"></a>
+
+# [2.26.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add 2 new fields (`destinationId` and `destination`).
+- [**M013**] **technicians**: support array as a parameter.
+
+### Bug Fixes
+
+- [**M001**] **apm-work-centers**: fix an issue related to blank description, reordering, and removing unused resolver.
+
+<a name="2.25.0"></a>
+
+# [2.25.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/210) (2022-07-01)
+
+### BREAKING CHANGES
+
+- **send-email**: add cc and bcc as parameters.
+
+### Features
+
+- **current-user**: allow username 05251 to access the ATD site.
+- [**M013**] **apm-requisitions**: cc email to warehouse person after fully approved/rejected.
+
+### Bug Fixes
+
+- **auth**: parameters adjustment.
+- [**M013**] **apm-requisitions**: fix an issue related to sorting MR lines that are different from SPR lines.
+- [**M013**] **apm-requisitions**: fix an issue which MR was created multiple times unintentionally.
+
 <a name="2.24.3"></a>
 
 # [2.24.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/208) (2022-06-28)
