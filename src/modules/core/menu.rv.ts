@@ -14,6 +14,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import FieldMenu from '../../types/field-menu';
+import FieldRoute from '../../types/field-route';
 import { mapError } from '../../utils/map-error';
 import { Menu } from './entities/menu';
 import { MenuInput } from './menu.in';
@@ -55,6 +56,38 @@ export class MenuResolver {
       where: { type: 'Dropdown' },
       order: { id: 'ASC' }
     });
+  }
+
+  @Query(() => [FieldRoute], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getValidRoute(@Ctx() { req }: Context): Promise<FieldRoute> {
+    let result;
+
+    const sqlDept = `select department_alt as "departmentId", username as "ifsUsername" from atj_app_user
+                    where username = :username`;
+    const dept = await ifs.query(sqlDept, [req.session.username]);
+
+    if (dept[0].departmentId === 'MIS') {
+      const sql = `select to_link as "to" from ATJ_APP_MENU
+                   where type='Link'`;
+
+      result = await ifs.query(sql);
+    } else {
+      const sql = `select to_link as "to" from ATJ_APP_MENU
+                    where id in(
+                    select menu_id from ATJ_APP_ROLE
+                    where dept = :dept
+                    union
+                    select menu_id from atj_app_user_role
+                    where username = :username)`;
+
+      result = await ifs.query(sql, [
+        dept[0].departmentId,
+        req.session.username
+      ]);
+    }
+
+    return result;
   }
 
   @Query(() => [FieldMenu], { nullable: true })
@@ -142,15 +175,11 @@ export class MenuResolver {
     };
     finalObj['tags'] = eval(JSON.stringify(result));
 
-    //console.log(finalObj['tags']);
-
     const rootTags = [
       ...finalObj.tags
         .map((obj) => obj)
         .filter((tag) => tag.root === 'root' || tag.root === 'branch')
     ];
-
-    //console.log(rootTags);
 
     const mapChildren = (
       childId: any
@@ -172,8 +201,6 @@ export class MenuResolver {
 
       return tag;
     });
-
-    //console.log(tagTree);
 
     for (let i = tagTree.length - 1; i >= 0; i--) {
       if (tagTree[i].root == 'branch') {
