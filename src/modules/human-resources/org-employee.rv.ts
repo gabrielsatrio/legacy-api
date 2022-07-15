@@ -65,4 +65,19 @@ export class EmployeeResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [EmployeeView])
+  @UseMiddleware(isAuth)
+  async getEmployeesByJobId(
+    @Arg('jobId') jobId: string
+  ): Promise<EmployeeView[]> {
+    try {
+      return await EmployeeView.find({
+        where: { jobId: jobId },
+        order: { name: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
