@@ -11,9 +11,9 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { GisHeaderInput } from './../gis-header.in';
-import { GisHeader } from './gis-header';
-import { GisHeaderView } from './gis-header.vw';
+import { GisHeader } from './entities/gis-header';
+import { GisHeaderView } from './entities/gis-header.vw';
+import { GisHeaderInput } from './gis-header.in';
 
 @Resolver(GisHeader)
 export class GisHeaderResolver {

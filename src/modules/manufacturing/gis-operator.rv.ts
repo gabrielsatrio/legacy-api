@@ -2,8 +2,8 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { GisOperatorInput } from './../gis-operator.in';
-import { GisOperator } from './gis-operator';
+import { GisOperator } from './entities/gis-operator';
+import { GisOperatorInput } from './gis-operator.in';
 
 @Resolver(GisOperator)
 export class GisOperatorResolver {

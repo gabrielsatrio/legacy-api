@@ -2,8 +2,9 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { GisMeterInput } from './../gis-meter.in';
-import { GisMeter } from './gis-meter';
+import { GisMeter } from './entities/gis-meter';
+
+import { GisMeterInput } from './gis-meter.in';
 
 @Resolver(GisMeter)
 export class GisMeterResolver {
