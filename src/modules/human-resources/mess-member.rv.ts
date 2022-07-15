@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { LessThanOrEqual, MoreThan } from 'typeorm';
 import { InsMessMember } from './entities/mess-ins-member';
 import { MessMember } from './entities/mess-member';
 import { MessMemberView } from './entities/mess-member.vw';
@@ -24,6 +25,22 @@ export class MessMemberResolver {
   ): Promise<MessMemberView[] | undefined> {
     try {
       return await MessMemberView.findBy({ mess });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+  @Query(() => [MessMember])
+  @UseMiddleware(isAuth)
+  async getMessMembersByTime(
+    @Arg('mess', () => String) mess: string,
+    @Arg('date', () => Date) date: Date
+  ): Promise<MessMember[] | null> {
+    try {
+      return await MessMember.findBy({
+        mess: mess,
+        valid_to: MoreThan(date),
+        valid_from: LessThanOrEqual(date)
+      });
     } catch (err) {
       throw new Error(mapError(err));
     }

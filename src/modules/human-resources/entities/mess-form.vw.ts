@@ -14,6 +14,9 @@ export class MessFormView extends BaseEntity {
   @Column({ name: 'TANGGAL_TAGIHAN' })
   tanggal_tagihan!: Date;
   @Field()
+  @Column({ name: 'TANGGAL_DIBUAT' })
+  tanggal_dibuat!: Date;
+  @Field()
   @Column({ name: 'KETUA' })
   ketua!: string;
   @Field()

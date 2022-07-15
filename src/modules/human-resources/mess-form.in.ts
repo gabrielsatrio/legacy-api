@@ -10,6 +10,8 @@ export class MessFormInput implements Partial<MessForm> {
   @Field()
   tanggal_tagihan!: Date;
   @Field()
+  tanggal_dibuat!: Date;
+  @Field()
   ketua!: string;
   @Field()
   total_listrik!: number;
