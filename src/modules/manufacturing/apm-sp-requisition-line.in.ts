@@ -12,6 +12,10 @@ export class SparePartReqLineInput implements Partial<SparePartReqLine> {
   @IsNumber()
   lineItemNo!: number;
 
+  @Field(() => Int)
+  @IsNumber()
+  releaseNo!: number;
+
   @Field()
   @Length(5, 25)
   partNo!: string;
@@ -62,4 +66,12 @@ export class SparePartReqLineInput implements Partial<SparePartReqLine> {
   @Field({ defaultValue: false })
   @IsBoolean()
   assigned!: boolean;
+
+  @Field()
+  @IsIn(['Planned', 'Released', 'Canceled'])
+  status!: string;
+
+  @Field({ nullable: true })
+  @MaxLength(2000)
+  cancelReason?: string;
 }
