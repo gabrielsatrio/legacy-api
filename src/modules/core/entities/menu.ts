@@ -11,6 +11,7 @@ export class Menu extends BaseEntity {
   @Field()
   @Column({ name: 'ROOT' })
   root!: string;
+  
   @Field()
   @Column({ name: 'NAME' })
   name!: string;
