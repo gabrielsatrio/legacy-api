@@ -19,12 +19,18 @@ export class SparePartReqLineMachResolver {
   @UseMiddleware(isAuth)
   async getSPRequisLineMachsByReqIdLineNo(
     @Arg('requisitionId', () => Int) requisitionId: number,
-    @Arg('lineItemNo', () => Int) lineItemNo: number
+    @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('releaseNo', () => Int) releaseNo: number
   ): Promise<SparePartReqLineMachView[] | undefined> {
     try {
       return await SparePartReqLineMachView.find({
-        where: { requisitionId, lineItemNo },
-        order: { requisitionId: 'ASC' }
+        where: { requisitionId, lineItemNo, releaseNo },
+        order: {
+          requisitionId: 'ASC',
+          lineItemNo: 'ASC',
+          releaseNo: 'ASC',
+          mapNo: 'ASC'
+        }
       });
     } catch (err) {
       throw new Error(mapError(err));
@@ -36,12 +42,14 @@ export class SparePartReqLineMachResolver {
   async getSPRequisLineMach(
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('releaseNo', () => Int) releaseNo: number,
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMachView | null> {
     try {
       return await SparePartReqLineMachView.findOneBy({
         requisitionId,
         lineItemNo,
+        releaseNo,
         mapNo
       });
     } catch (err) {
@@ -53,11 +61,16 @@ export class SparePartReqLineMachResolver {
   @UseMiddleware(isAuth)
   async getNewSPReqLineMachMapNo(
     @Arg('requisitionId', () => Int) requistionId: number,
-    @Arg('lineItemNo', () => Int) lineItemNo: number
+    @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('releaseNo', () => Int) releaseNo: number
   ): Promise<number> {
     try {
-      const sql = `SELECT ROB_APM_SPart_Req_Line_Mac_API.Get_New_Map_No(:requisitionId, :lineItemNo) AS "newMapNo" FROM DUAL`;
-      const result = await ifs.query(sql, [requistionId, lineItemNo]);
+      const sql = `SELECT ROB_APM_SPart_Req_Line_Mac_API.Get_New_Map_No(:requisitionId, :lineItemNo, :releaseNo) AS "newMapNo" FROM DUAL`;
+      const result = await ifs.query(sql, [
+        requistionId,
+        lineItemNo,
+        releaseNo
+      ]);
       return result[0].newMapNo;
     } catch (err) {
       throw new Error(mapError(err));
@@ -73,6 +86,7 @@ export class SparePartReqLineMachResolver {
       const existingData = await SparePartReqLineMach.findOneBy({
         requisitionId: input.requisitionId,
         lineItemNo: input.lineItemNo,
+        releaseNo: input.releaseNo,
         mapNo: input.mapNo
       });
       if (existingData) throw new Error('Data already exists.');
@@ -97,6 +111,7 @@ export class SparePartReqLineMachResolver {
       const data = await SparePartReqLineMach.findOneBy({
         requisitionId: input.requisitionId,
         lineItemNo: input.lineItemNo,
+        releaseNo: input.releaseNo,
         mapNo: input.mapNo
       });
       if (!data) throw new Error('No data found.');
@@ -113,12 +128,14 @@ export class SparePartReqLineMachResolver {
   async deleteSPRequisLineMach(
     @Arg('requisitionId', () => Int) requisitionId: number,
     @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('releaseNo', () => Int) releaseNo: number,
     @Arg('mapNo', () => Int) mapNo: number
   ): Promise<SparePartReqLineMach> {
     try {
       const data = await SparePartReqLineMach.findOneBy({
         requisitionId,
         lineItemNo,
+        releaseNo,
         mapNo
       });
       if (!data) throw new Error('No data found.');
