@@ -56,6 +56,43 @@ export class SparePartMrMapResolver {
     }
   }
 
+  @Mutation(() => SparePartMrMapView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async deleteSparePartMrMap(
+    @Arg('input') input: SparePartMrMapPkInput
+  ): Promise<SparePartMrMapView | null> {
+    try {
+      const data = await SparePartMrMapView.findOneBy({ ...input });
+      if (!data) return null;
+      const sql = `
+        BEGIN
+          DELETE FROM ROB_APM_MR_Sparepart_Map
+          WHERE  order_no = :orderNo
+          AND    line_no = :lineNo
+          AND    release_no = :releaseNo
+          AND    line_item_no = :lineItemNo
+          AND    order_class = :orderClass
+          AND    machine_id = :machineId;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
+        END;
+      `;
+      await ifs.query(sql, [
+        input.orderNo,
+        input.lineNo,
+        input.releaseNo,
+        input.lineItemNo,
+        input.orderClass,
+        input.machineId
+      ]);
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => SparePartMrMapView)
   @UseMiddleware(isAuth)
   async syncSparePartMrMap(

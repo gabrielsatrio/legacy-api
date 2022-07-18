@@ -16,6 +16,10 @@ export class SparePartReqLineMachInput
 
   @Field(() => Int)
   @IsNumber()
+  releaseNo!: number;
+
+  @Field(() => Int)
+  @IsNumber()
   mapNo!: number;
 
   @Field()

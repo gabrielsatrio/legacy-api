@@ -12,6 +12,10 @@ export class SparePartReqLineView extends BaseEntity {
   @PrimaryColumn({ name: 'LINE_ITEM_NO' })
   lineItemNo!: number;
 
+  @Field(() => Int)
+  @PrimaryColumn({ name: 'RELEASE_NO' })
+  releaseNo!: number;
+
   @Field()
   @Column({ name: 'PART_NO' })
   partNo!: string;
@@ -75,6 +79,14 @@ export class SparePartReqLineView extends BaseEntity {
   @Field({ defaultValue: false })
   @Column({ name: 'ASSIGNED' })
   assigned!: boolean;
+
+  @Field()
+  @Column({ name: 'STATUS' })
+  status!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CANCEL_REASON' })
+  cancelReason?: string;
 
   @Field()
   @Column({ name: 'CREATED_AT' })

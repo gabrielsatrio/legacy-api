@@ -25,13 +25,13 @@ export class UserView extends BaseEntity {
   @Column({ name: 'DEPARTMENT_ID' })
   departmentId!: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'DEPARTMENT_ALT' })
-  departmentAlt!: string;
-
   @Field()
   @Column({ name: 'DEPARTMENT' })
   department!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEPARTMENT_ALT' })
+  departmentAlt!: string;
 
   @Field()
   @Column({ name: 'USERNAME_DB' })

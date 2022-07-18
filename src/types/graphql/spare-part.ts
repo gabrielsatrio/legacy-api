@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-export class SpareParts {
+export class SparePart {
   @Field()
   partNo!: string;
 
@@ -10,6 +10,12 @@ export class SpareParts {
 
   @Field()
   description!: string;
+
+  @Field()
+  conditionCode!: string;
+
+  @Field()
+  condition!: string;
 
   @Field()
   qtyAvailable!: number;

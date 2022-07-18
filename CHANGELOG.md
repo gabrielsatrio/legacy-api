@@ -1,10 +1,27 @@
+<a name="2.31.0"></a>
+
+# [2.31.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/222) (2022-07-18)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add 2 new fields and new resolver.
+
+### Bug Fixes
+
+- **send-email**: fix parameter type.
+- [**M013**] **apm-requisitions**: add `releaseNo` as an additional primary key and 2 more new fields.
+
+### Other Changes
+
+- **menu**: renaming and folder restructuring for types.
+
 <a name="2.30.0"></a>
 
 # [2.30.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/221) (2022-07-15)
 
 ### BREAKING CHANGES
 
-- [**CORE**] **MENU**: add new module menu and route management.
+- **menu**: add a new module menu and route management.
 
 <a name="2.29.0"></a>
 

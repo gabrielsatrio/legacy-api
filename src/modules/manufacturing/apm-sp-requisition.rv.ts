@@ -162,6 +162,7 @@ export class SparePartRequisitionResolver {
         sql = `
           BEGIN
             ROB_APM_Sparepart_Req_API.Release_MR_By_Req_Id__(:requisitionId);
+            ROB_APM_Sparepart_Req_Line_API.Release_All__(:requisitionId);
             ROB_APM_MR_Sparepart_Map_API.Insert_From_MR__(:orderNo);
           EXCEPTION
             WHEN OTHERS THEN
@@ -169,7 +170,7 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        await ifs.query(sql, [requisitionId, orderNo]);
+        await ifs.query(sql, [requisitionId, requisitionId, orderNo]);
       }
       let cc = '';
       switch (contract) {
@@ -275,7 +276,8 @@ export class SparePartRequisitionResolver {
           try {
             await SPReqLine.deleteSPRequisitionLine(
               item.requisitionId,
-              item.lineItemNo
+              item.lineItemNo,
+              item.releaseNo
             );
           } catch (err) {
             throw new Error(mapError(err));

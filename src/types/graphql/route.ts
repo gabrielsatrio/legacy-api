@@ -1,9 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-class FieldRoute {
+export class Route {
   @Field({ nullable: true })
   to?: string;
 }
-
-export default FieldRoute;
