@@ -34,7 +34,7 @@ export class MessMemberResolver {
   async getMessMembersByTime(
     @Arg('mess', () => String) mess: string,
     @Arg('date', () => Date) date: Date
-  ): Promise<MessMember[] | null> {
+  ): Promise<MessMember[] | undefined> {
     try {
       return await MessMember.findBy({
         mess: mess,
