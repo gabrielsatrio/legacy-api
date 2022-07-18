@@ -139,7 +139,12 @@ export class SparePartReqLineMachResolver {
         mapNo
       });
       if (!data) throw new Error('No data found.');
-      await SparePartReqLineMach.delete({ requisitionId, lineItemNo, mapNo });
+      await SparePartReqLineMach.delete({
+        requisitionId,
+        lineItemNo,
+        releaseNo,
+        mapNo
+      });
       return data;
     } catch (err) {
       throw new Error(mapError(err));
