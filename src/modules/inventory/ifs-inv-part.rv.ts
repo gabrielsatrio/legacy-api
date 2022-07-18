@@ -80,11 +80,28 @@ export class IfsInventoryPartResolver {
     @Arg('partNo') partNo: string
   ): Promise<IfsInventoryPartView[] | undefined> {
     try {
-      return await IfsInventoryPartView.createQueryBuilder('IP')
-        .where('IP.CONTRACT = :contract', { contract: contract })
-        .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
-        .andWhere(`IP.PART_STATUS = 'A'`)
-        .getMany();
+      let sql = '';
+      if (contract === 'AGT') {
+        sql = `
+          SELECT   part_no       AS "partNo",
+                   contract      AS "contract",
+                   description   AS "description",
+                   unit_meas     AS "unitMeas",
+                   part_status   AS "partStatus",
+                   objId         AS "objId"
+          FROM     inventory_part@ifs8agt
+          where part_status ='A'
+          and   part_no like :partNo ||'%'
+          and   contract = :contract
+        `;
+        return await ifs.query(sql, [partNo, contract]);
+      } else {
+        return await IfsInventoryPartView.createQueryBuilder('IP')
+          .where('IP.CONTRACT = :contract', { contract: contract })
+          .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
+          .andWhere(`IP.PART_STATUS = 'A'`)
+          .getMany();
+      }
     } catch (err) {
       throw new Error(mapError(err));
     }
