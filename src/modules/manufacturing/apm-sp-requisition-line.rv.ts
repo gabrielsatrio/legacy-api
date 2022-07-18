@@ -1,6 +1,7 @@
 import config from '@/config/main';
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { SparePart } from '@/types/graphql/spare-part';
 import { mapError } from '@/utils/map-error';
 import { sendEmail } from '@/utils/send-email';
 import oracledb from 'oracledb';
@@ -18,7 +19,6 @@ import { SparePartReqLine } from './entities/apm-sp-requisition-line';
 import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineView } from './entities/apm-sp-requisition-line.vw';
 import { SparePartRequisitionView } from './entities/apm-sp-requisition.vw';
-import { SpareParts } from './entities/apm-spare-parts.vt';
 
 import { Field, ObjectType } from 'type-graphql';
 
@@ -164,12 +164,12 @@ export class SparePartReqLineResolver {
     }
   }
 
-  @Query(() => [SpareParts], { nullable: true })
+  @Query(() => [SparePart], { nullable: true })
   @UseMiddleware(isAuth)
   async getSparePartsByContractPartNo(
     @Arg('contract') contract: string,
     @Arg('partNo') partNo: string
-  ): Promise<SpareParts[] | null> {
+  ): Promise<SparePart[] | null> {
     try {
       let sql = '';
       if (contract === 'AGT') {

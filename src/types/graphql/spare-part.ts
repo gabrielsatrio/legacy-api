@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-export class SpareParts {
+export class SparePart {
   @Field()
   partNo!: string;
 

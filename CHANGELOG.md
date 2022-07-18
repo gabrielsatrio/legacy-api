@@ -4,7 +4,7 @@
 
 ### BREAKING CHANGES
 
-- [**CORE**] **MENU**: add new module menu and route management.
+- **menu**: add a new module menu and route management.
 
 <a name="2.29.0"></a>
 

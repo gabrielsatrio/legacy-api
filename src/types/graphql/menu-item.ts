@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-class FieldMenu {
+export class MenuItem {
   @Field()
   id!: string;
 
@@ -20,8 +20,6 @@ class FieldMenu {
   @Field({ nullable: true })
   icon?: string;
 
-  @Field(() => [FieldMenu], { nullable: true })
-  items?: FieldMenu[];
+  @Field(() => [MenuItem], { nullable: true })
+  items?: MenuItem[];
 }
-
-export default FieldMenu;

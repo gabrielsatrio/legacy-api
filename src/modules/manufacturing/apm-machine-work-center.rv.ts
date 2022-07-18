@@ -1,9 +1,9 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { MachineWorkCenter } from '@/types/graphql/machine-work-center';
 import { mapError } from '@/utils/map-error';
 import { toCsvWithQuotes } from '@/utils/to-csv-with-quotes';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { MachineWorkCenter } from './entities/apm-machine-work-center.vt';
 import { WorkCenterView } from './entities/work-center.vw';
 
 @Resolver()
