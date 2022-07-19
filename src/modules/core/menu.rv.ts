@@ -68,7 +68,6 @@ export class MenuResolver {
   }
 
   @Query(() => [Route], { nullable: true })
-  @UseMiddleware(isAuth)
   async getValidRoute(@Ctx() { req }: Context): Promise<Route> {
     let result;
     let sql = `
