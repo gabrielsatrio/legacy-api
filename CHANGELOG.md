@@ -1,3 +1,37 @@
+<a name="2.31.1"></a>
+
+# [2.31.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/224) (2022-07-19)
+
+### Bug Fixes
+
+- **menu**: fix an issue relate to not authenticated error, and `departmentId` is undefined.
+- [**M013**] **apm-requisitions**: fix an issue related to missing value for a parameter, and invalid variable/name.
+
+<a name="2.31.0"></a>
+
+# [2.31.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/222) (2022-07-18)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add 2 new fields and new resolver.
+
+### Bug Fixes
+
+- **send-email**: fix parameter type.
+- [**M013**] **apm-requisitions**: add `releaseNo` as an additional primary key and 2 more new fields.
+
+### Other Changes
+
+- **menu**: renaming and folder restructuring for types.
+
+<a name="2.30.0"></a>
+
+# [2.30.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/221) (2022-07-15)
+
+### BREAKING CHANGES
+
+- **menu**: add a new module menu and route management.
+
 <a name="2.29.0"></a>
 
 # [2.29.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/219) (2022-07-14)

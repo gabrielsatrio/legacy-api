@@ -13,6 +13,10 @@ export class SparePartReqLineMachView extends BaseEntity {
   lineItemNo!: number;
 
   @Field(() => Int)
+  @PrimaryColumn({ name: 'RELEASE_NO' })
+  releaseNo!: number;
+
+  @Field(() => Int)
   @PrimaryColumn({ name: 'MAP_NO' })
   mapNo!: number;
 
