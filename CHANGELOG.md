@@ -1,10 +1,11 @@
-<a name="2.32.0"></a>
+<a name="2.31.1"></a>
 
-# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-19)
+# [2.31.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/224) (2022-07-19)
 
-### Features
+### Bug Fixes
 
-- [**H004**] **tagihan-mess**: create tagihan mess feature.
+- **menu**: fix an issue relate to not authenticated error, and `departmentId` is undefined.
+- [**M013**] **apm-requisitions**: fix an issue related to missing value for a parameter, and invalid variable/name.
 
 <a name="2.31.0"></a>
 
