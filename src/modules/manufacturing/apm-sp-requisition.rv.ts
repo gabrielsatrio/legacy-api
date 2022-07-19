@@ -170,7 +170,7 @@ export class SparePartRequisitionResolver {
               RAISE;
           END;
         `;
-        await ifs.query(sql, [requisitionId, requisitionId, orderNo]);
+        await ifs.query(sql, [requisitionId, orderNo]);
       }
       let cc = '';
       switch (contract) {
