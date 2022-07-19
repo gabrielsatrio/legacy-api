@@ -7,28 +7,36 @@ export class MessMemberView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;
+
   @Field()
   @Column({ name: 'NRP' })
   nrp!: string;
+
   @Field()
   @Column({ name: 'NAME' })
   name!: string;
-  @Field()
-  @Column({ name: 'MESS' })
-  mess!: string;
+
   @Field()
   @Column({ name: 'DEPARTMENT' })
   department!: string;
+
   @Field()
-  @Column({ name: 'IS_KETUA' })
-  is_ketua!: number;
+  @Column({ name: 'MESS' })
+  mess!: string;
+
   @Field()
   @Column({ name: 'VALID_FROM' })
-  valid_from!: Date;
-  @Field()
+  validFrom!: Date;
+
+  @Field({ nullable: true })
   @Column({ name: 'VALID_TO' })
-  valid_to!: Date;
+  validTo?: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'IS_KETUA' })
+  isKetua?: number;
+
   @Field()
   @Column({ name: 'INSERT_BY' })
-  insert_by!: string;
+  insertBy!: string;
 }

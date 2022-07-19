@@ -38,8 +38,8 @@ export class MessMemberResolver {
     try {
       return await MessMember.findBy({
         mess: mess,
-        valid_to: MoreThan(date),
-        valid_from: LessThanOrEqual(date)
+        validTo: MoreThan(date),
+        validFrom: LessThanOrEqual(date)
       });
     } catch (err) {
       throw new Error(mapError(err));
@@ -51,7 +51,7 @@ export class MessMemberResolver {
     @Arg('mess', () => String) mess: string
   ): Promise<string | undefined> {
     try {
-      const data = await MessMemberView.findOneBy({ mess, is_ketua: 1 });
+      const data = await MessMemberView.findOneBy({ mess, isKetua: 1 });
       return data?.nrp;
     } catch (err) {
       throw new Error(mapError(err));
@@ -95,17 +95,17 @@ export class MessMemberResolver {
     try {
       const valid = await MessMember.findOneBy({ nrp: nrp, mess: mess });
       if (valid) {
-        const before = await MessMember.findOneBy({ is_ketua: 1, mess: mess });
+        const before = await MessMember.findOneBy({ isKetua: 1, mess: mess });
         if (before) {
           await MessMember.createQueryBuilder()
             .update(MessMember)
-            .set({ is_ketua: 0 })
+            .set({ isKetua: 0 })
             .where('IS_KETUA = 1 AND MESS = :mess', { mess: mess })
             .execute();
         }
         await MessMember.createQueryBuilder()
           .update(MessMember)
-          .set({ is_ketua: 1 })
+          .set({ isKetua: 1 })
           .where('MESS = :mess AND NRP = :nrp', { mess: mess, nrp: nrp })
           .execute();
       } else throw new Error('Data not exist');

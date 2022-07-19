@@ -1,24 +1,49 @@
+import { IsDate, IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { MessCostFixRate } from './entities/mess-cost-fr';
 
 @InputType()
 export class MessCostInput implements Partial<MessCostFixRate> {
-  @Field({ nullable: true })
-  id?: number;
   @Field()
+  @IsNumber()
+  id!: number;
+
+  @Field()
+  @MaxLength(20)
   mess!: string;
+
+  @Field({ nullable: true })
+  @IsDate()
+  validFrom?: Date;
+
+  @Field({ nullable: true })
+  @IsDate()
+  validTo?: Date;
+
   @Field()
-  subsidi_tdl!: number;
+  @IsNumber()
+  subsidiTdl!: number;
+
   @Field()
-  subsidi_bea_beban!: number;
+  @IsNumber()
+  subsidiBeaBeban!: number;
+
   @Field()
-  subsidi_bea_adm!: number;
+  @IsNumber()
+  subsidiBeaAdm!: number;
+
   @Field()
-  tamu_perusahaan!: number;
+  @IsNumber()
+  tamuPerusahaan!: number;
+
   @Field()
-  tamu_pribadi!: number;
+  @IsNumber()
+  tamuPribadi!: number;
+
   @Field()
+  @IsNumber()
   internet!: number;
   @Field()
-  created_by!: string;
+  @MaxLength(5)
+  createdBy!: string;
 }

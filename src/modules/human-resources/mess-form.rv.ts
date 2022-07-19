@@ -71,7 +71,7 @@ export class MessFormResolver {
     @Arg('id', () => Int) id: number
   ): Promise<boolean | undefined> {
     try {
-      const data = await MessForm.findOneBy({ id: id });
+      const data = await MessForm.findOneBy({ id });
       if (!data) throw new Error('Data not exist');
       await MessForm.delete({ id });
       return true;

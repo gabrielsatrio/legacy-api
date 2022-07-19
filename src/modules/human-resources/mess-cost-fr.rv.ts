@@ -37,9 +37,9 @@ export class MessCostFRResolver {
     try {
       return await MessCostFixRate.findOne({
         where: {
-          mess: mess,
-          valid_to: MoreThan(date),
-          valid_from: LessThanOrEqual(date)
+          mess,
+          validTo: MoreThan(date),
+          validFrom: LessThanOrEqual(date)
         }
       });
     } catch (err) {
@@ -55,7 +55,7 @@ export class MessCostFRResolver {
     try {
       const data = MessCostFixRate.create({ ...input });
       await MessCostFixRate.save(data);
-      return `New cost for ${input.mess} has been added by ${input.created_by}`;
+      return `New cost for ${input.mess} has been added by ${input.createdBy}`;
     } catch (err) {
       throw new Error(mapError(err));
     }

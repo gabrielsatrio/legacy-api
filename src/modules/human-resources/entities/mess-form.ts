@@ -4,38 +4,47 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('VKY_MESS_FORM')
 @ObjectType()
 export class MessForm extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'ID' })
-  id?: number;
+  id!: number;
+
   @Field()
   @Column({ name: 'MESS' })
   mess!: string;
+
   @Field()
   @Column({ name: 'TANGGAL_TAGIHAN' })
-  tanggal_tagihan!: Date;
-  @Field()
-  @Column({ name: 'TANGGAL_DIBUAT' })
-  tanggal_dibuat!: Date;
+  tanggalTagihan!: Date;
+
   @Field()
   @Column({ name: 'KETUA' })
   ketua!: string;
+
   @Field()
   @Column({ name: 'TOTAL_LISTRIK' })
-  total_listrik!: number;
+  totalListrik!: number;
+
   @Field()
   @Column({ name: 'TOTAL_AIR' })
-  total_air!: number;
+  totalAir!: number;
+
   @Field()
   @Column({ name: 'IURAN_RT' })
-  iuran_rt!: number;
+  iuranRt!: number;
+
   @Field()
   @Column({ name: 'IURAN_SAMPAH' })
-  iuran_sampah!: number;
+  iuranSampah!: number;
 
   @Field()
   @Column({ name: 'INTERNET' })
   internet!: number;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
-  created_by!: string;
+  createdBy!: string;
+
+  @Field()
+  @Column({ name: 'TANGGAL_DIBUAT' })
+  tanggalDibuat!: Date;
 }

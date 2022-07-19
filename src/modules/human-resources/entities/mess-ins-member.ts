@@ -7,10 +7,12 @@ export class InsMessMember extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'NRP' })
   nrp!: string;
+
   @Field()
   @Column({ name: 'MESS' })
   mess!: string;
+
   @Field()
   @Column({ name: 'INSERT_BY' })
-  insert_by!: string;
+  insertBy!: string;
 }

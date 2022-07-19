@@ -12,33 +12,33 @@ export class MessCostFixRateView extends BaseEntity {
   @Column({ name: 'MESS' })
   mess!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'VALID_FROM' })
-  valid_from!: Date;
+  validFrom?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'VALID_TO' })
-  valid_to!: Date;
+  validTo?: Date;
 
   @Field()
   @Column({ name: 'SUBSIDI_TDL' })
-  subsidi_tdl!: number;
+  subsidiTdl!: number;
 
   @Field()
   @Column({ name: 'SUBSIDI_BEA_BEBAN' })
-  subsidi_bea_beban!: number;
+  subsidiBeaBeban!: number;
 
   @Field()
   @Column({ name: 'SUBSIDI_BEA_ADM' })
-  subsidi_bea_adm!: number;
+  subsidiBeaAdm!: number;
 
   @Field()
   @Column({ name: 'TAMU_PERUSAHAAN' })
-  tamu_perusahaan!: number;
+  tamuPerusahaan!: number;
 
   @Field()
   @Column({ name: 'TAMU_PRIBADI' })
-  tamu_pribadi!: number;
+  tamuPribadi!: number;
 
   @Field()
   @Column({ name: 'INTERNET' })
@@ -46,5 +46,5 @@ export class MessCostFixRateView extends BaseEntity {
 
   @Field()
   @Column({ name: 'CREATED_BY' })
-  created_by!: string;
+  createdBy!: string;
 }
