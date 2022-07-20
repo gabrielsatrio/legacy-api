@@ -122,6 +122,25 @@ export class OpnameStatusResolver {
     }
   }
 
+  @Query(() => [OpnameStatus])
+  @UseMiddleware(isAuth)
+  async getOpnameByContractDept(
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('dept') dept: string
+  ): Promise<OpnameStatus[] | undefined> {
+    try {
+      return await OpnameStatus.find({
+        where: {
+          contract: In(contract),
+          dept: Like(dept),
+          objId: Like('%')
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => Number)
   @UseMiddleware(isAuth)
   async getExpectedPercentage(

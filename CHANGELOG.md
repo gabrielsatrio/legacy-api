@@ -5,6 +5,7 @@
 ### Features
 
 - [**M019**] **gis**: add columns for header input.
+- [**M003**] **opname**: add query for opname.
 
 ### Bug Fixes
 
