@@ -77,6 +77,14 @@ export class GisHeader extends BaseEntity {
   defectName4?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'SERI_BEAM' })
+  seriBeam?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ROLL' })
+  roll?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'INSPECT_TYPE' })
   inspectType?: string;
 

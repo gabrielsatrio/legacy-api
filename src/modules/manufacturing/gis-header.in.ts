@@ -78,6 +78,13 @@ export class GisHeaderInput implements Partial<GisHeader> {
 
   @Field({ nullable: true })
   @MaxLength(30)
+  seriBeam?: string;
+
+  @Field({ nullable: true })
+  roll?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(30)
   inspectType?: string;
 
   @Field({ nullable: true })
