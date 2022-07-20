@@ -49,7 +49,7 @@ export class MessCostFRResolver {
 
   @Mutation(() => String)
   @UseMiddleware(isAuth)
-  async newMessCost(
+  async createMessCost(
     @Arg('input') input: MessCostInput
   ): Promise<string | undefined> {
     try {
