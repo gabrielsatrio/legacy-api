@@ -1,3 +1,15 @@
+<a name="2.32.0"></a>
+
+# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/228) (2022-07-20)
+
+### Features
+
+- [**M019**] **gis**: add columns for header input.
+
+### Bug Fixes
+
+- **ifs-shop-ord-vw**: make job order not mandatory.
+
 <a name="2.31.2"></a>
 
 # [2.31.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/226) (2022-07-20)
