@@ -51,7 +51,7 @@ export class MessFormResolver {
   @Mutation(() => MessForm)
   @UseMiddleware(isAuth)
   async updateMessBill(
-    @Arg('id') id: number,
+    @Arg('id', () => Int) id: number,
     @Arg('input') input: MessFormInput
   ): Promise<MessForm | undefined> {
     try {
