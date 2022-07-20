@@ -25,7 +25,7 @@ export class BonMakanWeekdaysDetailInput
 
   @Field({ nullable: true })
   @IsNumber()
-  pgNasi?: number;
+  sgRoti12?: number;
 
   @Field({ nullable: true })
   @IsNumber()
