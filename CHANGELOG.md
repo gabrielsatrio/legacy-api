@@ -1,4 +1,11 @@
-<a name="2.31.2"></a>
+<a name="2.32.0"></a>
+
+# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-20)
+
+### Features
+
+- [**H001**] **tagihan-mess**: create tagihan mess feature.
+  <a name="2.31.2"></a>
 
 # [2.31.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/226) (2022-07-20)
 
