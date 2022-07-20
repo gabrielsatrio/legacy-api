@@ -1,10 +1,10 @@
-<a name="2.32.0"></a>
+<a name="2.31.2"></a>
 
-# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-19)
+# [2.31.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/226) (2022-07-20)
 
-### Features
+### Bug Fixes
 
-- [**H004**] **tagihan-mess**: create tagihan mess feature.
+- [**G001**] **bon-makan**: fix generate id.
 
 <a name="2.31.1"></a>
 
