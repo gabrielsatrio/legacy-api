@@ -1,3 +1,11 @@
+<a name="2.31.2"></a>
+
+# [2.31.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/226) (2022-07-20)
+
+### Bug Fixes
+
+- [**G001**] **bon-makan**: fix generate id.
+
 <a name="2.31.1"></a>
 
 # [2.31.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/224) (2022-07-19)
