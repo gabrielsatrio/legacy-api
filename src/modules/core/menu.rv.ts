@@ -4,7 +4,9 @@ import { Context } from '@/types/context';
 import { MenuItem } from '@/types/graphql/menu-item';
 import { Route } from '@/types/graphql/route';
 import { mapError } from '@/utils/map-error';
-import { find, isArray } from 'lodash';
+import find from 'lodash/find';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -68,7 +70,6 @@ export class MenuResolver {
   }
 
   @Query(() => [Route], { nullable: true })
-  @UseMiddleware(isAuth)
   async getValidRoute(@Ctx() { req }: Context): Promise<Route> {
     let result;
     let sql = `
@@ -78,15 +79,16 @@ export class MenuResolver {
       WHERE   username = :username
     `;
     const res = await ifs.query(sql, [req.session.username]);
-    if (res[0].departmentId === 'MIS') {
-      sql = `
+    if (!isEmpty(res)) {
+      if (res[0].departmentId === 'MIS') {
+        sql = `
         SELECT  to_link AS "to"
         FROM    atj_app_menu
         WHERE   type = 'Link'
       `;
-      result = await ifs.query(sql);
-    } else {
-      sql = `
+        result = await ifs.query(sql);
+      } else {
+        sql = `
         SELECT  to_link AS "to"
         FROM    atj_app_menu
         WHERE   id IN (
@@ -99,10 +101,11 @@ export class MenuResolver {
           WHERE   username = :username
         )
       `;
-      result = await ifs.query(sql, [
-        res[0].departmentId,
-        req.session.username
-      ]);
+        result = await ifs.query(sql, [
+          res[0].departmentId,
+          req.session.username
+        ]);
+      }
     }
     return result;
   }
