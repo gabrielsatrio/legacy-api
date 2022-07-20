@@ -4,25 +4,31 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 @Entity('VKY_TAMU_PRIBADI')
 export class MessMemberVisitor extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'ID' })
-  id?: number;
+  id!: number;
+
   @Field()
   @Column({ name: 'MESS' })
   mess!: string;
+
   @Field()
   @Column({ name: 'ID_FORM' })
-  id_form!: number;
-  @Field()
+  idForm!: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'NAMA' })
-  nama!: string;
+  nama?: string;
+
   @Field()
   @Column({ name: 'LAMA_MENGINAP' })
-  lama_menginap!: number;
+  lamaMenginap!: number;
+
   @Field()
   @Column({ name: 'TOTAL' })
   total!: number;
+
   @Field()
   @Column({ name: 'INSERT_BY' })
-  insert_by!: string;
+  insertBy!: string;
 }

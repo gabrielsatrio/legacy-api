@@ -7,22 +7,28 @@ export class MessCompanyVisitorView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;
+
   @Field()
   @Column({ name: 'MESS' })
   mess!: string;
+
   @Field()
   @Column({ name: 'ID_FORM' })
-  id_form!: number;
-  @Field()
+  idForm!: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'NAMA' })
-  nama!: string;
+  nama?: string;
+
   @Field()
   @Column({ name: 'LAMA_MENGINAP' })
-  lama_menginap!: number;
+  lamaMenginap!: number;
+
   @Field()
   @Column({ name: 'TOTAL' })
   total!: number;
+
   @Field()
   @Column({ name: 'INSERT_BY' })
-  insert_by!: string;
+  insertBy!: string;
 }

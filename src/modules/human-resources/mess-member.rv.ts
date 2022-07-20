@@ -59,7 +59,7 @@ export class MessMemberResolver {
   }
   @Mutation(() => InsMessMember)
   @UseMiddleware(isAuth)
-  async insertMessMember(
+  async createMessMember(
     @Arg('input') input: InsMessMemberInput
   ): Promise<InsMessMember | undefined> {
     try {

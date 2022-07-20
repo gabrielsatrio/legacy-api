@@ -1,18 +1,34 @@
+import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { MessCompanyVisitor } from './entities/mess-company-visitor';
 
 @InputType()
 export class MessCompanyVisitorInput implements Partial<MessCompanyVisitor> {
   @Field()
-  id_form!: number;
+  @IsNumber()
+  id!: number;
+
   @Field()
+  @MaxLength(20)
   mess!: string;
+
   @Field()
-  nama!: string;
+  @IsNumber()
+  idForm!: number;
+
+  @Field({ nullable: true })
+  @MaxLength(10)
+  nama?: string;
+
   @Field()
-  lama_menginap!: number;
+  @IsNumber()
+  lamaMenginap!: number;
+
   @Field()
+  @IsNumber()
   total!: number;
+
   @Field()
-  insert_by!: string;
+  @MaxLength(5)
+  insertBy!: string;
 }

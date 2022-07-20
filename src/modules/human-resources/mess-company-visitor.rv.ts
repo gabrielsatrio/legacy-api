@@ -17,17 +17,17 @@ export class MessCompanyVisitorResolver {
   @Query(() => [MessCompanyVisitorView])
   @UseMiddleware(isAuth)
   async getCompanyVisitors(
-    @Arg('id_form', () => Int) id_form: number
+    @Arg('idForm', () => Int) idForm: number
   ): Promise<MessCompanyVisitorView[] | undefined> {
     try {
-      return await MessCompanyVisitorView.findBy({ id_form: id_form });
+      return await MessCompanyVisitorView.findBy({ idForm });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
   @Mutation(() => MessCompanyVisitor)
   @UseMiddleware(isAuth)
-  async insMessCompanyVisitor(
+  async createMessCompanyVisitor(
     @Arg('input') input: MessCompanyVisitorInput
   ): Promise<MessCompanyVisitor | undefined> {
     try {
