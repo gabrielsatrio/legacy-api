@@ -1,12 +1,26 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { LessThanOrEqual, MoreThan } from 'typeorm';
-import { InsMessMember } from './entities/mess-ins-member';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
+import { In, LessThanOrEqual, MoreThan } from 'typeorm';
+import { EmployeeMaterializedView } from './entities/employee.mv';
 import { MessMember } from './entities/mess-member';
 import { MessMemberView } from './entities/mess-member.vw';
-import { InsMessMemberInput } from './mess-ins-member.in';
+import { MessMemberInput } from './mess-member.in';
 
+const formatDate = (date: Date) => {
+  function pad(s: any) {
+    return s < 10 ? '0' + s : s;
+  }
+  const d = new Date(date);
+  return [pad(d.getMonth() + 1), pad(d.getDate()), d.getFullYear()].join('/');
+};
 @Resolver(MessMember)
 export class MessMemberResolver {
   @Query(() => [MessMemberView])
@@ -24,19 +38,27 @@ export class MessMemberResolver {
     @Arg('mess', () => String) mess: string
   ): Promise<MessMemberView[] | undefined> {
     try {
-      return await MessMemberView.findBy({ mess });
+      const date = new Date();
+      return await MessMemberView.find({
+        where: {
+          mess: mess,
+          validTo: MoreThan(date),
+          validFrom: LessThanOrEqual(date)
+        },
+        order: { isKetua: 'DESC' }
+      });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
-  @Query(() => [MessMember])
+  @Query(() => [MessMemberView])
   @UseMiddleware(isAuth)
   async getMessMembersByTime(
     @Arg('mess', () => String) mess: string,
     @Arg('date', () => Date) date: Date
-  ): Promise<MessMember[] | undefined> {
+  ): Promise<MessMemberView[] | undefined> {
     try {
-      return await MessMember.findBy({
+      return await MessMemberView.findBy({
         mess: mess,
         validTo: MoreThan(date),
         validFrom: LessThanOrEqual(date)
@@ -57,16 +79,35 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
-  @Mutation(() => InsMessMember)
+  @Query(() => [EmployeeMaterializedView])
+  @UseMiddleware(isAuth)
+  async getEmployeeMVByNRP(
+    @Arg('employeeId', () => [String]) employeeId: string[]
+  ): Promise<EmployeeMaterializedView[] | undefined> {
+    try {
+      return await EmployeeMaterializedView.find({
+        where: { employeeId: In(employeeId) },
+        order: { employeeId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+  @Mutation(() => MessMember)
   @UseMiddleware(isAuth)
   async createMessMember(
-    @Arg('input') input: InsMessMemberInput
-  ): Promise<InsMessMember | undefined> {
+    @Arg('input') input: MessMemberInput
+  ): Promise<MessMember | undefined> {
     try {
-      const exist = await InsMessMember.findOneBy({ nrp: input.nrp });
+      const date = new Date(formatDate(new Date()));
+      const exist = await MessMember.findOneBy({
+        nrp: input.nrp,
+        validTo: MoreThan(date),
+        validFrom: LessThanOrEqual(date)
+      });
       if (exist) throw new Error('Data already exist');
-      const data = InsMessMember.create({ ...input });
-      const result = InsMessMember.save(data);
+      const data = MessMember.create({ ...input });
+      const result = MessMember.save(data);
       return result;
     } catch (err) {
       throw new Error(mapError(err));
@@ -75,12 +116,13 @@ export class MessMemberResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteMessMember(
-    @Arg('nrp', () => String) nrp: string
+    @Arg('id', () => Int) id: number
   ): Promise<boolean | undefined> {
     try {
-      const data = await InsMessMember.findOneBy({ nrp });
-      if (!data) throw new Error('Data not exist');
-      InsMessMember.delete(nrp);
+      const exist = await MessMember.findOneBy({ id });
+      if (!exist) throw new Error('Data not exist');
+      MessMember.merge(exist, { validTo: new Date(formatDate(new Date())) });
+      await MessMember.save(exist);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
@@ -93,7 +135,12 @@ export class MessMemberResolver {
     @Arg('mess', () => String) mess: string
   ): Promise<boolean | undefined> {
     try {
-      const valid = await MessMember.findOneBy({ nrp: nrp, mess: mess });
+      const date = new Date();
+      const valid = await MessMember.findOneBy({
+        nrp: nrp,
+        mess: mess,
+        validTo: MoreThan(date)
+      });
       if (valid) {
         const before = await MessMember.findOneBy({ isKetua: 1, mess: mess });
         if (before) {
@@ -106,7 +153,11 @@ export class MessMemberResolver {
         await MessMember.createQueryBuilder()
           .update(MessMember)
           .set({ isKetua: 1 })
-          .where('MESS = :mess AND NRP = :nrp', { mess: mess, nrp: nrp })
+          .where('MESS = :mess AND NRP = :nrp AND VALID_TO > :date', {
+            mess: mess,
+            nrp: nrp,
+            date: date
+          })
           .execute();
       } else throw new Error('Data not exist');
       return true;

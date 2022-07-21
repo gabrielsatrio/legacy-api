@@ -13,14 +13,6 @@ export class MessMember extends BaseEntity {
   nrp!: string;
 
   @Field()
-  @Column({ name: 'NAME' })
-  name!: string;
-
-  @Field()
-  @Column({ name: 'DEPARTMENT' })
-  department!: string;
-
-  @Field()
   @Column({ name: 'MESS' })
   mess!: string;
 
@@ -28,13 +20,13 @@ export class MessMember extends BaseEntity {
   @Column({ name: 'VALID_FROM' })
   validFrom!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'VALID_TO' })
-  validTo?: Date;
+  validTo!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'IS_KETUA' })
-  isKetua?: number;
+  isKetua!: number;
 
   @Field()
   @Column({ name: 'INSERT_BY' })

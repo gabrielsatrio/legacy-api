@@ -28,13 +28,13 @@ export class MessMemberView extends BaseEntity {
   @Column({ name: 'VALID_FROM' })
   validFrom!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'VALID_TO' })
-  validTo?: Date;
+  validTo!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'IS_KETUA' })
-  isKetua?: number;
+  isKetua!: number;
 
   @Field()
   @Column({ name: 'INSERT_BY' })

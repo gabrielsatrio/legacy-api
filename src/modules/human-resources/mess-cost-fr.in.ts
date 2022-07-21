@@ -12,13 +12,13 @@ export class MessCostInput implements Partial<MessCostFixRate> {
   @MaxLength(20)
   mess!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsDate()
-  validFrom?: Date;
+  validFrom!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @IsDate()
-  validTo?: Date;
+  validTo!: Date;
 
   @Field()
   @IsNumber()
@@ -42,7 +42,8 @@ export class MessCostInput implements Partial<MessCostFixRate> {
 
   @Field()
   @IsNumber()
-  internet!: number;
+  biayaInternet!: number;
+
   @Field()
   @MaxLength(5)
   createdBy!: string;

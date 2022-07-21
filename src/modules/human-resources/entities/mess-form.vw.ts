@@ -37,8 +37,8 @@ export class MessFormView extends BaseEntity {
   iuranSampah!: number;
 
   @Field()
-  @Column({ name: 'INTERNET' })
-  internet!: number;
+  @Column({ name: 'BIAYA_INTERNET' })
+  biayaInternet!: number;
 
   @Field()
   @Column({ name: 'CREATED_BY' })

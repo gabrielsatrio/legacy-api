@@ -12,13 +12,13 @@ export class MessCostFixRate extends BaseEntity {
   @Column({ name: 'MESS' })
   mess!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'VALID_FROM' })
-  validFrom?: Date;
+  validFrom!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'VALID_TO' })
-  validTo?: Date;
+  validTo!: Date;
 
   @Field()
   @Column({ name: 'SUBSIDI_TDL' })
@@ -41,8 +41,8 @@ export class MessCostFixRate extends BaseEntity {
   tamuPribadi!: number;
 
   @Field()
-  @Column({ name: 'INTERNET' })
-  internet!: number;
+  @Column({ name: 'BIAYA_INTERNET' })
+  biayaInternet!: number;
 
   @Field()
   @Column({ name: 'CREATED_BY' })

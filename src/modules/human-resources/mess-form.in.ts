@@ -38,7 +38,7 @@ export class MessFormInput implements Partial<MessForm> {
 
   @Field()
   @IsNumber()
-  internet!: number;
+  biayaInternet!: number;
 
   @Field()
   @MaxLength(5)
