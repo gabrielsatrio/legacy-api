@@ -55,6 +55,19 @@ export class GisHeaderResolver {
     }
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNewRollNo(@Arg('orderNo') orderNo: string): Promise<number> {
+    try {
+      const sql =
+        'SELECT nvl(max(roll)+1,1) as "rollNo" from GBR_GIS_HEADER where order_no = :orderNo';
+      const result = await ifs.query(sql, [orderNo]);
+      return result[0].rollNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => GisHeader)
   @UseMiddleware(isAuth)
   async createGisHeader(
