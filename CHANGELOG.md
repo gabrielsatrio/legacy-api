@@ -1,11 +1,25 @@
-<a name="2.32.0"></a>
+<a name="2.33.0"></a>
 
-# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-20)
+# [2.33.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/230) (2022-07-21)
 
 ### Features
 
-- [**H001**] **tagihan-mess**: create tagihan mess feature.
-  <a name="2.31.2"></a>
+- [**G001**] **bon-makan**: add form list pegawai KHL
+
+<a name="2.32.0"></a>
+
+# [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/228) (2022-07-20)
+
+### Features
+
+- [**M019**] **gis**: add columns for header input.
+- [**M003**] **opname**: add query for opname.
+
+### Bug Fixes
+
+- **ifs-shop-ord-vw**: make job order not mandatory.
+
+<a name="2.31.2"></a>
 
 # [2.31.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/226) (2022-07-20)
 
