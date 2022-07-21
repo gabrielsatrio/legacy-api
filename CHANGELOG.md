@@ -1,3 +1,11 @@
+<a name="2.33.0"></a>
+
+# [2.33.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/230) (2022-07-21)
+
+### Features
+
+- [**G001**] **bon-makan**: add form list pegawai KHL
+
 <a name="2.32.0"></a>
 
 # [2.32.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/228) (2022-07-20)
