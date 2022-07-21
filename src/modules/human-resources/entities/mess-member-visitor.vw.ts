@@ -16,9 +16,13 @@ export class MessMemberVisitorView extends BaseEntity {
   @Column({ name: 'ID_FORM' })
   idForm!: number;
 
-  @Field({ nullable: true })
+  @Field()
+  @Column({ name: 'NRP' })
+  nrp!: string;
+
+  @Field()
   @Column({ name: 'NAMA' })
-  nama?: string;
+  nama!: string;
 
   @Field()
   @Column({ name: 'LAMA_MENGINAP' })
