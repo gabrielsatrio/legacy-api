@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -94,6 +95,18 @@ export class ReturRotiResolver {
       if (!data) throw new Error('No data found.');
       await ReturRoti.delete({ id });
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Int)
+  @UseMiddleware(isAuth)
+  async getIdReturRoti(): Promise<number> {
+    try {
+      const sql = `SELECT ANG_RETUR_ROTI_SEQ.NEXTVAL AS "newId" FROM DUAL`;
+      const result = await ifs.query(sql);
+      return result[0].newId;
     } catch (err) {
       throw new Error(mapError(err));
     }

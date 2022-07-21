@@ -25,8 +25,8 @@ export class BonMakanWeekdaysDetailView extends BaseEntity {
   grade!: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'PG_NASI' })
-  pgNasi?: number;
+  @Column({ name: 'SG_ROTI_12' })
+  sgRoti12?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'PG_ROTI_BESAR' })

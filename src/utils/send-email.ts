@@ -4,9 +4,9 @@ import nodemailer from 'nodemailer';
 import { mapError } from './map-error';
 
 export const sendEmail = async (
-  to: string,
-  cc: string[] = [],
-  bcc: string[] = [],
+  to: string[] | string,
+  cc: string[] | undefined = [],
+  bcc: string[] | undefined = [],
   subject: string,
   content: string
 ): Promise<void> => {
