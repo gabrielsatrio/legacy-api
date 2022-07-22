@@ -81,14 +81,18 @@ export class MessMemberResolver {
   }
   @Query(() => [EmployeeMaterializedView])
   // @UseMiddleware(isAuth)
-  async getEmployeeMVByNRP(
-    @Arg('employeeId', () => [String]) employeeId: string[]
+  async getEmployeeMVByNRPOrName(
+    @Arg('input', () => [String]) input: string[]
   ): Promise<EmployeeMaterializedView[] | undefined> {
     try {
       return await EmployeeMaterializedView.createQueryBuilder('employee')
-        .where('employee.employeeId like :employeeId', {
-          employeeId: `${employeeId}%`
-        })
+        .where(
+          'employee.employeeId like :employeeId or lower(employee.name) like lower(:name)',
+          {
+            employeeId: `${input}%`,
+            name: `%${input}%`
+          }
+        )
         .getMany();
     } catch (err) {
       throw new Error(mapError(err));
