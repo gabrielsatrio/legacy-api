@@ -80,7 +80,7 @@ export class MessMemberResolver {
     }
   }
   @Query(() => [EmployeeMaterializedView])
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async getEmployeeMVByNRPOrName(
     @Arg('input', () => [String]) input: string[]
   ): Promise<EmployeeMaterializedView[] | undefined> {
