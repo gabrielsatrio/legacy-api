@@ -8,7 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { In, LessThanOrEqual, MoreThan } from 'typeorm';
+import { LessThanOrEqual, MoreThan } from 'typeorm';
 import { EmployeeMaterializedView } from './entities/employee.mv';
 import { MessMember } from './entities/mess-member';
 import { MessMemberView } from './entities/mess-member.vw';
@@ -80,19 +80,21 @@ export class MessMemberResolver {
     }
   }
   @Query(() => [EmployeeMaterializedView])
-  @UseMiddleware(isAuth)
+  // @UseMiddleware(isAuth)
   async getEmployeeMVByNRP(
     @Arg('employeeId', () => [String]) employeeId: string[]
   ): Promise<EmployeeMaterializedView[] | undefined> {
     try {
-      return await EmployeeMaterializedView.find({
-        where: { employeeId: In(employeeId) },
-        order: { employeeId: 'ASC' }
-      });
+      return await EmployeeMaterializedView.createQueryBuilder('employee')
+        .where('employee.employeeId like :employeeId', {
+          employeeId: `${employeeId}%`
+        })
+        .getMany();
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => MessMember)
   @UseMiddleware(isAuth)
   async createMessMember(
