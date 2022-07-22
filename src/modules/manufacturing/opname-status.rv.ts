@@ -3,7 +3,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { OpnameStatus } from './entities/opname-status';
 import { OpnameStatusInput } from './opname-status.in';
 
@@ -98,6 +98,42 @@ export class OpnameStatusResolver {
         where: {
           contract: In(contract),
           username: username
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [OpnameStatus])
+  @UseMiddleware(isAuth)
+  async getOpnameByContract(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<OpnameStatus[] | undefined> {
+    try {
+      return await OpnameStatus.find({
+        where: {
+          contract: In(contract),
+          objId: Like('%')
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [OpnameStatus])
+  @UseMiddleware(isAuth)
+  async getOpnameByContractDept(
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('dept') dept: string
+  ): Promise<OpnameStatus[] | undefined> {
+    try {
+      return await OpnameStatus.find({
+        where: {
+          contract: In(contract),
+          dept: Like(dept),
+          objId: Like('%')
         }
       });
     } catch (err) {

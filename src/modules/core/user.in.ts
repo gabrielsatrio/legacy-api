@@ -23,6 +23,10 @@ export class UserInput implements Partial<User> {
   @Length(3)
   departmentId!: string;
 
+  @Field({ nullable: true })
+  @Length(3)
+  departmentAlt!: string;
+
   @Field()
   usernameDb!: 'AT' | 'AG';
 
