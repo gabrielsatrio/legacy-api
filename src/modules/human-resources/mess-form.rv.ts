@@ -40,6 +40,10 @@ export class MessFormResolver {
     @Arg('input') input: MessFormInput
   ): Promise<MessForm | undefined> {
     try {
+      const exist = await MessForm.findOneBy({
+        tanggalTagihan: input.tanggalTagihan
+      });
+      if (exist) throw Error('Data already exist for this month');
       const data = MessForm.create({ ...input });
       const result = await MessForm.save(data);
       return result;
