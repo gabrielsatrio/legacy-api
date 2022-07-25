@@ -9,7 +9,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { LessThanOrEqual, MoreThan } from 'typeorm';
-import { EmployeeMaterializedView } from './entities/employee.mv';
 import { MessMember } from './entities/mess-member';
 import { MessMemberView } from './entities/mess-member.vw';
 import { MessMemberInput } from './mess-member.in';
@@ -78,26 +77,6 @@ export class MessMemberResolver {
     try {
       const data = await MessMemberView.findOneBy({ mess, isKetua: true });
       return data?.nrp;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => [EmployeeMaterializedView])
-  @UseMiddleware(isAuth)
-  async getEmployeeMVByNRPOrName(
-    @Arg('input', () => [String]) input: string[]
-  ): Promise<EmployeeMaterializedView[] | undefined> {
-    try {
-      return await EmployeeMaterializedView.createQueryBuilder('employee')
-        .where(
-          'employee.employeeId like :employeeId or lower(employee.name) like lower(:name)',
-          {
-            employeeId: `${input}%`,
-            name: `%${input}%`
-          }
-        )
-        .getMany();
     } catch (err) {
       throw new Error(mapError(err));
     }
