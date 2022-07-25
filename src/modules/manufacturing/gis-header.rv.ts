@@ -60,7 +60,7 @@ export class GisHeaderResolver {
   async getNewRollNo(@Arg('orderNo') orderNo: string): Promise<number> {
     try {
       const sql =
-        'SELECT nvl(max(roll)+1,1) as "rollNo" from GBR_GIS_HEADER where order_no = :orderNo';
+        'SELECT nvl(max(roll_no)+1,1) as "rollNo" from GBR_GIS_HEADER where order_no = :orderNo';
       const result = await ifs.query(sql, [orderNo]);
       return result[0].rollNo;
     } catch (err) {
