@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, MaxLength } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { MessMember } from './entities/mess-member';
 
@@ -29,6 +29,6 @@ export class MessMemberInput implements Partial<MessMember> {
   validTo!: Date;
 
   @Field()
-  @IsNumber()
+  @IsBoolean()
   isKetua!: boolean;
 }
