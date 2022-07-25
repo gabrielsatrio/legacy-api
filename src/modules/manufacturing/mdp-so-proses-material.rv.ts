@@ -38,9 +38,18 @@ export class SoObatProsesResolver {
         input.structureLineNo
       ]);
 
-      const currentQuery = `SELECT MAX(line_item_no) as "max"
+      let currentQuery;
+
+      if (input.contract === 'AGT') {
+        currentQuery = `SELECT MAX(line_item_no) as "max"
+      FROM   shop_material_alloc@ifs8agt
+      WHERE  order_no = :orderNo`;
+      } else {
+        currentQuery = `SELECT MAX(line_item_no) as "max"
       FROM   shop_material_alloc
       WHERE  order_no = :orderNo`;
+      }
+
       const maxLine = await ifs.query(currentQuery, [input.orderNo]);
 
       const data = await SoObatProsesMaterial.findOneBy({
