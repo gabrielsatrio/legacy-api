@@ -29,6 +29,6 @@ export class MessCompanyVisitorView extends BaseEntity {
   total!: number;
 
   @Field()
-  @Column({ name: 'INSERT_BY' })
-  insertBy!: string;
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
 }

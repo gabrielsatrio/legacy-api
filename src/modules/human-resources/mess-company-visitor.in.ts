@@ -30,5 +30,5 @@ export class MessCompanyVisitorInput implements Partial<MessCompanyVisitor> {
 
   @Field()
   @MaxLength(5)
-  insertBy!: string;
+  createdBy!: string;
 }

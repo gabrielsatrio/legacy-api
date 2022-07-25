@@ -37,6 +37,6 @@ export class MessMemberView extends BaseEntity {
   isKetua!: boolean;
 
   @Field()
-  @Column({ name: 'INSERT_BY' })
-  insertBy!: string;
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
 }

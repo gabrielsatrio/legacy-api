@@ -18,7 +18,7 @@ export class MessMemberInput implements Partial<MessMember> {
 
   @Field()
   @MaxLength(5)
-  insertBy!: string;
+  createdBy!: string;
 
   @Field()
   @IsDate()
