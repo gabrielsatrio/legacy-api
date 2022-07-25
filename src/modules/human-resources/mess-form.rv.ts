@@ -73,7 +73,7 @@ export class MessFormResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async deleteBill(
+  async deleteMessBill(
     @Arg('id', () => Int) id: number
   ): Promise<boolean | undefined> {
     try {
