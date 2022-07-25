@@ -1,3 +1,11 @@
+<a name="2.34.0"></a>
+
+# [2.34.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-25)
+
+### Features
+
+- [**M019**] **gis**: add view for operator
+
 <a name="2.33.0"></a>
 
 # [2.33.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/230) (2022-07-21)
