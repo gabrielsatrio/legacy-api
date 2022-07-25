@@ -76,7 +76,7 @@ export class MessMemberResolver {
     @Arg('mess', () => String) mess: string
   ): Promise<string | undefined> {
     try {
-      const data = await MessMemberView.findOneBy({ mess, isKetua: 1 });
+      const data = await MessMemberView.findOneBy({ mess, isKetua: true });
       return data?.nrp;
     } catch (err) {
       throw new Error(mapError(err));
@@ -154,17 +154,20 @@ export class MessMemberResolver {
         validTo: MoreThan(date)
       });
       if (valid) {
-        const before = await MessMember.findOneBy({ isKetua: 1, mess: mess });
+        const before = await MessMember.findOneBy({
+          isKetua: true,
+          mess: mess
+        });
         if (before) {
           await MessMember.createQueryBuilder()
             .update(MessMember)
-            .set({ isKetua: 0 })
+            .set({ isKetua: false })
             .where('IS_KETUA = 1 AND MESS = :mess', { mess: mess })
             .execute();
         }
         await MessMember.createQueryBuilder()
           .update(MessMember)
-          .set({ isKetua: 1 })
+          .set({ isKetua: true })
           .where('MESS = :mess AND NRP = :nrp AND VALID_TO > :date', {
             mess: mess,
             nrp: nrp,

@@ -34,7 +34,7 @@ export class MessMemberView extends BaseEntity {
 
   @Field()
   @Column({ name: 'IS_KETUA' })
-  isKetua!: number;
+  isKetua!: boolean;
 
   @Field()
   @Column({ name: 'INSERT_BY' })

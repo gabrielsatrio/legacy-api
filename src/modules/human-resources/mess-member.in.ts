@@ -30,5 +30,5 @@ export class MessMemberInput implements Partial<MessMember> {
 
   @Field()
   @IsNumber()
-  isKetua!: number;
+  isKetua!: boolean;
 }
