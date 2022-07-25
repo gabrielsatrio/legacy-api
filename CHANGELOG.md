@@ -4,7 +4,12 @@
 
 ### Features
 
-- [**M019**] **gis**: add view for operator
+- [**M019**] **gis**: add view for operator.
+- [**M019**] **gis**: add new entity: gis emp.
+
+### Bug Fixes
+
+- [**M019**] **gis**: rename column roll to rollNo.
 
 <a name="2.33.0"></a>
 
