@@ -17,6 +17,7 @@ export class MessCostFRResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => MessCostFixRateView)
   @UseMiddleware(isAuth)
   async getMessCost(
@@ -28,6 +29,7 @@ export class MessCostFRResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => MessCostFixRate)
   @UseMiddleware(isAuth)
   async getMessCostByTime(
@@ -47,15 +49,15 @@ export class MessCostFRResolver {
     }
   }
 
-  @Mutation(() => String)
+  @Mutation(() => MessCostFixRate)
   @UseMiddleware(isAuth)
   async createMessCost(
     @Arg('input') input: MessCostInput
-  ): Promise<string | undefined> {
+  ): Promise<MessCostFixRate | null> {
     try {
       const data = MessCostFixRate.create({ ...input });
       await MessCostFixRate.save(data);
-      return `New cost for ${input.mess} has been added by ${input.createdBy}`;
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }

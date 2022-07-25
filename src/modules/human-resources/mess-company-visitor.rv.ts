@@ -25,6 +25,7 @@ export class MessCompanyVisitorResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => MessCompanyVisitor)
   @UseMiddleware(isAuth)
   async createMessCompanyVisitor(
@@ -33,6 +34,23 @@ export class MessCompanyVisitorResolver {
     try {
       const data = MessCompanyVisitor.create({ ...input });
       const result = MessCompanyVisitor.save(data);
+      return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => MessCompanyVisitor)
+  @UseMiddleware(isAuth)
+  async updateMessCompanyVisitor(
+    @Arg('id', () => Int) id: number,
+    @Arg('input') input: MessCompanyVisitorInput
+  ): Promise<MessCompanyVisitor | undefined> {
+    try {
+      const data = await MessCompanyVisitor.findOneBy({ id });
+      if (!data) throw new Error('Data not exist');
+      MessCompanyVisitor.merge(data, { ...input });
+      const result = await MessCompanyVisitor.save(data);
       return result;
     } catch (err) {
       throw new Error(mapError(err));
@@ -49,22 +67,6 @@ export class MessCompanyVisitorResolver {
       if (!data) throw new Error('Data not exist');
       MessCompanyVisitor.delete(id);
       return true;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-  @Mutation(() => MessCompanyVisitor)
-  @UseMiddleware(isAuth)
-  async updateMessCompanyVisitor(
-    @Arg('id', () => Int) id: number,
-    @Arg('input') input: MessCompanyVisitorInput
-  ): Promise<MessCompanyVisitor | undefined> {
-    try {
-      const data = await MessCompanyVisitor.findOneBy({ id });
-      if (!data) throw new Error('Data not exist');
-      MessCompanyVisitor.merge(data, { ...input });
-      const result = await MessCompanyVisitor.save(data);
-      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }

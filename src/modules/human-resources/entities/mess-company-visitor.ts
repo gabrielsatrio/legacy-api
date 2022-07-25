@@ -16,9 +16,9 @@ export class MessCompanyVisitor extends BaseEntity {
   @Column({ name: 'ID_FORM' })
   idForm!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'NAMA' })
-  nama?: string;
+  nama!: string;
 
   @Field()
   @Column({ name: 'LAMA_MENGINAP' })

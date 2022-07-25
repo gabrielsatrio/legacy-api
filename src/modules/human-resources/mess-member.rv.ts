@@ -32,6 +32,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => [MessMemberView])
   @UseMiddleware(isAuth)
   async getMessMembers(
@@ -51,6 +52,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => [MessMemberView])
   @UseMiddleware(isAuth)
   async getMessMembersByTime(
@@ -67,6 +69,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => String)
   @UseMiddleware(isAuth)
   async getMessHead(
@@ -79,6 +82,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => [EmployeeMaterializedView])
   @UseMiddleware(isAuth)
   async getEmployeeMVByNRPOrName(
@@ -119,6 +123,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteMessMember(
@@ -134,6 +139,7 @@ export class MessMemberResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async changeKetua(

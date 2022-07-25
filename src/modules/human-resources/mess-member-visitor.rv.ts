@@ -25,6 +25,7 @@ export class MessMemberVisitorResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => MessMemberVisitor)
   @UseMiddleware(isAuth)
   async createMessMemberVisitor(
@@ -34,21 +35,6 @@ export class MessMemberVisitorResolver {
       const data = MessMemberVisitor.create({ ...input });
       const result = MessMemberVisitor.save(data);
       return result;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
-  async deleteMessMemberVisitor(
-    @Arg('id', () => Int) id: number
-  ): Promise<boolean | null> {
-    try {
-      const data = await MessMemberVisitor.findOneBy({ id });
-      if (!data) throw new Error('Data not exist');
-      MessMemberVisitor.delete(id);
-      return true;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -66,6 +52,21 @@ export class MessMemberVisitorResolver {
       MessMemberVisitor.merge(data, { ...input });
       const result = await MessMemberVisitor.save(data);
       return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteMessMemberVisitor(
+    @Arg('id', () => Int) id: number
+  ): Promise<boolean | null> {
+    try {
+      const data = await MessMemberVisitor.findOneBy({ id });
+      if (!data) throw new Error('Data not exist');
+      MessMemberVisitor.delete(id);
+      return true;
     } catch (err) {
       throw new Error(mapError(err));
     }

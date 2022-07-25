@@ -43,6 +43,7 @@ export class MessFormInput implements Partial<MessForm> {
   @Field()
   @MaxLength(5)
   createdBy!: string;
+
   @Field()
   @IsDate()
   tanggalDibuat!: Date;

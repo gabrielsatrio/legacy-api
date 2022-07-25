@@ -23,6 +23,7 @@ export class MessFormResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Query(() => MessFormView)
   @UseMiddleware(isAuth)
   async getMessForm(
@@ -34,6 +35,7 @@ export class MessFormResolver {
       throw new Error(mapError(err));
     }
   }
+
   @Mutation(() => MessForm)
   @UseMiddleware(isAuth)
   async createMessBill(
@@ -71,7 +73,7 @@ export class MessFormResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async removeBill(
+  async deleteBill(
     @Arg('id', () => Int) id: number
   ): Promise<boolean | undefined> {
     try {

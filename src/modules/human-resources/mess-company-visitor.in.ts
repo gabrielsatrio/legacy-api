@@ -16,9 +16,9 @@ export class MessCompanyVisitorInput implements Partial<MessCompanyVisitor> {
   @IsNumber()
   idForm!: number;
 
-  @Field({ nullable: true })
-  @MaxLength(10)
-  nama?: string;
+  @Field()
+  @MaxLength(100)
+  nama!: string;
 
   @Field()
   @IsNumber()

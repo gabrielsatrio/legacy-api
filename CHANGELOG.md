@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**H001**] **tagihan-mess**: create tagihan mess feature.
+- [**H001**] **tagihan-mess**: add feature tagihan mess.
 
 <a name="2.33.0"></a>
 
