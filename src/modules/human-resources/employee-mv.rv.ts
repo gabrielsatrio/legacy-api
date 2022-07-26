@@ -29,15 +29,15 @@ export class EmployeeMaterializedViewResolver {
   @Query(() => [EmployeeMaterializedView])
   @UseMiddleware(isAuth)
   async getEmployeeMvByEmpIdOrName(
-    @Arg('input', () => [String]) input: string[]
+    @Arg('employeeIdOrName', () => String) employeeIdOrName: string
   ): Promise<EmployeeMaterializedView[] | undefined> {
     try {
       return await EmployeeMaterializedView.createQueryBuilder('employee')
         .where(
           'employee.employeeId like :employeeId or lower(employee.name) like lower(:name)',
           {
-            employeeId: `${input}%`,
-            name: `%${input}%`
+            employeeId: `${employeeIdOrName}%`,
+            name: `%${employeeIdOrName}%`
           }
         )
         .getMany();
