@@ -1,3 +1,17 @@
+<a name="2.35.0"></a>
+
+# [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/233) (2022-07-26)
+
+### Features
+
+- [**M019**] **gis**: add view for operator.
+- [**M019**] **gis**: add new entity: gis emp.
+- [**M019**] **gis**: add column for gis meter.
+
+### Bug Fixes
+
+- [**M019**] **gis**: rename column roll to rollNo.
+
 <a name="2.34.0"></a>
 
 # [2.34.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-21)
