@@ -4,7 +4,12 @@
 
 ### Features
 
-- [**H001**] **tagihan-mess**: add feature tagihan mess.
+- [**M019**] **gis**: add view for operator.
+- [**M019**] **gis**: add new entity: gis emp.
+
+### Bug Fixes
+
+- [**M019**] **gis**: rename column roll to rollNo.
 
 <a name="2.34.0"></a>
 
