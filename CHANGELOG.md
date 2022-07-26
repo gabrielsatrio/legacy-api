@@ -1,15 +1,18 @@
-<a name="2.34.0"></a>
+<a name="2.35.0"></a>
 
-# [2.34.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-25)
+# [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/225) (2022-07-21)
 
 ### Features
 
-- [**M019**] **gis**: add view for operator.
-- [**M019**] **gis**: add new entity: gis emp.
+- [**H001**] **tagihan-mess**: add feature tagihan mess.
 
-### Bug Fixes
+<a name="2.34.0"></a>
 
-- [**M019**] **gis**: rename column roll to rollNo.
+# [2.34.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-21)
+
+### Features
+
+- [**H001**] **tagihan-mess**: add feature tagihan mess.
 
 <a name="2.33.0"></a>
 
