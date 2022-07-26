@@ -1,11 +1,12 @@
 <a name="2.35.0"></a>
 
-# [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/225) (2022-07-21)
+# [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/225) (2022-07-26)
 
 ### Features
 
 - [**M019**] **gis**: add view for operator.
 - [**M019**] **gis**: add new entity: gis emp.
+- [**M019**] **gis**: add column for gis meter.
 
 ### Bug Fixes
 
