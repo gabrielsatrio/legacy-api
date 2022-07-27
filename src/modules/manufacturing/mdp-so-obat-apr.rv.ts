@@ -1,8 +1,8 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
-import { ifs } from './../../database/data-sources';
-import { mapError } from './../../utils/map-error';
 import { SoObatApr } from './entities/mdp-so-obat-apr';
 
 @Resolver(SoObatApr)

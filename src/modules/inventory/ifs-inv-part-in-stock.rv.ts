@@ -12,8 +12,8 @@ export class IfsInventoryPartInStockResolver {
     @Arg('partNo') partNo: string
   ): Promise<IfsInventoryPartInStockView[] | undefined> {
     return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
-      .where('IPIS.CONTRACT = :contract', { contract: contract })
-      .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
+      .where('IPIS.CONTRACT = :contract', { contract })
+      .andWhere('IPIS.PART_NO = :partNo', { partNo })
       .andWhere(`IPIS.LOCATION_NO like 'DYG%'`)
       .andWhere('IPIS.QTY_ONHAND > 0')
       .andWhere('IPIS.QTY_ONHAND != IPIS.QTY_RESERVED')
@@ -30,8 +30,8 @@ export class IfsInventoryPartInStockResolver {
     let sql = '';
     if (contract !== 'AGT') {
       return await IfsInventoryPartInStockView.createQueryBuilder('IPIS')
-        .where('IPIS.CONTRACT = :contract', { contract: contract })
-        .andWhere('IPIS.PART_NO = :partNo', { partNo: partNo })
+        .where('IPIS.CONTRACT = :contract', { contract })
+        .andWhere('IPIS.PART_NO = :partNo', { partNo })
         .andWhere(`IPIS.LOCATION_NO like :locationNo||'%'`, {
           locationNo: locationNo
         })

@@ -35,9 +35,9 @@ export class IfsProdStructureResolver {
       return await ifs.query(sql, [bomType, partNo, contract, alternativeNo]);
     } else {
       return await IfsProdStructureView.createQueryBuilder('PS')
-        .where('PS.CONTRACT = :contract', { contract: contract })
-        .andWhere('PS.PART_NO = :partNo', { partNo: partNo })
-        .andWhere('PS.BOM_TYPE_DB = :bomType', { bomType: bomType })
+        .where('PS.CONTRACT = :contract', { contract })
+        .andWhere('PS.PART_NO = :partNo', { partNo })
+        .andWhere('PS.BOM_TYPE_DB = :bomType', { bomType })
         .andWhere('PS.ALTERNATIVE_NO = :alternativeNo', {
           alternativeNo: alternativeNo
         })

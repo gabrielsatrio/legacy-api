@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**M017**] **mdp**: add AGT requirment when see SO detail.
+- [**M017**] **mdp**: add AGT requirement when see SO detail.
 - [**M017**] **mdp**: add approval feature.
 
 ### Bug Fixes

@@ -26,9 +26,9 @@ export class IfsManufStructAlternateResolver {
       return await ifs.query(sql, [bomType, partNo, contract]);
     } else {
       return await IfsManufStructAlternateView.createQueryBuilder('MSA')
-        .where('MSA.CONTRACT = :contract', { contract: contract })
-        .andWhere('MSA.PART_NO = :partNo', { partNo: partNo })
-        .andWhere('MSA.BOM_TYPE_DB = :bomType', { bomType: bomType })
+        .where('MSA.CONTRACT = :contract', { contract })
+        .andWhere('MSA.PART_NO = :partNo', { partNo })
+        .andWhere('MSA.BOM_TYPE_DB = :bomType', { bomType })
         .andWhere(
           'MSA.ENG_CHG_LEVEL = part_revision_api.get_latest_revision(contract, part_no)'
         )

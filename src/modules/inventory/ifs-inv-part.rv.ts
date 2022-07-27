@@ -97,7 +97,7 @@ export class IfsInventoryPartResolver {
         return await ifs.query(sql, [partNo, contract]);
       } else {
         return await IfsInventoryPartView.createQueryBuilder('IP')
-          .where('IP.CONTRACT = :contract', { contract: contract })
+          .where('IP.CONTRACT = :contract', { contract })
           .andWhere('IP.PART_NO like :partNo', { partNo: partNo + '%' })
           .andWhere(`IP.PART_STATUS = 'A'`)
           .getMany();
