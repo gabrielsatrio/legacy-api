@@ -81,8 +81,8 @@ export class GisHeaderView extends BaseEntity {
   seriBeam?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'ROLL' })
-  roll?: number;
+  @Column({ name: 'ROLL_NO' })
+  rollNo?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'INSPECT_TYPE' })

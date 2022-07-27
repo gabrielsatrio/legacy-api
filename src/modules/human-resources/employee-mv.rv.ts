@@ -28,6 +28,26 @@ export class EmployeeMaterializedViewResolver {
 
   @Query(() => [EmployeeMaterializedView])
   @UseMiddleware(isAuth)
+  async getEmployeeMvByEmpIdOrName(
+    @Arg('employeeIdOrName', () => String) employeeIdOrName: string
+  ): Promise<EmployeeMaterializedView[] | undefined> {
+    try {
+      return await EmployeeMaterializedView.createQueryBuilder('employee')
+        .where(
+          'employee.employeeId like :employeeId or lower(employee.name) like lower(:name)',
+          {
+            employeeId: `${employeeIdOrName}%`,
+            name: `%${employeeIdOrName}%`
+          }
+        )
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [EmployeeMaterializedView])
+  @UseMiddleware(isAuth)
   async getUnregisteredUsers(): Promise<EmployeeMaterializedView[]> {
     try {
       const employees = await EmployeeMaterializedView.find({
