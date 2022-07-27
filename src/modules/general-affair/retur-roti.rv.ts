@@ -111,4 +111,16 @@ export class ReturRotiResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [ReturRotiView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getReturRotiByUser(
+    @Arg('createdBy') createdBy: string
+  ): Promise<ReturRotiView[] | undefined> {
+    try {
+      return await ReturRotiView.findBy({ createdBy });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
