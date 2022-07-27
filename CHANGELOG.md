@@ -1,3 +1,11 @@
+<a name="2.35.1"></a>
+
+# [2.35.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-27)
+
+### Features
+
+- [**G001**] **bon-makan**: perubahan nama department.
+
 <a name="2.35.0"></a>
 
 # [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/233) (2022-07-26)
