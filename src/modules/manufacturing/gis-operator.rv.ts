@@ -3,30 +3,31 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { GisOperator } from './entities/gis-operator';
+import { GisOperatorView } from './entities/gis-operator.vw';
 import { GisOperatorInput } from './gis-operator.in';
 
 @Resolver(GisOperator)
 export class GisOperatorResolver {
-  @Query(() => GisOperator, { nullable: true })
+  @Query(() => GisOperatorView, { nullable: true })
   @UseMiddleware(isAuth)
   async getGisOperator(
     @Arg('inspectId') inspectId: number,
     @Arg('lineNo') lineNo: number
-  ): Promise<GisOperator | null> {
+  ): Promise<GisOperatorView | null> {
     try {
-      return await GisOperator.findOneBy({ inspectId, lineNo });
+      return await GisOperatorView.findOneBy({ inspectId, lineNo });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [GisOperator], { nullable: true })
+  @Query(() => [GisOperatorView], { nullable: true })
   @UseMiddleware(isAuth)
   async getGisOperatorByInspectId(
     @Arg('inspectId') inspectId: number
-  ): Promise<GisOperator[] | undefined> {
+  ): Promise<GisOperatorView[] | undefined> {
     try {
-      return await GisOperator.findBy({
+      return await GisOperatorView.findBy({
         inspectId
       });
     } catch (err) {
