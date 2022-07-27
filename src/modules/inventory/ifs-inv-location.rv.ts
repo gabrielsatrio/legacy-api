@@ -12,7 +12,6 @@ export class IfsInventoryLocationResolver {
     @Arg('contract', () => [String]) contract: string[],
     @Arg('warehouseId') warehouseId: string
   ): Promise<IfsInvLocationView[] | undefined> {
-    console.log(contract[0]);
     let sql = '';
     if (contract[0] === 'AGT') {
       sql = `

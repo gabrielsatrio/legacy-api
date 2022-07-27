@@ -1,3 +1,16 @@
+<a name="2.36.0"></a>
+
+# [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
+
+### Features
+
+- [**M017**] **mdp**: add AGT requirment when see SO detail.
+- [**M017**] **mdp**: add approval feature.
+
+### Bug Fixes
+
+- [**M017**] **mdp**: fix reserve for AT1 if there is same lot and part in diferent location (AT1 and AT1E).
+
 <a name="2.35.0"></a>
 
 # [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/233) (2022-07-26)
