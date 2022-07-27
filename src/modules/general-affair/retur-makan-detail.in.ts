@@ -37,4 +37,19 @@ export class ReturMakanDetailInput implements Partial<ReturMakanDetail> {
   @Field(() => Int)
   @IsNumber()
   returMakanId!: number;
+
+  @Field()
+  @IsNumber()
+  budgetSr!: number;
+
+  @Field()
+  @IsNumber()
+  permintaanSr!: number;
+
+  @Field()
+  @IsNumber()
+  realisasiSr!: number;
+
+  @Field({ nullable: true })
+  deptName?: string;
 }
