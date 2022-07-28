@@ -113,4 +113,16 @@ export class BonMakanWeekdaysResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [BonMakanWeekdaysView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getBonMakanWeekdaysByUser(
+    @Arg('createdBy') createdBy: string
+  ): Promise<BonMakanWeekdaysView[] | undefined> {
+    try {
+      return await BonMakanWeekdaysView.findBy({ createdBy });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }

@@ -1,3 +1,11 @@
+<a name="2.37.0"></a>
+
+# [2.37.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-28)
+
+### Features
+
+- [**G001**] **bon-makan**: add dept catering, add column adjustment makan siang dan sore.
+
 <a name="2.36.0"></a>
 
 # [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)

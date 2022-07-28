@@ -47,4 +47,8 @@ export class ReturRotiDetail extends BaseEntity {
   @Field(() => Int)
   @Column({ name: 'RETUR_ROTI_ID' })
   returRotiId!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEPT_NAME' })
+  deptName?: string;
 }
