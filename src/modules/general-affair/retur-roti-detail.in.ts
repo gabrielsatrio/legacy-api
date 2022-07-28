@@ -45,4 +45,7 @@ export class ReturRotiDetailInput implements Partial<ReturRotiDetail> {
   @Field(() => Int)
   @IsNumber()
   returRotiId!: number;
+
+  @Field({ nullable: true })
+  deptName?: string;
 }
