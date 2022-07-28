@@ -29,7 +29,12 @@ export class SoObatProsesResolver {
     @Arg('orderNo') orderNo: string
   ): Promise<string | undefined> {
     try {
-      const sql = `select ATJ_LOT_BATCH_API.generate(:p_order_no) as "lot" from dual `;
+      const sql = `select
+      case when nvl(shop_ord_api.get_contract@ifs8agt(:p_order_no, '*', '*'),'AT')='AGT' then
+      ATJ_LOT_BATCH_API.generate@ifs8agt(:p_order_no)
+      else ATJ_LOT_BATCH_API.generate(:p_order_no)
+      end as "lot" from dual
+      `;
       const generate = await ifs.query(sql, [orderNo]);
 
       return generate[0].lot;

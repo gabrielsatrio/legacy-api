@@ -1,10 +1,23 @@
-<a name="2.35.1"></a>
+<a name="2.37.0"></a>
 
-# [2.35.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-27)
+# [2.37.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-28)
 
 ### Features
 
-- [**G001**] **bon-makan**: perubahan nama department.
+- [**G001**] **bon-makan**: add dept catering, add column adjustment makan siang dan sore.
+
+<a name="2.36.0"></a>
+
+# [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
+
+### Features
+
+- [**M017**] **mdp**: add AGT requirement when see SO detail.
+- [**M017**] **mdp**: add approval feature.
+
+### Bug Fixes
+
+- [**M017**] **mdp**: fix reserve for AT1 if there is same lot and part in diferent location (AT1 and AT1E).
 
 <a name="2.35.0"></a>
 
