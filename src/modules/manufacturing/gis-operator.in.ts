@@ -26,4 +26,7 @@ export class GisOperatorInput implements Partial<GisOperator> {
 
   @Field({ nullable: true })
   defectId?: string;
+
+  @Field({ nullable: true })
+  shift?: string;
 }

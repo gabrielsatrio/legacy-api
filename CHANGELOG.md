@@ -1,3 +1,12 @@
+<a name="2.37.0"></a>
+
+# [2.37.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
+
+### Features
+
+- [**M019**] **gis**: add column lot batch no for gis header.
+- [**M019**] **gis**: add column shift for gis operator.
+
 <a name="2.36.0"></a>
 
 # [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
