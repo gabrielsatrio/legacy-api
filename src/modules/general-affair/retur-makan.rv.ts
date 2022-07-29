@@ -113,4 +113,16 @@ export class ReturMakanResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [ReturMakanView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getReturMakanByUser(
+    @Arg('createdBy') createdBy: string
+  ): Promise<ReturMakanView[] | undefined> {
+    try {
+      return await ReturMakanView.findBy({ createdBy });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
