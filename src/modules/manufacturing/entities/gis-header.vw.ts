@@ -96,6 +96,10 @@ export class GisHeaderView extends BaseEntity {
   @Column({ name: 'LOT_BATCH_NO' })
   lotBatchNo?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
