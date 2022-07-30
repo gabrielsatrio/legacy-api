@@ -43,4 +43,8 @@ export class ExpeditionPaidDate extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PLANT' })
+  plant?: string;
 }
