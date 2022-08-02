@@ -31,4 +31,8 @@ export class GisOperatorView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'DEFECT_ID' })
   defectId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SHIFT' })
+  shift?: string;
 }
