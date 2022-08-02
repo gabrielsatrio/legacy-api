@@ -5,15 +5,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryColumn
 } from 'typeorm';
-import { SoObatProses } from './mdp-so-obat-proses';
-import { SoObatReserve } from './mdp-so-obat-reserve';
+import { SoObatApr } from './mdp-so-obat-apr';
 
-@Entity('CHR_SO_OBAT_PROSES_MATERIAL')
+@Entity('CHR_SO_OBAT_APR_MATERIAL')
 @ObjectType()
-export class SoObatProsesMaterial extends BaseEntity {
+export class SoObatAprMaterial extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ORDER_NO' })
   orderNo!: string;
@@ -74,13 +72,7 @@ export class SoObatProsesMaterial extends BaseEntity {
   @Column({ name: 'NOTE' })
   note?: string;
 
-  @ManyToOne(() => SoObatProses, (SoObatProses) => SoObatProses.details)
+  @ManyToOne(() => SoObatApr, (SoObatApr) => SoObatApr.details)
   @JoinColumn({ name: 'ORDER_NO', referencedColumnName: 'orderNo' })
-  master!: SoObatProses;
-
-  @Field(() => [SoObatReserve], { nullable: true })
-  @OneToMany(() => SoObatReserve, (SoObatReserve) => SoObatReserve.masterLine, {
-    nullable: true
-  })
-  detailReserve?: SoObatReserve[];
+  master!: SoObatApr;
 }

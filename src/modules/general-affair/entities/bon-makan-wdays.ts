@@ -27,4 +27,8 @@ export class BonMakanWeekdays extends BaseEntity {
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEPT_NAME' })
+  deptName?: string;
 }

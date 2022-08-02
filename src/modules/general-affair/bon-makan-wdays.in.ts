@@ -24,4 +24,7 @@ export class BonMakanWeekdaysInput implements Partial<BonMakanWeekdays> {
 
   @Field()
   createdBy!: string;
+
+  @Field({ nullable: true })
+  deptName?: string;
 }

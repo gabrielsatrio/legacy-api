@@ -39,4 +39,20 @@ export class ReturMakanDetailView extends BaseEntity {
   @Field(() => Int)
   @Column({ name: 'RETUR_MAKAN_ID' })
   returMakanId!: number;
+
+  @Field()
+  @Column({ name: 'BUDGET_SR' })
+  budgetSr!: number;
+
+  @Field()
+  @Column({ name: 'PERMINTAAN_SR' })
+  permintaanSr!: number;
+
+  @Field()
+  @Column({ name: 'REALISASI_SR' })
+  realisasiSr!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEPT_NAME' })
+  deptName?: string;
 }

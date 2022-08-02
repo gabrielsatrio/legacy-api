@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('GBR_GIS_OPERATOR')
+@Entity('GBR_GIS_OPERATOR_V')
 @ObjectType()
-export class GisOperator extends BaseEntity {
+export class GisOperatorView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'INSPECT_ID' })
   inspectId!: number;
@@ -15,6 +15,10 @@ export class GisOperator extends BaseEntity {
   @Field()
   @Column({ name: 'EMPLOYEE_ID' })
   employeeId!: string;
+
+  @Field()
+  @Column({ name: 'EMPLOYEE_NAME' })
+  employeeName!: string;
 
   @Field()
   @Column({ name: 'STARTING_METER' })

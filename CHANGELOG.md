@@ -1,3 +1,55 @@
+<a name="2.38.0"></a>
+
+# [2.38.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/239) (2022-08-01)
+
+### Features
+
+- [**M019**] **gis**: add column notes and lot batch no for gis header.
+- [**M019**] **gis**: add column shift for gis operator.
+
+<a name="2.37.0"></a>
+
+# [2.37.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-28)
+
+### Features
+
+- [**G001**] **bon-makan**: add dept catering, add column adjustment makan siang dan sore.
+
+<a name="2.36.0"></a>
+
+# [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
+
+### Features
+
+- [**M017**] **mdp**: add AGT requirement when see SO detail.
+- [**M017**] **mdp**: add approval feature.
+
+### Bug Fixes
+
+- [**M017**] **mdp**: fix reserve for AT1 if there is same lot and part in diferent location (AT1 and AT1E).
+
+<a name="2.35.0"></a>
+
+# [2.35.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/233) (2022-07-26)
+
+### Features
+
+- [**M019**] **gis**: add view for operator.
+- [**M019**] **gis**: add new entity: gis emp.
+- [**M019**] **gis**: add column for gis meter.
+
+### Bug Fixes
+
+- [**M019**] **gis**: rename column roll to rollNo.
+
+<a name="2.34.0"></a>
+
+# [2.34.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/223) (2022-07-21)
+
+### Features
+
+- [**H001**] **tagihan-mess**: add feature tagihan mess.
+
 <a name="2.33.0"></a>
 
 # [2.33.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/230) (2022-07-21)
