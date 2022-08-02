@@ -1,3 +1,13 @@
+<a name="2.39.0"></a>
+
+# [2.39.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/241) (2022-08-02)
+
+### Features
+
+- [**P001**] **import-expedition**: add feature import expedition.
+- [**P002**] **courier-fee-prepaid**: add feature courier fee prepaid.
+- [**F002**] **expedition-paid-date**: add feature expedition paid date.
+
 <a name="2.38.0"></a>
 
 # [2.38.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/239) (2022-08-01)
