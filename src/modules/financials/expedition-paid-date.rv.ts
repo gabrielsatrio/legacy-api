@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -8,7 +9,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { ifs } from '../../database/data-sources';
 import { ExpeditionPaidDate } from './entities/expedition-paid-date';
 import { ExpeditionPaidDateView } from './entities/expedition-paid-date.vw';
 import { ExpeditionPaidDateInput } from './expedition-paid-date.in';
@@ -46,6 +46,20 @@ export class ExpeditionPaidDateResolver {
   ): Promise<ExpeditionPaidDateView | null> {
     try {
       return await ExpeditionPaidDateView.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getArPersonnel(
+    @Arg('plant') plant: string
+  ): Promise<string | undefined> {
+    try {
+      const sql = `SELECT ANG_AR_PERSONNEL_API.GET_AR_PERSONNEL(:plant) AS "arPersonnel" FROM DUAL`;
+      const result = await ifs.query(sql, [plant]);
+      return result[0].arPersonnel;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -99,20 +113,6 @@ export class ExpeditionPaidDateResolver {
       if (!data) throw new Error('No data found.');
       await ExpeditionPaidDate.delete({ id });
       return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => String, { nullable: true })
-  @UseMiddleware(isAuth)
-  async getArPersonnel(
-    @Arg('plant') plant: string
-  ): Promise<string | undefined> {
-    try {
-      const sql = `SELECT ANG_AR_PERSONNEL_API.GET_AR_PERSONNEL(:plant) AS "arPersonnel" FROM DUAL`;
-      const result = await ifs.query(sql, [plant]);
-      return result[0].arPersonnel;
     } catch (err) {
       throw new Error(mapError(err));
     }
