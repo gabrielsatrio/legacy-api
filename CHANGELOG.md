@@ -1,3 +1,11 @@
+<a name="2.39.1"></a>
+
+# [2.39.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/243) (2022-08-03)
+
+### Features
+
+- [**P002**] **courier-fee-prepaid**: add column Email User.
+
 <a name="2.39.0"></a>
 
 # [2.39.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/241) (2022-08-02)
