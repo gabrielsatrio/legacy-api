@@ -87,4 +87,8 @@ export class CourierFeePrepaid extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EMAIL_USER' })
+  emailUser?: string;
 }
