@@ -1,3 +1,38 @@
+<a name="2.39.1"></a>
+
+# [2.39.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/243) (2022-08-03)
+
+### Features
+
+- [**P002**] **courier-fee-prepaid**: add column Email User.
+
+<a name="2.39.0"></a>
+
+# [2.39.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/241) (2022-08-02)
+
+### Features
+
+- [**P001**] **import-expedition**: add feature import expedition.
+- [**P002**] **courier-fee-prepaid**: add feature courier fee prepaid.
+- [**F002**] **expedition-paid-date**: add feature expedition paid date.
+
+<a name="2.38.0"></a>
+
+# [2.38.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/239) (2022-08-01)
+
+### Features
+
+- [**M019**] **gis**: add column notes and lot batch no for gis header.
+- [**M019**] **gis**: add column shift for gis operator.
+
+<a name="2.37.0"></a>
+
+# [2.37.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/236) (2022-07-28)
+
+### Features
+
+- [**G001**] **bon-makan**: add dept catering, add column adjustment makan siang dan sore.
+
 <a name="2.36.0"></a>
 
 # [2.36.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/232) (2022-07-27)
