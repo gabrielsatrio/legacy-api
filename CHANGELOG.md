@@ -1,3 +1,5 @@
+<a name="2.40.0"></a>
+
 # [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
 
 ### Features
