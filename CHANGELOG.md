@@ -1,3 +1,11 @@
+<a name="2.40.0"></a>
+
+# [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
+
+### Features
+
+- [**M020**] **jenis mesin**: finish feature jenis mesin.
+
 <a name="2.39.2"></a>
 
 # [2.39.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/245) (2022-08-04)
