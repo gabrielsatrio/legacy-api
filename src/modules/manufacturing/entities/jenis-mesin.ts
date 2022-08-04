@@ -16,7 +16,7 @@ export class JenisMesinAt2 extends BaseEntity {
   @Column({ name: 'JENIS' })
   jenis?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'OBJ_ID' })
-  objId!: string;
+  objId?: string;
 }
