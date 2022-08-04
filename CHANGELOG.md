@@ -1,3 +1,11 @@
+<a name="2.39.2"></a>
+
+# [2.39.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/245) (2022-08-04)
+
+### Bug Fixes
+
+- [**M017**] **FDP**: add latest revision for AGT.
+
 <a name="2.39.1"></a>
 
 # [2.39.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/243) (2022-08-03)
