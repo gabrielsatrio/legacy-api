@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -96,6 +97,30 @@ export class BonMakanWeekdaysResolver {
       if (!data) throw new Error('No data found.');
       await BonMakanWeekdays.delete({ id });
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Int)
+  @UseMiddleware(isAuth)
+  async getIdBonMakanWeekdays(): Promise<number> {
+    try {
+      const sql = `SELECT ANG_BON_MAKAN_WDAYS_SEQ.NEXTVAL AS "newId" FROM DUAL`;
+      const result = await ifs.query(sql);
+      return result[0].newId;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [BonMakanWeekdaysView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getBonMakanWeekdaysByUser(
+    @Arg('createdBy') createdBy: string
+  ): Promise<BonMakanWeekdaysView[] | undefined> {
+    try {
+      return await BonMakanWeekdaysView.findBy({ createdBy });
     } catch (err) {
       throw new Error(mapError(err));
     }

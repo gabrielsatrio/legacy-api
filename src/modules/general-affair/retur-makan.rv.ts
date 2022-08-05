@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -96,6 +97,30 @@ export class ReturMakanResolver {
       if (!data) throw new Error('No data found.');
       await ReturMakan.delete({ id });
       return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Int)
+  @UseMiddleware(isAuth)
+  async getIdReturMakan(): Promise<number> {
+    try {
+      const sql = `SELECT ANG_RETUR_MAKAN_SEQ.NEXTVAL AS "newId" FROM DUAL`;
+      const result = await ifs.query(sql);
+      return result[0].newId;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [ReturMakanView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getReturMakanByUser(
+    @Arg('createdBy') createdBy: string
+  ): Promise<ReturMakanView[] | undefined> {
+    try {
+      return await ReturMakanView.findBy({ createdBy });
     } catch (err) {
       throw new Error(mapError(err));
     }

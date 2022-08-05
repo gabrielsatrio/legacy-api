@@ -16,9 +16,9 @@ export class GisHeaderInput implements Partial<GisHeader> {
   @IsDate()
   reportDate!: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @MaxLength(10)
-  orderNo!: string;
+  orderNo?: string;
 
   @Field()
   @MaxLength(50)
@@ -78,8 +78,21 @@ export class GisHeaderInput implements Partial<GisHeader> {
 
   @Field({ nullable: true })
   @MaxLength(30)
+  seriBeam?: string;
+
+  @Field({ nullable: true })
+  rollNo?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(30)
   inspectType?: string;
 
   @Field({ nullable: true })
   totalMeter?: number;
+
+  @Field({ nullable: true })
+  lotBatchNo?: string;
+
+  @Field({ nullable: true })
+  notes?: string;
 }

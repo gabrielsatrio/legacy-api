@@ -62,6 +62,18 @@ export class SoObatProsesMaterial extends BaseEntity {
   @Column({ name: 'OBJ_ID' })
   objId!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_LAST_BATCH' })
+  qtyLastBatch?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_LAST_ASM' })
+  qtyLastAsm?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTE' })
+  note?: string;
+
   @ManyToOne(() => SoObatProses, (SoObatProses) => SoObatProses.details)
   @JoinColumn({ name: 'ORDER_NO', referencedColumnName: 'orderNo' })
   master!: SoObatProses;

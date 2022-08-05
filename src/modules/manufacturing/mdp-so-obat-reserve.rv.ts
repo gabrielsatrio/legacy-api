@@ -26,14 +26,15 @@ export class SoObatReserveResolver {
     });
   }
 
-  @Mutation(() => SoObatReserve)
+  @Mutation(() => [SoObatReserve], { nullable: true })
   @UseMiddleware(isAuth)
   async createReserveMaterial(
     @Arg('contract') contract: string,
     @Arg('orderNo') orderNo: string,
     @Arg('lineNo', () => Int) lineNo: number,
-    @Arg('lotBooking') lotBooking: string
-  ): Promise<SoObatReserve | null> {
+    @Arg('lotBooking') lotBooking: string,
+    @Arg('location') location: string
+  ): Promise<SoObatReserve[] | null> {
     try {
       const sql = `
     BEGIN
@@ -41,13 +42,14 @@ export class SoObatReserveResolver {
       :contract,
       :orderNo,
       :lineNo,
-      :lotBooking);
+      :lotBooking,
+      :location);
     END;
   `;
 
-      await ifs.query(sql, [contract, orderNo, lineNo, lotBooking]);
+      await ifs.query(sql, [contract, orderNo, lineNo, lotBooking, location]);
 
-      const data = await SoObatReserve.findOneBy({
+      const data = await SoObatReserve.findBy({
         orderNo: orderNo,
         lineNo: lineNo,
         lotBooking: lotBooking

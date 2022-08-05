@@ -16,9 +16,9 @@ export class GisHeaderView extends BaseEntity {
   @Column({ name: 'REPORT_DATE' })
   reportDate!: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'ORDER_NO' })
-  orderNo!: string;
+  orderNo?: string;
 
   @Field()
   @Column({ name: 'PART_NO' })
@@ -77,12 +77,28 @@ export class GisHeaderView extends BaseEntity {
   defectName4?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'SERI_BEAM' })
+  seriBeam?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ROLL_NO' })
+  rollNo?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'INSPECT_TYPE' })
   inspectType?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'TOTAL_METER' })
   totalMeter?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_BATCH_NO' })
+  lotBatchNo?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
 
   @Field()
   @Column({ name: 'CREATED_BY' })

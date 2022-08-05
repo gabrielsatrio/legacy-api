@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 import { Field, InputType, Int } from 'type-graphql';
 import { ImportExpedition } from './entities/import-expedition';
 
@@ -15,12 +15,14 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
   poNumber?: string;
 
   @Field({ nullable: true })
+  @IsDate()
   circulationDate?: Date;
 
   @Field({ nullable: true })
   expeditionName?: string;
 
   @Field({ nullable: true })
+  @IsNumber()
   deliveryNominal?: number;
 
   @Field({ nullable: true })
@@ -33,6 +35,7 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
   currency?: string;
 
   @Field({ nullable: true })
+  @IsNumber()
   totalInvoice?: number;
 
   @Field({ nullable: true })
@@ -42,5 +45,6 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
   notes?: string;
 
   @Field({ nullable: true })
+  @IsDate()
   financeReceiptDate?: Date;
 }
