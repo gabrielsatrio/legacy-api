@@ -19,4 +19,13 @@ export class PaidDateInput implements Partial<PaidDate> {
   @Field()
   @IsDate()
   paidDate!: Date;
+
+  @Field()
+  expeditionName!: string;
+
+  @Field()
+  plant!: string;
+
+  @Field()
+  paidBy!: string;
 }

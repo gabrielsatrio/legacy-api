@@ -19,4 +19,16 @@ export class PaidDateView extends BaseEntity {
   @Field()
   @Column({ name: 'PAID_DATE' })
   paidDate!: Date;
+
+  @Field()
+  @Column({ name: 'EXPEDITION_NAME' })
+  expeditionName!: string;
+
+  @Field()
+  @Column({ name: 'PLANT' })
+  plant!: string;
+
+  @Field()
+  @Column({ name: 'PAID_BY' })
+  paidBy!: string;
 }
