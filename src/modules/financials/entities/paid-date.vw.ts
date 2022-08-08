@@ -31,4 +31,8 @@ export class PaidDateView extends BaseEntity {
   @Field()
   @Column({ name: 'PAID_BY' })
   paidBy!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'TYPE' })
+  type?: string;
 }

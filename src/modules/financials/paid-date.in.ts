@@ -28,4 +28,7 @@ export class PaidDateInput implements Partial<PaidDate> {
 
   @Field()
   paidBy!: string;
+
+  @Field({ nullable: true })
+  type?: string;
 }
