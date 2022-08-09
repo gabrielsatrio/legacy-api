@@ -22,6 +22,7 @@ export class IfsManufStructAlternateResolver {
         where bom_type_db = :bomType
         and   part_no = :partNo
         and   contract = :contract
+        and   eng_chg_level = part_revision_api.get_latest_revision@ifs8agt(contract, part_no)
       `;
       return await ifs.query(sql, [bomType, partNo, contract]);
     } else {
