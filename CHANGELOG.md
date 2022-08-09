@@ -1,3 +1,11 @@
+<a name="2.41.0"></a>
+
+# [2.41.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/249) (2022-08-09)
+
+### Features
+
+- [**M020**] **buku-import**: add form update paid date.
+
 <a name="2.40.0"></a>
 
 # [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
