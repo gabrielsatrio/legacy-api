@@ -51,4 +51,8 @@ export class ExpeditionPaidDateView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PLANT' })
   plant?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PAID_BY' })
+  paidBy?: string;
 }
