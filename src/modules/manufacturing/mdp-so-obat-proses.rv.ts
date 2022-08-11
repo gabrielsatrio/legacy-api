@@ -1,3 +1,4 @@
+import config from '@/config/main';
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
@@ -5,6 +6,7 @@ import dayjs from 'dayjs';
 import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { In } from 'typeorm';
+import { sendEmail } from '../../utils/send-email';
 import { SoObatProses } from './entities/mdp-so-obat-proses';
 import { SoObatProsesInput } from './mdp-so-obat-proses.in';
 import { SoObatProsesReceiveInput } from './mdp-so-obat-receive.in';
@@ -119,6 +121,17 @@ export class SoObatProsesResolver {
       const data = await SoObatProses.findOneBy({
         orderNo: outOrderNo
       });
+
+      await sendEmail(
+        `Deni Ramdani <deniramdani@agtex.co.id>` || '',
+        [],
+        [],
+        `Approval Request for Order No ${outOrderNo}`,
+        `<p>Dear Mr Deni Ramdani,</p>
+        <p>A new Order No (No: ${outOrderNo}) has been submitted for your approval.</br>
+        You can find all the details about this request by clicking <a href="${config.client.url}/m/017/apr"><b>here</b></a>.</br>
+        Please confirm your approval.</p>`
+      );
 
       return data;
     } catch (err) {
