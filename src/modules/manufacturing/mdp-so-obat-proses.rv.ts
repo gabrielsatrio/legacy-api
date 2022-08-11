@@ -128,7 +128,7 @@ export class SoObatProsesResolver {
         [],
         `Approval Request for Order No ${outOrderNo}`,
         `<p>Dear Mr Deni Ramdani,</p>
-        <p>A new Order No (No: ${outOrderNo}) has been submitted for your approval.</br>
+        <p>A new Order (No: ${outOrderNo}) has been submitted for your approval.</br>
         You can find all the details about this request by clicking <a href="${config.client.url}/m/017/apr"><b>here</b></a>.</br>
         Please confirm your approval.</p>`
       );
