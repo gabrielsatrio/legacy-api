@@ -1,3 +1,11 @@
+<a name="2.42.0"></a>
+
+# [2.42.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/251) (2022-08-11)
+
+### Features
+
+- [**M017**] **mdp**: email notification when so create, AGT only.
+
 <a name="2.41.0"></a>
 
 # [2.41.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/249) (2022-08-09)
