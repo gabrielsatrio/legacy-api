@@ -23,4 +23,8 @@ export class GisDefect extends BaseEntity {
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'OBJID' })
+  objid?: string;
 }
