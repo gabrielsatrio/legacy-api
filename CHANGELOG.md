@@ -1,3 +1,11 @@
+<a name="2.42.1"></a>
+
+# [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/251) (2022-08-12)
+
+### Bug fixes
+
+- [**M017**] **mdp**: fix automail only for AGT.
+
 <a name="2.42.0"></a>
 
 # [2.42.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/251) (2022-08-11)
