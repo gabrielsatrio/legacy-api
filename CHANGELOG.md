@@ -1,3 +1,18 @@
+<a name="2.43.0"></a>
+
+# [2.43.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/255) (2022-08-12)
+
+### Features
+
+- [**M019**] **gis**: add column actual width for AT1 AMI.
+- [**M019**] **gis**: remove gis defect view.
+- [**M019**] **gis**: change getId query using sequence.
+
+### Bug Fixes
+
+- [**M014**] **warping**: fix get component part query.
+- [**M014**] **warping**: add query get sum qty ass to fix kilogram calculation.
+
 <a name="2.42.1"></a>
 
 # [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
