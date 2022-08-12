@@ -14,7 +14,7 @@
 
 - [**M020**] **buku-import**: add form update paid date.
 
-<a name="2.40.0"></a>d
+<a name="2.40.0"></a>
 
 # [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
 
