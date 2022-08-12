@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <a name="2.43.0"></a>
 
 # [2.43.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
@@ -7,15 +6,15 @@
 
 - [**M014**] **warping**: fix get component part query.
 - [**M019**] **gis**: add column actual width for AT1 AMI.
-- # [**M019**] **gis**: remove gis defect view.
-  <a name="2.42.1"></a>
+- [**M019**] **gis**: remove gis defect view.
+
+<a name="2.42.1"></a>
 
 # [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
 
 ### Bug fixes
 
 - [**M017**] **mdp**: fix automail only for AGT.
-  > > > > > > > develop
 
 <a name="2.42.0"></a>
 
