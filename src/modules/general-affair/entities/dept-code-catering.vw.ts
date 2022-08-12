@@ -7,4 +7,8 @@ export class DeptCodeCateringView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'DEPT_CODE' })
   deptCode!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'PLANT' })
+  plant!: string;
 }
