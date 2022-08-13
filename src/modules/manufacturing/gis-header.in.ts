@@ -97,5 +97,8 @@ export class GisHeaderInput implements Partial<GisHeader> {
   actualWidth1?: number;
 
   @Field({ nullable: true })
+  employeeId?: string;
+
+  @Field({ nullable: true })
   notes?: string;
 }
