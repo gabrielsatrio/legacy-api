@@ -105,6 +105,10 @@ export class GisHeaderView extends BaseEntity {
   employeeId?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'EMPLOYEE_NAME' })
+  employeeName?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 
