@@ -47,7 +47,7 @@ export class GisHeaderResolver {
   @UseMiddleware(isAuth)
   async getNewInspectId(): Promise<number> {
     try {
-      const sql = 'SELECT nvl(max(inspect_id)+1,1) as "id" from GBR_GIS_HEADER';
+      const sql = 'SELECT GBR_GIS_HEADER_SEQ.NEXTVAL AS "id" FROM DUAL';
       const result = await ifs.query(sql);
       return result[0].id;
     } catch (err) {
