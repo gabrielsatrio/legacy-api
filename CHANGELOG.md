@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**M019**] **gis**: add column employee for AT4.
+- [**G001**] **bon-makan**: add feature list KHL.
 
 <a name="2.43.0"></a>
 
