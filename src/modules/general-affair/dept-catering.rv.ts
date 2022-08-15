@@ -20,10 +20,11 @@ export class DeptCateringViewResolver {
   @Query(() => [DeptCateringView], { nullable: true })
   @UseMiddleware(isAuth)
   async getDeptName(
-    @Arg('deptCode') deptCode: string
+    @Arg('deptCode') deptCode: string,
+    @Arg('plant') plant: string
   ): Promise<DeptCateringView[] | undefined> {
     try {
-      return await DeptCateringView.findBy({ deptCode });
+      return await DeptCateringView.findBy({ deptCode, plant });
     } catch (err) {
       throw new Error(mapError(err));
     }
