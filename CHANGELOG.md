@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**G091**] **bon-makan**: add feature list KHL.
+- [**G001**] **bon-makan**: add feature list KHL.
 
 <a name="2.43.0"></a>
 
