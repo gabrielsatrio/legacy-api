@@ -104,7 +104,7 @@ export class ImportBookParamResolver {
 
   @Query(() => Int)
   @UseMiddleware(isAuth)
-  async getIdBonMakanWeekdays(): Promise<number> {
+  async getIdImportBook(): Promise<number> {
     try {
       const sql = `SELECT ANG_IMPORT_BOOK_PARAM_SEQ.NEXTVAL AS "newId" FROM DUAL`;
       const result = await ifs.query(sql);

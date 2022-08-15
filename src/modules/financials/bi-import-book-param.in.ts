@@ -9,7 +9,7 @@ export class ImportBookParamInput implements Partial<ImportBookParam> {
   id!: number;
 
   @Field()
-  plant!: string;
+  contract!: string;
 
   @Field()
   poNumber!: string;

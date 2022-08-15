@@ -9,8 +9,8 @@ export class ImportBookParamView extends BaseEntity {
   id!: number;
 
   @Field()
-  @Column({ name: 'PLANT' })
-  plant!: string;
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field()
   @Column({ name: 'PO_NUMBER' })
