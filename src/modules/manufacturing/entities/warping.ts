@@ -152,6 +152,10 @@ export class ProdWarping extends BaseEntity {
   @Column({ name: 'FEED_MESIN_4' })
   feedMesin4?: number;
 
+  @Field({ defaultValue: false })
+  @Column({ name: 'CHECK_BEAM_2' })
+  checkBeam2?: boolean;
+
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
