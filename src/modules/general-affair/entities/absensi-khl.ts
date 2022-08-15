@@ -25,11 +25,11 @@ export class AbsensiKhl extends BaseEntity {
   tanggal!: Date;
 
   @Field({ defaultValue: false })
-  @PrimaryColumn({ name: 'IS_DUPLICATE' })
+  @Column({ name: 'IS_DUPLICATE' })
   isDuplicate!: boolean;
 
   @Field(() => Int)
-  @PrimaryColumn({ name: 'DUPLICATE_ID' })
+  @Column({ name: 'DUPLICATE_ID' })
   duplicateId!: number;
 
   @Field()

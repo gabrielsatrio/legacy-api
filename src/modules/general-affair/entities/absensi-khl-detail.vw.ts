@@ -37,6 +37,6 @@ export class AbsensiKhlDetailView extends BaseEntity {
   posName!: string;
 
   @Field(() => Int)
-  @PrimaryColumn({ name: 'EMPLOYEE_KHL_ID' })
+  @Column({ name: 'EMPLOYEE_KHL_ID' })
   employeeKhlId!: number;
 }

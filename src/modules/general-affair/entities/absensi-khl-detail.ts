@@ -13,6 +13,6 @@ export class AbsensiKhlDetail extends BaseEntity {
   nrp!: string;
 
   @Field(() => Int)
-  @PrimaryColumn({ name: 'EMPLOYEE_KHL_ID' })
+  @Column({ name: 'EMPLOYEE_KHL_ID' })
   employeeKhlId!: number;
 }
