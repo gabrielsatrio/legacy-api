@@ -1,3 +1,11 @@
+<a name="2.44.0"></a>
+
+# [2.44.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/257) (2022-08-15)
+
+### Features
+
+- [**G091**] **bon-makan**: add feature list KHL.
+
 <a name="2.43.0"></a>
 
 # [2.43.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/255) (2022-08-12)
