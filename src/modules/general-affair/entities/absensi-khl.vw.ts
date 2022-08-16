@@ -35,4 +35,8 @@ export class AbsensiKhlView extends BaseEntity {
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
+
+  @Field()
+  @Column({ name: 'SHIFT' })
+  shift!: string;
 }
