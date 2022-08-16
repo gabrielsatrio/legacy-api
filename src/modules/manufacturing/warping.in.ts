@@ -154,6 +154,9 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   @IsNumber()
   netto4?: number;
 
+  @Field({ defaultValue: false })
+  checkBeam2?: boolean;
+
   @Field({ nullable: true })
   @MaxLength(200)
   notes?: string;
