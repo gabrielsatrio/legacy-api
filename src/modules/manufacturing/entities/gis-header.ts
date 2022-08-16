@@ -97,6 +97,10 @@ export class GisHeader extends BaseEntity {
   actualWidth1?: number;
 
   @Field({ nullable: true })
+  @Column({ name: 'EMPLOYEE_ID' })
+  employeeId?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 
