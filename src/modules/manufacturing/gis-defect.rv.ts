@@ -45,7 +45,6 @@ export class GisDefectResolver {
               .orWhere('GD.CATEGORY is null')
           )
         )
-
         .getMany();
     } catch (err) {
       throw new Error(mapError(err));
