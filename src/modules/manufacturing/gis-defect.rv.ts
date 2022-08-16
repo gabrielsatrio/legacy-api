@@ -9,7 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { In } from 'typeorm';
+import { Brackets, In } from 'typeorm';
 import { GisDefect } from './entities/gis-defect';
 import { GisDefectInput } from './gis-defect.in';
 
@@ -24,6 +24,29 @@ export class GisDefectResolver {
       return await GisDefect.findBy({
         contract: In(contract)
       });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [GisDefect], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getGisDefectByContractCategory(
+    @Arg('contract') contract: string,
+    @Arg('category') category: string
+  ): Promise<GisDefect[] | undefined> {
+    try {
+      return await GisDefect.createQueryBuilder('GD')
+        .where('GD.CONTRACT = :contract', { contract })
+        .andWhere(
+          new Brackets((qb) =>
+            qb
+              .where('GD.CATEGORY = :category', { category })
+              .orWhere('GD.CATEGORY is null')
+          )
+        )
+
+        .getMany();
     } catch (err) {
       throw new Error(mapError(err));
     }
