@@ -1,3 +1,11 @@
+<a name="2.46.0"></a>
+
+# [2.46.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/261) (2022-08-16)
+
+### Features
+
+- [**G001**] **bon-makan**: add column shift.
+
 <a name="2.45.0"></a>
 
 # [2.45.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/259) (2022-08-16)

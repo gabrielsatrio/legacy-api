@@ -30,4 +30,7 @@ export class AbsensiKhlInput implements Partial<AbsensiKhl> {
 
   @Field()
   createdBy!: string;
+
+  @Field()
+  shift!: string;
 }
