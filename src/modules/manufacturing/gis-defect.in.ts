@@ -15,4 +15,8 @@ export class GisDefectInput implements Partial<GisDefect> {
   @Field()
   @MaxLength(500)
   defectDescription!: string;
+
+  @Field({ nullable: true })
+  @MaxLength(50)
+  category?: string;
 }

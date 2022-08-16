@@ -1,3 +1,13 @@
+<a name="2.45.0"></a>
+
+# [2.45.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/259) (2022-08-16)
+
+### Features
+
+- [**M014**] **warping**: add column check beam for AT2.
+- [**M019**] **gis**: add column 'category' for gis defect.
+- [**M019**] **gis**: add query get defect by contract and category.
+
 <a name="2.44.0"></a>
 
 # [2.44.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/257) (2022-08-15)
