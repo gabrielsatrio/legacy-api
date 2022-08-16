@@ -13,6 +13,10 @@ export class ImportBook extends BaseEntity {
   poNumber!: string;
 
   @Field()
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
   @Column({ name: 'SUPPLIER_CODE' })
   supplierCode!: string;
 

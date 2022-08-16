@@ -12,6 +12,9 @@ export class ImportBookInput implements Partial<ImportBook> {
   poNumber!: string;
 
   @Field()
+  contract!: string;
+
+  @Field()
   supplierCode!: string;
 
   @Field()
