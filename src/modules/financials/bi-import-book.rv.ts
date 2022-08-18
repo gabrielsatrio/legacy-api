@@ -37,18 +37,6 @@ export class ImportBookResolver {
     }
   }
 
-  @Query(() => [ImportBookView], { nullable: true })
-  @UseMiddleware(isAuth)
-  async getImportBookByMaster(
-    @Arg('imptId', () => Int) imptId: number
-  ): Promise<ImportBookView[] | undefined> {
-    try {
-      return await ImportBookView.findBy({ imptId });
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
   @Query(() => ImportBookView, { nullable: true })
   @UseMiddleware(isAuth)
   async getImportBook(
