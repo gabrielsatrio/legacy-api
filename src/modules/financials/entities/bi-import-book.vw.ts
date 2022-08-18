@@ -8,25 +8,25 @@ export class ImportBookView extends BaseEntity {
   @PrimaryColumn({ name: 'ID' })
   id!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'PO_NUMBER' })
-  poNumber!: string;
+  poNumber?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'CONTRACT' })
-  contract!: string;
+  contract?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'SUPPLIER_CODE' })
-  supplierCode!: string;
+  supplierCode?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'SUPPLIER_NAME' })
-  supplierName!: string;
+  supplierName?: string;
 
   @Field()
   @Column({ name: 'GRAND_TOTAL' })
-  grandTotal!: number;
+  grandTotal?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'ACCOUNT_NO' })
@@ -36,9 +36,9 @@ export class ImportBookView extends BaseEntity {
   @Column({ name: 'TOP' })
   top?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'LC' })
-  lc!: string;
+  lc?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'LC_NO' })
@@ -63,8 +63,4 @@ export class ImportBookView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PAID_DATE' })
   paidDate?: Date;
-
-  @Field()
-  @Column({ name: 'IMPT_ID' })
-  imptId?: number;
 }

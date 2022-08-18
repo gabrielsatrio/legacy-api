@@ -8,20 +8,20 @@ export class ImportBookInput implements Partial<ImportBook> {
   @IsNumber()
   id!: number;
 
-  @Field()
-  poNumber!: string;
+  @Field({ nullable: true })
+  poNumber?: string;
 
-  @Field()
-  contract!: string;
+  @Field({ nullable: true })
+  contract?: string;
 
-  @Field()
-  supplierCode!: string;
+  @Field({ nullable: true })
+  supplierCode?: string;
 
-  @Field()
-  supplierName!: string;
+  @Field({ nullable: true })
+  supplierName?: string;
 
-  @Field()
-  grandTotal!: number;
+  @Field({ nullable: true })
+  grandTotal?: number;
 
   @Field({ nullable: true })
   accountNo?: string;
@@ -49,7 +49,4 @@ export class ImportBookInput implements Partial<ImportBook> {
 
   @Field({ nullable: true })
   paidDate?: Date;
-
-  @Field()
-  imptId!: number;
 }
