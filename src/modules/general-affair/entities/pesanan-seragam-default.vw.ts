@@ -5,10 +5,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class DefaultSeragamView extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'ID' })
-  id!: number;
-  @Field()
-  @Column({ name: 'TAHUN' })
+  @PrimaryColumn({ name: 'TAHUN' })
   tahun!: string;
 
   @Field()
@@ -18,8 +15,4 @@ export class DefaultSeragamView extends BaseEntity {
   @Field()
   @Column({ name: 'IS_LOCKED' })
   isLocked!: boolean;
-
-  @Field()
-  @Column({ name: 'CREATED_BY' })
-  createdBy!: string;
 }

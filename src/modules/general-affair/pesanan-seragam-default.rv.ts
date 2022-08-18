@@ -49,7 +49,8 @@ export class DefaultSeragamResolver {
     try {
       const data = await DefaultSeragam.findOneBy({
         tahun: input.tahun,
-        periode: input.periode
+        periode: input.periode,
+        jenis: input.jenis
       });
       if (data) throw new Error('Data already exist!');
       const result = DefaultSeragam.create({ ...input });
