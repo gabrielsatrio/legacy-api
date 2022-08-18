@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('VKY_DEFAULT_SERAGAM')
+@Entity('VKY_DEFAULT_SERAGAM_DETAIL_V')
 @ObjectType()
-export class DefaultSeragam extends BaseEntity {
+export class DefaultSeragamDetailView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;

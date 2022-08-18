@@ -9,6 +9,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { DefaultSeragam } from './entities/pesanan-seragam-default';
+import { DefaultSeragamDetailView } from './entities/pesanan-seragam-default-detail.vw';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
 import { DefaultSeragamInput } from './pesanan-seragam-default.in';
 
@@ -24,13 +25,17 @@ export class DefaultSeragamResolver {
     }
   }
 
-  @Query(() => DefaultSeragam)
+  @Query(() => [DefaultSeragamDetailView])
   @UseMiddleware(isAuth)
   async getDefaultSeragam(
-    @Arg('id', () => Int) id: number
-  ): Promise<DefaultSeragam | null> {
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<DefaultSeragamDetailView[] | undefined> {
     try {
-      return await DefaultSeragam.findOneBy({ id });
+      return await DefaultSeragamDetailView.findBy({
+        tahun: tahun,
+        periode: periode
+      });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -42,14 +47,13 @@ export class DefaultSeragamResolver {
     @Arg('input') input: DefaultSeragamInput
   ): Promise<DefaultSeragam | undefined> {
     try {
-      const exist = await DefaultSeragam.findOneBy({
+      const data = await DefaultSeragam.findOneBy({
         tahun: input.tahun,
-        periode: input.periode,
-        jenis: input.jenis
+        periode: input.periode
       });
-      if (exist) throw new Error('Data Already Exist!');
-      const data = DefaultSeragam.create({ ...input });
-      const result = await DefaultSeragam.save(data);
+      if (data) throw new Error('Data already exist!');
+      const result = DefaultSeragam.create({ ...input });
+      await DefaultSeragam.save(result);
       return result;
     } catch (err) {
       throw new Error(mapError(err));

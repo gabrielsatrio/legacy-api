@@ -7,11 +7,6 @@ export class DefaultSeragamView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;
-
-  @Field()
-  @Column({ name: 'JENIS' })
-  jenis!: string;
-
   @Field()
   @Column({ name: 'TAHUN' })
   tahun!: string;
@@ -19,14 +14,6 @@ export class DefaultSeragamView extends BaseEntity {
   @Field()
   @Column({ name: 'PERIODE' })
   periode!: number;
-
-  @Field()
-  @Column({ name: 'JUMLAH_KEMEJA' })
-  jumlahKemeja!: number;
-
-  @Field()
-  @Column({ name: 'JUMLAH_CELANA' })
-  jumlahCelana!: number;
 
   @Field()
   @Column({ name: 'IS_LOCKED' })

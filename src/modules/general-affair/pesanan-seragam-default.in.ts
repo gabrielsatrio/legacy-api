@@ -9,16 +9,16 @@ export class DefaultSeragamInput implements Partial<DefaultSeragam> {
   id!: number;
 
   @Field()
-  @IsString()
-  jenis!: string;
-
-  @Field()
   @MaxLength(4)
   tahun!: string;
 
   @Field()
   @IsNumber()
   periode!: number;
+
+  @Field()
+  @MaxLength(20)
+  jenis!: string;
 
   @Field()
   @IsNumber()
@@ -33,5 +33,6 @@ export class DefaultSeragamInput implements Partial<DefaultSeragam> {
   isLocked!: boolean;
 
   @Field()
+  @IsString()
   createdBy!: string;
 }
