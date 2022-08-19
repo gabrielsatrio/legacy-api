@@ -94,5 +94,11 @@ export class GisHeaderInput implements Partial<GisHeader> {
   lotBatchNo?: string;
 
   @Field({ nullable: true })
+  actualWidth1?: number;
+
+  @Field({ nullable: true })
+  employeeId?: string;
+
+  @Field({ nullable: true })
   notes?: string;
 }

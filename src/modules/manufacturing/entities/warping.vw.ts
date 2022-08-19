@@ -160,6 +160,10 @@ export class ProdWarpingView extends BaseEntity {
   @Column({ name: 'NETTO_4' })
   netto4?: number;
 
+  @Field({ defaultValue: false })
+  @Column({ name: 'CHECK_BEAM_2' })
+  checkBeam2?: boolean;
+
   @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
