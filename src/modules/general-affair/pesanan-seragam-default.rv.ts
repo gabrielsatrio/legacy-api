@@ -53,6 +53,14 @@ export class DefaultSeragamResolver {
         jenis: input.jenis
       });
       if (data) throw new Error('Data already exist!');
+      const locked = await DefaultSeragam.findOneBy({
+        tahun: input.tahun,
+        periode: input.periode
+      });
+      if (locked?.isLocked)
+        throw new Error(
+          `Data already locked for this year (${input.tahun}) and period (${input.periode})`
+        );
       const result = DefaultSeragam.create({ ...input });
       await DefaultSeragam.save(result);
       return result;
@@ -95,14 +103,23 @@ export class DefaultSeragamResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async toggleLock(
-    @Arg('id', () => Int) id: number
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
     try {
-      const data = await DefaultSeragam.findOneBy({ id });
+      const data = await DefaultSeragam.findOneBy({
+        tahun: tahun,
+        periode: periode
+      });
       if (!data) throw new Error('Data not exist!');
-      if (data.isLocked) DefaultSeragam.merge(data, { isLocked: false });
-      else DefaultSeragam.merge(data, { isLocked: true });
-      await DefaultSeragam.save(data);
+      await DefaultSeragam.createQueryBuilder()
+        .update(DefaultSeragam)
+        .set({ isLocked: data.isLocked ? false : true })
+        .where('tahun = :tahun AND periode = :periode', {
+          tahun: tahun,
+          periode: periode
+        })
+        .execute();
       return true;
     } catch (err) {
       throw new Error(mapError(err));
