@@ -5,7 +5,11 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 export class DefaultSeragamView extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'TAHUN' })
+  @PrimaryColumn({ name: 'ROW' })
+  row!: number;
+
+  @Field()
+  @Column({ name: 'TAHUN' })
   tahun!: string;
 
   @Field()
