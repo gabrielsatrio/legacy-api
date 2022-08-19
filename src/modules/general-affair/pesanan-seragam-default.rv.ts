@@ -102,6 +102,25 @@ export class DefaultSeragamResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
+  async deleteDSByYearAndPeriod(
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<boolean | undefined> {
+    try {
+      const exist = await DefaultSeragam.findBy({
+        tahun: tahun,
+        periode: periode
+      });
+      if (!exist) throw new Error('Data not exist!');
+      await DefaultSeragam.delete({ tahun: tahun, periode: periode });
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async toggleLock(
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
