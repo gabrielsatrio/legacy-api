@@ -16,6 +16,10 @@ export class GisDefect extends BaseEntity {
   @Column({ name: 'DEFECT_DESCRIPTION' })
   defectDescription!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'CATEGORY' })
+  category?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
