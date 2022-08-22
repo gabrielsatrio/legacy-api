@@ -1,3 +1,11 @@
+<a name="2.47.0"></a>
+
+# [2.47.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/263) (2022-08-19)
+
+### Features
+
+- [**F003**] **buku-import**: add feature buku import.
+
 <a name="2.46.0"></a>
 
 # [2.46.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/261) (2022-08-16)
