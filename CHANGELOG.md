@@ -1,3 +1,92 @@
+<a name="2.47.0"></a>
+
+# [2.47.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/263) (2022-08-19)
+
+### Features
+
+- [**F003**] **buku-import**: add feature buku import.
+
+<a name="2.46.0"></a>
+
+# [2.46.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/261) (2022-08-16)
+
+### Features
+
+- [**G001**] **bon-makan**: add column shift.
+
+<a name="2.45.0"></a>
+
+# [2.45.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/259) (2022-08-16)
+
+### Features
+
+- [**M014**] **warping**: add column check beam for AT2.
+- [**M019**] **gis**: add column 'category' for gis defect.
+- [**M019**] **gis**: add query get defect by contract and category.
+
+<a name="2.44.0"></a>
+
+# [2.44.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/257) (2022-08-15)
+
+### Features
+
+- [**G001**] **bon-makan**: add feature list KHL.
+
+<a name="2.43.0"></a>
+
+# [2.43.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/255) (2022-08-12)
+
+### Features
+
+- [**M019**] **gis**: add column actual width for AT1 AMI.
+- [**M019**] **gis**: remove gis defect view.
+- [**M019**] **gis**: change getId query using sequence.
+
+### Bug Fixes
+
+- [**M014**] **warping**: fix get component part query.
+- [**M014**] **warping**: add query get sum qty ass to fix kilogram calculation.
+
+<a name="2.42.1"></a>
+
+# [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
+
+### Bug fixes
+
+- [**M017**] **mdp**: fix automail only for AGT.
+
+<a name="2.42.0"></a>
+
+# [2.42.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/251) (2022-08-11)
+
+### Features
+
+- [**M017**] **mdp**: email notification when so create, AGT only.
+
+<a name="2.41.0"></a>
+
+# [2.41.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/249) (2022-08-09)
+
+### Features
+
+- [**M020**] **buku-import**: add form update paid date.
+
+<a name="2.40.0"></a>
+
+# [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
+
+### Features
+
+- [**M020**] **jenis mesin**: finish feature jenis mesin.
+
+<a name="2.39.2"></a>
+
+# [2.39.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/245) (2022-08-04)
+
+### Bug Fixes
+
+- [**M017**] **FDP**: add latest revision for AGT.
+
 <a name="2.39.1"></a>
 
 # [2.39.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/243) (2022-08-03)
