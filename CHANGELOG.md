@@ -1,10 +1,10 @@
 <a name="2.47.1"></a>
 
-# [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)
+# [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/265) (2022-08-22)
 
-### Bug fixes
+### Features
 
-- [**H001**] **tagihan-mess**: fix missing parameter condition.
+- [**M017**] **mdp**: fix alternate agt.
 
 <a name="2.47.0"></a>
 
