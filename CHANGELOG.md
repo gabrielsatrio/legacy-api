@@ -2,7 +2,7 @@
 
 # [2.47.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)
 
-### Bug fixes
+### Bug Fixes
 
 - [**H001**] **tagihan-mess**: fix missing parameter condition.
 
@@ -67,7 +67,7 @@
 
 # [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
 
-### Bug fixes
+### Bug Fixes
 
 - [**M017**] **mdp**: fix automail only for AGT.
 
