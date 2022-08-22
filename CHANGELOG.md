@@ -1,3 +1,11 @@
+<a name="2.47.1"></a>
+
+# [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/265) (2022-08-22)
+
+### Features
+
+- [**M017**] **mdp**: fix alternate agt.
+
 <a name="2.47.0"></a>
 
 # [2.47.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/263) (2022-08-19)
