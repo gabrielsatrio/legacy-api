@@ -144,4 +144,29 @@ export class DefaultSeragamResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generateSeragam(
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number,
+    @Arg('createdBy', () => String) createdBy: string
+  ): Promise<boolean | undefined> {
+    try {
+      const exist = await DefaultSeragam.findOneBy({
+        tahun: tahun,
+        periode: periode
+      });
+      if (exist) throw new Error('Data already exist');
+      const sql = `
+        BEGIN
+          VKY_DEFAULT_SERAGAM_API.GENERATE_DEFAULT_SERAGAM(:tahun, :periode, :createdBy);
+        END;
+      `;
+      await DefaultSeragam.query(sql, [tahun, periode, createdBy]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
