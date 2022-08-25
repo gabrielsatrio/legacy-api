@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- [**M019**] **gis**: fix query for multiple part code.
+- [**M019**] **gis**: fix query for multiple category.
 
 <a name="2.47.2"></a>
 
