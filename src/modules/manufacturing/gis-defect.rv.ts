@@ -41,7 +41,9 @@ export class GisDefectResolver {
         .andWhere(
           new Brackets((qb) =>
             qb
-              .where('GD.CATEGORY = :category', { category })
+              .where('GD.CATEGORY LIKE :category', {
+                category: '%' + category + '%'
+              })
               .orWhere('GD.CATEGORY is null')
           )
         )
