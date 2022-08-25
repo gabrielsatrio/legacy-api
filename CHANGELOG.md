@@ -1,6 +1,6 @@
 <a name="2.47.3"></a>
 
-# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/268) (2022-08-25)
+# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
 
 ### Bug Fixes
 
