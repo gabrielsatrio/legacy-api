@@ -36,14 +36,14 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
     @Arg('nrp', () => String) nrp: string,
-    @Arg('plant', () => String) plant: string,
-    @Arg('jobTitle', () => String) jobTitle: string
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamView[] | undefined> {
     try {
       return await PesananSeragamView.findBy({
         nrp: nrp,
-        plant: plant,
-        jobTitle: jobTitle
+        tahun: tahun,
+        periode: periode
       });
     } catch (err) {
       throw new Error(mapError(err));

@@ -50,7 +50,7 @@ export class DefaultSeragamResolver {
       const data = await DefaultSeragam.findOneBy({
         tahun: input.tahun,
         periode: input.periode,
-        jenis: input.jenis
+        idJenis: input.idJenis
       });
       if (data) throw new Error('Data already exist!');
       const locked = await DefaultSeragam.findOneBy({

@@ -24,6 +24,18 @@ export class JenisSeragamResolver {
     }
   }
 
+  @Query(() => JenisSeragamView)
+  @UseMiddleware(isAuth)
+  async getJenisSeragam(
+    @Arg('id', () => Int) id: number
+  ): Promise<JenisSeragamView | null> {
+    try {
+      return await JenisSeragamView.findOneBy({ id });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => JenisSeragam)
   @UseMiddleware(isAuth)
   async createJenisSeragam(

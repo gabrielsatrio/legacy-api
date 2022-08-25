@@ -29,8 +29,8 @@ export class PesananSeragamView extends BaseEntity {
   plant!: string;
 
   @Field()
-  @Column({ name: 'JOB_TITLE' })
-  jobTitle!: string;
+  @Column({ name: 'DEPARTMENT' })
+  department!: string;
 
   @Field()
   @Column({ name: 'JENIS' })
@@ -42,7 +42,7 @@ export class PesananSeragamView extends BaseEntity {
 
   @Field()
   @Column({ name: 'UKURAN_CELANA' })
-  ukuranCelana!: string;
+  ukuranCelana!: number;
 
   @Field()
   @Column({ name: 'JUMLAH_KEMEJA' })
@@ -55,10 +55,6 @@ export class PesananSeragamView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'KETERANGAN' })
   keterangan?: string;
-
-  @Field()
-  @Column({ name: 'TANGGAL_PESANAN' })
-  tanggalPesanan!: Date;
 
   @Field()
   @Column({ name: 'TAHUN' })

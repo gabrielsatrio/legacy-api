@@ -17,8 +17,8 @@ export class DefaultSeragamInput implements Partial<DefaultSeragam> {
   periode!: number;
 
   @Field()
-  @MaxLength(20)
-  jenis!: string;
+  @IsNumber()
+  idJenis!: number;
 
   @Field()
   @IsNumber()

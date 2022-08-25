@@ -17,8 +17,8 @@ export class DefaultSeragam extends BaseEntity {
   periode!: number;
 
   @Field()
-  @Column({ name: 'JENIS' })
-  jenis!: string;
+  @Column({ name: 'ID_JENIS' })
+  idJenis!: number;
 
   @Field()
   @Column({ name: 'JUMLAH_KEMEJA' })

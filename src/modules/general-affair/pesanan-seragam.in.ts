@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsDate,
-  IsNumber,
-  IsString,
-  MaxLength
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsString, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { PesananSeragam } from './entities/pesanan-seragam';
 
@@ -27,8 +21,8 @@ export class PesananSeragamInput implements Partial<PesananSeragam> {
   ukuranKemeja!: string;
 
   @Field()
-  @MaxLength(10)
-  ukuranCelana!: string;
+  @IsNumber()
+  ukuranCelana!: number;
 
   @Field()
   @IsNumber()
@@ -41,10 +35,6 @@ export class PesananSeragamInput implements Partial<PesananSeragam> {
   @Field({ nullable: true })
   @MaxLength(100)
   keterangan?: string;
-
-  @Field()
-  @IsDate()
-  tanggalPesanan!: Date;
 
   @Field()
   @MaxLength(4)
