@@ -17,6 +17,10 @@ export class DefaultSeragamDetailView extends BaseEntity {
   periode!: number;
 
   @Field()
+  @Column({ name: 'ID_JENIS' })
+  idJenis!: number;
+
+  @Field()
   @Column({ name: 'JENIS' })
   jenis!: string;
 
