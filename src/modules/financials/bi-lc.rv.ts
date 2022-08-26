@@ -8,103 +8,95 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { LcChargesInput } from './bi-lc.in';
-import { LcCharges } from './entities/bi-lc';
-import { LcChargesView } from './entities/bi-lc.vw';
+import { LcInput } from './bi-lc.in';
+import { Lc } from './entities/bi-lc';
+import { LcView } from './entities/bi-lc.vw';
 
-@Resolver(LcCharges)
-export class LcChargesResolver {
+@Resolver(Lc)
+export class LcResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkLcChargesExist(
-    @Arg('id', () => Int) id: number
-  ): Promise<boolean> {
+  async checkLcExist(@Arg('id', () => Int) id: number): Promise<boolean> {
     try {
-      return (await this.getLcCharges(id)) ? true : false;
+      return (await this.getLc(id)) ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [LcChargesView])
+  @Query(() => [LcView])
   @UseMiddleware(isAuth)
-  async getAllLcCharges(): Promise<LcChargesView[] | undefined> {
+  async getAllLc(): Promise<LcView[] | undefined> {
     try {
-      return await LcCharges.find();
+      return await Lc.find();
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [LcChargesView], { nullable: true })
+  @Query(() => [LcView], { nullable: true })
   @UseMiddleware(isAuth)
-  async getLcChargesByMaster(
+  async getLcByMaster(
     @Arg('imptId', () => Int) imptId: number
-  ): Promise<LcChargesView[] | undefined> {
+  ): Promise<LcView[] | undefined> {
     try {
-      return await LcChargesView.findBy({ imptId });
+      return await LcView.findBy({ imptId });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => LcChargesView, { nullable: true })
+  @Query(() => LcView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getLcCharges(
-    @Arg('id', () => Int) id: number
-  ): Promise<LcChargesView | null> {
+  async getLc(@Arg('id', () => Int) id: number): Promise<LcView | null> {
     try {
-      return await LcChargesView.findOneBy({ id });
+      return await LcView.findOneBy({ id });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => LcCharges)
+  @Mutation(() => Lc)
   @UseMiddleware(isAuth)
-  async createLcCharges(
-    @Arg('input') input: LcChargesInput
-  ): Promise<LcCharges | undefined> {
+  async createLc(@Arg('input') input: LcInput): Promise<Lc | undefined> {
     try {
-      const existingData = await LcCharges.findOneBy({
+      const existingData = await Lc.findOneBy({
         id: input.id
       });
       if (existingData) throw new Error('Data already exists.');
-      const data = LcCharges.create({
+      const data = Lc.create({
         ...input
       });
-      const result = await LcCharges.save(data);
+      const result = await Lc.save(data);
       return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => LcCharges, { nullable: true })
+  @Mutation(() => Lc, { nullable: true })
   @UseMiddleware(isAuth)
-  async updateLcCharges(
-    @Arg('input') input: LcChargesInput
-  ): Promise<LcCharges | undefined> {
+  async updateLc(@Arg('input') input: LcInput): Promise<Lc | undefined> {
     try {
-      const data = await LcCharges.findOneBy({
+      const data = await Lc.findOneBy({
         id: input.id
       });
       if (!data) throw new Error('No data found.');
-      LcCharges.merge(data, { ...input });
-      const result = await LcCharges.save(data);
+      Lc.merge(data, { ...input });
+      const result = await Lc.save(data);
       return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => LcCharges)
+  @Mutation(() => Lc)
   @UseMiddleware(isAuth)
-  async deleteLcCharges(@Arg('id', () => Int) id: number): Promise<LcCharges> {
+  async deleteLc(@Arg('id', () => Int) id: number): Promise<Lc> {
     try {
-      const data = await LcCharges.findOneBy({ id });
+      const data = await Lc.findOneBy({ id });
       if (!data) throw new Error('No data found.');
-      await LcCharges.delete({ id });
+      await Lc.delete({ id });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

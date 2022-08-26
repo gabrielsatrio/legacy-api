@@ -1,9 +1,9 @@
 import { IsNumber } from 'class-validator';
 import { Field, InputType, Int } from 'type-graphql';
-import { LcCharges } from './entities/bi-lc';
+import { Lc } from './entities/bi-lc';
 
 @InputType()
-export class LcChargesInput implements Partial<LcCharges> {
+export class LcInput implements Partial<Lc> {
   @Field(() => Int)
   @IsNumber()
   id!: number;

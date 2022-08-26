@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ANG_IMPT_LC')
 @ObjectType()
-export class LcCharges extends BaseEntity {
+export class Lc extends BaseEntity {
   @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;

@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('ANG_IMPT_LC_V')
 @ObjectType()
-export class LcChargesView extends BaseEntity {
+export class LcView extends BaseEntity {
   @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;
