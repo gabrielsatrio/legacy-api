@@ -1,4 +1,5 @@
 import { isAuth } from '@/middlewares/is-auth';
+import { mapError } from '@/utils/map-error';
 import {
   Arg,
   Int,
@@ -7,7 +8,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { mapError } from './../../utils/map-error';
 import { JenisSeragam } from './entities/pesanan-seragam-jenis';
 import { JenisSeragamView } from './entities/pesanan-seragam-jenis.vw';
 import { JenisSeragamInput } from './pesanan-seragam-jenis.in';
