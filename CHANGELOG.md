@@ -1,3 +1,15 @@
+<a name="2.48.0"></a>
+
+# [2.48.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/271) (2022-09-01)
+
+### Features
+
+- [**G001**] **bon-makan**: add query for show list.
+- [**F003**] **buku-import**: add column bankName, bankBranch, accountName in Import Book.
+- [**F003**] **buku-import**: add table LC Detail.
+- [**F003**] **buku-import**: add table PIB Detail.
+- [**P001**] **import-expedition**: add column PPN, DPP.
+
 <a name="2.47.3"></a>
 
 # [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
