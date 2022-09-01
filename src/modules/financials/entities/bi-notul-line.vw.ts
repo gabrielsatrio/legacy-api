@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ANG_IMPT_NOTUL+LINE_V')
+@Entity('ANG_IMPT_NOTUL_LINE_V')
 @ObjectType()
 export class NotulLineView extends BaseEntity {
   @Field(() => Int)
