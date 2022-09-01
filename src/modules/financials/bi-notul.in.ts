@@ -15,16 +15,10 @@ export class NotulInput implements Partial<Notul> {
   paidDate?: Date;
 
   @Field({ nullable: true })
-  pibItems?: string;
-
-  @Field({ nullable: true })
-  amount?: number;
+  totalAmountPib?: number;
 
   @Field({ nullable: true })
   invoiceNo?: string;
-
-  @Field({ nullable: true })
-  currency?: string;
 
   @Field({ nullable: true })
   amountInvImport?: number;
