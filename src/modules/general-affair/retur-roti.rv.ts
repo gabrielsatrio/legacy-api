@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { ReturRoti } from './entities/retur-roti';
 import { ReturRotiView } from './entities/retur-roti.vw';
 import { ReturRotiInput } from './retur-roti.in';
@@ -122,5 +123,17 @@ export class ReturRotiResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [ReturRotiView])
+  @UseMiddleware(isAuth)
+  async getReturRotiByCreated(
+    @Arg('createdBy') createdBy: string
+  ): Promise<ReturRotiView[] | undefined> {
+    return await ReturRotiView.find({
+      where: {
+        createdBy: Like(createdBy)
+      }
+    });
   }
 }
