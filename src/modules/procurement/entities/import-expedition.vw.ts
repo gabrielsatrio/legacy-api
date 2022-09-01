@@ -55,4 +55,12 @@ export class ImportExpeditionView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'FINANCE_RECEIPT_DATE' })
   financeReceiptDate?: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DPP' })
+  dpp?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PPN' })
+  ppn?: number;
 }

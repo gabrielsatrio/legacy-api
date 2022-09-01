@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { AbsensiKhlInput } from './absensi-khl.in';
 import { AbsensiKhl } from './entities/absensi-khl';
 import { AbsensiKhlView } from './entities/absensi-khl.vw';
@@ -124,5 +125,17 @@ export class AbsensiKhlResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [AbsensiKhlView])
+  @UseMiddleware(isAuth)
+  async getAbsensiKhlByCreated(
+    @Arg('createdBy') createdBy: string
+  ): Promise<AbsensiKhlView[] | undefined> {
+    return await AbsensiKhlView.find({
+      where: {
+        createdBy: Like(createdBy)
+      }
+    });
   }
 }

@@ -36,17 +36,11 @@ export class ImportBookInput implements Partial<ImportBook> {
   lcNo?: string;
 
   @Field({ nullable: true })
-  paidBy?: string;
+  accountName?: string;
 
   @Field({ nullable: true })
-  lcCharges?: string;
+  bankName?: string;
 
   @Field({ nullable: true })
-  currency?: string;
-
-  @Field({ nullable: true })
-  amount?: number;
-
-  @Field({ nullable: true })
-  paidDate?: Date;
+  bankBranch?: string;
 }

@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { BonMakanWeekdaysInput } from './bon-makan-wdays.in';
 import { BonMakanWeekdays } from './entities/bon-makan-wdays';
 import { BonMakanWeekdaysView } from './entities/bon-makan-wdays.vw';
@@ -124,5 +125,17 @@ export class BonMakanWeekdaysResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [BonMakanWeekdaysView])
+  @UseMiddleware(isAuth)
+  async getBonMakanWeekdaysByCreated(
+    @Arg('createdBy') createdBy: string
+  ): Promise<BonMakanWeekdaysView[] | undefined> {
+    return await BonMakanWeekdaysView.find({
+      where: {
+        createdBy: Like(createdBy)
+      }
+    });
   }
 }
