@@ -1,3 +1,27 @@
+<a name="2.47.3"></a>
+
+# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
+
+### Bug Fixes
+
+- [**M019**] **gis**: fix query for multiple category.
+
+<a name="2.47.2"></a>
+
+# [2.47.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)
+
+### Bug Fixes
+
+- [**H001**] **tagihan-mess**: fix missing parameter condition.
+
+<a name="2.47.1"></a>
+
+# [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/265) (2022-08-22)
+
+### Features
+
+- [**M017**] **mdp**: fix alternate agt.
+
 <a name="2.47.0"></a>
 
 # [2.47.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/263) (2022-08-19)
@@ -51,7 +75,7 @@
 
 # [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
 
-### Bug fixes
+### Bug Fixes
 
 - [**M017**] **mdp**: fix automail only for AGT.
 
