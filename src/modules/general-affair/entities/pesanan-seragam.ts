@@ -13,8 +13,8 @@ export class PesananSeragam extends BaseEntity {
   nrp!: string;
 
   @Field()
-  @Column({ name: 'JENIS' })
-  jenis!: string;
+  @Column({ name: 'ID_JENIS' })
+  idJenis!: number;
 
   @Field()
   @Column({ name: 'UKURAN_KEMEJA' })

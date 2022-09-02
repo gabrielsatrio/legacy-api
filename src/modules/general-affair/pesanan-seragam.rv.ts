@@ -67,14 +67,30 @@ export class PesananSeragamResolver {
   @Mutation(() => PesananSeragam)
   @UseMiddleware(isAuth)
   async updatePesananSeragam(
-    @Arg('input') input: PesananSeragamInput
-  ): Promise<PesananSeragam | undefined> {
+    @Arg('id', () => Int) id: number,
+    @Arg('ukuranKemeja', () => String) ukuranKemeja: string,
+    @Arg('ukuranCelana', () => Int) ukuranCelana: number,
+    @Arg('jumlahKemeja', () => Int) jumlahKemeja: number,
+    @Arg('jumlahCelana', () => Int) jumlahCelana: number,
+    @Arg('keterangan', () => String) keterangan: string
+  ): Promise<PesananSeragam | null> {
     try {
-      const data = await PesananSeragam.findOneBy({ id: input.id });
+      const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist');
-      PesananSeragam.merge(data, { ...input });
-      const result = await PesananSeragam.save(data);
-      return result;
+      const sql = `
+        BEGIN
+          vky_pesanan_seragam_api.update_pesanan_seragam(:id, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
+        END;
+      `;
+      await PesananSeragam.query(sql, [
+        id,
+        ukuranKemeja,
+        ukuranCelana,
+        jumlahKemeja,
+        jumlahCelana,
+        keterangan
+      ]);
+      return await PesananSeragam.findOneBy({ id });
     } catch (err) {
       throw new Error(mapError(err));
     }
