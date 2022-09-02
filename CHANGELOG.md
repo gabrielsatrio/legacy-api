@@ -1,3 +1,15 @@
+<a name="2.49.0"></a>
+
+# [2.49.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/273) (2022-09-02)
+
+### Features
+
+- add new resolver: `InfoResolver`.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
 <a name="2.48.0"></a>
 
 # [2.48.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/271) (2022-09-01)
