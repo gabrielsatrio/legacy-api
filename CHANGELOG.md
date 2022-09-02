@@ -1,3 +1,11 @@
+<a name="2.49.1"></a>
+
+# [2.49.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/275) (2022-09-02)
+
+### Bug Fixes
+
+- [**M001**] **apm-maintenance-logs**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
 <a name="2.49.0"></a>
 
 # [2.49.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/273) (2022-09-02)
