@@ -66,9 +66,18 @@ export class SparePartReqLineResolver {
       if (data.length > 0 && data[0].contract === 'AGT') {
         await Promise.all(
           data.map(async (item) => {
-            const sql = `SELECT Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo) AS "description" FROM DUAL`;
-            const result = await ifs.query(sql, [item.contract, item.partNo]);
+            const sql = `
+              SELECT  Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo)  AS "description",
+                      Condition_Code_API.Get_Description@ifs8agt(:conditionCode)      AS "conditionCodeDesc"
+              FROM    DUAL
+            `;
+            const result = await ifs.query(sql, [
+              item.contract,
+              item.partNo,
+              item.conditionCode
+            ]);
             item.partDesc = result[0].description;
+            item.conditionCodeDesc = result[0].conditionCodeDesc;
           })
         );
       }
@@ -86,11 +95,26 @@ export class SparePartReqLineResolver {
     @Arg('releaseNo', () => Int) releaseNo: number
   ): Promise<SparePartReqLineView | null> {
     try {
-      return await SparePartReqLineView.findOneBy({
+      const data = await SparePartReqLineView.findOneBy({
         requisitionId,
         lineItemNo,
         releaseNo
       });
+      if (data?.contract === 'AGT') {
+        const sql = `
+          SELECT  Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo)  AS "description",
+                  Condition_Code_API.Get_Description@ifs8agt(:conditionCode)      AS "conditionCodeDesc"
+          FROM    DUAL
+        `;
+        const result = await ifs.query(sql, [
+          data.contract,
+          data.partNo,
+          data.conditionCode
+        ]);
+        data.partDesc = result[0].description;
+        data.conditionCodeDesc = result[0].conditionCodeDesc;
+      }
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
