@@ -146,4 +146,34 @@ export class PesananSeragamResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => [PesananSeragamView])
+  @UseMiddleware(isAuth)
+  async generatePesanan(
+    @Arg('nrp', () => String) nrp: string,
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<PesananSeragamView[] | undefined> {
+    try {
+      const exist = await PesananSeragamView.findOneBy({
+        nrp: nrp,
+        tahun: tahun,
+        periode: periode
+      });
+      if (exist) throw new Error('Data already exist!');
+      const sql = `
+        BEGIN
+          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
+        END;
+      `;
+      await PesananSeragam.query(sql, [nrp, tahun, periode]);
+      return await PesananSeragamView.findBy({
+        nrp: nrp,
+        tahun: tahun,
+        periode: periode
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
