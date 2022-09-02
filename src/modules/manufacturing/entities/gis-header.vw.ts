@@ -97,6 +97,18 @@ export class GisHeaderView extends BaseEntity {
   lotBatchNo?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'ACTUAL_WIDTH_1' })
+  actualWidth1?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EMPLOYEE_ID' })
+  employeeId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EMPLOYEE_NAME' })
+  employeeName?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 

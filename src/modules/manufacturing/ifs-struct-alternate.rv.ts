@@ -16,12 +16,14 @@ export class IfsManufStructAlternateResolver {
     if (contract === 'AGT') {
       sql = `
         SELECT   alternative_no  AS "alternativeNo",
+                 alternative_description AS "alternativeDescription",
                  state           AS "state",
                  objId           AS "objId"
         FROM     MANUF_STRUCT_ALTERNATE@ifs8agt
         where bom_type_db = :bomType
         and   part_no = :partNo
         and   contract = :contract
+        and   eng_chg_level = part_revision_api.get_latest_revision@ifs8agt(contract, part_no)
       `;
       return await ifs.query(sql, [bomType, partNo, contract]);
     } else {

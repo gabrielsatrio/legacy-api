@@ -13,10 +13,6 @@ export class ExpeditionPaidDate extends BaseEntity {
   circulationDate?: Date;
 
   @Field({ nullable: true })
-  @Column({ name: 'CIRCULATION_DATE' })
-  circulationDateBetween?: Date;
-
-  @Field({ nullable: true })
   @Column({ name: 'EXPEDITION_NAME' })
   expeditionName?: string;
 
@@ -51,4 +47,8 @@ export class ExpeditionPaidDate extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PLANT' })
   plant?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PAID_BY' })
+  paidBy?: string;
 }

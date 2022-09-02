@@ -64,7 +64,16 @@ export class ProdWarpingResolver {
     @Arg('contract') contract: string
   ): Promise<string> {
     try {
-      const sql = `select component_part as "componentPart" from prod_structure where contract = :contract and part_no = :partNo`;
+      const sql = `SELECT component_part AS "componentPart"
+      FROM   prod_structure
+      WHERE  contract = :contract
+      AND    part_no = :partno
+      AND    eng_chg_level = (SELECT MAX(eng_chg_level)
+                              FROM   prod_structure
+                              WHERE  contract = :contract
+                              AND    part_no = :partno)
+      AND    alternative_no = '*'
+      AND    bom_type_db = 'M'`;
       const result = await ifs.query(sql, [contract, partNo]);
       return result[0].componentPart;
     } catch (err) {
@@ -124,6 +133,18 @@ export class ProdWarpingResolver {
       const sql = `select GBR_PROD_WARPING_API.GET_QTY_BEAM_WARPING(:site, :dopId, :qtyOrder) as "beamWarping" FROM DUAL`;
       const result = await ifs.query(sql, [site, dopId, qtyOrder]);
       return result[0].beamWarping;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getSumQtyPerAssembly(@Arg('orderNo') orderNo: string): Promise<string> {
+    try {
+      const sql = `select sum(qty_per_assembly) as "qtyPerAssembly" from shop_material_alloc where order_no = :orderNo`;
+      const result = await ifs.query(sql, [orderNo]);
+      return result[0].qtyPerAssembly;
     } catch (err) {
       throw new Error(mapError(err));
     }
