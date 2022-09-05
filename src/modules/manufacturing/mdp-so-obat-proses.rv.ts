@@ -58,7 +58,8 @@ export class SoObatProsesResolver {
       :qtyReceive,
       :lotReceive,
       :locationReceive,
-      :lotSourceReceive);
+      :lotSourceReceive,
+      :note);
     END;
   `;
 
@@ -67,7 +68,8 @@ export class SoObatProsesResolver {
         input.qtyReceive,
         input.lotReceive,
         input.locationReceive,
-        input.lotSourceReceive
+        input.lotSourceReceive,
+        input.note
       ]);
 
       const data = await SoObatProses.findOneBy({
