@@ -40,11 +40,39 @@ export class PesananSeragamResolver {
     @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamView[] | undefined> {
     try {
-      return await PesananSeragamView.findBy({
-        nrp: nrp,
-        tahun: tahun,
-        periode: periode
-      });
+      const isAdmin = await PesananSeragamView.query(
+        `
+          SELECT vky_pesanan_seragam_api.is_admin(:nrp)
+          FROM   DUAL`,
+        [nrp]
+      );
+      const deptId = await PesananSeragamView.query(
+        `
+          SELECT atj_employee_mv_api.get_department_id(:nrp)
+          FROM DUAL`,
+        [nrp]
+      );
+      const companyOffice = await PesananSeragamView.query(
+        `
+          SELECT atj_employee_mv_api.get_company_office(:nrp)
+          FROM DUAL`,
+        [nrp]
+      );
+
+      if (isAdmin === 0) {
+        return await PesananSeragamView.findBy({
+          nrp: nrp,
+          tahun: tahun,
+          periode: periode
+        });
+      } else {
+        return await PesananSeragamView.findBy({
+          deptId: deptId,
+          plant: companyOffice,
+          tahun: tahun,
+          periode: periode
+        });
+      }
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -179,7 +207,7 @@ export class PesananSeragamResolver {
       if (exist) throw new Error('Data already exist!');
       const sql = `
         BEGIN
-          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
+          vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode);
         END;
       `;
       await PesananSeragam.query(sql, [nrp, tahun, periode]);
