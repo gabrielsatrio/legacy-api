@@ -1,3 +1,11 @@
+<a name="2.50.0"></a>
+
+# [2.50.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/277) (2022-09-05)
+
+### Features
+
+- [**M017**] **fdp**: add note receive and sync it with ifs8.
+
 <a name="2.49.1"></a>
 
 # [2.49.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/275) (2022-09-02)
