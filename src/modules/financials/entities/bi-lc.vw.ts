@@ -1,32 +1,28 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ANG_IMPT_NOTUL_V')
+@Entity('ANG_IMPT_LC_V')
 @ObjectType()
-export class NotulView extends BaseEntity {
+export class LcView extends BaseEntity {
   @Field(() => Int)
   @PrimaryColumn({ name: 'ID' })
   id!: number;
 
   @Field({ nullable: true })
-  @Column({ name: 'AJU_NO' })
-  ajuNo?: string;
+  @Column({ name: 'LC_CHARGES' })
+  lcCharges?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CURRENCY' })
+  currency?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'AMOUNT' })
+  amount?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'PAID_DATE' })
   paidDate?: Date;
-
-  @Field({ nullable: true })
-  @Column({ name: 'TOTAL_AMOUNT_PIB' })
-  totalAmountPib?: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'INVOICE_NO' })
-  invoiceNo?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'AMOUNT_INV_IMPORT' })
-  amountInvImport?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'PAID_BY' })

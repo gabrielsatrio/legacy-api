@@ -1,3 +1,51 @@
+<a name="2.49.1"></a>
+
+# [2.49.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/275) (2022-09-02)
+
+### Bug Fixes
+
+- [**M001**] **apm-maintenance-logs**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.49.0"></a>
+
+# [2.49.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/273) (2022-09-02)
+
+### Features
+
+- add new resolver: `InfoResolver`.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.48.0"></a>
+
+# [2.48.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/271) (2022-09-01)
+
+### Features
+
+- [**G001**] **bon-makan**: add query for show list.
+- [**F003**] **buku-import**: add column bankName, bankBranch, accountName in Import Book.
+- [**F003**] **buku-import**: add table LC Detail.
+- [**F003**] **buku-import**: add table PIB Detail.
+- [**P001**] **import-expedition**: add column PPN, DPP.
+
+<a name="2.47.3"></a>
+
+# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
+
+### Bug Fixes
+
+- [**M019**] **gis**: fix query for multiple category.
+
+<a name="2.47.2"></a>
+
+# [2.47.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)
+
+### Bug Fixes
+
+- [**H001**] **tagihan-mess**: fix missing parameter condition.
+
 <a name="2.47.1"></a>
 
 # [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/265) (2022-08-22)
@@ -59,7 +107,7 @@
 
 # [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
 
-### Bug fixes
+### Bug Fixes
 
 - [**M017**] **mdp**: fix automail only for AGT.
 

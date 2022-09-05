@@ -17,20 +17,12 @@ export class Notul extends BaseEntity {
   paidDate?: Date;
 
   @Field({ nullable: true })
-  @Column({ name: 'PIB_ITEMS' })
-  pibItems?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'AMOUNT' })
-  amount?: number;
+  @Column({ name: 'TOTAL_AMOUNT_PIB' })
+  totalAmountPib?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'INVOICE_NO' })
   invoiceNo?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'CURRENCY' })
-  currency?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'AMOUNT_INV_IMPORT' })
