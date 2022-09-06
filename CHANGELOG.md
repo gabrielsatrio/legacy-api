@@ -1,3 +1,11 @@
+<a name="2.51.0"></a>
+
+# [2.51.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/279) (2022-09-06)
+
+### Features
+
+- [**F003**] **buku-import**: add query sequence for notul.
+
 <a name="2.50.0"></a>
 
 # [2.50.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/277) (2022-09-05)
