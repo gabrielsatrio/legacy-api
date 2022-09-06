@@ -13,6 +13,7 @@ import {
 import { MachineMaintenanceSyncInput } from './apm-machine-maintenance-sync.in';
 import { MachineMaintenanceInput } from './apm-machine-maintenance.in';
 import { MachineMaintenance } from './entities/apm-machine-maintenance';
+import { MachineMaintenanceAgtView } from './entities/apm-machine-maintenance-agt.vw';
 import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 
 @Resolver(MachineMaintenance)
@@ -25,6 +26,18 @@ export class MachineMaintenanceResolver {
     @Arg('releaseNo') releaseNo: string
   ): Promise<MachineMaintenanceView[] | undefined> {
     try {
+      const data = await MachineMaintenance.findBy({
+        prNo: requisitionNo,
+        prLineNo: lineNo,
+        prReleaseNo: releaseNo
+      });
+      if (data.length > 0 && data[0].contract === 'AGT') {
+        return await MachineMaintenanceAgtView.findBy({
+          prNo: requisitionNo,
+          prLineNo: lineNo,
+          prReleaseNo: releaseNo
+        });
+      }
       return await MachineMaintenanceView.findBy({
         prNo: requisitionNo,
         prLineNo: lineNo,
@@ -42,6 +55,12 @@ export class MachineMaintenanceResolver {
     @Arg('machineId') machineId: string
   ): Promise<MachineMaintenanceView[] | undefined> {
     try {
+      if (contract === 'AGT') {
+        return await MachineMaintenanceAgtView.find({
+          where: { contract, machineId, categoryId: 'SNP' },
+          order: { maintenanceId: 'ASC' }
+        });
+      }
       return await MachineMaintenanceView.find({
         where: { contract, machineId, categoryId: 'SNP' },
         order: { maintenanceId: 'ASC' }
@@ -64,10 +83,14 @@ export class MachineMaintenanceResolver {
         maintenanceId: res[0].newId
       });
       await MachineMaintenance.save(data);
-      const result = await MachineMaintenanceView.findOneBy({
+      if (input.contract === 'AGT') {
+        return await MachineMaintenanceAgtView.findOneBy({
+          maintenanceId: res[0].newId
+        });
+      }
+      return await MachineMaintenanceView.findOneBy({
         maintenanceId: res[0].newId
       });
-      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -84,10 +107,14 @@ export class MachineMaintenanceResolver {
       if (!data) throw new Error('No data found.');
       MachineMaintenance.merge(data, { ...input });
       const response = await MachineMaintenance.save(data);
-      const result = await MachineMaintenanceView.findOneBy({
+      if (input.contract === 'AGT') {
+        return await MachineMaintenanceAgtView.findOneBy({
+          maintenanceId: response.maintenanceId
+        });
+      }
+      return await MachineMaintenanceView.findOneBy({
         maintenanceId: response.maintenanceId
       });
-      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -97,10 +124,16 @@ export class MachineMaintenanceResolver {
   @UseMiddleware(isAuth)
   async deleteMachMaintenance(
     @Arg('maintenanceId', () => Int) maintenanceId: number
-  ): Promise<MachineMaintenanceView | undefined> {
+  ): Promise<MachineMaintenanceView | null> {
     try {
-      const data = await MachineMaintenanceView.findOneBy({ maintenanceId });
+      let data;
+      data = await MachineMaintenance.findOneBy({ maintenanceId });
       if (!data) throw new Error('No data found.');
+      if (data?.contract === 'AGT') {
+        data = await MachineMaintenanceAgtView.findOneBy({ maintenanceId });
+      } else {
+        data = await MachineMaintenanceView.findOneBy({ maintenanceId });
+      }
       await MachineMaintenance.delete({ maintenanceId });
       return data;
     } catch (err) {
@@ -162,10 +195,14 @@ export class MachineMaintenanceResolver {
         input.newQuantity,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
-      const result = await MachineMaintenanceView.findOneBy({
+      if (input.contract === 'AGT') {
+        return await MachineMaintenanceAgtView.findOneBy({
+          maintenanceId: res[0] as number
+        });
+      }
+      return await MachineMaintenanceView.findOneBy({
         maintenanceId: res[0] as number
       });
-      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
