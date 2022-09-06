@@ -2,7 +2,7 @@
 
 # [2.50.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/277) (2022-09-05)
 
-### Feature
+### Features
 
 - [**M017**] **fdp**: add note receive and sync it with ifs8.
 
