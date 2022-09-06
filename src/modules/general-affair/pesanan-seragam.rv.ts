@@ -10,10 +10,18 @@ import {
 } from 'type-graphql';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { PesananSeragamView } from './entities/pesanan-seragam.vw';
-import { PesananSeragamInput } from './pesanan-seragam.in';
-
 @Resolver(PesananSeragam)
 export class PesananSeragamResolver {
+  @Query(() => [PesananSeragamView])
+  @UseMiddleware(isAuth)
+  async getAllPesananSeragam(): Promise<PesananSeragamView[] | undefined> {
+    try {
+      return await PesananSeragamView.find();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [PesananSeragamView])
   @UseMiddleware(isAuth)
   async getPesananSeragam(
@@ -32,6 +40,62 @@ export class PesananSeragamResolver {
     }
   }
 
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async isAdmin(
+    @Arg('nrp', () => String) nrp: string
+  ): Promise<boolean | undefined> {
+    try {
+      const data = await PesananSeragamView.query(
+        `
+          SELECT vky_pesanan_seragam_api.is_admin(:nrp) as "value"
+          FROM   DUAL`,
+        [nrp]
+      );
+      return data[0].value === 1 ? true : false;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  async getDeptId(
+    @Arg('nrp', () => String) nrp: string
+  ): Promise<string | undefined> {
+    try {
+      const data = await PesananSeragamView.query(
+        `
+          SELECT atj_employee_mv_api.get_department_id(:nrp) as "value"
+          FROM   DUAL
+        `,
+        [nrp]
+      );
+      return data[0].value;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  async getCompanyOffice(
+    @Arg('nrp', () => String) nrp: string
+  ): Promise<string | undefined> {
+    try {
+      const data = await PesananSeragamView.query(
+        `
+          SELECT atj_employee_mv_api.get_company_office(:nrp) as "value"
+          FROM   DUAL
+        `,
+        [nrp]
+      );
+      return data[0].value;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [PesananSeragamView])
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
@@ -40,26 +104,11 @@ export class PesananSeragamResolver {
     @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamView[] | undefined> {
     try {
-      const isAdmin = await PesananSeragamView.query(
-        `
-          SELECT vky_pesanan_seragam_api.is_admin(:nrp)
-          FROM   DUAL`,
-        [nrp]
-      );
-      const deptId = await PesananSeragamView.query(
-        `
-          SELECT atj_employee_mv_api.get_department_id(:nrp)
-          FROM DUAL`,
-        [nrp]
-      );
-      const companyOffice = await PesananSeragamView.query(
-        `
-          SELECT atj_employee_mv_api.get_company_office(:nrp)
-          FROM DUAL`,
-        [nrp]
-      );
+      const isAdmin = await this.isAdmin(nrp);
+      const deptId = await this.getDeptId(nrp);
+      const companyOffice = await this.getCompanyOffice(nrp);
 
-      if (isAdmin === 0) {
+      if (!isAdmin) {
         return await PesananSeragamView.findBy({
           nrp: nrp,
           tahun: tahun,
@@ -67,8 +116,8 @@ export class PesananSeragamResolver {
         });
       } else {
         return await PesananSeragamView.findBy({
-          deptId: deptId,
-          plant: companyOffice,
+          deptId: deptId?.valueOf(),
+          plant: companyOffice?.valueOf(),
           tahun: tahun,
           periode: periode
         });
@@ -78,15 +127,23 @@ export class PesananSeragamResolver {
     }
   }
 
-  @Mutation(() => PesananSeragam)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async createPesananSeragam(
-    @Arg('input') input: PesananSeragamInput
-  ): Promise<PesananSeragam | undefined> {
+    @Arg('nrp', () => String) nrp: string,
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<boolean | undefined> {
     try {
-      const data = PesananSeragam.create({ ...input });
-      await PesananSeragam.save(data);
-      return data;
+      await PesananSeragam.query(
+        `
+        BEGIN
+          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
+        END;
+        `,
+        [nrp, tahun, periode]
+      );
+      return true;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -96,6 +153,7 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async updatePesananSeragam(
     @Arg('id', () => Int) id: number,
+    @Arg('idJenis', () => Int) idJenis: number,
     @Arg('ukuranKemeja', () => String) ukuranKemeja: string,
     @Arg('ukuranCelana', () => Int) ukuranCelana: number,
     @Arg('jumlahKemeja', () => Int) jumlahKemeja: number,
@@ -105,13 +163,15 @@ export class PesananSeragamResolver {
     try {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist');
+      if (data.isLocked) throw new Error('Data already locked by GA');
       const sql = `
         BEGIN
-          vky_pesanan_seragam_api.update_pesanan_seragam(:id, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
+          vky_pesanan_seragam_api.update_pesanan_seragam(:id, :idJenis, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
         END;
       `;
       await PesananSeragam.query(sql, [
         id,
+        idJenis,
         ukuranKemeja,
         ukuranCelana,
         jumlahKemeja,
@@ -191,31 +251,21 @@ export class PesananSeragamResolver {
     }
   }
 
-  @Mutation(() => [PesananSeragamView])
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async generatePesanan(
     @Arg('nrp', () => String) nrp: string,
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
-  ): Promise<PesananSeragamView[] | undefined> {
+  ): Promise<boolean | undefined> {
     try {
-      const exist = await PesananSeragamView.findOneBy({
-        nrp: nrp,
-        tahun: tahun,
-        periode: periode
-      });
-      if (exist) throw new Error('Data already exist!');
       const sql = `
         BEGIN
           vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode);
         END;
       `;
       await PesananSeragam.query(sql, [nrp, tahun, periode]);
-      return await PesananSeragamView.findBy({
-        nrp: nrp,
-        tahun: tahun,
-        periode: periode
-      });
+      return true;
     } catch (err) {
       throw new Error(mapError(err));
     }

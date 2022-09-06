@@ -37,6 +37,10 @@ export class PesananSeragamView extends BaseEntity {
   department!: string;
 
   @Field()
+  @Column({ name: 'ID_JENIS' })
+  idJenis!: number;
+
+  @Field()
   @Column({ name: 'JENIS' })
   jenis!: string;
 

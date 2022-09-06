@@ -131,14 +131,14 @@ export class DefaultSeragamResolver {
         periode: periode
       });
       if (!data) throw new Error('Data not exist!');
-      await DefaultSeragam.createQueryBuilder()
-        .update(DefaultSeragam)
-        .set({ isLocked: data.isLocked ? false : true })
-        .where('tahun = :tahun AND periode = :periode', {
-          tahun: tahun,
-          periode: periode
-        })
-        .execute();
+      await DefaultSeragam.query(
+        `
+          BEGIN
+            vky_default_seragam_api.toggle_lock(:tahun, :periode);
+          END;
+        `,
+        [tahun, periode]
+      );
       return true;
     } catch (err) {
       throw new Error(mapError(err));

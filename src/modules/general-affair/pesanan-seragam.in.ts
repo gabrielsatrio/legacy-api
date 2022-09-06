@@ -13,8 +13,8 @@ export class PesananSeragamInput implements Partial<PesananSeragam> {
   nrp!: string;
 
   @Field()
-  @MaxLength(20)
-  jenis!: string;
+  @IsNumber()
+  idJenis!: number;
 
   @Field()
   @MaxLength(10)
