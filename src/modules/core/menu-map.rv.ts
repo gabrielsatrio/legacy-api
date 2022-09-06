@@ -10,7 +10,7 @@ export class MenuMapResolver {
   @UseMiddleware(isAuth)
   async getMenuMap(): Promise<MenuMap[] | null> {
     try {
-      const sql = `SELECT DISTINCT department AS "department" FROM atj_app_menu_map`;
+      const sql = `SELECT DISTINCT department AS "department" FROM atj_app_menu_map ORDER BY 1`;
       return await ifs.query(sql);
     } catch (err) {
       throw new Error(mapError(err));
