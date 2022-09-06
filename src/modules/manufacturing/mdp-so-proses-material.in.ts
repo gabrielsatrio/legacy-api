@@ -45,4 +45,12 @@ export class SoObatProsesMaterialInput
   @Field({ nullable: true })
   @IsNumber()
   berat?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  beratAwal?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  beratNet?: number;
 }
