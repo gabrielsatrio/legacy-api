@@ -76,7 +76,9 @@ export class SoObatProsesResolver {
       :orderNo,
       :lineItemNo,
       :berat,
-      :qtyRequired);
+      :qtyRequired,
+      :beratAwal,
+      :beratNet);
     END;
   `;
 
@@ -85,7 +87,9 @@ export class SoObatProsesResolver {
         input.orderNo,
         input.lineItemNo,
         input.berat,
-        input.qtyRequired
+        input.qtyRequired,
+        input.beratAwal,
+        input.beratNet
       ]);
 
       const data = await SoObatProsesMaterial.findOneBy({
