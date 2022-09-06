@@ -1,3 +1,11 @@
+<a name="2.52.0"></a>
+
+# [2.52.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/281) (2022-09-06)
+
+### Features
+
+- [**M017**] **mdp**: add weighting netto and bruto + sync timbangan.
+
 <a name="2.51.0"></a>
 
 # [2.51.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/279) (2022-09-06)
