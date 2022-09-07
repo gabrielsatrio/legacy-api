@@ -1,3 +1,11 @@
+<a name="2.53.0"></a>
+
+# [2.53.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/285) (2022-09-07)
+
+### Features
+
+- [**F003**] **buku-import**: add column voucher text & ship (invoice payment).
+
 <a name="2.52.1"></a>
 
 # [2.52.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/283) (2022-09-06)
