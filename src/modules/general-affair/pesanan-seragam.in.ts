@@ -21,8 +21,8 @@ export class PesananSeragamInput implements Partial<PesananSeragam> {
   ukuranKemeja!: string;
 
   @Field()
-  @IsNumber()
-  ukuranCelana!: number;
+  @MaxLength(10)
+  ukuranCelana!: string;
 
   @Field()
   @IsNumber()

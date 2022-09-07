@@ -10,6 +10,7 @@ import {
 } from 'type-graphql';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { PesananSeragamView } from './entities/pesanan-seragam.vw';
+import { PesananSeragamInput } from './pesanan-seragam.in';
 @Resolver(PesananSeragam)
 export class PesananSeragamResolver {
   @Query(() => [PesananSeragamView])
@@ -23,14 +24,16 @@ export class PesananSeragamResolver {
   }
 
   @Query(() => [PesananSeragamView])
-  @UseMiddleware(isAuth)
+  // @UseMiddleware(isAuth)
   async getPesananSeragam(
+    @Arg('deptId', () => String) deptId: string,
     @Arg('plant', () => String) plant: string,
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamView[] | undefined> {
     try {
       return await PesananSeragamView.findBy({
+        deptId: deptId,
         plant: plant,
         tahun: tahun,
         periode: periode
@@ -116,8 +119,8 @@ export class PesananSeragamResolver {
         });
       } else {
         return await PesananSeragamView.findBy({
-          deptId: deptId?.valueOf(),
-          plant: companyOffice?.valueOf(),
+          deptId: deptId,
+          plant: companyOffice,
           tahun: tahun,
           periode: periode
         });
@@ -127,23 +130,22 @@ export class PesananSeragamResolver {
     }
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => PesananSeragam)
   @UseMiddleware(isAuth)
   async createPesananSeragam(
-    @Arg('nrp', () => String) nrp: string,
-    @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
-  ): Promise<boolean | undefined> {
+    @Arg('input') input: PesananSeragamInput
+  ): Promise<PesananSeragam | undefined> {
     try {
-      await PesananSeragam.query(
-        `
-        BEGIN
-          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
-        END;
-        `,
-        [nrp, tahun, periode]
-      );
-      return true;
+      const exist = await PesananSeragam.findOneBy({
+        nrp: input.nrp,
+        idJenis: input.idJenis,
+        tahun: input.tahun,
+        periode: input.periode
+      });
+      if (exist) throw new Error('Data already exist');
+      const result = PesananSeragam.create({ ...input });
+      await PesananSeragam.save(result);
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -155,7 +157,7 @@ export class PesananSeragamResolver {
     @Arg('id', () => Int) id: number,
     @Arg('idJenis', () => Int) idJenis: number,
     @Arg('ukuranKemeja', () => String) ukuranKemeja: string,
-    @Arg('ukuranCelana', () => Int) ukuranCelana: number,
+    @Arg('ukuranCelana', () => String) ukuranCelana: string,
     @Arg('jumlahKemeja', () => Int) jumlahKemeja: number,
     @Arg('jumlahCelana', () => Int) jumlahCelana: number,
     @Arg('keterangan', () => String) keterangan: string

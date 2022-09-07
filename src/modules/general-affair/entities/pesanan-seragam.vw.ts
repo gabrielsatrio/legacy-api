@@ -50,7 +50,7 @@ export class PesananSeragamView extends BaseEntity {
 
   @Field()
   @Column({ name: 'UKURAN_CELANA' })
-  ukuranCelana!: number;
+  ukuranCelana!: string;
 
   @Field()
   @Column({ name: 'JUMLAH_KEMEJA' })
