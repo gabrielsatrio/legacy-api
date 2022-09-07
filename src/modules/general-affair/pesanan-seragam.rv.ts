@@ -24,7 +24,7 @@ export class PesananSeragamResolver {
   }
 
   @Query(() => [PesananSeragamView])
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async getPesananSeragam(
     @Arg('deptId', () => String) deptId: string,
     @Arg('plant', () => String) plant: string,
