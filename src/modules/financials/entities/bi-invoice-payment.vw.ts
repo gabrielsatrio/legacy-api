@@ -34,7 +34,7 @@ export class InvoicePaymentView extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'ETD' })
-  etd?: string;
+  etd?: Date;
 
   @Field({ nullable: true })
   @Column({ name: 'BL_DATE' })
@@ -55,6 +55,14 @@ export class InvoicePaymentView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })
   note?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'VOUCHER_TEXT' })
+  voucherText?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SHIP' })
+  ship?: string;
 
   @Field()
   @Column({ name: 'IMPT_ID' })

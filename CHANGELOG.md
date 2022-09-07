@@ -1,3 +1,20 @@
+<a name="2.53.0"></a>
+
+# [2.53.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/285) (2022-09-07)
+
+### Features
+
+- [**F003**] **buku-import**: add column voucher text & ship (invoice payment).
+
+<a name="2.52.1"></a>
+
+# [2.52.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/283) (2022-09-06)
+
+### Bug Fixes
+
+- **departments**: fix an issue related to resolver is not allowed to return null.
+- **menu-map**: sorted the data.
+
 <a name="2.52.0"></a>
 
 # [2.52.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/281) (2022-09-06)

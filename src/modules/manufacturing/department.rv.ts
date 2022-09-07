@@ -9,15 +9,23 @@ export class DepartmentResolver {
   @Query(() => [DepartmentView])
   @UseMiddleware(isAuth)
   async getAllDepartments(): Promise<DepartmentView[] | undefined> {
-    return await DepartmentView.find({ order: { departmentId: 'ASC' } });
+    try {
+      return await DepartmentView.find({ order: { departmentId: 'ASC' } });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
-  @Query(() => DepartmentView)
+  @Query(() => DepartmentView, { nullable: true })
   @UseMiddleware(isAuth)
   async getDepartment(
     @Arg('departmentId') departmentId: string
   ): Promise<DepartmentView | null> {
-    return await DepartmentView.findOneBy({ departmentId });
+    try {
+      return await DepartmentView.findOneBy({ departmentId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 
   @Query(() => [DepartmentView])
@@ -32,8 +40,7 @@ export class DepartmentResolver {
         FROM     atj_prod_department_v
         WHERE    contract = :contract
       `;
-      const results = await ifs.query(sql, [contract]);
-      return results;
+      return await ifs.query(sql, [contract]);
     } catch (err) {
       throw new Error(mapError(err));
     }

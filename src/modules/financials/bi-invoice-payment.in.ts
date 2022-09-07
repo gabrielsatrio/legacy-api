@@ -27,7 +27,7 @@ export class InvoicePaymentInput implements Partial<InvoicePayment> {
   lastShipmentDate?: Date;
 
   @Field({ nullable: true })
-  etd?: string;
+  etd?: Date;
 
   @Field({ nullable: true })
   blDate?: Date;
@@ -43,6 +43,12 @@ export class InvoicePaymentInput implements Partial<InvoicePayment> {
 
   @Field({ nullable: true })
   note?: string;
+
+  @Field({ nullable: true })
+  voucherText?: string;
+
+  @Field({ nullable: true })
+  ship?: string;
 
   @Field()
   imptId!: number;
