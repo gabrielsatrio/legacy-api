@@ -20,7 +20,11 @@ export class SoObatProsesReceiveInput implements Partial<SoObatProses> {
   @MaxLength(200)
   locationReceive!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @MaxLength(200)
   lotSourceReceive?: string;
+
+  @Field({ nullable: true })
+  @MaxLength(200)
+  note?: string;
 }

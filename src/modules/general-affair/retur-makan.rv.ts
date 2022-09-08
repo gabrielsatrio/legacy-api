@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { ReturMakan } from './entities/retur-makan';
 import { ReturMakanView } from './entities/retur-makan.vw';
 import { ReturMakanInput } from './retur-makan.in';
@@ -124,5 +125,17 @@ export class ReturMakanResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [ReturMakanView])
+  @UseMiddleware(isAuth)
+  async getReturMakanByCreated(
+    @Arg('createdBy') createdBy: string
+  ): Promise<ReturMakanView[] | undefined> {
+    return await ReturMakanView.find({
+      where: {
+        createdBy: Like(createdBy)
+      }
+    });
   }
 }

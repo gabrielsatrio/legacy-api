@@ -1,3 +1,92 @@
+<a name="2.53.1"></a>
+
+# [2.53.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/287) (2022-09-07)
+
+### Features
+
+- [**M017**] **mdp**: ami revision.
+
+<a name="2.53.0"></a>
+
+# [2.53.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/285) (2022-09-07)
+
+### Features
+
+- [**F003**] **buku-import**: add column voucher text & ship (invoice payment).
+
+<a name="2.52.1"></a>
+
+# [2.52.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/283) (2022-09-06)
+
+### Bug Fixes
+
+- **departments**: fix an issue related to resolver is not allowed to return null.
+- **menu-map**: sorted the data.
+
+<a name="2.52.0"></a>
+
+# [2.52.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/281) (2022-09-06)
+
+### Features
+
+- [**M017**] **mdp**: add weighting netto and bruto + sync timbangan.
+
+<a name="2.51.0"></a>
+
+# [2.51.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/279) (2022-09-06)
+
+### Features
+
+- [**F003**] **buku-import**: add query sequence for notul.
+
+<a name="2.50.0"></a>
+
+# [2.50.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/277) (2022-09-05)
+
+### Features
+
+- [**M017**] **fdp**: add note receive and sync it with ifs8.
+
+<a name="2.49.1"></a>
+
+# [2.49.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/275) (2022-09-02)
+
+### Bug Fixes
+
+- [**M001**] **apm-maintenance-logs**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.49.0"></a>
+
+# [2.49.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/273) (2022-09-02)
+
+### Features
+
+- add new resolver: `InfoResolver`.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.48.0"></a>
+
+# [2.48.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/271) (2022-09-01)
+
+### Features
+
+- [**G001**] **bon-makan**: add query for show list.
+- [**F003**] **buku-import**: add column bankName, bankBranch, accountName in Import Book.
+- [**F003**] **buku-import**: add table LC Detail.
+- [**F003**] **buku-import**: add table PIB Detail.
+- [**P001**] **import-expedition**: add column PPN, DPP.
+
+<a name="2.47.3"></a>
+
+# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
+
+### Bug Fixes
+
+- [**M019**] **gis**: fix query for multiple category.
+
 <a name="2.47.2"></a>
 
 # [2.47.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)

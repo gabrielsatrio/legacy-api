@@ -50,6 +50,14 @@ export class SoObatProsesMaterial extends BaseEntity {
   @Column({ name: 'BERAT' })
   berat?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'BERAT_AWAL' })
+  beratAwal?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BERAT_NET' })
+  beratNet?: number;
+
   @Field()
   @Column({ name: 'QTY_REQUIRED' })
   qtyRequired!: number;

@@ -45,22 +45,14 @@ export class ImportBook extends BaseEntity {
   lcNo?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'PAID_BY' })
-  paidBy?: string;
+  @Column({ name: 'ACCOUNT_NAME' })
+  accountName?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'LC_CHARGES' })
-  lcCharges?: string;
+  @Column({ name: 'BANK_NAME' })
+  bankName?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'CURRENCY' })
-  currency?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'AMOUNT' })
-  amount?: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'PAID_DATE' })
-  paidDate?: Date;
+  @Column({ name: 'BANK_BRANCH' })
+  bankBranch?: string;
 }
