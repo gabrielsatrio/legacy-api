@@ -1,3 +1,11 @@
+<a name="2.53.2"></a>
+
+# [2.53.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/289) (2022-09-08)
+
+### Features
+
+- [**M017**] **mdp**: ami revision.
+
 <a name="2.53.1"></a>
 
 # [2.53.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/287) (2022-09-07)
