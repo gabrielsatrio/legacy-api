@@ -175,6 +175,11 @@ export class PesananSeragamResolver {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist');
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
+      const exist = await PesananSeragam.findOneBy({
+        nrp: data.nrp,
+        idJenis: idJenis
+      });
+      if (exist) throw new Error('Data already exist');
       const sql = `
         BEGIN
           vky_pesanan_seragam_api.update_pesanan_seragam(:id, :idJenis, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
