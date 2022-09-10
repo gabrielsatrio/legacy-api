@@ -28,13 +28,13 @@ export class PesananSeragamView extends BaseEntity {
   @Column({ name: 'PLANT' })
   plant!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'DEPT_ID' })
-  deptId!: string;
+  deptId?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'DEPARTMENT' })
-  department!: string;
+  department?: string;
 
   @Field()
   @Column({ name: 'ID_JENIS' })

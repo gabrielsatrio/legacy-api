@@ -9,6 +9,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { PesananSeragam } from './entities/pesanan-seragam';
+import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
 import { PesananSeragamView } from './entities/pesanan-seragam.vw';
 import { PesananSeragamInput } from './pesanan-seragam.in';
 @Resolver(PesananSeragam)
@@ -136,6 +137,12 @@ export class PesananSeragamResolver {
     @Arg('input') input: PesananSeragamInput
   ): Promise<PesananSeragam | undefined> {
     try {
+      const data = await DefaultSeragamView.findOneBy({
+        tahun: input.tahun,
+        periode: input.periode
+      });
+      if (!data) throw new Error('Data seragam belum dibuat GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const exist = await PesananSeragam.findOneBy({
         nrp: input.nrp,
         idJenis: input.idJenis,
@@ -143,6 +150,8 @@ export class PesananSeragamResolver {
         periode: input.periode
       });
       if (exist) throw new Error('Data already exist');
+      if (input.idJenis == 1 && input.periode != 1)
+        throw new Error('Seragam holding hanya untuk periode 1');
       const result = PesananSeragam.create({ ...input });
       await PesananSeragam.save(result);
       return result;
@@ -165,7 +174,7 @@ export class PesananSeragamResolver {
     try {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist');
-      if (data.isLocked) throw new Error('Data already locked by GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
         BEGIN
           vky_pesanan_seragam_api.update_pesanan_seragam(:id, :idJenis, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
@@ -194,6 +203,7 @@ export class PesananSeragamResolver {
     try {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist!');
+      if (data.isLocked) throw new Error('Data already locked by GA');
       await PesananSeragam.delete({ id });
       return true;
     } catch (err) {
@@ -261,10 +271,68 @@ export class PesananSeragamResolver {
     @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
     try {
+      const data = await DefaultSeragamView.findOneBy({
+        tahun: tahun,
+        periode: periode
+      });
+      if (!data) throw new Error('Data seragam belum dibuat GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
         BEGIN
           vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode);
         END;
+      `;
+      await PesananSeragam.query(sql, [nrp, tahun, periode]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generatePesananPlant(
+    @Arg('plant', () => String) plant: string,
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<boolean | undefined> {
+    try {
+      const data = await DefaultSeragamView.findOneBy({
+        tahun: tahun,
+        periode: periode
+      });
+      if (!data) throw new Error('Data seragam belum dibuat GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
+      const sql = `
+      BEGIN
+        vky_pesanan_seragam_api.generate_pesanan_plant(:plant, :tahun, :periode);
+      END;
+      `;
+      await PesananSeragam.query(sql, [plant, tahun, periode]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generatePesananEmp(
+    @Arg('nrp', () => String) nrp: string,
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
+  ): Promise<boolean | undefined> {
+    try {
+      const data = await DefaultSeragamView.findOneBy({
+        tahun: tahun,
+        periode: periode
+      });
+      if (!data) throw new Error('Data seragam belum dibuat GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
+      const sql = `
+      BEGIN
+        vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
+      END;
       `;
       await PesananSeragam.query(sql, [nrp, tahun, periode]);
       return true;
