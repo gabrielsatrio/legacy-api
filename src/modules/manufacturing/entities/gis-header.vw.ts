@@ -112,6 +112,14 @@ export class GisHeaderView extends BaseEntity {
   @Column({ name: 'NOTES' })
   notes?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'MC_NO_2' })
+  mcNo2?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SIDE_2' })
+  side2?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
