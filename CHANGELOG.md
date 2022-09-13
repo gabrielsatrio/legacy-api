@@ -1,3 +1,11 @@
+<a name="2.55.0"></a>
+
+# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-13)
+
+### Features
+
+- [**G002**] **gap**: feature pesanan seragam.
+
 <a name="2.54.0"></a>
 
 # [2.54.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/291) (2022-09-13)
