@@ -101,4 +101,10 @@ export class GisHeaderInput implements Partial<GisHeader> {
 
   @Field({ nullable: true })
   notes?: string;
+
+  @Field({ nullable: true })
+  mcNo2?: string;
+
+  @Field({ nullable: true })
+  side2?: string;
 }
