@@ -10,30 +10,31 @@ import {
 } from 'type-graphql';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
+import { PesananSeragamWarpView } from './entities/pesanan-seragam-warp.vw';
 import { PesananSeragamView } from './entities/pesanan-seragam.vw';
 import { PesananSeragamInput } from './pesanan-seragam.in';
 @Resolver(PesananSeragam)
 export class PesananSeragamResolver {
-  @Query(() => [PesananSeragamView])
+  @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
-  async getAllPesananSeragam(): Promise<PesananSeragamView[] | undefined> {
+  async getAllPesananSeragam(): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      return await PesananSeragamView.find();
+      return await PesananSeragamWarpView.find();
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [PesananSeragamView])
+  @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
   async getPesananSeragam(
     @Arg('deptId', () => String) deptId: string,
     @Arg('plant', () => String) plant: string,
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
-  ): Promise<PesananSeragamView[] | undefined> {
+  ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      return await PesananSeragamView.findBy({
+      return await PesananSeragamWarpView.findBy({
         deptId: deptId,
         plant: plant,
         tahun: tahun,
@@ -100,26 +101,25 @@ export class PesananSeragamResolver {
     }
   }
 
-  @Query(() => [PesananSeragamView])
+  @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
     @Arg('nrp', () => String) nrp: string,
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
-  ): Promise<PesananSeragamView[] | undefined> {
+  ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
       const isAdmin = await this.isAdmin(nrp);
       const deptId = await this.getDeptId(nrp);
       const companyOffice = await this.getCompanyOffice(nrp);
-
       if (!isAdmin) {
-        return await PesananSeragamView.findBy({
+        return await PesananSeragamWarpView.findBy({
           nrp: nrp,
           tahun: tahun,
           periode: periode
         });
       } else {
-        return await PesananSeragamView.findBy({
+        return await PesananSeragamWarpView.findBy({
           deptId: deptId,
           plant: companyOffice,
           tahun: tahun,
