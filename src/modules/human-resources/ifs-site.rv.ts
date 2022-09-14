@@ -1,10 +1,10 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Query, Resolver, UseMiddleware } from 'type-graphql';
-import { SiteTab } from './entities/ifs-contract';
+import { SiteTab } from './entities/ifs-site';
 
 @Resolver(SiteTab)
-export class IfsContractResolver {
+export class IfsSiteResolver {
   @Query(() => [SiteTab])
   @UseMiddleware(isAuth)
   async getAllSite(): Promise<SiteTab[] | undefined> {
