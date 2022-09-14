@@ -21,8 +21,8 @@ export class PesananSeragamWarpView extends BaseEntity {
   grade!: string;
 
   @Field()
-  @Column({ name: 'PLANT' })
-  plant!: string;
+  @Column({ name: 'CONTRACT' })
+  contract!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'DEPT_ID' })

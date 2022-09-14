@@ -36,7 +36,7 @@ export class PesananSeragamResolver {
     try {
       return await PesananSeragamWarpView.findBy({
         deptId: deptId,
-        plant: plant,
+        contract: plant,
         tahun: tahun,
         periode: periode
       });
@@ -121,7 +121,7 @@ export class PesananSeragamResolver {
       } else {
         return await PesananSeragamWarpView.findBy({
           deptId: deptId,
-          plant: companyOffice,
+          contract: companyOffice,
           tahun: tahun,
           periode: periode
         });
