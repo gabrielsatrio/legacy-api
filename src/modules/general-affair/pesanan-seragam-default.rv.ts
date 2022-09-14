@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import {
@@ -9,7 +10,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { DefaultSeragam } from './entities/pesanan-seragam-default';
-import { DefaultSeragamDetailView } from './entities/pesanan-seragam-default-detail.vw';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
 import { DefaultSeragamInput } from './pesanan-seragam-default.in';
 
@@ -20,22 +20,6 @@ export class DefaultSeragamResolver {
   async getAllDefaultSeragam(): Promise<DefaultSeragamView[] | undefined> {
     try {
       return await DefaultSeragamView.find();
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => [DefaultSeragamDetailView])
-  @UseMiddleware(isAuth)
-  async getDefaultSeragam(
-    @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
-  ): Promise<DefaultSeragamDetailView[] | undefined> {
-    try {
-      return await DefaultSeragamDetailView.findBy({
-        tahun: tahun,
-        periode: periode
-      });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -112,7 +96,7 @@ export class DefaultSeragamResolver {
         periode: periode
       });
       if (!exist) throw new Error('Data not exist!');
-      await DefaultSeragam.delete({ tahun: tahun, periode: periode });
+      await DefaultSeragam.delete({ tahun, periode });
       return true;
     } catch (err) {
       throw new Error(mapError(err));
@@ -131,7 +115,7 @@ export class DefaultSeragamResolver {
         periode: periode
       });
       if (!data) throw new Error('Data not exist!');
-      await DefaultSeragam.query(
+      await ifs.query(
         `
           BEGIN
             vky_default_seragam_api.toggle_lock(:tahun, :periode);
@@ -163,7 +147,7 @@ export class DefaultSeragamResolver {
           VKY_DEFAULT_SERAGAM_API.GENERATE_DEFAULT_SERAGAM(:tahun, :periode, :createdBy);
         END;
       `;
-      await DefaultSeragam.query(sql, [tahun, periode, createdBy]);
+      await ifs.query(sql, [tahun, periode, createdBy]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));

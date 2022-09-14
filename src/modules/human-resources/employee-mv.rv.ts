@@ -1,3 +1,4 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { getEmail } from '@/utils/get-email';
 import { mapError } from '@/utils/map-error';
@@ -90,6 +91,44 @@ export class EmployeeMaterializedViewResolver {
         )
       );
       return employees;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  static async getDeptId(
+    @Arg('nrp', () => String) nrp: string
+  ): Promise<string | undefined> {
+    try {
+      const data = await ifs.query(
+        `
+          SELECT atj_employee_mv_api.get_department_id(:nrp) as "value"
+          FROM   DUAL
+        `,
+        [nrp]
+      );
+      return data[0].value;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  static async getCompanyOffice(
+    @Arg('nrp', () => String) nrp: string
+  ): Promise<string | undefined> {
+    try {
+      const data = await ifs.query(
+        `
+          SELECT atj_employee_mv_api.get_company_office(:nrp) as "value"
+          FROM   DUAL
+        `,
+        [nrp]
+      );
+      return data[0].value;
     } catch (err) {
       throw new Error(mapError(err));
     }
