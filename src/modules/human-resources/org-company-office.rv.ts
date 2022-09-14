@@ -1,11 +1,12 @@
+import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Query, Resolver } from 'type-graphql';
+import { Query, Resolver, UseMiddleware } from 'type-graphql';
 import { CompanyOfficeView } from './entities/org-company-office.vw';
 
 @Resolver(CompanyOfficeView)
 export class OrgCompanyOfficeViewResolver {
   @Query(() => [CompanyOfficeView])
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async getCompanyOffice(): Promise<CompanyOfficeView[] | undefined> {
     try {
       return await CompanyOfficeView.find();
