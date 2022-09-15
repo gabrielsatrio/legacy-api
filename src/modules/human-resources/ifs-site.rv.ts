@@ -9,7 +9,7 @@ export class IfsSiteResolver {
   @UseMiddleware(isAuth)
   async getAllSite(): Promise<SiteTab[] | undefined> {
     try {
-      return await SiteTab.find();
+      return await SiteTab.find({ order: { contract: 'ASC' } });
     } catch (err) {
       throw new Error(mapError(err));
     }
