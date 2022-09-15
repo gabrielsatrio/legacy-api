@@ -99,15 +99,15 @@ export class EmployeeMaterializedViewResolver {
   @Query(() => String)
   @UseMiddleware(isAuth)
   static async getDeptId(
-    @Arg('nrp', () => String) nrp: string
+    @Arg('employeeId', () => String) employeeId: string
   ): Promise<string | undefined> {
     try {
       const data = await ifs.query(
         `
-          SELECT atj_employee_mv_api.get_department_id(:nrp) as "value"
+          SELECT atj_employee_mv_api.get_department_id(:employeeId) as "value"
           FROM   DUAL
         `,
-        [nrp]
+        [employeeId]
       );
       return data[0].value;
     } catch (err) {
@@ -118,15 +118,15 @@ export class EmployeeMaterializedViewResolver {
   @Query(() => String)
   @UseMiddleware(isAuth)
   static async getCompanyOffice(
-    @Arg('nrp', () => String) nrp: string
+    @Arg('employeeId', () => String) employeeId: string
   ): Promise<string | undefined> {
     try {
       const data = await ifs.query(
         `
-          SELECT atj_employee_mv_api.get_company_office(:nrp) as "value"
+          SELECT atj_employee_mv_api.get_company_office(:employeeId) as "value"
           FROM   DUAL
         `,
-        [nrp]
+        [employeeId]
       );
       return data[0].value;
     } catch (err) {
