@@ -50,6 +50,10 @@ export class SoObatProses extends BaseEntity {
   @Column({ name: 'QTY_DRUM' })
   qtyDrum?: number;
 
+  @Field()
+  @Column({ name: 'DESCRIPTION' })
+  description!: string;
+
   @Field(() => [SoObatProsesMaterial], { nullable: true })
   @OneToMany(
     () => SoObatProsesMaterial,
