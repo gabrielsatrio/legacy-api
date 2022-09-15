@@ -47,4 +47,8 @@ export class SoObatProsesInput implements Partial<SoObatProses> {
   @Field({ nullable: true })
   @IsNumber()
   qtyDrum?: number;
+
+  @Field({ nullable: true })
+  @MaxLength(200)
+  description?: string;
 }
