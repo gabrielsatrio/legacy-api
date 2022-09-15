@@ -112,6 +112,10 @@ export class GisHeader extends BaseEntity {
   @Column({ name: 'SIDE_2' })
   side2?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'INSPECT_TYPE_2' })
+  inspectType2?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
