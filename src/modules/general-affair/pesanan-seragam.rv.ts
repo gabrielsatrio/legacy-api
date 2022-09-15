@@ -79,16 +79,16 @@ export class PesananSeragamResolver {
         await EmployeeMaterializedViewResolver.getCompanyOffice(nrp);
       if (!isAdmin) {
         return await PesananSeragamWarpView.findBy({
-          nrp: nrp,
-          tahun: tahun,
-          periode: periode
+          nrp,
+          tahun,
+          periode
         });
       } else {
         return await PesananSeragamWarpView.findBy({
-          deptId: deptId,
+          deptId,
           contract: companyOffice,
-          tahun: tahun,
-          periode: periode
+          tahun,
+          periode
         });
       }
     } catch (err) {
@@ -184,8 +184,8 @@ export class PesananSeragamResolver {
   ): Promise<boolean | undefined> {
     try {
       const data = await PesananSeragam.findBy({
-        periode: periode,
-        tahun: tahun
+        periode,
+        tahun
       });
       if (!data) throw new Error('Data not exist!');
       await PesananSeragam.createQueryBuilder()
@@ -210,16 +210,16 @@ export class PesananSeragamResolver {
   ): Promise<boolean | undefined> {
     try {
       const data = await PesananSeragam.findBy({
-        periode: periode,
-        tahun: tahun
+        periode,
+        tahun
       });
       if (!data) throw new Error('Data not exist!');
       await PesananSeragam.createQueryBuilder()
         .update('PesananSeragam')
         .set({ isLocked: false })
         .where('TAHUN = :tahun AND PERIODE = :periode', {
-          tahun: tahun,
-          periode: periode
+          tahun,
+          periode
         })
         .execute();
       return true;

@@ -92,8 +92,8 @@ export class DefaultSeragamResolver {
   ): Promise<boolean | undefined> {
     try {
       const exist = await DefaultSeragam.findBy({
-        tahun: tahun,
-        periode: periode
+        tahun,
+        periode
       });
       if (!exist) throw new Error('Data not exist!');
       await DefaultSeragam.delete({ tahun, periode });
@@ -111,8 +111,8 @@ export class DefaultSeragamResolver {
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragam.findOneBy({
-        tahun: tahun,
-        periode: periode
+        tahun,
+        periode
       });
       if (!data) throw new Error('Data not exist!');
       await ifs.query(
@@ -138,8 +138,8 @@ export class DefaultSeragamResolver {
   ): Promise<boolean | undefined> {
     try {
       const exist = await DefaultSeragam.findOneBy({
-        tahun: tahun,
-        periode: periode
+        tahun,
+        periode
       });
       if (exist) throw new Error('Data already exist');
       const sql = `
