@@ -1,10 +1,10 @@
 <a name="2.55.0"></a>
 
-# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-13)
+# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/294) (2022-09-15)
 
 ### Features
 
-- [**G002**] **gap**: feature pesanan seragam.
+- [**M019**] **gis**: add column inspect type for AT2.
 
 <a name="2.54.0"></a>
 
