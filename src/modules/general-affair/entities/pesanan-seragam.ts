@@ -16,13 +16,13 @@ export class PesananSeragam extends BaseEntity {
   @Column({ name: 'ID_JENIS' })
   idJenis!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'UKURAN_KEMEJA' })
-  ukuranKemeja!: string;
+  ukuranKemeja?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'UKURAN_CELANA' })
-  ukuranCelana!: string;
+  ukuranCelana?: string;
 
   @Field()
   @Column({ name: 'JUMLAH_KEMEJA' })

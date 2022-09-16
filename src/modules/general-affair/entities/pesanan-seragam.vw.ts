@@ -44,13 +44,13 @@ export class PesananSeragamView extends BaseEntity {
   @Column({ name: 'JENIS' })
   jenis!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'UKURAN_KEMEJA' })
-  ukuranKemeja!: string;
+  ukuranKemeja?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'UKURAN_CELANA' })
-  ukuranCelana!: string;
+  ukuranCelana?: string;
 
   @Field()
   @Column({ name: 'JUMLAH_KEMEJA' })

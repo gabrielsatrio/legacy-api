@@ -294,6 +294,17 @@ export class PesananSeragamResolver {
       });
       if (!data) throw new Error('Data seragam belum dibuat GA');
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
+
+      const isGetSeragam = await ifs.query(
+        `
+        SELECT VKY_PESANAN_SERAGAM_API.IS_GET_SERAGAM(:nrp) as "value"
+        FROM dual
+      `,
+        [nrp]
+      );
+      if (isGetSeragam[0].value === 0)
+        throw new Error('Belum dapat memesan seragam');
+
       const sql = `
       BEGIN
         vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
