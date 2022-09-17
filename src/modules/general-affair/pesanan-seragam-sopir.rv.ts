@@ -26,12 +26,13 @@ export class SopirDireksiResolver {
   @Mutation(() => SopirDireksi)
   @UseMiddleware(isAuth)
   async createSopirDireksi(
+    @Arg('id', () => Int) id: number,
     @Arg('employeeId', () => String) employeeId: string
   ): Promise<SopirDireksi | undefined> {
     try {
       const exist = await SopirDireksi.findOneBy({ employeeId });
       if (exist) throw new Error('Data already exist');
-      const result = SopirDireksi.create({ employeeId });
+      const result = SopirDireksi.create({ id, employeeId });
       await SopirDireksi.save(result);
       return result;
     } catch (err) {
