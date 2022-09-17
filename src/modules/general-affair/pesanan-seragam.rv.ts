@@ -256,8 +256,8 @@ export class PesananSeragamResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async generatePesananPlant(
-    @Arg('plant', () => String) plant: string,
+  async generatePesananSite(
+    @Arg('site', () => String) site: string,
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
@@ -270,10 +270,10 @@ export class PesananSeragamResolver {
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
       BEGIN
-        vky_pesanan_seragam_api.generate_pesanan_plant(:plant, :tahun, :periode);
+        vky_pesanan_seragam_api.generate_pesanan_plant(:site, :tahun, :periode);
       END;
       `;
-      await ifs.query(sql, [plant, tahun, periode]);
+      await ifs.query(sql, [site, tahun, periode]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
