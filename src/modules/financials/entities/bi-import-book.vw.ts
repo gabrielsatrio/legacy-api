@@ -55,4 +55,8 @@ export class ImportBookView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'BANK_BRANCH' })
   bankBranch?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PO_TYPE' })
+  poType?: string;
 }

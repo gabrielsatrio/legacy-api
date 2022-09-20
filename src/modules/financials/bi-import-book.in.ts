@@ -43,4 +43,7 @@ export class ImportBookInput implements Partial<ImportBook> {
 
   @Field({ nullable: true })
   bankBranch?: string;
+
+  @Field({ nullable: true })
+  poType?: string;
 }
