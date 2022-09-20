@@ -74,7 +74,9 @@ export class PesananSeragamResolver {
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
       const isAdmin = await this.isAdmin(nrp);
-      const deptId = await EmployeeMaterializedViewResolver.getDeptId(nrp);
+      const deptId = await EmployeeMaterializedViewResolver.getDepartmentId(
+        nrp
+      );
       const companyOffice =
         await EmployeeMaterializedViewResolver.getCompanyOffice(nrp);
       if (!isAdmin) {
