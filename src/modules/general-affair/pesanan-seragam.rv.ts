@@ -21,7 +21,7 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async getAllPesananSeragam(): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      return await PesananSeragamWarpView.find();
+      return await PesananSeragamWarpView.find({ order: { id: 'DESC' } });
     } catch (err) {
       throw new Error(mapError(err));
     }
