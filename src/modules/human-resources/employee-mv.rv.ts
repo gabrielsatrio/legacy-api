@@ -98,7 +98,7 @@ export class EmployeeMaterializedViewResolver {
 
   @Query(() => String)
   @UseMiddleware(isAuth)
-  static async getDeptId(
+  static async getDepartmentId(
     @Arg('employeeId', () => String) employeeId: string
   ): Promise<string | undefined> {
     try {
