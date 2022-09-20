@@ -1,3 +1,31 @@
+<a name="2.56.0"></a>
+
+# [2.56.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/296) (2022-09-15)
+
+### Features
+
+- [**M017**] **mdp**: add part description for SO create.
+
+### Bug Fixes
+
+- [**CORE**] **framework**: fix route check for general path.
+
+<a name="2.55.0"></a>
+
+# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/294) (2022-09-15)
+
+### Features
+
+- [**M019**] **gis**: add column inspect type for AT2.
+
+<a name="2.54.0"></a>
+
+# [2.54.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/291) (2022-09-13)
+
+### Features
+
+- [**M019**] **gis**: add columns for AT2.
+
 <a name="2.53.2"></a>
 
 # [2.53.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/289) (2022-09-08)
