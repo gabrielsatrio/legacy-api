@@ -1,6 +1,6 @@
 <a name="2.58.0"></a>
 
-# [2.58.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/295) (2022-09-21)
+# [2.58.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/299) (2022-09-21)
 
 ### Features
 
