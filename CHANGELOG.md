@@ -1,3 +1,11 @@
+<a name="2.58.0"></a>
+
+# [2.58.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/299) (2022-09-21)
+
+### Features
+
+- [**M019**] **gis**: add column for AT2.
+
 <a name="2.57.0"></a>
 
 # [2.57.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-15)

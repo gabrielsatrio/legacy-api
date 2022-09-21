@@ -29,4 +29,7 @@ export class GisOperatorInput implements Partial<GisOperator> {
 
   @Field({ nullable: true })
   shift?: string;
+
+  @Field({ nullable: true })
+  notes?: string;
 }
