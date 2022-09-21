@@ -1,6 +1,26 @@
+<a name="2.57.0"></a>
+
+# [2.57.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-15)
+
+### Features
+
+- [**G002**] **gap**: feature pesanan seragam.
+
+<a name="2.56.0"></a>
+
+# [2.56.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/296) (2022-09-15)
+
+### Features
+
+- [**M017**] **mdp**: add part description for SO create.
+
+### Bug Fixes
+
+- [**CORE**] **framework**: fix route check for general path.
+
 <a name="2.55.0"></a>
 
-# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-15)
+# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/294) (2022-09-15)
 
 ### Features
 
