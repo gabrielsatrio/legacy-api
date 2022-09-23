@@ -1,3 +1,11 @@
+<a name="2.59.0"></a>
+
+# [2.59.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/301) (2022-09-23)
+
+### Features
+
+- [**M017**] **fdp**: add column for AGT approval.
+
 <a name="2.58.0"></a>
 
 # [2.58.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/299) (2022-09-21)
