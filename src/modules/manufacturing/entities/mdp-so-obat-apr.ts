@@ -54,6 +54,10 @@ export class SoObatApr extends BaseEntity {
   @Column({ name: 'STATUS' })
   status?: string;
 
+  @Field()
+  @Column({ name: 'DESCRIPTION' })
+  description!: string;
+
   @Field(() => [SoObatAprMaterial], { nullable: true })
   @OneToMany(
     () => SoObatAprMaterial,
