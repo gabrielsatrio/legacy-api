@@ -24,7 +24,7 @@ export class AfalBraiding extends BaseEntity {
   @Column({ name: 'PVC' })
   pvc!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'OBJ_ID' })
-  objId!: string;
+  objId?: string;
 }
