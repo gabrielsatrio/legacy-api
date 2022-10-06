@@ -1,3 +1,19 @@
+<a name="2.60.0"></a>
+
+# [2.60.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-05)
+
+### Features
+
+- [**M021**] **afal-braiding**: finish module, basic CRUD.
+
+<a name="2.59.1"></a>
+
+# [2.59.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/303) (2022-09-28)
+
+### Bug Fixes
+
+- [**F002**] **expedition-paid-date**: add column circulation date (adv search).
+
 <a name="2.59.0"></a>
 
 # [2.59.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/301) (2022-09-23)
