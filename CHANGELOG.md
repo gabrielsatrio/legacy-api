@@ -2,7 +2,7 @@
 
 # [2.60.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-05)
 
-### Bug Fixes
+### Features
 
 - [**M021**] **afal-braiding**: finish module, basic CRUD.
 
