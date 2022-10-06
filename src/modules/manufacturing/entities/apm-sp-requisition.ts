@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { GraphQLDate } from '../../core/entities/scalars';
 
 @Entity('ROB_APM_SPAREPART_REQ')
 @ObjectType()
@@ -28,7 +29,7 @@ export class SparePartRequisition extends BaseEntity {
   @Column({ name: 'DESTINATION_ID' })
   destinationId?: string;
 
-  @Field()
+  @Field(() => GraphQLDate)
   @Column({ name: 'DUE_DATE' })
   dueDate!: Date;
 
