@@ -1,8 +1,8 @@
 <a name="2.60.1"></a>
 
-# [2.60.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-06)
+# [2.60.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/307) (2022-10-06)
 
-### Features
+### Bug Fixes
 
 - [**M015**] **TT**: location fix.
 
