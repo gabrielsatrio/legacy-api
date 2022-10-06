@@ -107,6 +107,7 @@ export class SparePartRequisitionResolver {
       const approverLv2 = await employeeObj.getEmployeeMv(input.approverLv2);
       const data = SparePartRequisition.create({
         ...input,
+        dueDate: dayjs(input.dueDate).format('YYYY-MM-DD'),
         nameApprLv1: approverLv1?.name,
         emailApprLv1: approverLv1?.email,
         nameApprLv2: approverLv2?.name,
