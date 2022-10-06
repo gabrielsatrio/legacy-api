@@ -4,6 +4,7 @@ import { isAuth } from '@/middlewares/is-auth';
 import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import { sendEmail } from '@/utils/send-email';
+import dayjs from 'dayjs';
 import oracledb from 'oracledb';
 import {
   Arg,
@@ -106,6 +107,7 @@ export class SparePartRequisitionResolver {
       const approverLv2 = await employeeObj.getEmployeeMv(input.approverLv2);
       const data = SparePartRequisition.create({
         ...input,
+        dueDate: dayjs(input.dueDate).format('YYYY-MM-DD'),
         nameApprLv1: approverLv1?.name,
         emailApprLv1: approverLv1?.email,
         nameApprLv2: approverLv2?.name,
@@ -126,7 +128,8 @@ export class SparePartRequisitionResolver {
   @Mutation(() => SparePartRequisition, { nullable: true })
   @UseMiddleware(isAuth)
   async updateSPRequisition(
-    @Arg('input') input: SparePartRequisitionInput
+    @Arg('input') input: SparePartRequisitionInput,
+    @Ctx() { req }: Context
   ): Promise<SparePartRequisition | undefined> {
     try {
       const data = await SparePartRequisition.findOneBy({
@@ -142,7 +145,8 @@ export class SparePartRequisitionResolver {
           BEGIN
             ROB_APM_Sparepart_Req_API.Create_MR_By_Req_Id__(
               :requisitionId,
-              :outOrderNo);
+              :outOrderNo
+            );
           EXCEPTION
             WHEN OTHERS THEN
               ROLLBACK;
@@ -154,6 +158,71 @@ export class SparePartRequisitionResolver {
           { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         ]);
         input.orderNo = result[0] as string;
+        // Logger
+        sql = `
+          BEGIN
+            ROB_APM_SPAREPART_REQ_LOG_API.New__(
+              :requisitionId,
+              :orderNo,
+              :contract,
+              :orderClass,
+              :intCustomerNo,
+              :destinationId,
+              TO_DATE(:dueDate, 'MM/DD/YYYY HH:MI:SS AM'),
+              :urgent,
+              :approverLv1,
+              :nameApprLv1,
+              :emailApprLv1,
+              :approverLv2,
+              :nameApprLv2,
+              :emailApprLv2,
+              :status,
+              :createdBy,
+              :nameCreatedBy,
+              :emailCreatedBy,
+              :rejectReason,
+              TO_DATE(:createdAt, 'MM/DD/YYYY HH:MI:SS AM'),
+              TO_DATE(:updatedAt, 'MM/DD/YYYY HH:MI:SS AM'),
+              :inputRequisitionId,
+              :inputStatus,
+              :inputUrgent,
+              :genOrderNo,
+              :performedBy
+            );
+          EXCEPTION
+            WHEN OTHERS THEN
+              ROLLBACK;
+              RAISE;
+          END;
+        `;
+        await ifs.query(sql, [
+          data.requisitionId,
+          data.orderNo,
+          data.contract,
+          data.orderClass,
+          data.intCustomerNo,
+          data.destinationId,
+          dayjs(data.dueDate).format('MM/DD/YYYY h:mm:ss A'),
+          data.urgent ? 1 : 0,
+          data.approverLv1,
+          data.nameApprLv1,
+          data.emailApprLv1,
+          data.approverLv2,
+          data.nameApprLv2,
+          data.emailApprLv2,
+          data.status,
+          data.createdBy,
+          data.nameCreatedBy,
+          data.emailCreatedBy,
+          data.rejectReason,
+          dayjs(data.createdAt).format('MM/DD/YYYY h:mm:ss A'),
+          dayjs(data.updatedAt).format('MM/DD/YYYY h:mm:ss A'),
+          input.requisitionId,
+          input.status,
+          input.urgent ? 1 : 0,
+          input.orderNo,
+          req.session.username
+        ]);
       }
       SparePartRequisition.merge(data, { ...input });
       const result = await SparePartRequisition.save(data);
