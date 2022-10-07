@@ -53,7 +53,7 @@ export class BPODyestuffResolver {
         :kuCount,
         :qtyLot,
         :qtyLot2,
-        :outContract, :outIdNo, :outKuCount);
+        :outContract, :outIdNo, :outKuCount,:lineLot1);
     END;
   `;
 
@@ -76,7 +76,8 @@ export class BPODyestuffResolver {
         input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        input.lineLot1
       ]);
     } catch (err) {
       throw new Error(mapError(err));
@@ -125,7 +126,7 @@ export class BPODyestuffResolver {
         :kuCount,
         :qtyLot,
         :qtyLot2,
-        :outContract, :outIdNo, :outKuCount);
+        :outContract, :outIdNo, :outKuCount,:lineLot1);
       END;
     `;
     let result;
@@ -146,7 +147,8 @@ export class BPODyestuffResolver {
         input.qtyLot2,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+        { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        input.lineLot1
       ]);
     } catch (err) {
       throw new Error(mapError(err));
@@ -211,6 +213,7 @@ export class BPODyestuffResolver {
     @Arg('kuCount') kuCount: number,
     @Arg('partNo') partNo: string,
     @Arg('orderNo') orderNo: string,
+    @Arg('lineLot1') lineLot1: number,
     @Ctx() { req }: Context
   ): Promise<BPODyestuff> {
     try {
@@ -234,7 +237,8 @@ export class BPODyestuffResolver {
         :orderNo,
         :partNo,
         :kuCount,
-        :createdBy);
+        :createdBy,
+        :lineLot1);
       END;
     `;
 
@@ -244,7 +248,8 @@ export class BPODyestuffResolver {
         orderNo,
         partNo,
         kuCount,
-        createdBy
+        createdBy,
+        lineLot1
       ]);
 
       return material;

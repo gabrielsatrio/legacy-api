@@ -1,10 +1,10 @@
 <a name="2.62.0"></a>
 
-# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/312) (2022-10-07)
+# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/311) (2022-10-07)
 
 ### Features
 
-- [**G002**] **pesanan-seragam**: add pesanan seragam admin.
+- [**M002**] **DDP**: add feature for reserve same material with different line no.
 
 <a name="2.61.0"></a>
 
