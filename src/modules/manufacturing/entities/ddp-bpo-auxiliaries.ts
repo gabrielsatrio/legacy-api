@@ -80,6 +80,10 @@ export class BPOAuxiliaries extends BaseEntity {
   @PrimaryColumn({ name: 'NO' })
   no!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'LINE_LOT_1' })
+  lineLot1?: number;
+
   @ManyToOne(() => DDPBPO, (dDPBPO) => dDPBPO.auxiliariesUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })

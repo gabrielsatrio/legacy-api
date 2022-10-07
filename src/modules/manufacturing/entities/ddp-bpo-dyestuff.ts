@@ -76,6 +76,10 @@ export class BPODyestuff extends BaseEntity {
   @Column({ name: 'NO' })
   no?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'LINE_LOT_1' })
+  lineLot1?: number;
+
   @ManyToOne(() => DDPBPO, (dDPBPO) => dDPBPO.dyestuffsUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })

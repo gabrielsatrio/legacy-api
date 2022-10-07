@@ -50,4 +50,7 @@ export class BPODyestuffInput implements Partial<BPODyestuff> {
 
   @Field({ nullable: true })
   statusReserve?: string;
+
+  @Field({ nullable: true })
+  lineLot1?: number;
 }
