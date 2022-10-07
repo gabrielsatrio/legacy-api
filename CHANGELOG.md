@@ -1,3 +1,11 @@
+<a name="2.62.0"></a>
+
+# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/312) (2022-10-07)
+
+### Features
+
+- [**G002**] **pesanan-seragam**: add pesanan seragam admin.
+
 <a name="2.61.0"></a>
 
 # [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)
