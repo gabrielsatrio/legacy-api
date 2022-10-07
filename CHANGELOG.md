@@ -1,3 +1,11 @@
+<a name="2.62.0"></a>
+
+# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/311) (2022-10-07)
+
+### Features
+
+- [**M002**] **DDP**: add feature for reserve same material with different line no.
+
 <a name="2.61.0"></a>
 
 # [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)
