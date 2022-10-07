@@ -1,3 +1,23 @@
+<a name="2.61.0"></a>
+
+# [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add logger.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: change type from `DateTime` to `GraphQLDate`.
+
+<a name="2.60.1"></a>
+
+# [2.60.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/307) (2022-10-06)
+
+### Bug Fixes
+
+- [**M015**] **TT**: location fix.
+
 <a name="2.60.0"></a>
 
 # [2.60.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-05)
