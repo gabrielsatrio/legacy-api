@@ -136,7 +136,8 @@ export class PesananSeragamResolver {
     @Arg('ukuranCelana', () => String) ukuranCelana: string,
     @Arg('jumlahKemeja', () => Int) jumlahKemeja: number,
     @Arg('jumlahCelana', () => Int) jumlahCelana: number,
-    @Arg('keterangan', () => String) keterangan: string
+    @Arg('keterangan', () => String) keterangan: string,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<PesananSeragam | null> {
     try {
       const data = await PesananSeragam.findOneBy({ id });
@@ -144,7 +145,7 @@ export class PesananSeragamResolver {
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
         BEGIN
-          vky_pesanan_seragam_api.update_pesanan_seragam(:id, :idJenis, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan);
+          vky_pesanan_seragam_api.update_pesanan_seragam(:id, :idJenis, :ukuranKemeja, :ukuranCelana, :jumlahKemeja, :jumlahCelana, :keterangan, :createdBy);
         END;
       `;
       await ifs.query(sql, [
@@ -154,7 +155,8 @@ export class PesananSeragamResolver {
         ukuranCelana,
         jumlahKemeja,
         jumlahCelana,
-        keterangan
+        keterangan,
+        createdBy
       ]);
       return await PesananSeragam.findOneBy({ id });
     } catch (err) {
@@ -235,7 +237,8 @@ export class PesananSeragamResolver {
   async generatePesanan(
     @Arg('nrp', () => String) nrp: string,
     @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
+    @Arg('periode', () => Int) periode: number,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragamView.findOneBy({
@@ -246,10 +249,10 @@ export class PesananSeragamResolver {
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
         BEGIN
-          vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode);
+          vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode, :createdBy);
         END;
       `;
-      await ifs.query(sql, [nrp, tahun, periode]);
+      await ifs.query(sql, [nrp, tahun, periode, createdBy]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
@@ -261,7 +264,8 @@ export class PesananSeragamResolver {
   async generatePesananSite(
     @Arg('site', () => String) site: string,
     @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
+    @Arg('periode', () => Int) periode: number,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragamView.findOneBy({
@@ -272,10 +276,10 @@ export class PesananSeragamResolver {
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
       const sql = `
       BEGIN
-        vky_pesanan_seragam_api.generate_pesanan_plant(:site, :tahun, :periode);
+        vky_pesanan_seragam_api.generate_pesanan_plant(:site, :tahun, :periode, :createdBy);
       END;
       `;
-      await ifs.query(sql, [site, tahun, periode]);
+      await ifs.query(sql, [site, tahun, periode, createdBy]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
@@ -287,7 +291,8 @@ export class PesananSeragamResolver {
   async generatePesananEmp(
     @Arg('nrp', () => String) nrp: string,
     @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
+    @Arg('periode', () => Int) periode: number,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragamView.findOneBy({
@@ -309,10 +314,38 @@ export class PesananSeragamResolver {
 
       const sql = `
       BEGIN
-        vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode);
+        vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode, :createdBy);
       END;
       `;
-      await ifs.query(sql, [nrp, tahun, periode]);
+      await ifs.query(sql, [nrp, tahun, periode, createdBy]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generatePesananDept(
+    @Arg('site', () => String) site: string,
+    @Arg('departmentId', () => String) departentId: string,
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number,
+    @Arg('createdBy', () => String) createdBy: string
+  ): Promise<boolean | undefined> {
+    try {
+      const data = await DefaultSeragamView.findOneBy({
+        tahun,
+        periode
+      });
+      if (!data) throw new Error('Data seragam belum dibuat GA');
+      if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
+      const sql = `
+      BEGIN
+        vky_pesanan_seragam_api.generate_pesanan_dept(:site, :departmentId, :tahun, :periode, :createdBy);
+      END;
+      `;
+      await ifs.query(sql, [site, departentId, tahun, periode, createdBy]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));

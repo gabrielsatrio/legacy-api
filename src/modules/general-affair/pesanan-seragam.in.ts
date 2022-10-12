@@ -47,4 +47,8 @@ export class PesananSeragamInput implements Partial<PesananSeragam> {
   @Field()
   @IsBoolean()
   isLocked!: boolean;
+
+  @Field()
+  @IsString()
+  createdBy!: string;
 }
