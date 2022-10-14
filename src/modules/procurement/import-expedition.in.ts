@@ -47,4 +47,12 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
   @Field({ nullable: true })
   @IsDate()
   financeReceiptDate?: Date;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  dpp?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  ppn?: number;
 }

@@ -9,22 +9,45 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { In } from 'typeorm';
+import { Brackets, In } from 'typeorm';
 import { GisDefect } from './entities/gis-defect';
-import { GisDefectView } from './entities/gis-defect.vw';
 import { GisDefectInput } from './gis-defect.in';
 
 @Resolver(GisDefect)
 export class GisDefectResolver {
-  @Query(() => [GisDefectView], { nullable: true })
+  @Query(() => [GisDefect], { nullable: true })
   @UseMiddleware(isAuth)
   async getGisDefectByContract(
     @Arg('contract', () => [String]) contract: string[]
-  ): Promise<GisDefectView[] | undefined> {
+  ): Promise<GisDefect[] | undefined> {
     try {
-      return await GisDefectView.findBy({
+      return await GisDefect.findBy({
         contract: In(contract)
       });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [GisDefect], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getGisDefectByContractCategory(
+    @Arg('contract') contract: string,
+    @Arg('category') category: string
+  ): Promise<GisDefect[] | undefined> {
+    try {
+      return await GisDefect.createQueryBuilder('GD')
+        .where('GD.CONTRACT = :contract', { contract })
+        .andWhere(
+          new Brackets((qb) =>
+            qb
+              .where('GD.CATEGORY LIKE :category', {
+                category: '%' + category + '%'
+              })
+              .orWhere('GD.CATEGORY is null')
+          )
+        )
+        .getMany();
     } catch (err) {
       throw new Error(mapError(err));
     }

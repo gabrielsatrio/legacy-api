@@ -43,6 +43,7 @@ export class MessFormResolver {
   ): Promise<MessForm | undefined> {
     try {
       const exist = await MessForm.findOneBy({
+        mess: input.mess,
         tanggalTagihan: input.tanggalTagihan
       });
       if (exist) throw Error('Data already exist for this month');

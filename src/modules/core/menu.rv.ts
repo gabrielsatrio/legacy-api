@@ -85,6 +85,9 @@ export class MenuResolver {
         SELECT  to_link AS "to"
         FROM    atj_app_menu
         WHERE   type = 'Link'
+        union
+        SELECT to_link AS "to"
+        FROM   atj_app_gen_route
       `;
         result = await ifs.query(sql);
       } else {
@@ -100,6 +103,9 @@ export class MenuResolver {
           FROM    atj_app_user_role
           WHERE   username = :username
         )
+        union
+        SELECT to_link AS "to"
+        FROM   atj_app_gen_route
       `;
         result = await ifs.query(sql, [
           res[0].departmentId,

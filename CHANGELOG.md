@@ -1,3 +1,277 @@
+<a name="2.61.0"></a>
+
+# [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add logger.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: change type from `DateTime` to `GraphQLDate`.
+
+<a name="2.60.1"></a>
+
+# [2.60.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/307) (2022-10-06)
+
+### Bug Fixes
+
+- [**M015**] **TT**: location fix.
+
+<a name="2.60.0"></a>
+
+# [2.60.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-05)
+
+### Features
+
+- [**M021**] **afal-braiding**: finish module, basic CRUD.
+
+<a name="2.59.1"></a>
+
+# [2.59.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/303) (2022-09-28)
+
+### Bug Fixes
+
+- [**F002**] **expedition-paid-date**: add column circulation date (adv search).
+
+<a name="2.59.0"></a>
+
+# [2.59.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/301) (2022-09-23)
+
+### Features
+
+- [**M017**] **fdp**: add column for AGT approval.
+
+<a name="2.58.0"></a>
+
+# [2.58.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/299) (2022-09-21)
+
+### Features
+
+- [**M019**] **gis**: add column for AT2.
+
+<a name="2.57.0"></a>
+
+# [2.57.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/293) (2022-09-15)
+
+### Features
+
+- [**G002**] **gap**: feature pesanan seragam.
+
+<a name="2.56.0"></a>
+
+# [2.56.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/296) (2022-09-15)
+
+### Features
+
+- [**M017**] **mdp**: add part description for SO create.
+
+### Bug Fixes
+
+- [**CORE**] **framework**: fix route check for general path.
+
+<a name="2.55.0"></a>
+
+# [2.55.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/294) (2022-09-15)
+
+### Features
+
+- [**M019**] **gis**: add column inspect type for AT2.
+
+<a name="2.54.0"></a>
+
+# [2.54.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/291) (2022-09-13)
+
+### Features
+
+- [**M019**] **gis**: add columns for AT2.
+
+<a name="2.53.2"></a>
+
+# [2.53.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/289) (2022-09-08)
+
+### Features
+
+- [**M017**] **mdp**: ami revision.
+
+<a name="2.53.1"></a>
+
+# [2.53.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/287) (2022-09-07)
+
+### Features
+
+- [**M017**] **mdp**: ami revision.
+
+<a name="2.53.0"></a>
+
+# [2.53.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/285) (2022-09-07)
+
+### Features
+
+- [**F003**] **buku-import**: add column voucher text & ship (invoice payment).
+
+<a name="2.52.1"></a>
+
+# [2.52.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/283) (2022-09-06)
+
+### Bug Fixes
+
+- **departments**: fix an issue related to resolver is not allowed to return null.
+- **menu-map**: sorted the data.
+
+<a name="2.52.0"></a>
+
+# [2.52.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/281) (2022-09-06)
+
+### Features
+
+- [**M017**] **mdp**: add weighting netto and bruto + sync timbangan.
+
+<a name="2.51.0"></a>
+
+# [2.51.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/279) (2022-09-06)
+
+### Features
+
+- [**F003**] **buku-import**: add query sequence for notul.
+
+<a name="2.50.0"></a>
+
+# [2.50.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/277) (2022-09-05)
+
+### Features
+
+- [**M017**] **fdp**: add note receive and sync it with ifs8.
+
+<a name="2.49.1"></a>
+
+# [2.49.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/275) (2022-09-02)
+
+### Bug Fixes
+
+- [**M001**] **apm-maintenance-logs**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.49.0"></a>
+
+# [2.49.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/273) (2022-09-02)
+
+### Features
+
+- add new resolver: `InfoResolver`.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix ORA-02046 distributed transaction already begun (dblink to AGT server).
+
+<a name="2.48.0"></a>
+
+# [2.48.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/271) (2022-09-01)
+
+### Features
+
+- [**G001**] **bon-makan**: add query for show list.
+- [**F003**] **buku-import**: add column bankName, bankBranch, accountName in Import Book.
+- [**F003**] **buku-import**: add table LC Detail.
+- [**F003**] **buku-import**: add table PIB Detail.
+- [**P001**] **import-expedition**: add column PPN, DPP.
+
+<a name="2.47.3"></a>
+
+# [2.47.3](https://gitlab.com/atjdev/ezio-api/-/merge_requests/269) (2022-08-25)
+
+### Bug Fixes
+
+- [**M019**] **gis**: fix query for multiple category.
+
+<a name="2.47.2"></a>
+
+# [2.47.2](https://gitlab.com/atjdev/ezio-api/-/merge_requests/266) (2022-08-22)
+
+### Bug Fixes
+
+- [**H001**] **tagihan-mess**: fix missing parameter condition.
+
+<a name="2.47.1"></a>
+
+# [2.47.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/265) (2022-08-22)
+
+### Features
+
+- [**M017**] **mdp**: fix alternate agt.
+
+<a name="2.47.0"></a>
+
+# [2.47.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/263) (2022-08-19)
+
+### Features
+
+- [**F003**] **buku-import**: add feature buku import.
+
+<a name="2.46.0"></a>
+
+# [2.46.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/261) (2022-08-16)
+
+### Features
+
+- [**G001**] **bon-makan**: add column shift.
+
+<a name="2.45.0"></a>
+
+# [2.45.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/259) (2022-08-16)
+
+### Features
+
+- [**M014**] **warping**: add column check beam for AT2.
+- [**M019**] **gis**: add column 'category' for gis defect.
+- [**M019**] **gis**: add query get defect by contract and category.
+
+<a name="2.44.0"></a>
+
+# [2.44.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/257) (2022-08-15)
+
+### Features
+
+- [**G001**] **bon-makan**: add feature list KHL.
+
+<a name="2.43.0"></a>
+
+# [2.43.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/255) (2022-08-12)
+
+### Features
+
+- [**M019**] **gis**: add column actual width for AT1 AMI.
+- [**M019**] **gis**: remove gis defect view.
+- [**M019**] **gis**: change getId query using sequence.
+
+### Bug Fixes
+
+- [**M014**] **warping**: fix get component part query.
+- [**M014**] **warping**: add query get sum qty ass to fix kilogram calculation.
+
+<a name="2.42.1"></a>
+
+# [2.42.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/253) (2022-08-12)
+
+### Bug Fixes
+
+- [**M017**] **mdp**: fix automail only for AGT.
+
+<a name="2.42.0"></a>
+
+# [2.42.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/251) (2022-08-11)
+
+### Features
+
+- [**M017**] **mdp**: email notification when so create, AGT only.
+
+<a name="2.41.0"></a>
+
+# [2.41.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/249) (2022-08-09)
+
+### Features
+
+- [**M020**] **buku-import**: add form update paid date.
+
 <a name="2.40.0"></a>
 
 # [2.40.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/247) (2022-08-04)
