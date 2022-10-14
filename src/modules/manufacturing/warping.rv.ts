@@ -193,6 +193,19 @@ export class ProdWarpingResolver {
     }
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNewWarpId(): Promise<number> {
+    try {
+      //const sql = 'SELECT GBR_PROD_WARPING_SEQ.NEXTVAL AS "id" FROM DUAL';
+      const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_PROD_WARPING`;
+      const result = await ifs.query(sql);
+      return result[0].id;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ProdWarping)
   @UseMiddleware(isAuth)
   async createProdWarping(
@@ -200,13 +213,13 @@ export class ProdWarpingResolver {
     @Ctx() { req }: Context
   ): Promise<ProdWarping> {
     try {
-      const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_PROD_WARPING`;
-      const result = await ifs.query(sql);
+      //const sql = `SELECT nvl(max(id)+1,1) as "id" from GBR_PROD_WARPING`;
+      //const result = await ifs.query(sql);
       const data = ProdWarping.create({
         ...input,
         createdBy: req.session.username,
-        createdAt: new Date(),
-        id: result[0].id
+        createdAt: new Date()
+        // id: result[0].id
       });
       const results = await ProdWarping.save(data);
       return results;
