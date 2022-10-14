@@ -1,9 +1,11 @@
 import { IsNumber } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { ProdWarpingIntr } from './entities/warping-intr';
+import { ProdWarpingIntrTrans } from './entities/warping-intr-trans';
 
 @InputType()
-export class ProdWarpingIntrInput implements Partial<ProdWarpingIntr> {
+export class ProdWarpingIntrTransInput
+  implements Partial<ProdWarpingIntrTrans>
+{
   @Field()
   @IsNumber()
   id!: number;

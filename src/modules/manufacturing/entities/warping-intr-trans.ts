@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('GBR_PROD_WARPING_INTR')
+@Entity('GBR_PROD_WARPING_INTR_TRANS')
 @ObjectType()
-export class ProdWarpingIntr extends BaseEntity {
+export class ProdWarpingIntrTrans extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;
