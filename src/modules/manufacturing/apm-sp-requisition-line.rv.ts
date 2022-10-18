@@ -198,85 +198,159 @@ export class SparePartReqLineResolver {
       let sql = '';
       if (contract === 'AGT') {
         sql = `
-          SELECT DISTINCT p.part_no AS "partNo",
-                          p.contract AS "contract",
-                          p.description AS "description",
+          SELECT  part_no         AS "partNo",
+                  contract        AS "contract",
+                  description     AS "description",
+                  condition_code  AS "conditionCode",
+                  condition       AS "condition",
+                  NVL(
+                    (SELECT SUM(qty_onhand) - SUM(qty_reserved)
+                    FROM   inventory_part_in_stock@ifs8agt
+                    WHERE  contract = x.contract
+                    AND   part_no = x.part_no
+                    AND   condition_code_manager_api.get_condition_code@ifs8agt(part_no, serial_no, lot_batch_no) =
+                          x.condition_code
+                    AND   qty_onhand > 0),
+                    0)            AS "qtyAvailable",
+                  unit_meas       AS "unitMeas",
+                  part_status     AS "partStatus",
+                  objid || condition_code AS "objId"
+          FROM   (SELECT  DISTINCT
+                          p.part_no,
+                          p.contract,
+                          p.description,
                           NVL(
                             condition_code_manager_api.get_condition_code@ifs8agt(ps.part_no,
-                                                                          ps.serial_no,
-                                                                          ps.lot_batch_no),
-                            'NORMAL') AS "conditionCode",
+                                                                                  ps.serial_no,
+                                                                                  ps.lot_batch_no),
+                            'NORMAL') AS condition_code,
                           condition_code_api.get_description@ifs8agt(
                             NVL(
                               condition_code_manager_api.get_condition_code@ifs8agt(ps.part_no,
-                                                                            ps.serial_no,
-                                                                            ps.lot_batch_no),
-                              'NORMAL')) AS "condition",
-                          NVL((SELECT SUM(qty_onhand) - SUM(qty_reserved)
-                              FROM   inventory_part_in_stock@ifs8agt
-                              WHERE  contract = p.contract
-                              AND    part_no = p.part_no
-                              AND    qty_onhand > 0),
-                              0) AS "qtyAvailable",
-                          p.unit_meas AS "unitMeas",
-                          p.part_status AS "partStatus",
-                          p.part_status AS "partStatus",
+                                                                                    ps.serial_no,
+                                                                                    ps.lot_batch_no),
+                              'NORMAL')) AS condition,
+                          p.unit_meas,
+                          p.part_status,
                           p.objid
-                            || NVL(
-                                condition_code_manager_api.get_condition_code@ifs8agt(ps.part_no,
-                                                                              ps.serial_no,
-                                                                              ps.lot_batch_no),
-                                'NORMAL') AS "objId"
-          FROM   inventory_part@ifs8agt p,
-                 inventory_part_in_stock@ifs8agt ps
-          WHERE  ps.contract(+) = p.contract
-          AND    ps.part_no(+) = p.part_no
-          AND    p.contract = :contract
-          AND    (p.part_no LIKE '%' || UPPER(:part_no) || '%'
-          OR      p.description LIKE '%' || UPPER(:part_no) || '%')
-          AND    p.part_status IN ('A', 'I')
-          AND    p.part_no LIKE 'S__-%'
-        `;
+                  FROM    inventory_part@ifs8agt p,
+                          inventory_part_in_stock@ifs8agt ps
+                  WHERE   ps.contract(+) = p.contract
+                  AND     ps.part_no(+) = p.part_no
+                  AND     p.contract = :contract
+                  AND     (p.part_no LIKE '%' || UPPER( :part_no) || '%'
+                  OR      p.description LIKE '%' || UPPER( :part_no) || '%')
+                  AND     p.part_status IN ('A', 'I')
+                  AND     p.part_no LIKE 'S__-%'
+                  AND     ps.qty_onhand - ps.qty_reserved > 0
+                  UNION
+                  SELECT  DISTINCT
+                          p.part_no,
+                          p.contract,
+                          p.description,
+                          NVL(
+                            condition_code_manager_api.get_condition_code@ifs8agt(ps.part_no,
+                                                                                  ps.serial_no,
+                                                                                  ps.lot_batch_no),
+                            'NORMAL'),
+                          condition_code_api.get_description@ifs8agt(
+                            NVL(
+                              condition_code_manager_api.get_condition_code@ifs8agt(ps.part_no,
+                                                                                    ps.serial_no,
+                                                                                    ps.lot_batch_no),
+                              'NORMAL'))
+                            AS condition,
+                          p.unit_meas,
+                          p.part_status,
+                          p.objid
+                  FROM    inventory_part@ifs8agt p,
+                          inventory_part_in_stock@ifs8agt ps
+                  WHERE   ps.contract(+) = p.contract
+                  AND     ps.part_no(+) = p.part_no
+                  AND     p.contract = :contract
+                  AND     (p.part_no LIKE '%' || UPPER( :part_no) || '%'
+                  OR      p.description LIKE '%' || UPPER( :part_no) || '%')
+                  AND     p.part_status IN ('A', 'I')
+                  AND     p.part_no LIKE 'S__-%'
+                  AND     ps.qty_onhand - ps.qty_reserved <= 0) x
+          `;
       } else {
         sql = `
-          SELECT DISTINCT p.part_no AS "partNo",
-                          p.contract AS "contract",
-                          p.description AS "description",
+          SELECT  part_no         AS "partNo",
+                  contract        AS "contract",
+                  description     AS "description",
+                  condition_code  AS "conditionCode",
+                  condition       AS "condition",
+                  NVL(
+                    (SELECT SUM(qty_onhand) - SUM(qty_reserved)
+                    FROM   inventory_part_in_stock
+                    WHERE  contract = x.contract
+                    AND   part_no = x.part_no
+                    AND   condition_code_manager_api.get_condition_code(part_no, serial_no, lot_batch_no) =
+                          x.condition_code
+                    AND   qty_onhand > 0),
+                    0)            AS "qtyAvailable",
+                  unit_meas       AS "unitMeas",
+                  part_status     AS "partStatus",
+                  objid || condition_code AS "objId"
+          FROM   (SELECT  DISTINCT
+                          p.part_no,
+                          p.contract,
+                          p.description,
                           NVL(
                             condition_code_manager_api.get_condition_code(ps.part_no,
                                                                           ps.serial_no,
                                                                           ps.lot_batch_no),
-                            'NORMAL') AS "conditionCode",
+                            'NORMAL') AS condition_code,
                           condition_code_api.get_description(
                             NVL(
                               condition_code_manager_api.get_condition_code(ps.part_no,
                                                                             ps.serial_no,
                                                                             ps.lot_batch_no),
-                              'NORMAL')) AS "condition",
-                          NVL((SELECT SUM(qty_onhand) - SUM(qty_reserved)
-                              FROM   inventory_part_in_stock
-                              WHERE  contract = p.contract
-                              AND    part_no = p.part_no
-                              AND    qty_onhand > 0),
-                              0) AS "qtyAvailable",
-                          p.unit_meas AS "unitMeas",
-                          p.part_status AS "partStatus",
-                          p.part_status AS "partStatus",
+                              'NORMAL')) AS condition,
+                          p.unit_meas,
+                          p.part_status,
                           p.objid
-                            || NVL(
-                                condition_code_manager_api.get_condition_code(ps.part_no,
-                                                                              ps.serial_no,
-                                                                              ps.lot_batch_no),
-                                'NORMAL') AS "objId"
-          FROM   inventory_part p,
-                 inventory_part_in_stock ps
-          WHERE  ps.contract(+) = p.contract
-          AND    ps.part_no(+) = p.part_no
-          AND    p.contract = :contract
-          AND    (p.part_no LIKE '%' || UPPER(:part_no) || '%'
-          OR      p.description LIKE '%' || UPPER(:part_no) || '%')
-          AND    p.part_status IN ('A', 'I')
-          AND    p.part_no LIKE 'S__-%'
+                  FROM    inventory_part p,
+                          inventory_part_in_stock ps
+                  WHERE   ps.contract(+) = p.contract
+                  AND     ps.part_no(+) = p.part_no
+                  AND     p.contract = :contract
+                  AND     (p.part_no LIKE '%' || UPPER( :part_no) || '%'
+                  OR      p.description LIKE '%' || UPPER( :part_no) || '%')
+                  AND     p.part_status IN ('A', 'I')
+                  AND     p.part_no LIKE 'S__-%'
+                  AND     ps.qty_onhand - ps.qty_reserved > 0
+                  UNION
+                  SELECT  DISTINCT
+                          p.part_no,
+                          p.contract,
+                          p.description,
+                          NVL(
+                            condition_code_manager_api.get_condition_code(ps.part_no,
+                                                                          ps.serial_no,
+                                                                          ps.lot_batch_no),
+                            'NORMAL'),
+                          condition_code_api.get_description(
+                            NVL(
+                              condition_code_manager_api.get_condition_code(ps.part_no,
+                                                                            ps.serial_no,
+                                                                            ps.lot_batch_no),
+                              'NORMAL'))
+                            AS condition,
+                          p.unit_meas,
+                          p.part_status,
+                          p.objid
+                  FROM    inventory_part p,
+                          inventory_part_in_stock ps
+                  WHERE   ps.contract(+) = p.contract
+                  AND     ps.part_no(+) = p.part_no
+                  AND     p.contract = :contract
+                  AND     (p.part_no LIKE '%' || UPPER( :part_no) || '%'
+                  OR      p.description LIKE '%' || UPPER( :part_no) || '%')
+                  AND     p.part_status IN ('A', 'I')
+                  AND     p.part_no LIKE 'S__-%'
+                  AND     ps.qty_onhand - ps.qty_reserved <= 0) x
         `;
       }
       const result = await ifs.query(sql, [contract, partNo]);
