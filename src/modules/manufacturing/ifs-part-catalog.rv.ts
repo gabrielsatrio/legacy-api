@@ -51,7 +51,7 @@ export class IfsPartCatalogResolver {
 
   @Query(() => String)
   @UseMiddleware(isAuth)
-  async getUOM(
+  async getPartCtlgUom(
     @Arg('partNo', () => String) partNo: string
   ): Promise<string | undefined> {
     try {
@@ -66,7 +66,7 @@ export class IfsPartCatalogResolver {
 
   @Query(() => String)
   @UseMiddleware(isAuth)
-  async getSite(
+  async getPartCtlgSite(
     @Arg('partNo', () => String) partNo: string
   ): Promise<string | undefined> {
     try {
