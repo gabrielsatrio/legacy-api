@@ -13,6 +13,10 @@ export class IfsPartCatalogView extends BaseEntity {
   description!: string;
 
   @Field()
+  @Column({ name: 'STD_NAME_ID' })
+  stdNameId!: number;
+
+  @Field()
   @Column({ name: 'UNIT_CODE' })
   unitCode!: string;
 
