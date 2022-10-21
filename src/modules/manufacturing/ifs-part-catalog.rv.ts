@@ -13,25 +13,45 @@ export class IfsPartCatalogResolver {
     @Arg('description', () => String, { nullable: true }) description: string
   ): Promise<IfsPartCatalogView[] | undefined> {
     try {
+      const code: string[] = partCode
+        ? partCode.trim().toUpperCase().split(', ')
+        : [];
+
       const words: string[] = description
         ? description.trim().toUpperCase().split(' ')
         : [];
 
-      const result = IfsPartCatalogView.createQueryBuilder('PC');
+      let codeFilter = `SELECT part_no, description, std_name_id, unit_code, info_text
+      FROM part_catalog`;
 
-      if (partCode)
-        result.where(`UPPER(PC.PART_NO) LIKE '${partCode.toUpperCase()}%'`);
+      if (code.length > 0)
+        for (let i = 0; i < code.length; i++) {
+          if (i === 0)
+            codeFilter = codeFilter.concat(
+              `\n WHERE UPPER(part_no) LIKE '${code[i].toUpperCase()}%'`
+            );
+          else
+            codeFilter = codeFilter.concat(
+              `\n OR UPPER(part_no) LIKE '${code[i].toUpperCase()}%'`
+            );
+        }
+
+      let sql = `SELECT part_no as "partNo",
+      description as "description",
+      unit_code as "unitCode",
+      std_name_id as "stdNameId",
+      info_text as "infoText"
+      FROM (${codeFilter})`;
+
       if (words.length > 0)
         for (let i = 0; i < words.length; i++) {
-          if (i === 0 && !partCode) {
-            result.where(`UPPER(PC.DESCRIPTION) LIKE '%${words[i]}%'`);
-          } else {
-            result.andWhere(`UPPER(PC.DESCRIPTION) LIKE '%${words[i]}%'`, {
-              word: words[i]
-            });
-          }
+          if (i === 0)
+            sql = sql.concat(`\nWHERE UPPER(description) LIKE '%${words[i]}%'`);
+          else
+            sql = sql.concat(`\nAND UPPER(description) LIKE '%${words[i]}%'`);
         }
-      return await result.getMany();
+
+      return await ifs.query(sql);
     } catch (err) {
       throw new Error(mapError(err));
     }
