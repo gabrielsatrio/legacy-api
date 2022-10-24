@@ -1,3 +1,11 @@
+<a name="2.65.0"></a>
+
+# [2.65.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/319) (2022-10-24)
+
+### Features
+
+- [**M022**] **part-catalog-search**: add part catalog search form.
+
 <a name="2.64.1"></a>
 
 # [2.64.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/317) (2022-10-18)
