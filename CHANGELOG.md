@@ -1,3 +1,19 @@
+<a name="2.65.0"></a>
+
+# [2.65.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/319) (2022-10-24)
+
+### Features
+
+- [**M022**] **part-catalog-search**: add part catalog search form.
+
+<a name="2.64.1"></a>
+
+# [2.64.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/317) (2022-10-18)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue where the query to get the spare parts list is incorrect.
+
 <a name="2.64.0"></a>
 
 # [2.64.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/315) (2022-10-12)
