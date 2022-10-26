@@ -1,3 +1,71 @@
+<a name="2.64.1"></a>
+
+# [2.64.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/317) (2022-10-18)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue where the query to get the spare parts list is incorrect.
+
+<a name="2.64.0"></a>
+
+# [2.64.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/315) (2022-10-12)
+
+### Features
+
+- [**G002**] **pesanan-seragam**: add generate pesanan dept.
+
+<a name="2.63.0"></a>
+
+# [2.63.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/312) (2022-10-10)
+
+### Features
+
+- [**G002**] **pesanan-seragam**: add pesanan seragam admin.
+
+<a name="2.62.0"></a>
+
+# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/311) (2022-10-07)
+
+### Features
+
+- [**M002**] **DDP**: add feature for reserve same material with different line no.
+
+<a name="2.61.0"></a>
+
+# [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add logger.
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: change type from `DateTime` to `GraphQLDate`.
+
+<a name="2.60.1"></a>
+
+# [2.60.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/307) (2022-10-06)
+
+### Bug Fixes
+
+- [**M015**] **TT**: location fix.
+
+<a name="2.60.0"></a>
+
+# [2.60.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/305) (2022-10-05)
+
+### Features
+
+- [**M021**] **afal-braiding**: finish module, basic CRUD.
+
+<a name="2.59.1"></a>
+
+# [2.59.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/303) (2022-09-28)
+
+### Bug Fixes
+
+- [**F002**] **expedition-paid-date**: add column circulation date (adv search).
+
 <a name="2.59.0"></a>
 
 # [2.59.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/301) (2022-09-23)

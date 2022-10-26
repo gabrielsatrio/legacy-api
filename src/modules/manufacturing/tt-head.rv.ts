@@ -155,6 +155,9 @@ export class TTHeadResolver {
           `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI') then 'RM%NG' else 'NULL' end`
         )
         .andWhere(
+          `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2') then 'RM%NG' else 'NULL' end`
+        )
+        .andWhere(
           `IPIS.LOCATION_NO not like case when IPIS.CONTRACT in('AT2','AMI','AT4','AT1','ATD','ATS') then 'RM%QA1' else 'NULL' end`
         )
         .andWhere(

@@ -71,4 +71,8 @@ export class PesananSeragamWarpView extends BaseEntity {
   @Field()
   @Column({ name: 'IS_LOCKED' })
   isLocked!: number;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
 }

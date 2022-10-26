@@ -55,4 +55,7 @@ export class BPOAuxiliariesInput implements Partial<BPOAuxiliaries> {
 
   @Field()
   no!: number;
+
+  @Field({ nullable: true })
+  lineLot1?: number;
 }
