@@ -28,4 +28,7 @@ export class NotulInput implements Partial<Notul> {
 
   @Field()
   imptId!: number;
+
+  @Field({ nullable: true })
+  category?: string;
 }
