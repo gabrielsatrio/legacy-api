@@ -1,7 +1,7 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { ifs } from '../../database/data-sources';
 import { ProdWarpingIntrTrans } from './entities/warping-intr-trans';
 import { ProdWarpingIntrTransInput } from './warping-intr-trans.in';
 
