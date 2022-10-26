@@ -6,6 +6,87 @@ import { IfsPartCatalogView } from './entities/ifs-part-catalog.vw';
 
 @Resolver(IfsPartCatalogView)
 export class IfsPartCatalogResolver {
+  @Query(() => IfsPartCatalogView)
+  @UseMiddleware(isAuth)
+  async getPartCatalog(
+    @Arg('partNo', () => String) partNo: string
+  ): Promise<IfsPartCatalogView | null> {
+    try {
+      return await IfsPartCatalogView.findOneBy({ partNo });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  async getPartCatalogUom(
+    @Arg('partNo', () => String) partNo: string
+  ): Promise<string | undefined> {
+    try {
+      const query = `
+      SELECT LISTAGG(unit_code, ', ') WITHIN GROUP (ORDER BY unit_code) AS "uom"
+      FROM   (SELECT   part_no,
+                      unit_code
+              FROM     part_catalog
+              WHERE    part_no = :p_part_no
+              GROUP BY part_no, unit_code
+              UNION
+              SELECT   part_no,
+                      unit_code
+              FROM     part_catalog@ifs8agt
+              WHERE    part_no = :p_part_no
+              GROUP BY part_no, unit_code)
+      `;
+      const result = await ifs.query(query, [partNo]);
+      return result[0].uom || ' ';
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  async getPartCatalogSite(
+    @Arg('partNo', () => String) partNo: string
+  ): Promise<string | undefined> {
+    try {
+      const isExistAtQuery = `
+      SELECT NVL(MAX(1), 0) as "exist"
+      FROM   part_catalog
+      WHERE  part_no = :p_part_no
+      `;
+      const isExistAt = await ifs.query(isExistAtQuery, [partNo]);
+
+      const isExistAgQuery = `
+      SELECT NVL(MAX(1), 0) as "exist"
+      FROM   part_catalog@ifs8agt
+      WHERE  part_no = :p_part_no
+      `;
+      const isExistAg = await ifs.query(isExistAgQuery, [partNo]);
+      if (isExistAg[0].exist === 1 && isExistAt[0].exist === 1) return 'AT, AG';
+      else if (isExistAt[0].exist === 1) return 'AT';
+      else if (isExistAg[0].exist === 1) return 'AG';
+      else return ' ';
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [String])
+  @UseMiddleware(isAuth)
+  async getInfoTextSplit(
+    @Arg('partNo', () => String) partNo: string
+  ): Promise<string[] | undefined> {
+    try {
+      const result = await IfsPartCatalogView.findOneBy({ partNo });
+      const infoTextSplit = result?.infoText?.split(/\r?\n/);
+      return infoTextSplit;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => [IfsPartCatalogView])
   @UseMiddleware(isAuth)
   async getPartCatalogList(
@@ -52,62 +133,6 @@ export class IfsPartCatalogResolver {
         }
 
       return await ifs.query(sql);
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => IfsPartCatalogView)
-  @UseMiddleware(isAuth)
-  async getPartCatalog(
-    @Arg('partNo', () => String) partNo: string
-  ): Promise<IfsPartCatalogView | null> {
-    try {
-      return await IfsPartCatalogView.findOneBy({ partNo });
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => String)
-  @UseMiddleware(isAuth)
-  async getPartCtlgUom(
-    @Arg('partNo', () => String) partNo: string
-  ): Promise<string | undefined> {
-    try {
-      const query = `SELECT vky_part_catalog_search_api.get_uom( :part_no) as "uom"
-                    FROM DUAL`;
-      const result = await ifs.query(query, [partNo]);
-      return result[0].uom;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => String)
-  @UseMiddleware(isAuth)
-  async getPartCtlgSite(
-    @Arg('partNo', () => String) partNo: string
-  ): Promise<string | undefined> {
-    try {
-      const query = `SELECT vky_part_catalog_search_api.get_contract( :part_no) as "site"
-                    FROM DUAL`;
-      const result = await ifs.query(query, [partNo]);
-      return result[0].site;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
-  @Query(() => [String])
-  @UseMiddleware(isAuth)
-  async getInfoTextSplit(
-    @Arg('partNo', () => String) partNo: string
-  ): Promise<string[] | undefined> {
-    try {
-      const result = await IfsPartCatalogView.findOneBy({ partNo });
-      const infoTextSplit = result?.infoText?.split(/\r?\n/);
-      return infoTextSplit;
     } catch (err) {
       throw new Error(mapError(err));
     }

@@ -9,10 +9,11 @@ export class IfsPurchasePartResolver {
   @Query(() => IfsPurchasePartView)
   @UseMiddleware(isAuth)
   async getPurchasePart(
-    @Arg('partNo', () => String) partNo: string
+    @Arg('partNo', () => String) partNo: string,
+    @Arg('contract', () => String) contract: string
   ): Promise<IfsPurchasePartView | null> {
     try {
-      return await IfsPurchasePartView.findOneBy({ partNo });
+      return await IfsPurchasePartView.findOneBy({ partNo, contract });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -39,7 +40,7 @@ export class IfsPurchasePartResolver {
               GROUP BY part_no, default_buy_unit_meas)
       `;
       const result = await ifs.query(sql, [partNo]);
-      return result[0].uom;
+      return result[0].uom || ' ';
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -66,7 +67,7 @@ export class IfsPurchasePartResolver {
         GROUP BY part_no, contract)
       `;
       const result = await ifs.query(sql, [partNo]);
-      return result[0].contract;
+      return result[0].contract || ' ';
     } catch (err) {
       throw new Error(mapError(err));
     }

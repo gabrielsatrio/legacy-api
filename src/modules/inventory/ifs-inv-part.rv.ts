@@ -212,7 +212,7 @@ export class IfsInventoryPartResolver {
               WHERE    part_no = :p_part_no
               GROUP BY part_no, unit_meas)`;
       const result = await ifs.query(sql, [partNo]);
-      return result[0].uom;
+      return result[0].uom || ' ';
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -238,7 +238,7 @@ export class IfsInventoryPartResolver {
               WHERE    part_no = :p_part_no
               GROUP BY part_no, contract)`;
       const result = await ifs.query(sql, [partNo]);
-      return result[0].contract;
+      return result[0].contract || ' ';
     } catch (err) {
       throw new Error(mapError(err));
     }

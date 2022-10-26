@@ -9,7 +9,7 @@ export class IfsPurchasePartView extends BaseEntity {
   partNo!: string;
 
   @Field()
-  @Column({ name: 'CONTRACT' })
+  @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
 
   @Field()

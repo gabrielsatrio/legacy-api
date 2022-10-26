@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('VKY_PART_CODE_V')
+@Entity('VKY_PART_CATEGORY_V')
 @ObjectType()
-export class PartCodeView extends BaseEntity {
+export class PartCategoryView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID' })
   id!: number;
