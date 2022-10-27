@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**M014**] **warping**: add denier and interruption form for warping modules.
+- [**M014**] **warping**: add denier and interruption for warping modules.
 
 <a name="2.65.0"></a>
 
