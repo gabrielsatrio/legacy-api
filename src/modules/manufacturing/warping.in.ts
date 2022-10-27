@@ -158,8 +158,25 @@ export class ProdWarpingInput implements Partial<ProdWarping> {
   checkBeam2?: boolean;
 
   @Field({ nullable: true })
+  @IsNumber()
+  rpmWarping1?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  rpmBeaming1?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  benangSisa1?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  waktuProduksi1?: number;
+
+  @Field({ nullable: true })
   @MaxLength(200)
   notes?: string;
+
   @Field({ nullable: true })
   @IsDate()
   createdAt?: Date;
