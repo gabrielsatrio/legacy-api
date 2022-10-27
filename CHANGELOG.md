@@ -1,3 +1,11 @@
+<a name="2.66.0"></a>
+
+# [2.66.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/321) (2022-10-27)
+
+### Features
+
+- [**M014**] **warping**: add denier and interruption for warping modules.
+
 <a name="2.65.0"></a>
 
 # [2.65.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/319) (2022-10-26)
