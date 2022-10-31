@@ -165,6 +165,22 @@ export class ProdWarpingView extends BaseEntity {
   checkBeam2?: boolean;
 
   @Field({ nullable: true })
+  @Column({ name: 'RPM_WARPING_1' })
+  rpmWarping1?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'RPM_BEAMING_1' })
+  rpmBeaming1?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BENANG_SISA_1' })
+  benangSisa1?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'WAKTU_PRODUKSI_1' })
+  waktuProduksi1?: number;
+
+  @Field({ nullable: true })
   @Column({ name: 'NOTES' })
   notes?: string;
 

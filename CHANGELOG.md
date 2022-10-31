@@ -1,3 +1,51 @@
+<a name="2.66.0"></a>
+
+# [2.66.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/321) (2022-10-27)
+
+### Features
+
+- [**M014**] **warping**: add denier and interruption for warping modules.
+
+<a name="2.65.0"></a>
+
+# [2.65.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/319) (2022-10-26)
+
+### Features
+
+- [**M022**] **part-catalog-search**: add part catalog search form.
+
+<a name="2.64.1"></a>
+
+# [2.64.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/317) (2022-10-18)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue where the query to get the spare parts list is incorrect.
+
+<a name="2.64.0"></a>
+
+# [2.64.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/315) (2022-10-12)
+
+### Features
+
+- [**G002**] **pesanan-seragam**: add generate pesanan dept.
+
+<a name="2.63.0"></a>
+
+# [2.63.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/312) (2022-10-10)
+
+### Features
+
+- [**G002**] **pesanan-seragam**: add pesanan seragam admin.
+
+<a name="2.62.0"></a>
+
+# [2.62.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/311) (2022-10-07)
+
+### Features
+
+- [**M002**] **DDP**: add feature for reserve same material with different line no.
+
 <a name="2.61.0"></a>
 
 # [2.61.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/309) (2022-10-06)

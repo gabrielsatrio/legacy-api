@@ -47,4 +47,8 @@ export class PesananSeragam extends BaseEntity {
   @Field()
   @Column({ name: 'IS_LOCKED' })
   isLocked!: boolean;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
 }
