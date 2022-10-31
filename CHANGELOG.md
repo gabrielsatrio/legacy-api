@@ -1,3 +1,11 @@
+<a name="2.67.0"></a>
+
+# [2.67.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/323) (2022-10-31)
+
+### Features
+
+- [**M003**] **opname**: add dept input.
+
 <a name="2.66.0"></a>
 
 # [2.66.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/321) (2022-10-27)

@@ -186,7 +186,7 @@ export class OpnameStatusResolver {
         input.objId,
         input.contract,
         input.username,
-        '',
+        input.dept,
         input.periode,
         input.time,
         input.opnameType,
