@@ -35,4 +35,8 @@ export class NotulView extends BaseEntity {
   @Field()
   @Column({ name: 'IMPT_ID' })
   imptId!: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CATEGORY' })
+  category?: string;
 }
