@@ -55,4 +55,8 @@ export class ImportBook extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'BANK_BRANCH' })
   bankBranch?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LC_BANK' })
+  lcBank?: string;
 }
