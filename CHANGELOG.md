@@ -1,3 +1,12 @@
+<a name="2.68.0"></a>
+
+# [2.68.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/324) (2022-11-01)
+
+### Features
+
+- [**F003**] **buku-import**: add column category.
+- [**F004**] **bank-account**: add feature bank account.
+
 <a name="2.67.0"></a>
 
 # [2.67.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/323) (2022-10-31)
