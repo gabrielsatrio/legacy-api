@@ -13,6 +13,9 @@ export class OpnameStatusInput implements Partial<OpnameStatus> {
   username!: string;
 
   @Field()
+  dept!: string;
+
+  @Field()
   periode!: Date;
 
   @Field()
