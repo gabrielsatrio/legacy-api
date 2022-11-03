@@ -225,18 +225,20 @@ export class IfsInventoryPartResolver {
   ): Promise<string | undefined> {
     try {
       const sql = `
-      SELECT LISTAGG(contract, ', ') WITHIN GROUP (ORDER BY contract) AS "contract"
+      SELECT LISTAGG(contract || ' (' || part_status || ')', ', ') WITHIN GROUP (ORDER BY contract) AS "contract"
       FROM   (SELECT   part_no,
-                       contract
+                      contract,
+                      part_status
               FROM     inventory_part
               WHERE    part_no = :p_part_no
-              GROUP BY part_no, contract
+              GROUP BY part_no, contract, part_status
               UNION
               SELECT   part_no,
-                       contract
+                      contract,
+                      part_status
               FROM     inventory_part@ifs8agt
               WHERE    part_no = :p_part_no
-              GROUP BY part_no, contract)`;
+              GROUP BY part_no, contract, part_status)`;
       const result = await ifs.query(sql, [partNo]);
       return result[0].contract || ' ';
     } catch (err) {

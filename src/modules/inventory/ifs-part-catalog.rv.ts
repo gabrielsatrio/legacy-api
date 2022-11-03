@@ -81,7 +81,8 @@ export class IfsPartCatalogResolver {
     try {
       const result = await IfsPartCatalogView.findOneBy({ partNo });
       const infoTextSplit = result?.infoText?.split(/\r?\n/);
-      return infoTextSplit;
+      if (infoTextSplit) return infoTextSplit;
+      else return ['Alias: ', 'Info: '];
     } catch (err) {
       throw new Error(mapError(err));
     }
