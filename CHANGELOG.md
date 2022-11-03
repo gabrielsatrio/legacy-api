@@ -1,3 +1,11 @@
+<a name="2.69.0"></a>
+
+# [2.69.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/327) (2022-11-03)
+
+### Features
+
+- [**M022**] **part-catalog-search**: add inventory part status on listagg query.
+
 <a name="2.68.0"></a>
 
 # [2.68.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/324) (2022-11-01)
