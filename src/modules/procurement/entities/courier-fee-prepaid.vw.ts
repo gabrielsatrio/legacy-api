@@ -91,4 +91,8 @@ export class CourierFeePrepaidView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'EMAIL_USER' })
   emailUser?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PERIODE_BAYAR' })
+  periodeBayar?: string;
 }
