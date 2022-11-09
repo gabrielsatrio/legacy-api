@@ -1,3 +1,12 @@
+<a name="2.70.0"></a>
+
+# [2.70.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/329) (2022-11-09)
+
+### Features
+
+- [**P001**] **import-expedition**: add column periode bayar.
+- [**P002**] **courier-fee-prepaid**: add column periode bayar.
+
 <a name="2.69.0"></a>
 
 # [2.69.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/327) (2022-11-03)
