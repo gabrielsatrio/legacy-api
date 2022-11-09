@@ -55,4 +55,7 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
   @Field({ nullable: true })
   @IsNumber()
   ppn?: number;
+
+  @Field({ nullable: true })
+  periodeBayar?: string;
 }

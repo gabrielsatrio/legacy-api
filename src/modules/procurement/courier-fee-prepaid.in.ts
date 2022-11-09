@@ -74,4 +74,7 @@ export class CourierFeePrepaidInput implements Partial<CourierFeePrepaid> {
 
   @Field({ nullable: true })
   emailUser?: string;
+
+  @Field({ nullable: true })
+  periodeBayar?: string;
 }
