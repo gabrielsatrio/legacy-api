@@ -48,4 +48,8 @@ export class MaterialUse extends BaseEntity {
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })
   material!: Material;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_BATCH_SOURCE' })
+  lotBatchSource?: string;
 }
