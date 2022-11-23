@@ -44,12 +44,12 @@ export class MaterialUse extends BaseEntity {
   @Column({ name: 'LENGTH' })
   length!: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'LOT_BATCH_SOURCE' })
+  lotBatchSource?: string;
+
   @ManyToOne(() => Material, (material) => material.materialUses)
   @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
   @JoinColumn({ name: 'ID_NO', referencedColumnName: 'idNo' })
   material!: Material;
-
-  @Field({ nullable: true })
-  @Column({ name: 'LOT_BATCH_SOURCE' })
-  lotBatchSource?: string;
 }
