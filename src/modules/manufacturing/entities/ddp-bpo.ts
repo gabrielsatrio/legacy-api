@@ -85,6 +85,18 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'PRINT_AUX' })
   printAux?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'NOTE' })
+  note?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEFECT_ID' })
+  defectId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PROCESS_NOTE' })
+  processNote?: string;
+
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {
     nullable: true

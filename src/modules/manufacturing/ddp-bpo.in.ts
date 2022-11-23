@@ -53,4 +53,13 @@ export class BPOInput implements Partial<DDPBPO> {
   @Field({ nullable: true })
   @Length(1, 50)
   jenisKu?: string;
+
+  @Field({ nullable: true })
+  note?: string;
+
+  @Field({ nullable: true })
+  defectId?: string;
+
+  @Field({ nullable: true })
+  processNote?: string;
 }

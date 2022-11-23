@@ -1,3 +1,11 @@
+<a name="2.71.0"></a>
+
+# [2.71.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/331) (2022-11-23)
+
+### Features
+
+- [**M002**] **ddp**: add columns for bpo and material use.
+
 <a name="2.70.0"></a>
 
 # [2.70.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/329) (2022-11-09)
