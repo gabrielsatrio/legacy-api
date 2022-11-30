@@ -1,3 +1,11 @@
+<a name="2.72.0"></a>
+
+# [2.72.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/333) (2022-11-30)
+
+### Features
+
+- [**M003**] **opname**: change mutation for warehouse opname.
+
 <a name="2.71.0"></a>
 
 # [2.71.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/331) (2022-11-23)
