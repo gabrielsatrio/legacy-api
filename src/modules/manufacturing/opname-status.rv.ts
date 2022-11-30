@@ -206,16 +206,12 @@ export class OpnameStatusResolver {
   @Mutation(() => OpnameStatus)
   @UseMiddleware(isAuth)
   async finishOpname(
-    @Arg('contract') contract: string,
-    @Arg('periode') periode: Date,
-    @Arg('username') username: string
+    @Arg('objId') objId: string
   ): Promise<OpnameStatus | null> {
     try {
-      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username, :outObjId); END;`;
+      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME_EZIO(:objId, :outObjId); END;`;
       const result = await ifs.query(sql, [
-        contract,
-        periode,
-        username,
+        objId,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
 
