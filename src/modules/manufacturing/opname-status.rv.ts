@@ -129,13 +129,20 @@ export class OpnameStatusResolver {
     @Arg('dept') dept: string
   ): Promise<OpnameStatus[] | undefined> {
     try {
-      return await OpnameStatus.find({
-        where: {
-          contract: In(contract),
-          dept: Like(dept),
-          objId: Like('%')
-        }
-      });
+      if (dept === 'CCU' || dept === 'MIS') {
+        return await OpnameStatus.find({
+          where: {
+            contract: In(contract)
+          }
+        });
+      } else {
+        return await OpnameStatus.find({
+          where: {
+            contract: In(contract),
+            dept: Like(dept)
+          }
+        });
+      }
     } catch (err) {
       throw new Error(mapError(err));
     }
