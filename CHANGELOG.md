@@ -4,6 +4,7 @@
 
 ### Features
 
+- [**M003**] **opname**: enable user MIS & CCU to view.
 - [**M019**] **gis**: add column for AT6.
 
 <a name="2.72.0"></a>

@@ -132,16 +132,14 @@ export class OpnameStatusResolver {
       if (dept === 'CCU' || dept === 'MIS') {
         return await OpnameStatus.find({
           where: {
-            contract: In(contract),
-            objId: Like('%')
+            contract: In(contract)
           }
         });
       } else {
         return await OpnameStatus.find({
           where: {
             contract: In(contract),
-            dept: Like(dept),
-            objId: Like('%')
+            dept: Like(dept)
           }
         });
       }
