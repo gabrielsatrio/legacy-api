@@ -124,6 +124,14 @@ export class GisHeaderView extends BaseEntity {
   @Column({ name: 'INSPECT_TYPE_2' })
   inspectType2?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'START_WIDTH_6' })
+  startWidth6?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'MID_WIDTH_6' })
+  midWidth6?: number;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
