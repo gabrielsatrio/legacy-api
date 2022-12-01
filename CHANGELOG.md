@@ -1,3 +1,12 @@
+<a name="2.73.0"></a>
+
+# [2.73.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/335) (2022-12-01)
+
+### Features
+
+- [**M003**] **opname**: enable user MIS & CCU to view.
+- [**M019**] **gis**: add column for AT6.
+
 <a name="2.72.0"></a>
 
 # [2.72.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/333) (2022-11-30)
