@@ -1,3 +1,11 @@
+<a name="2.73.1"></a>
+
+# [2.73.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/337) (2022-12-12)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue in which the app generates multiple unwanted material requisitions.
+
 <a name="2.73.0"></a>
 
 # [2.73.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/335) (2022-12-01)
