@@ -1,3 +1,12 @@
+<a name="2.74.0"></a>
+
+# [2.74.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/339) (2022-12-15)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add new mutation to get data by requisition id.
+- [**M013**] **apm-requisitions**: add new mutation to reorder all lines.
+
 <a name="2.73.1"></a>
 
 # [2.73.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/337) (2022-12-12)
