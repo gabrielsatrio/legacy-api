@@ -77,6 +77,26 @@ export class SparePartReqLineMachResolver {
     }
   }
 
+  @Query(() => [SparePartReqLineMachView])
+  @UseMiddleware(isAuth)
+  async getSPRequisLineMachsByReqId(
+    @Arg('requisitionId', () => Int) requisitionId: number
+  ): Promise<SparePartReqLineMachView[] | undefined> {
+    try {
+      return await SparePartReqLineMachView.find({
+        where: { requisitionId },
+        order: {
+          requisitionId: 'ASC',
+          lineItemNo: 'ASC',
+          releaseNo: 'ASC',
+          mapNo: 'ASC'
+        }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => SparePartReqLineMach)
   @UseMiddleware(isAuth)
   async createSPRequisLineMach(
