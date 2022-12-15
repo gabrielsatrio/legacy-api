@@ -53,40 +53,6 @@ export class SparePartReqLineResolver {
     }
   }
 
-  @Query(() => [SparePartReqLineView])
-  @UseMiddleware(isAuth)
-  async getSPRequisLinesByReqId(
-    @Arg('requisitionId', () => Int) requisitionId: number
-  ): Promise<SparePartReqLineView[] | undefined> {
-    try {
-      const data = await SparePartReqLineView.find({
-        where: { requisitionId },
-        order: { requisitionId: 'ASC', lineItemNo: 'ASC', releaseNo: 'ASC' }
-      });
-      if (data.length > 0 && data[0].contract === 'AGT') {
-        await Promise.all(
-          data.map(async (item) => {
-            const sql = `
-              SELECT  Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo)  AS "description",
-                      Condition_Code_API.Get_Description@ifs8agt(:conditionCode)      AS "conditionCodeDesc"
-              FROM    DUAL
-            `;
-            const result = await ifs.query(sql, [
-              item.contract,
-              item.partNo,
-              item.conditionCode
-            ]);
-            item.partDesc = result[0].description;
-            item.conditionCodeDesc = result[0].conditionCodeDesc;
-          })
-        );
-      }
-      return data;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
-
   @Query(() => SparePartReqLineView, { nullable: true })
   @UseMiddleware(isAuth)
   async getSPRequisLine(
@@ -183,6 +149,40 @@ export class SparePartReqLineResolver {
         releaseNo: +result[1]
       };
       return res;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [SparePartReqLineView])
+  @UseMiddleware(isAuth)
+  async getSPRequisLinesByReqId(
+    @Arg('requisitionId', () => Int) requisitionId: number
+  ): Promise<SparePartReqLineView[] | undefined> {
+    try {
+      const data = await SparePartReqLineView.find({
+        where: { requisitionId },
+        order: { requisitionId: 'ASC', lineItemNo: 'ASC', releaseNo: 'ASC' }
+      });
+      if (data.length > 0 && data[0].contract === 'AGT') {
+        await Promise.all(
+          data.map(async (item) => {
+            const sql = `
+              SELECT  Inventory_Part_API.Get_Description@ifs8agt(:contract, :partNo)  AS "description",
+                      Condition_Code_API.Get_Description@ifs8agt(:conditionCode)      AS "conditionCodeDesc"
+              FROM    DUAL
+            `;
+            const result = await ifs.query(sql, [
+              item.contract,
+              item.partNo,
+              item.conditionCode
+            ]);
+            item.partDesc = result[0].description;
+            item.conditionCodeDesc = result[0].conditionCodeDesc;
+          })
+        );
+      }
+      return data;
     } catch (err) {
       throw new Error(mapError(err));
     }
