@@ -143,6 +143,65 @@ export class MachineMaintenanceResolver {
 
   @Mutation(() => MachineMaintenanceView)
   @UseMiddleware(isAuth)
+  async deleteMachMaintenanceByMR(
+    @Arg('contract') contract: string,
+    @Arg('machineId') machineId: string,
+    @Arg('mrNo') mrNo: string,
+    @Arg('mrLineNo') mrLineNo: string,
+    @Arg('mrReleaseNo') mrReleaseNo: string,
+    @Arg('mrLineItemNo', () => Int) mrLineItemNo: number,
+    @Arg('mrOrderClass') mrOrderClass: string
+  ): Promise<MachineMaintenanceView | null> {
+    try {
+      let data;
+      data = await MachineMaintenance.findOneBy({
+        contract,
+        machineId,
+        mrNo,
+        mrLineNo,
+        mrReleaseNo,
+        mrLineItemNo,
+        mrOrderClass
+      });
+      if (!data) throw new Error('No data found.');
+      if (data?.contract === 'AGT') {
+        data = await MachineMaintenanceAgtView.findOneBy({
+          contract,
+          machineId,
+          mrNo,
+          mrLineNo,
+          mrReleaseNo,
+          mrLineItemNo,
+          mrOrderClass
+        });
+      } else {
+        data = await MachineMaintenanceView.findOneBy({
+          contract,
+          machineId,
+          mrNo,
+          mrLineNo,
+          mrReleaseNo,
+          mrLineItemNo,
+          mrOrderClass
+        });
+      }
+      await MachineMaintenance.delete({
+        contract,
+        machineId,
+        mrNo,
+        mrLineNo,
+        mrReleaseNo,
+        mrLineItemNo,
+        mrOrderClass
+      });
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => MachineMaintenanceView)
+  @UseMiddleware(isAuth)
   async syncMachMaintenanceForMr(
     @Arg('input') input: MachineMaintenanceSyncInput
   ): Promise<MachineMaintenanceView | null> {
