@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { MachineResolver } from './apm-machine.rv';
 import { SparePartReqLineMachInput } from './apm-sp-requisition-line-mach.in';
 import { SparePartReqLineMach } from './entities/apm-sp-requisition-line-mach';
 import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mach.vw';
@@ -110,8 +111,21 @@ export class SparePartReqLineMachResolver {
         mapNo: input.mapNo
       });
       if (existingData) throw new Error('Data already exists.');
+      const machineObj = new MachineResolver();
+      const machine = await machineObj.getMachine(
+        input.machineId,
+        input.contract
+      );
+      const workCenterNo = machine?.workCenterNo || '';
       const data = SparePartReqLineMach.create({
         ...input,
+        nonKS:
+          workCenterNo.substring(
+            workCenterNo.length - 2,
+            workCenterNo.length
+          ) === 'SP'
+            ? true
+            : false,
         createdAt: new Date(),
         updatedAt: new Date()
       });

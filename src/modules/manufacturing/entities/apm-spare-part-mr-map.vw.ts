@@ -76,6 +76,10 @@ export class SparePartMrMapView extends BaseEntity {
   @Column({ name: 'DESTINATION' })
   destination?: string;
 
+  @Field({ defaultValue: false })
+  @Column({ name: 'NON_KS' })
+  nonKS!: boolean;
+
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
