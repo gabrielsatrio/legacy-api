@@ -20,7 +20,7 @@ import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 export class MachineMaintenanceResolver {
   @Query(() => [MachineMaintenanceView])
   @UseMiddleware(isAuth)
-  async getMachMaintenanceByPrNo(
+  async getMachMaintenanceByPr(
     @Arg('requisitionNo') requisitionNo: string,
     @Arg('lineNo') lineNo: string,
     @Arg('releaseNo') releaseNo: string
