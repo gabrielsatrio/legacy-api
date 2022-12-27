@@ -40,6 +40,10 @@ export class SparePartReqLineMachView extends BaseEntity {
   @Column({ name: 'QUANTITY' })
   quantity!: number;
 
+  @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unitMeas!: string;
+
   @Field({ defaultValue: false })
   @Column({ name: 'NON_KS' })
   nonKS!: boolean;
