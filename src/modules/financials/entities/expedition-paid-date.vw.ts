@@ -55,4 +55,12 @@ export class ExpeditionPaidDateView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PAID_BY' })
   paidBy?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES_HEADER' })
+  notesHeader?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'BUKTI_TRANSFER' })
+  buktiTransfer?: string;
 }

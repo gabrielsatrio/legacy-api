@@ -1,3 +1,13 @@
+<a name="2.75.0"></a>
+
+# [2.75.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/341) (2023-01-04)
+
+### Features
+
+- [**P002**] **courier-fee-prepaid**: add column finance receipt date.
+- [**F002**] **expedition-paid-date**: add column notes header, bukti transfer.
+- [**F003**] **buku-import**: add PO History.
+
 <a name="2.74.0"></a>
 
 # [2.74.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/339) (2022-12-15)
