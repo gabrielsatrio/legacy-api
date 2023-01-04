@@ -4,7 +4,7 @@ import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { PurchaseOrderLogView } from './entities/purchase-order-log.vw';
 
 @Resolver(PurchaseOrderLogView)
-export class IfsShopOrderOperationResolver {
+export class PurchaseOrderLogResolver {
   @Query(() => [PurchaseOrderLogView], { nullable: true })
   @UseMiddleware(isAuth)
   async getPOHistory(
