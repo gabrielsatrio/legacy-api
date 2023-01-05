@@ -16,7 +16,6 @@ export class BPOResolver {
     contract: string[]
   ): Promise<DDPBPO[] | undefined> {
     return await DDPBPO.find({
-      relations: { dyestuffsUses: true, auxiliariesUses: true },
       where: { contract: In(contract) }
     });
   }
