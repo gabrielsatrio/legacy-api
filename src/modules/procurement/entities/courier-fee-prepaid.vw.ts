@@ -95,4 +95,8 @@ export class CourierFeePrepaidView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PERIODE_BAYAR' })
   periodeBayar?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'FINANCE_RECEIPT_DATE' })
+  financeReceiptDate?: Date;
 }

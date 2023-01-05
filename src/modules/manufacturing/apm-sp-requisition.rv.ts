@@ -299,4 +299,26 @@ export class SparePartRequisitionResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async reorderLines(
+    @Arg('requisitionId', () => Int) requisitionId: number
+  ): Promise<boolean> {
+    try {
+      const sql = `
+        BEGIN
+          ROB_APM_Sparepart_Req_API.Reorder_Lines__(:requisitionId);
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
+        END;
+      `;
+      await ifs.query(sql, [requisitionId]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
