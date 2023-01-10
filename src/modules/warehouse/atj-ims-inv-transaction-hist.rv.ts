@@ -8,7 +8,7 @@ import { ImsInvTransactionHistView } from './entities/atj-ims-inv-transaction-hi
 export class ImsInvTransactionHistResolver {
   @Query(() => ImsInvTransactionHistView)
   @UseMiddleware(isAuth)
-  async GetImsInvTransactionHist(
+  async getImsInvTransactionHist(
     @Arg('transactionId', () => Int) transactionId: number
   ): Promise<ImsInvTransactionHistView | null> {
     try {

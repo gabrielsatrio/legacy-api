@@ -8,7 +8,7 @@ import { ImsWarehouseBayBin } from './entities/atj-ims-warehouse';
 export class ImsWarehouseBayBinResolver {
   @Query(() => [ImsWarehouseBayBinView])
   @UseMiddleware(isAuth)
-  async GetAllImsWarehouse(): Promise<ImsWarehouseBayBinView[] | undefined> {
+  async getAllImsWarehouse(): Promise<ImsWarehouseBayBinView[] | undefined> {
     try {
       return await ImsWarehouseBayBinView.find();
     } catch (err) {

@@ -8,7 +8,7 @@ import { ImsInvPartView } from './entities/atj-ims-inv-part.vw';
 export class ImsInvPartResolver {
   @Query(() => [ImsInvPartView])
   @UseMiddleware(isAuth)
-  async GetAllImsPartNo(): Promise<ImsInvPartView[] | undefined> {
+  async getAllImsPartNo(): Promise<ImsInvPartView[] | undefined> {
     try {
       return await ImsInvPartView.find();
     } catch (err) {

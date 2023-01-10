@@ -8,7 +8,7 @@ import { ImsInvPartInStockView } from './entities/atj-ims-inv-part-in-stock.vw';
 export class InventoryPartInStockResolver {
   @Query(() => [ImsInvPartInStockView])
   @UseMiddleware(isAuth)
-  async GetAllImsInvPartInStock(): Promise<
+  async getAllImsInvPartInStock(): Promise<
     ImsInvPartInStockView[] | undefined
   > {
     try {
