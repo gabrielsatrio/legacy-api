@@ -1,3 +1,12 @@
+<a name="2.76.0"></a>
+
+# [2.76.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/343) (2023-01-10)
+
+### Features
+
+- [**H002**] **disabled-employees**: add new.
+- [**H003**] **master-jabatan**: add new.
+
 <a name="2.75.0"></a>
 
 # [2.75.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/341) (2023-01-04)
