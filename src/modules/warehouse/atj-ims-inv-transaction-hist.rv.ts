@@ -8,11 +8,29 @@ import { ImsInvTransactionHistView } from './entities/atj-ims-inv-transaction-hi
 export class ImsInvTransactionHistResolver {
   @Query(() => ImsInvTransactionHistView)
   @UseMiddleware(isAuth)
-  async getImsInvTransactionHist(
+  async getImsInvTransactionHistById(
     @Arg('transactionId', () => Int) transactionId: number
   ): Promise<ImsInvTransactionHistView | null> {
     try {
       return await ImsInvTransactionHistView.findOneBy({ transactionId });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [ImsInvTransactionHistView])
+  @UseMiddleware(isAuth)
+  async getImsInvTransactionHistByLotLoc(
+    @Arg('contract', () => String) contract: string,
+    @Arg('lotBatchNo', () => String) lotBatchNo: string,
+    @Arg('locationNo', () => String) locationNo: string
+  ): Promise<ImsInvTransactionHistView[] | undefined> {
+    try {
+      return await ImsInvTransactionHistView.findBy({
+        contract,
+        lotBatchNo,
+        locationNo
+      });
     } catch (err) {
       throw new Error(mapError(err));
     }
