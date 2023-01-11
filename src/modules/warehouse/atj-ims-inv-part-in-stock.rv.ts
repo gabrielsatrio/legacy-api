@@ -20,6 +20,20 @@ export class InventoryPartInStockResolver {
     }
   }
 
+  @Query(() => [ImsInvPartInStockView])
+  @UseMiddleware(isAuth)
+  async getImsInvPartInStockByAllowedSite(
+    @Arg('contract', () => [String]) contract: string[]
+  ): Promise<ImsInvPartInStockView[] | undefined> {
+    try {
+      return await ImsInvPartInStockView.createQueryBuilder('A')
+        .where('A.CONTRACT IN (:...contract)', { contract })
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => ImsInvPartInStock)
   @UseMiddleware(isAuth)
   async createImsInvPartInStock(
@@ -62,6 +76,57 @@ export class InventoryPartInStockResolver {
         contract: input.contract,
         locationNo: input.locationNo,
         lotBatchNo: input.lotBatchNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ImsInvPartInStock)
+  @UseMiddleware(isAuth)
+  async deleteImsInvPartInStock(
+    @Arg('partNo', () => String) partNo: string,
+    @Arg('contract', () => String) contract: string,
+    @Arg('locationNo', () => String) locationNo: string,
+    @Arg('lotBatchNo', () => String) lotBatchNo: string,
+    @Arg('reason', () => String) reason: string,
+    @Arg('modifiedDate', () => Date) modifiedDate: Date,
+    @Arg('modifiedBy', () => String) modifiedBy: string
+  ): Promise<ImsInvPartInStock | null> {
+    try {
+      const exist = await ImsInvPartInStockView.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
+      });
+      if (!exist) throw new Error('Data not exist');
+
+      const sql = `
+        BEGIN
+          atj_ims_inv_part_in_stock_api.delete__( :partNo,
+                                                  :contract,
+                                                  :locationNo,
+                                                  :lotBatchNo,
+                                                  :ctmNote,
+                                                  :modifiedDate,
+                                                  :modifiedBy);
+        END;
+      `;
+      await ifs.query(sql, [
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo,
+        reason,
+        modifiedDate,
+        modifiedBy
+      ]);
+      return await ImsInvPartInStock.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
       });
     } catch (err) {
       throw new Error(mapError(err));
