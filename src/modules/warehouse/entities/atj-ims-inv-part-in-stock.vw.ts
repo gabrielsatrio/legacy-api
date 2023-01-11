@@ -95,4 +95,8 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Field()
   @Column({ name: 'MODIFIED_BY' })
   modifiedBy!: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'LAST_TRANS_CODE' })
+  lastTransCode?: string;
 }
