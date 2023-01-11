@@ -12,6 +12,10 @@ export class ImsInvTransactionHistView extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DESCRIPTION' })
+  description?: string;
+
   @Field()
   @Column({ name: 'CONTRACT' })
   contract!: string;

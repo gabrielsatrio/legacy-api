@@ -8,6 +8,10 @@ export class ImsInvPartInStockView extends BaseEntity {
   @PrimaryColumn({ name: 'PART_NO' })
   partNo!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'DESCRIPTION' })
+  description?: string;
+
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
