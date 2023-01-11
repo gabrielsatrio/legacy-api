@@ -55,4 +55,16 @@ export class ImsInvTransactionHistView extends BaseEntity {
   @Field()
   @Column({ name: 'TRANSACTION_CODE' })
   transactionCode!: string;
+
+  @Field()
+  @Column({ name: 'CREATED_DATE' })
+  createdDate!: Date;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
+
+  @Field()
+  @Column({ name: 'QTY_REVERSED' })
+  qtyReversed!: number;
 }
