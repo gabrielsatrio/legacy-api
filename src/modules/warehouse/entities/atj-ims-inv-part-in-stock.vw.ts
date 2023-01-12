@@ -88,6 +88,10 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'AGE' })
+  age?: number;
+
   @Field()
   @Column({ name: 'MODIFIED_DATE' })
   modifiedDate!: Date;

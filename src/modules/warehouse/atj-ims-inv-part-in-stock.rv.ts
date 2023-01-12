@@ -48,17 +48,17 @@ export class InventoryPartInStockResolver {
       });
       if (exist) throw new Error('Data already exist');
       const sql = `
-      BEGIN
-        atj_ims_inv_part_in_stock_api.insert__( :partNo,
-                                                :contract,
-                                                :locationNo,
-                                                :lotBatch,
-                                                :qtyOnhand,
-                                                :catchQtyOnhand,
-                                                :ctmNote,
-                                                :createdDate,
-                                                :createdBy);
-      END;
+        BEGIN
+          atj_ims_inv_part_in_stock_api.insert__( :partNo,
+                                                  :contract,
+                                                  :locationNo,
+                                                  :lotBatch,
+                                                  :qtyOnhand,
+                                                  :catchQtyOnhand,
+                                                  :ctmNote,
+                                                  :createdDate,
+                                                  :createdBy);
+        END;
       `;
       await ifs.query(sql, [
         input.partNo,
@@ -89,7 +89,7 @@ export class InventoryPartInStockResolver {
     @Arg('contract', () => String) contract: string,
     @Arg('locationNo', () => String) locationNo: string,
     @Arg('lotBatchNo', () => String) lotBatchNo: string,
-    @Arg('reason', () => String) reason: string,
+    @Arg('ctmNote', () => String) ctmNote: string,
     @Arg('modifiedDate', () => Date) modifiedDate: Date,
     @Arg('modifiedBy', () => String) modifiedBy: string
   ): Promise<ImsInvPartInStock | null> {
@@ -118,7 +118,107 @@ export class InventoryPartInStockResolver {
         contract,
         locationNo,
         lotBatchNo,
-        reason,
+        ctmNote,
+        modifiedDate,
+        modifiedBy
+      ]);
+      return await ImsInvPartInStock.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ImsInvPartInStock)
+  @UseMiddleware(isAuth)
+  async issueImsInvPartInStock(
+    @Arg('partNo', () => String) partNo: string,
+    @Arg('contract', () => String) contract: string,
+    @Arg('locationNo', () => String) locationNo: string,
+    @Arg('lotBatchNo', () => String) lotBatchNo: string,
+    @Arg('ctmNote', () => String) ctmNote: string,
+    @Arg('modifiedDate', () => Date) modifiedDate: Date,
+    @Arg('modifiedBy', () => String) modifiedBy: string
+  ): Promise<ImsInvPartInStock | null> {
+    try {
+      const exist = await ImsInvPartInStockView.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
+      });
+      if (!exist) throw new Error('Data not exist');
+      const sql = `
+        BEGIN
+          atj_ims_inv_part_in_stock_api.issue__(:partNo,
+                                                :contract,
+                                                :locationNo,
+                                                :lotBatchNo,
+                                                :ctmNote,
+                                                :issueDate,
+                                                :issueBy);
+        END;
+      `;
+      await ifs.query(sql, [
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo,
+        ctmNote,
+        modifiedDate,
+        modifiedBy
+      ]);
+      return await ImsInvPartInStock.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ImsInvPartInStock)
+  @UseMiddleware(isAuth)
+  async unissueImsInvPartInStock(
+    @Arg('partNo', () => String) partNo: string,
+    @Arg('contract', () => String) contract: string,
+    @Arg('locationNo', () => String) locationNo: string,
+    @Arg('lotBatchNo', () => String) lotBatchNo: string,
+    @Arg('ctmNote', () => String) ctmNote: string,
+    @Arg('modifiedDate', () => Date) modifiedDate: Date,
+    @Arg('modifiedBy', () => String) modifiedBy: string
+  ): Promise<ImsInvPartInStock | null> {
+    try {
+      const exist = await ImsInvPartInStockView.findOneBy({
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo
+      });
+      if (!exist) throw new Error('Data not exist');
+      const sql = `
+        BEGIN
+          atj_ims_inv_part_in_stock_api.unissue__(:partNo,
+                                                  :contract,
+                                                  :locationNo,
+                                                  :lotBatchNo,
+                                                  :ctmNote,
+                                                  :unissueDate,
+                                                  :unissueBy);
+        END;
+      `;
+      await ifs.query(sql, [
+        partNo,
+        contract,
+        locationNo,
+        lotBatchNo,
+        ctmNote,
         modifiedDate,
         modifiedBy
       ]);
