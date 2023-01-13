@@ -2,6 +2,7 @@ import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { In } from 'typeorm';
 import { ImsInvPartInStockInput } from './atj-ims-inv-part-in-stock.in';
 import { ImsInvPartInStock } from './entities/atj-ims-inv-part-in-stock';
 import { ImsInvPartInStockView } from './entities/atj-ims-inv-part-in-stock.vw';
@@ -26,9 +27,7 @@ export class InventoryPartInStockResolver {
     @Arg('contract', () => [String]) contract: string[]
   ): Promise<ImsInvPartInStockView[] | undefined> {
     try {
-      return await ImsInvPartInStockView.createQueryBuilder('A')
-        .where('A.CONTRACT IN (:...contract)', { contract })
-        .getMany();
+      return await ImsInvPartInStockView.findBy({ contract: In(contract) });
     } catch (err) {
       throw new Error(mapError(err));
     }
