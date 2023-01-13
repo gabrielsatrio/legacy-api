@@ -55,7 +55,7 @@ export class InventoryPartInStockResolver {
                                                   :lotBatch,
                                                   :qtyOnhand,
                                                   :catchQtyOnhand,
-                                                  :ctmNote,
+                                                  :note,
                                                   :createdDate,
                                                   :createdBy);
         END;
@@ -67,7 +67,7 @@ export class InventoryPartInStockResolver {
         input.lotBatchNo,
         input.qtyOnhand,
         input.catchQtyOnhand,
-        input.ctmNote,
+        input.note,
         input.createdDate,
         input.createdBy
       ]);
@@ -89,7 +89,7 @@ export class InventoryPartInStockResolver {
     @Arg('contract', () => String) contract: string,
     @Arg('locationNo', () => String) locationNo: string,
     @Arg('lotBatchNo', () => String) lotBatchNo: string,
-    @Arg('ctmNote', () => String) ctmNote: string,
+    @Arg('note', () => String) note: string,
     @Arg('modifiedDate', () => Date) modifiedDate: Date,
     @Arg('modifiedBy', () => String) modifiedBy: string
   ): Promise<ImsInvPartInStock | null> {
@@ -108,7 +108,7 @@ export class InventoryPartInStockResolver {
                                                   :contract,
                                                   :locationNo,
                                                   :lotBatchNo,
-                                                  :ctmNote,
+                                                  :note,
                                                   :modifiedDate,
                                                   :modifiedBy);
         END;
@@ -118,7 +118,7 @@ export class InventoryPartInStockResolver {
         contract,
         locationNo,
         lotBatchNo,
-        ctmNote,
+        note,
         modifiedDate,
         modifiedBy
       ]);
@@ -140,7 +140,7 @@ export class InventoryPartInStockResolver {
     @Arg('contract', () => String) contract: string,
     @Arg('locationNo', () => String) locationNo: string,
     @Arg('lotBatchNo', () => String) lotBatchNo: string,
-    @Arg('ctmNote', () => String) ctmNote: string,
+    @Arg('note', () => String) note: string,
     @Arg('modifiedDate', () => Date) modifiedDate: Date,
     @Arg('modifiedBy', () => String) modifiedBy: string
   ): Promise<ImsInvPartInStock | null> {
@@ -158,7 +158,7 @@ export class InventoryPartInStockResolver {
                                                 :contract,
                                                 :locationNo,
                                                 :lotBatchNo,
-                                                :ctmNote,
+                                                :note,
                                                 :issueDate,
                                                 :issueBy);
         END;
@@ -168,7 +168,7 @@ export class InventoryPartInStockResolver {
         contract,
         locationNo,
         lotBatchNo,
-        ctmNote,
+        note,
         modifiedDate,
         modifiedBy
       ]);
@@ -190,7 +190,7 @@ export class InventoryPartInStockResolver {
     @Arg('contract', () => String) contract: string,
     @Arg('locationNo', () => String) locationNo: string,
     @Arg('lotBatchNo', () => String) lotBatchNo: string,
-    @Arg('ctmNote', () => String) ctmNote: string,
+    @Arg('note', () => String) note: string,
     @Arg('modifiedDate', () => Date) modifiedDate: Date,
     @Arg('modifiedBy', () => String) modifiedBy: string
   ): Promise<ImsInvPartInStock | null> {
@@ -208,7 +208,7 @@ export class InventoryPartInStockResolver {
                                                   :contract,
                                                   :locationNo,
                                                   :lotBatchNo,
-                                                  :ctmNote,
+                                                  :note,
                                                   :unissueDate,
                                                   :unissueBy);
         END;
@@ -218,7 +218,7 @@ export class InventoryPartInStockResolver {
         contract,
         locationNo,
         lotBatchNo,
-        ctmNote,
+        note,
         modifiedDate,
         modifiedBy
       ]);

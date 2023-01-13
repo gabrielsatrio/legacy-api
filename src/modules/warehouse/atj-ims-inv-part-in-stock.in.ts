@@ -50,15 +50,7 @@ export class ImsInvPartInStockInput implements Partial<ImsInvPartInStock> {
 
   @Field({ nullable: true })
   @MaxLength(500)
-  ctmNote?: string;
-
-  @Field()
-  @IsNumber()
-  issueQty!: number;
-
-  @Field()
-  @IsNumber()
-  catchIssueQty!: number;
+  note?: string;
 
   @Field()
   @IsDate()
@@ -71,6 +63,7 @@ export class ImsInvPartInStockInput implements Partial<ImsInvPartInStock> {
   @Field()
   @IsDate()
   modifiedDate!: Date;
+
   @Field()
   @MaxLength(5)
   modifiedBy!: string;
