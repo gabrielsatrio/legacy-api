@@ -1,10 +1,10 @@
-<a name="2.77.0"></a>
+<a name="2.76.1"></a>
 
-# [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-12)
+# [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
 
-### Features
+### Bug Fixes
 
-- [**W001**] **ims**: add new feature for non-ifs inventory management.
+- [**G002**] **pesanan-seragam**: fix an issue agt not showing in select box.
 
 <a name="2.76.0"></a>
 
