@@ -9,6 +9,10 @@ export class ImsInvTransactionHistView extends BaseEntity {
   transactionId!: number;
 
   @Field()
+  @Column({ name: 'TRANSACTION_CODE' })
+  transactionCode!: string;
+
+  @Field()
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
@@ -55,10 +59,6 @@ export class ImsInvTransactionHistView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })
   note?: string;
-
-  @Field()
-  @Column({ name: 'TRANSACTION_CODE' })
-  transactionCode!: string;
 
   @Field()
   @Column({ name: 'CREATED_DATE' })
