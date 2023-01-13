@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { In } from 'typeorm';
 import { EmployeeMaterializedViewResolver } from './../human-resources/employee-mv.rv';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
@@ -53,9 +54,7 @@ export class PesananSeragamResolver {
     @Arg('site', () => [String]) site: string[]
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      return await PesananSeragamWarpView.createQueryBuilder('P')
-        .where('P.CONTRACT IN (:...site)', { site })
-        .getMany();
+      return await PesananSeragamWarpView.findBy({ contract: In(site) });
     } catch (err) {
       throw new Error(mapError(err));
     }
