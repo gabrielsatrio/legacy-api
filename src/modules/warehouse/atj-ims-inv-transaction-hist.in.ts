@@ -40,11 +40,15 @@ export class ImsInvTransactionHistInput
 
   @Field({ nullable: true })
   @MaxLength(500)
-  ctmNote?: string;
+  note?: string;
 
   @Field()
   @MaxLength(10)
   transactionCode!: string;
+
+  @Field()
+  @IsNumber()
+  qtyReversed!: number;
 
   @Field()
   @IsDate()
@@ -53,7 +57,4 @@ export class ImsInvTransactionHistInput
   @Field()
   @MaxLength(5)
   createdBy!: string;
-  @Field()
-  @IsNumber()
-  qtyReversed!: number;
 }
