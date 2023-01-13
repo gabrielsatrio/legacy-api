@@ -43,6 +43,7 @@ export class ImsInvPartInput implements Partial<ImsInvPart> {
   @Field()
   @IsDate()
   modifiedDate!: Date;
+
   @Field()
   @MaxLength(5)
   modifiedBy!: string;
