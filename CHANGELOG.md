@@ -1,3 +1,11 @@
+<a name="2.77.0"></a>
+
+# [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-13)
+
+### Features
+
+- [**W001**] **ims**: add new feature for non-ifs inventory management.
+
 <a name="2.76.1"></a>
 
 # [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
