@@ -47,6 +47,7 @@ export class ImsWarehouseBayBinInput implements Partial<ImsWarehouseBayBin> {
   @Field()
   @IsDate()
   modifiedDate!: Date;
+
   @Field()
   @MaxLength(5)
   modifiedBy!: string;
