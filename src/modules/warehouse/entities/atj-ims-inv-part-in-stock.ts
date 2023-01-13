@@ -13,6 +13,14 @@ export class ImsInvPartInStock extends BaseEntity {
   contract!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'LOCATION_NO' })
+  locationNo!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
+  lotBatchNo!: string;
+
+  @Field()
   @Column({ name: 'WAREHOUSE_ID' })
   warehouseId!: string;
 
@@ -33,14 +41,6 @@ export class ImsInvPartInStock extends BaseEntity {
   binId!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'LOCATION_NO' })
-  locationNo!: string;
-
-  @Field()
-  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
-  lotBatchNo!: string;
-
-  @Field()
   @Column({ name: 'QTY_ONHAND' })
   qtyOnhand!: number;
 
@@ -49,16 +49,8 @@ export class ImsInvPartInStock extends BaseEntity {
   catchQtyOnhand!: number;
 
   @Field({ nullable: true })
-  @Column({ name: 'CTM_NOTE' })
-  ctmNote?: string;
-
-  @Field()
-  @Column({ name: 'ISSUE_QTY' })
-  issueQty!: number;
-
-  @Field()
-  @Column({ name: 'CATCH_ISSUE_QTY' })
-  catchIssueQty!: number;
+  @Column({ name: 'NOTE' })
+  note?: string;
 
   @Field()
   @Column({ name: 'CREATED_DATE' })

@@ -17,6 +17,14 @@ export class ImsInvPartInStockView extends BaseEntity {
   contract!: string;
 
   @Field()
+  @PrimaryColumn({ name: 'LOCATION_NO' })
+  locationNo!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
+  lotBatchNo!: string;
+
+  @Field()
   @Column({ name: 'WAREHOUSE_ID' })
   warehouseId!: string;
 
@@ -37,14 +45,6 @@ export class ImsInvPartInStockView extends BaseEntity {
   binId!: string;
 
   @Field()
-  @PrimaryColumn({ name: 'LOCATION_NO' })
-  locationNo!: string;
-
-  @Field()
-  @PrimaryColumn({ name: 'LOT_BATCH_NO' })
-  lotBatchNo!: string;
-
-  @Field()
   @Column({ name: 'QTY_ONHAND' })
   qtyOnhand!: number;
 
@@ -61,24 +61,8 @@ export class ImsInvPartInStockView extends BaseEntity {
   catchUnitMeas?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'CTM_NOTE' })
-  ctmNote?: string;
-
-  @Field()
-  @Column({ name: 'ISSUE_QTY' })
-  issueQty!: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'ISSUE_UNIT_MEAS' })
-  issueUnitMeas?: string;
-
-  @Field()
-  @Column({ name: 'CATCH_ISSUE_QTY' })
-  catchIssueQty!: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'CATCH_ISSUE_UNIT_MEAS' })
-  catchIssueUnitMeas?: string;
+  @Column({ name: 'NOTE' })
+  note?: string;
 
   @Field()
   @Column({ name: 'CREATED_DATE' })
