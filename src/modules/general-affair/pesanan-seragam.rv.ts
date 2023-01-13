@@ -49,6 +49,19 @@ export class PesananSeragamResolver {
 
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
+  @Query(() => [PesananSeragamWarpView])
+  @UseMiddleware(isAuth)
+  async getPesananSeragamBySite(
+    @Arg('site', () => [String]) site: string[]
+  ): Promise<PesananSeragamWarpView[] | undefined> {
+    try {
+      return await PesananSeragamWarpView.createQueryBuilder('P')
+        .where('P.CONTRACT IN (:...site)', { site })
+        .getMany();
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
   async isAdmin(
     @Arg('nrp', () => String) nrp: string
   ): Promise<boolean | undefined> {
