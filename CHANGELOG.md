@@ -1,3 +1,11 @@
+<a name="2.76.1"></a>
+
+# [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
+
+### Bug Fixes
+
+- [**G002**] **pesanan-seragam**: fix an issue agt not showing in select box.
+
 <a name="2.76.0"></a>
 
 # [2.76.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/343) (2023-01-10)
