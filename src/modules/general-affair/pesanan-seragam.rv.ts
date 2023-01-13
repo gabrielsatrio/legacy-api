@@ -47,8 +47,6 @@ export class PesananSeragamResolver {
     }
   }
 
-  @Query(() => Boolean)
-  @UseMiddleware(isAuth)
   @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
   async getPesananSeragamBySite(
@@ -62,6 +60,9 @@ export class PesananSeragamResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
   async isAdmin(
     @Arg('nrp', () => String) nrp: string
   ): Promise<boolean | undefined> {
