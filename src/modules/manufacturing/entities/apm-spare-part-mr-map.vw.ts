@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { MachineMaintenanceView } from './apm-machine-maintenance.vw';
 
 @Entity('ROB_APM_MR_SPAREPART_MAP_V')
 @ObjectType()
@@ -32,17 +33,17 @@ export class SparePartMrMapView extends BaseEntity {
   @PrimaryColumn({ name: 'MACHINE_ID' })
   machineId!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'MACHINE' })
-  machine?: string;
+  machine!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'WORK_CENTER_NO' })
-  workCenterNo?: string;
+  workCenterNo!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'WORK_CENTER' })
-  workCenter?: string;
+  workCenter!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'DEPARTMENT_ID' })
@@ -56,17 +57,17 @@ export class SparePartMrMapView extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'PART' })
-  part?: string;
+  @Field()
+  @Column({ name: 'PART_DESCRIPTION' })
+  partDescription!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'QUANTITY' })
-  quantity?: number;
+  quantity!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'UNIT_MEAS' })
-  unitMeas?: string;
+  unitMeas!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'DESTINATION_ID' })
@@ -81,6 +82,18 @@ export class SparePartMrMapView extends BaseEntity {
   nonKS!: boolean;
 
   @Field()
+  @Column({ name: 'UNUSED_QTY' })
+  unusedQty!: number;
+
+  @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unusedQtyUnitMeas!: string;
+
+  @Field()
+  @Column({ name: 'STATUS' })
+  status!: string;
+
+  @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
@@ -88,23 +101,24 @@ export class SparePartMrMapView extends BaseEntity {
   @Column({ name: 'UPDATED_AT' })
   updatedAt!: Date;
 
-  @Field({ nullable: true })
-  @Column({ name: 'MAINTENANCE_DESCRIPTION' })
-  maintenanceDescription?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'MAINTENANCE_DATE' })
-  maintenanceDate?: Date;
-
-  @Field({ nullable: true })
-  @Column({ name: 'PERFORMED_BY' })
-  performedBy?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'NAME' })
-  name?: string;
-
   @Field()
   @Column({ name: 'OBJ_ID' })
   objId!: string;
+
+  @Field()
+  altMachineDesc(): string {
+    return `${this.machine} (${this.machineId})`;
+  }
+
+  @Field()
+  altWorkCenterDesc(): string {
+    return `${this.workCenter} (${this.workCenterNo})`;
+  }
+
+  @Field(() => [MachineMaintenanceView], { nullable: true })
+  @OneToMany(
+    () => MachineMaintenanceView,
+    (MachineMaintenanceView) => MachineMaintenanceView.sparePartMrMaps
+  )
+  maintenanceLogs?: MachineMaintenanceView[];
 }
