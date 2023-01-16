@@ -44,9 +44,9 @@ export class ImsInvPartInStockInput implements Partial<ImsInvPartInStock> {
   @IsNumber()
   qtyOnhand!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @IsNumber()
-  catchQtyOnhand!: number;
+  catchQtyOnhand?: number;
 
   @Field({ nullable: true })
   @MaxLength(500)

@@ -30,7 +30,7 @@ export class ImsInvPartView extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ name: 'CATCH_UNIT_MEAS' })
-  catchUnitMeas!: string;
+  catchUnitMeas?: string;
 
   @Field()
   @Column({ name: 'CREATED_DATE' })

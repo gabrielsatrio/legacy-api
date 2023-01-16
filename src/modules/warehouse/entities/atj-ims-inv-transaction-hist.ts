@@ -36,9 +36,9 @@ export class ImsInvTransactionHist extends BaseEntity {
   @Column({ name: 'QUANTITY' })
   quantity!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'CATCH_QTY' })
-  catchQty!: number;
+  catchQty?: number;
 
   @Field()
   @Column({ name: 'QTY_REVERSED' })

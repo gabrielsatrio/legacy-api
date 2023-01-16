@@ -34,9 +34,9 @@ export class ImsInvTransactionHistInput
   @IsNumber()
   quantity!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @IsNumber()
-  catchQty!: number;
+  catchQty?: number;
 
   @Field({ nullable: true })
   @MaxLength(500)

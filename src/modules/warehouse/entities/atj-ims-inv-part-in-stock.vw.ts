@@ -8,9 +8,9 @@ export class ImsInvPartInStockView extends BaseEntity {
   @PrimaryColumn({ name: 'PART_NO' })
   partNo!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'DESCRIPTION' })
-  description?: string;
+  description!: string;
 
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
@@ -48,13 +48,13 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Column({ name: 'QTY_ONHAND' })
   qtyOnhand!: number;
 
-  @Field({ nullable: true })
-  @Column({ name: 'UNIT_MEAS' })
-  unitMeas?: string;
-
   @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unitMeas!: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'CATCH_QTY_ONHAND' })
-  catchQtyOnhand!: number;
+  catchQtyOnhand?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'CATCH_UNIT_MEAS' })
@@ -72,9 +72,9 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'AGE' })
-  age?: number;
+  age!: number;
 
   @Field()
   @Column({ name: 'MODIFIED_DATE' })
@@ -84,7 +84,11 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Column({ name: 'MODIFIED_BY' })
   modifiedBy!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'LAST_TRANS_CODE' })
-  lastTransCode?: string;
+  lastTransCode!: string;
+
+  @Field()
+  @Column({ name: 'IS_DELETED' })
+  isDeleted!: number;
 }

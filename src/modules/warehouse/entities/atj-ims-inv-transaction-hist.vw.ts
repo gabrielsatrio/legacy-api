@@ -16,9 +16,9 @@ export class ImsInvTransactionHistView extends BaseEntity {
   @Column({ name: 'PART_NO' })
   partNo!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'DESCRIPTION' })
-  description?: string;
+  description!: string;
 
   @Field()
   @Column({ name: 'CONTRACT' })
@@ -40,13 +40,13 @@ export class ImsInvTransactionHistView extends BaseEntity {
   @Column({ name: 'QUANTITY' })
   quantity!: number;
 
-  @Field({ nullable: true })
-  @Column({ name: 'UNIT_MEAS' })
-  unitMeas?: string;
-
   @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unitMeas!: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'CATCH_QTY' })
-  catchQty!: number;
+  catchQty?: number;
 
   @Field()
   @Column({ name: 'QTY_REVERSED' })

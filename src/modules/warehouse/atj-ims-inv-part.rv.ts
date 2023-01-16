@@ -65,7 +65,7 @@ export class ImsInvPartResolver {
     }
   }
 
-  @Query(() => String)
+  @Query(() => String, { nullable: true })
   @UseMiddleware(isAuth)
   async getImsInvPartCatchUom(
     @Arg('partNo', () => String) partNo: string,
@@ -77,7 +77,7 @@ export class ImsInvPartResolver {
       FROM   DUAL
     `;
       const result = await ifs.query(sql, [partNo, contract]);
-      return result[0].catchUom || ' ';
+      return result[0].catchUom;
     } catch (err) {
       throw new Error(mapError(err));
     }

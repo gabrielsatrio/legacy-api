@@ -44,13 +44,17 @@ export class ImsInvPartInStock extends BaseEntity {
   @Column({ name: 'QTY_ONHAND' })
   qtyOnhand!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'CATCH_QTY_ONHAND' })
-  catchQtyOnhand!: number;
+  catchQtyOnhand?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'NOTE' })
   note?: string;
+
+  @Field()
+  @Column({ name: 'IS_DELETED' })
+  isDeleted!: number;
 
   @Field()
   @Column({ name: 'CREATED_DATE' })
