@@ -111,6 +111,18 @@ export class Material extends BaseEntity {
   @Column({ name: 'NETTO_TOTAL', update: false })
   totalNetto?: number;
 
+  @Field({ nullable: true })
+  @PrimaryColumn({ name: 'JENIS_KU' })
+  jenisKu?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'DEFECT_ID' })
+  defectId?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PROCESS_NOTE' })
+  processNote?: string;
+
   @Field(() => [MaterialUse], { nullable: true })
   @OneToMany(() => MaterialUse, (materialUse) => materialUse.material, {
     nullable: true
