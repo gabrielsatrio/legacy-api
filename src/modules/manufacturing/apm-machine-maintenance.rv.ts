@@ -20,6 +20,49 @@ import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 export class MachineMaintenanceResolver {
   @Query(() => [MachineMaintenanceView])
   @UseMiddleware(isAuth)
+  async getMachMaintenanceByMr(
+    @Arg('contract') contract: string,
+    @Arg('machineId') machineId: string,
+    @Arg('orderNo') orderNo: string,
+    @Arg('lineNo') lineNo: string,
+    @Arg('releaseNo') releaseNo: string,
+    @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('orderClass') orderClass: string
+  ): Promise<MachineMaintenanceView[] | undefined> {
+    try {
+      if (contract === 'AGT') {
+        return await MachineMaintenanceAgtView.find({
+          where: {
+            contract,
+            machineId,
+            mrNo: orderNo,
+            mrLineNo: lineNo,
+            mrReleaseNo: releaseNo,
+            mrLineItemNo: lineItemNo,
+            mrOrderClass: orderClass
+          },
+          order: { maintenanceId: 'ASC' }
+        });
+      }
+      return await MachineMaintenanceView.find({
+        where: {
+          contract,
+          machineId,
+          mrNo: orderNo,
+          mrLineNo: lineNo,
+          mrReleaseNo: releaseNo,
+          mrLineItemNo: lineItemNo,
+          mrOrderClass: orderClass
+        },
+        order: { maintenanceId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [MachineMaintenanceView])
+  @UseMiddleware(isAuth)
   async getMachMaintenanceByPr(
     @Arg('requisitionNo') requisitionNo: string,
     @Arg('lineNo') lineNo: string,
@@ -215,6 +258,7 @@ export class MachineMaintenanceResolver {
             :categoryId,
             :description,
             :quantity,
+            :duration,
             :performedBy,
             :mrNo,
             :mrLineNo,
@@ -241,6 +285,7 @@ export class MachineMaintenanceResolver {
         input.categoryId,
         input.description,
         input.quantity,
+        input.duration,
         input.performedBy,
         input.mrNo,
         input.mrLineNo,

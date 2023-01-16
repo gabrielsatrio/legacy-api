@@ -24,9 +24,13 @@ export class MachineMaintenanceInput implements Partial<MachineMaintenance> {
   @MaxLength(2000)
   description!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
-  quantity?: number;
+  quantity!: number;
+
+  @Field()
+  @IsNumber()
+  duration!: number;
 
   @Field()
   @MaxLength(30)
