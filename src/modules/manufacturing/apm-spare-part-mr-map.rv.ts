@@ -28,30 +28,27 @@ export class SparePartMrMapResolver {
     @Arg('contract') contract: string,
     @Arg('departmentId') departmentId: string,
     @Arg('workCenterNo') workCenterNo: string,
-    @Arg('includeAssigned', { defaultValue: false, nullable: true })
-    includeAssigned: boolean,
+    @Arg('includeFullyUsed', { defaultValue: false, nullable: true })
+    includeFullyUsed: boolean,
     @Arg('includeNonKS', { defaultValue: false, nullable: true })
     includeNonKS: boolean
   ): Promise<SparePartMrMapView[] | undefined> {
     try {
       let result;
       if (departmentId === '%') {
-        result = await SparePartMrMapView.findBy({
-          contract,
-          workCenterNo: Like(workCenterNo)
+        result = await SparePartMrMapView.find({
+          relations: { maintenanceLogs: true },
+          where: { contract, workCenterNo: Like(workCenterNo) }
         });
       } else {
-        result = await SparePartMrMapView.findBy({
-          contract,
-          departmentId,
-          workCenterNo: Like(workCenterNo)
+        result = await SparePartMrMapView.find({
+          relations: { maintenanceLogs: true },
+          where: { contract, departmentId, workCenterNo: Like(workCenterNo) }
         });
       }
       let filteredResult = result;
-      if (!includeAssigned) {
-        filteredResult = result.filter(
-          (data) => data.maintenanceDescription === null
-        );
+      if (!includeFullyUsed) {
+        filteredResult = result.filter((data) => data?.status !== 'Fully Used');
       }
       if (!includeNonKS) {
         filteredResult = filteredResult.filter((data) => data.nonKS === false);
