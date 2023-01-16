@@ -83,6 +83,27 @@ export class InventoryPartInStockResolver {
 
   @Mutation(() => ImsInvPartInStock)
   @UseMiddleware(isAuth)
+  async updateImsInvPartInStock(
+    @Arg('input') input: ImsInvPartInStockInput
+  ): Promise<ImsInvPartInStock | null> {
+    try {
+      const data = await ImsInvPartInStockView.findOneBy({
+        partNo: input.partNo,
+        contract: input.contract,
+        locationNo: input.locationNo,
+        lotBatchNo: input.lotBatchNo
+      });
+      if (!data) throw new Error('Data not exist!');
+      ImsInvPartInStock.merge(data, { ...input });
+      const result = await ImsInvPartInStock.save(data);
+      return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => ImsInvPartInStock)
+  @UseMiddleware(isAuth)
   async deleteImsInvPartInStock(
     @Arg('partNo', () => String) partNo: string,
     @Arg('contract', () => String) contract: string,
