@@ -77,6 +77,10 @@ export class ImsInvPartInStockView extends BaseEntity {
   age!: number;
 
   @Field()
+  @Column({ name: 'IS_DELETED' })
+  isDeleted!: number;
+
+  @Field()
   @Column({ name: 'MODIFIED_DATE' })
   modifiedDate!: Date;
 
@@ -87,8 +91,4 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Field()
   @Column({ name: 'LAST_TRANS_CODE' })
   lastTransCode!: string;
-
-  @Field()
-  @Column({ name: 'IS_DELETED' })
-  isDeleted!: number;
 }
