@@ -1,3 +1,38 @@
+<a name="2.77.0"></a>
+
+# [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-17)
+
+### Features
+
+- [**W001**] **ims**: add new feature for non-ifs inventory management.
+
+<a name="2.76.1"></a>
+
+# [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
+
+### Bug Fixes
+
+- [**G002**] **pesanan-seragam**: fix an issue agt not showing in select box.
+
+<a name="2.76.0"></a>
+
+# [2.76.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/343) (2023-01-10)
+
+### Features
+
+- [**H002**] **disabled-employees**: add new.
+- [**H003**] **master-jabatan**: add new.
+
+<a name="2.75.0"></a>
+
+# [2.75.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/341) (2023-01-04)
+
+### Features
+
+- [**P002**] **courier-fee-prepaid**: add column finance receipt date.
+- [**F002**] **expedition-paid-date**: add column notes header, bukti transfer.
+- [**F003**] **buku-import**: add PO History.
+
 <a name="2.74.0"></a>
 
 # [2.74.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/339) (2022-12-15)

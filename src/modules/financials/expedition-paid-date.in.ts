@@ -42,4 +42,10 @@ export class ExpeditionPaidDateInput implements Partial<ExpeditionPaidDate> {
 
   @Field({ nullable: true })
   paidBy?: string;
+
+  @Field({ nullable: true })
+  notesHeader?: string;
+
+  @Field({ nullable: true })
+  buktiTransfer?: string;
 }
