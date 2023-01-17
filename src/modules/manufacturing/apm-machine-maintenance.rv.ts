@@ -20,7 +20,50 @@ import { MachineMaintenanceView } from './entities/apm-machine-maintenance.vw';
 export class MachineMaintenanceResolver {
   @Query(() => [MachineMaintenanceView])
   @UseMiddleware(isAuth)
-  async getMachMaintenanceByPrNo(
+  async getMachMaintenanceByMr(
+    @Arg('contract') contract: string,
+    @Arg('machineId') machineId: string,
+    @Arg('orderNo') orderNo: string,
+    @Arg('lineNo') lineNo: string,
+    @Arg('releaseNo') releaseNo: string,
+    @Arg('lineItemNo', () => Int) lineItemNo: number,
+    @Arg('orderClass') orderClass: string
+  ): Promise<MachineMaintenanceView[] | undefined> {
+    try {
+      if (contract === 'AGT') {
+        return await MachineMaintenanceAgtView.find({
+          where: {
+            contract,
+            machineId,
+            mrNo: orderNo,
+            mrLineNo: lineNo,
+            mrReleaseNo: releaseNo,
+            mrLineItemNo: lineItemNo,
+            mrOrderClass: orderClass
+          },
+          order: { maintenanceId: 'ASC' }
+        });
+      }
+      return await MachineMaintenanceView.find({
+        where: {
+          contract,
+          machineId,
+          mrNo: orderNo,
+          mrLineNo: lineNo,
+          mrReleaseNo: releaseNo,
+          mrLineItemNo: lineItemNo,
+          mrOrderClass: orderClass
+        },
+        order: { maintenanceId: 'ASC' }
+      });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [MachineMaintenanceView])
+  @UseMiddleware(isAuth)
+  async getMachMaintenanceByPr(
     @Arg('requisitionNo') requisitionNo: string,
     @Arg('lineNo') lineNo: string,
     @Arg('releaseNo') releaseNo: string
@@ -143,6 +186,65 @@ export class MachineMaintenanceResolver {
 
   @Mutation(() => MachineMaintenanceView)
   @UseMiddleware(isAuth)
+  async deleteMachMaintenanceByMR(
+    @Arg('contract') contract: string,
+    @Arg('machineId') machineId: string,
+    @Arg('mrNo') mrNo: string,
+    @Arg('mrLineNo') mrLineNo: string,
+    @Arg('mrReleaseNo') mrReleaseNo: string,
+    @Arg('mrLineItemNo', () => Int) mrLineItemNo: number,
+    @Arg('mrOrderClass') mrOrderClass: string
+  ): Promise<MachineMaintenanceView | null> {
+    try {
+      let data;
+      data = await MachineMaintenance.findOneBy({
+        contract,
+        machineId,
+        mrNo,
+        mrLineNo,
+        mrReleaseNo,
+        mrLineItemNo,
+        mrOrderClass
+      });
+      if (!data) throw new Error('No data found.');
+      if (data?.contract === 'AGT') {
+        data = await MachineMaintenanceAgtView.findOneBy({
+          contract,
+          machineId,
+          mrNo,
+          mrLineNo,
+          mrReleaseNo,
+          mrLineItemNo,
+          mrOrderClass
+        });
+      } else {
+        data = await MachineMaintenanceView.findOneBy({
+          contract,
+          machineId,
+          mrNo,
+          mrLineNo,
+          mrReleaseNo,
+          mrLineItemNo,
+          mrOrderClass
+        });
+      }
+      await MachineMaintenance.delete({
+        contract,
+        machineId,
+        mrNo,
+        mrLineNo,
+        mrReleaseNo,
+        mrLineItemNo,
+        mrOrderClass
+      });
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => MachineMaintenanceView)
+  @UseMiddleware(isAuth)
   async syncMachMaintenanceForMr(
     @Arg('input') input: MachineMaintenanceSyncInput
   ): Promise<MachineMaintenanceView | null> {
@@ -156,6 +258,7 @@ export class MachineMaintenanceResolver {
             :categoryId,
             :description,
             :quantity,
+            :duration,
             :performedBy,
             :mrNo,
             :mrLineNo,
@@ -182,6 +285,7 @@ export class MachineMaintenanceResolver {
         input.categoryId,
         input.description,
         input.quantity,
+        input.duration,
         input.performedBy,
         input.mrNo,
         input.mrLineNo,

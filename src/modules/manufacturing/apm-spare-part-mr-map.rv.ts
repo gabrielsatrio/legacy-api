@@ -5,6 +5,7 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { Like } from 'typeorm';
 import { SparePartMrMapPkInput } from './apm-spare-part-mr-map-pk.in';
 import { SparePartMrMapSyncInput } from './apm-spare-part-mr-map-sync.in';
+import { SparePartMrMapInput } from './apm-spare-part-mr-map.in';
 import { SparePartMrMapView } from './entities/apm-spare-part-mr-map.vw';
 
 @Resolver(SparePartMrMapView)
@@ -27,30 +28,88 @@ export class SparePartMrMapResolver {
     @Arg('contract') contract: string,
     @Arg('departmentId') departmentId: string,
     @Arg('workCenterNo') workCenterNo: string,
-    @Arg('includeAssigned', { defaultValue: true, nullable: true })
-    includeAssigned: boolean
+    @Arg('includeFullyUsed', { defaultValue: false, nullable: true })
+    includeFullyUsed: boolean,
+    @Arg('includeNonKS', { defaultValue: false, nullable: true })
+    includeNonKS: boolean
   ): Promise<SparePartMrMapView[] | undefined> {
     try {
       let result;
       if (departmentId === '%') {
-        result = await SparePartMrMapView.findBy({
-          contract,
-          workCenterNo: Like(workCenterNo)
+        result = await SparePartMrMapView.find({
+          relations: { maintenanceLogs: true },
+          where: { contract, workCenterNo: Like(workCenterNo) }
         });
       } else {
-        result = await SparePartMrMapView.findBy({
-          contract,
-          departmentId,
-          workCenterNo: Like(workCenterNo)
+        result = await SparePartMrMapView.find({
+          relations: { maintenanceLogs: true },
+          where: { contract, departmentId, workCenterNo: Like(workCenterNo) }
         });
       }
       let filteredResult = result;
-      if (!includeAssigned) {
-        filteredResult = result.filter(
-          (data) => data.maintenanceDescription === null
-        );
+      if (!includeFullyUsed) {
+        filteredResult = result.filter((data) => data?.status !== 'Fully Used');
+      }
+      if (!includeNonKS) {
+        filteredResult = filteredResult.filter((data) => data.nonKS === false);
       }
       return filteredResult;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => SparePartMrMapView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateNonKS(
+    @Arg('input') input: SparePartMrMapInput
+  ): Promise<SparePartMrMapView | null> {
+    try {
+      const data = await SparePartMrMapView.findOneBy({
+        contract: input.contract,
+        orderNo: input.orderNo,
+        lineNo: input.lineNo,
+        releaseNo: input.releaseNo,
+        lineItemNo: input.lineItemNo,
+        orderClass: input.orderClass,
+        machineId: input.machineId
+      });
+      if (!data) throw new Error('No data found.');
+      const sql = `
+        BEGIN
+          UPDATE ROB_APM_MR_Sparepart_Map
+          SET    non_ks = :nonKS
+          WHERE  order_no = :orderNo
+          AND    line_no = :lineNo
+          AND    release_no = :releaseNo
+          AND    line_item_no = :lineItemNo
+          AND    order_class = :orderClass
+          AND    machine_id = :machineId;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
+        END;
+      `;
+      await ifs.query(sql, [
+        input.nonKS ? 1 : 0,
+        input.orderNo,
+        input.lineNo,
+        input.releaseNo,
+        input.lineItemNo,
+        input.orderClass,
+        input.machineId
+      ]);
+      const result = await SparePartMrMapView.findOneBy({
+        contract: input.contract,
+        orderNo: input.orderNo,
+        lineNo: input.lineNo,
+        releaseNo: input.releaseNo,
+        lineItemNo: input.lineItemNo,
+        orderClass: input.orderClass,
+        machineId: input.machineId
+      });
+      return result;
     } catch (err) {
       throw new Error(mapError(err));
     }

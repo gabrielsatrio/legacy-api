@@ -1,3 +1,22 @@
+<a name="2.78.0"></a>
+
+# [2.78.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/347) (2023-01-17)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add new additional fields.
+- [**M001**] **apm-maintenance-logs**: can show or hide Non-KS data.
+- [**M001**] **apm-maintenance-logs**: can create multiple logs.
+- [**M001**] **apm-maintenance-logs**: add a new field (`duration`).
+- [**M013**] **apm-sp-requisitions**: can show or hide Non-KS data.
+- [**M013**] **apm-sp-requisitions**: add a new field (`mrStatus`).
+- add a new view and resolver for ifs material requisition.
+
+### Others
+
+- [**M001**] **apm-maintenance-logs**: resolver renaming.
+- [**M001**] **apm-spare-part-mr-map**: argument renaming.
+
 <a name="2.77.0"></a>
 
 # [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-17)
