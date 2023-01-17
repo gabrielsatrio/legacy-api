@@ -40,6 +40,10 @@ export class SparePartMrMap extends BaseEntity {
   @Column({ name: 'QUANTITY' })
   quantity?: number;
 
+  @Field({ defaultValue: false })
+  @Column({ name: 'NON_KS' })
+  nonKS!: boolean;
+
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;

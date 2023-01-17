@@ -34,6 +34,9 @@ export class MachineMaintenanceSyncInput
   @MaxLength(30)
   performedBy!: string;
 
+  @Field()
+  duration!: number;
+
   @Field({ nullable: true })
   @MaxLength(12)
   mrNo?: string;

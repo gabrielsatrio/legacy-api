@@ -1,5 +1,13 @@
 import { Field, Int, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn
+} from 'typeorm';
+import { SparePartMrMapView } from './apm-spare-part-mr-map.vw';
 
 @Entity('ROB_APM_MAINTENANCE_V')
 @ObjectType()
@@ -56,21 +64,25 @@ export class MachineMaintenanceView extends BaseEntity {
   @Column({ name: 'DESCRIPTION' })
   description!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'PART_NO' })
-  partNo?: string;
+  partNo!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'PART_DESCRIPTION' })
-  partDescription?: string;
+  partDescription!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'QUANTITY' })
-  quantity?: number;
+  quantity!: number;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'UNIT_MEAS' })
-  unitMeas?: string;
+  unitMeas!: string;
+
+  @Field()
+  @Column({ name: 'DURATION' })
+  duration!: number;
 
   @Field()
   @Column({ name: 'PERFORMED_BY' })
@@ -143,4 +155,21 @@ export class MachineMaintenanceView extends BaseEntity {
   @Field()
   @Column({ name: 'OBJ_ID' })
   objId!: string;
+
+  @Field(() => SparePartMrMapView, { nullable: true })
+  @ManyToOne(
+    () => SparePartMrMapView,
+    (SparePartMrMapView) => SparePartMrMapView.maintenanceLogs,
+    {
+      nullable: true
+    }
+  )
+  @JoinColumn({ name: 'CONTRACT', referencedColumnName: 'contract' })
+  @JoinColumn({ name: 'MACHINE_ID', referencedColumnName: 'machineId' })
+  @JoinColumn({ name: 'MR_NO', referencedColumnName: 'orderNo' })
+  @JoinColumn({ name: 'MR_LINE_NO', referencedColumnName: 'lineNo' })
+  @JoinColumn({ name: 'MR_RELEASE_NO', referencedColumnName: 'releaseNo' })
+  @JoinColumn({ name: 'MR_LINE_ITEM_NO', referencedColumnName: 'lineItemNo' })
+  @JoinColumn({ name: 'MR_ORDER_CLASS', referencedColumnName: 'orderClass' })
+  sparePartMrMaps?: SparePartMrMapView;
 }
