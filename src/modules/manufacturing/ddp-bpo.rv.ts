@@ -62,6 +62,7 @@ export class BPOResolver {
         :note,
         :defectId,
         :processNote,
+        :qtyM,
       :outContract, :outIdNo, :outKuCount);
     END;
   `;
@@ -88,6 +89,7 @@ export class BPOResolver {
         input.note,
         input.defectId,
         input.processNote,
+        input.qtyM,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -141,6 +143,7 @@ export class BPOResolver {
         :note,
         :defectId,
         :processNote,
+        :qtyM,
       :outContract, :outIdNo, :outKuCount);
       END;
     `;
@@ -165,6 +168,7 @@ export class BPOResolver {
         input.note,
         input.defectId,
         input.processNote,
+        input.qtyM,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }

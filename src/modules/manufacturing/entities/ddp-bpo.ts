@@ -97,6 +97,10 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'PROCESS_NOTE' })
   processNote?: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'QTY_M' })
+  qtyM?: number;
+
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {
     nullable: true
