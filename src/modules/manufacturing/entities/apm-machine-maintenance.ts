@@ -28,9 +28,13 @@ export class MachineMaintenance extends BaseEntity {
   @Column({ name: 'DESCRIPTION' })
   description!: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'QUANTITY' })
-  quantity?: number;
+  quantity!: number;
+
+  @Field()
+  @Column({ name: 'DURATION' })
+  duration!: number;
 
   @Field()
   @Column({ name: 'PERFORMED_BY' })

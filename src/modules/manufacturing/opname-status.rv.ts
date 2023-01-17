@@ -129,13 +129,20 @@ export class OpnameStatusResolver {
     @Arg('dept') dept: string
   ): Promise<OpnameStatus[] | undefined> {
     try {
-      return await OpnameStatus.find({
-        where: {
-          contract: In(contract),
-          dept: Like(dept),
-          objId: Like('%')
-        }
-      });
+      if (dept === 'CCU' || dept === 'MIS') {
+        return await OpnameStatus.find({
+          where: {
+            contract: In(contract)
+          }
+        });
+      } else {
+        return await OpnameStatus.find({
+          where: {
+            contract: In(contract),
+            dept: Like(dept)
+          }
+        });
+      }
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -206,16 +213,12 @@ export class OpnameStatusResolver {
   @Mutation(() => OpnameStatus)
   @UseMiddleware(isAuth)
   async finishOpname(
-    @Arg('contract') contract: string,
-    @Arg('periode') periode: Date,
-    @Arg('username') username: string
+    @Arg('objId') objId: string
   ): Promise<OpnameStatus | null> {
     try {
-      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME(:contract, :periode, :username, :outObjId); END;`;
+      const sql = `BEGIN GBR_STOCK_OPNAME_API.FINISH_STOCK_OPNAME_EZIO(:objId, :outObjId); END;`;
       const result = await ifs.query(sql, [
-        contract,
-        periode,
-        username,
+        objId,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       ]);
 

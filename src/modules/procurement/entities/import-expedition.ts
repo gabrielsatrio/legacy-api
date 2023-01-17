@@ -63,4 +63,8 @@ export class ImportExpedition extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PPN' })
   ppn?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PERIODE_BAYAR' })
+  periodeBayar?: string;
 }

@@ -1,4 +1,4 @@
-import { IsNumber, Length } from 'class-validator';
+import { IsBoolean, IsNumber, Length } from 'class-validator';
 import { Field, InputType, Int } from 'type-graphql';
 import { SparePartReqLineMachView } from './entities/apm-sp-requisition-line-mach.vw';
 
@@ -33,4 +33,8 @@ export class SparePartReqLineMachInput
   @Field()
   @IsNumber()
   quantity!: number;
+
+  @Field()
+  @IsBoolean()
+  nonKS!: boolean;
 }

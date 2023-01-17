@@ -1,3 +1,116 @@
+<a name="2.78.0"></a>
+
+# [2.78.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/347) (2023-01-17)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add new additional fields.
+- [**M001**] **apm-maintenance-logs**: can show or hide Non-KS data.
+- [**M001**] **apm-maintenance-logs**: can create multiple logs.
+- [**M001**] **apm-maintenance-logs**: add a new field (`duration`).
+- [**M013**] **apm-sp-requisitions**: can show or hide Non-KS data.
+- [**M013**] **apm-sp-requisitions**: add a new field (`mrStatus`).
+- add a new view and resolver for ifs material requisition.
+
+### Others
+
+- [**M001**] **apm-maintenance-logs**: resolver renaming.
+- [**M001**] **apm-spare-part-mr-map**: argument renaming.
+
+<a name="2.77.0"></a>
+
+# [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-17)
+
+### Features
+
+- [**W001**] **ims**: add new feature for non-ifs inventory management.
+
+<a name="2.76.1"></a>
+
+# [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
+
+### Bug Fixes
+
+- [**G002**] **pesanan-seragam**: fix an issue agt not showing in select box.
+
+<a name="2.76.0"></a>
+
+# [2.76.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/343) (2023-01-10)
+
+### Features
+
+- [**H002**] **disabled-employees**: add new.
+- [**H003**] **master-jabatan**: add new.
+
+<a name="2.75.0"></a>
+
+# [2.75.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/341) (2023-01-04)
+
+### Features
+
+- [**P002**] **courier-fee-prepaid**: add column finance receipt date.
+- [**F002**] **expedition-paid-date**: add column notes header, bukti transfer.
+- [**F003**] **buku-import**: add PO History.
+
+<a name="2.74.0"></a>
+
+# [2.74.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/339) (2022-12-15)
+
+### Features
+
+- [**M013**] **apm-requisitions**: add new mutation to get data by requisition id.
+- [**M013**] **apm-requisitions**: add new mutation to reorder all lines.
+
+<a name="2.73.1"></a>
+
+# [2.73.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/337) (2022-12-12)
+
+### Bug Fixes
+
+- [**M013**] **apm-requisitions**: fix an issue in which the app generates multiple unwanted material requisitions.
+
+<a name="2.73.0"></a>
+
+# [2.73.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/335) (2022-12-01)
+
+### Features
+
+- [**M003**] **opname**: enable user MIS & CCU to view.
+- [**M019**] **gis**: add column for AT6.
+
+<a name="2.72.0"></a>
+
+# [2.72.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/333) (2022-11-30)
+
+### Features
+
+- [**M003**] **opname**: change mutation for warehouse opname.
+
+<a name="2.71.0"></a>
+
+# [2.71.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/331) (2022-11-23)
+
+### Features
+
+- [**M002**] **ddp**: add columns for bpo and material use.
+
+<a name="2.70.0"></a>
+
+# [2.70.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/329) (2022-11-09)
+
+### Features
+
+- [**P001**] **import-expedition**: add column periode bayar.
+- [**P002**] **courier-fee-prepaid**: add column periode bayar.
+
+<a name="2.69.0"></a>
+
+# [2.69.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/327) (2022-11-03)
+
+### Features
+
+- [**M022**] **part-catalog-search**: add inventory part status on listagg query.
+
 <a name="2.68.0"></a>
 
 # [2.68.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/324) (2022-11-01)

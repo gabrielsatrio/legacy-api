@@ -30,4 +30,7 @@ export class MaterialUseInput implements Partial<MaterialUse> {
 
   @Field()
   length!: number;
+
+  @Field({ nullable: true })
+  lotBatchSource?: string;
 }

@@ -110,4 +110,10 @@ export class GisHeaderInput implements Partial<GisHeader> {
 
   @Field({ nullable: true })
   inspectType2?: string;
+
+  @Field({ nullable: true })
+  startWidth6?: number;
+
+  @Field({ nullable: true })
+  midWidth6?: number;
 }

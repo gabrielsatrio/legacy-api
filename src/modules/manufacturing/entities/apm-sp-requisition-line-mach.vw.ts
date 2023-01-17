@@ -41,6 +41,14 @@ export class SparePartReqLineMachView extends BaseEntity {
   quantity!: number;
 
   @Field()
+  @Column({ name: 'UNIT_MEAS' })
+  unitMeas!: string;
+
+  @Field({ defaultValue: false })
+  @Column({ name: 'NON_KS' })
+  nonKS!: boolean;
+
+  @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
 
