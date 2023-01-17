@@ -9,10 +9,6 @@ export class ImsInvPartInStockView extends BaseEntity {
   partNo!: string;
 
   @Field()
-  @Column({ name: 'DESCRIPTION' })
-  description!: string;
-
-  @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
 
@@ -23,6 +19,10 @@ export class ImsInvPartInStockView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'LOT_BATCH_NO' })
   lotBatchNo!: string;
+
+  @Field()
+  @Column({ name: 'DESCRIPTION' })
+  description!: string;
 
   @Field()
   @Column({ name: 'WAREHOUSE_ID' })
