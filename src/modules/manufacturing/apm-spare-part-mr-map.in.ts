@@ -1,4 +1,4 @@
-import { IsNumber, MaxLength } from 'class-validator';
+import { IsBoolean, IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType, Int } from 'type-graphql';
 import { SparePartMrMap } from './entities/apm-spare-part-mr-map';
 
@@ -39,4 +39,8 @@ export class SparePartMrMapInput implements Partial<SparePartMrMap> {
   @Field({ nullable: true })
   @IsNumber()
   quantity?: number;
+
+  @Field({ defaultValue: false })
+  @IsBoolean()
+  nonKS!: boolean;
 }

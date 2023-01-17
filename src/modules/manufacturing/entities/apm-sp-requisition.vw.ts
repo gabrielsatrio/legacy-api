@@ -77,6 +77,10 @@ export class SparePartRequisitionView extends BaseEntity {
   status!: string;
 
   @Field()
+  @Column({ name: 'MR_STATUS' })
+  mrStatus!: string;
+
+  @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
 
