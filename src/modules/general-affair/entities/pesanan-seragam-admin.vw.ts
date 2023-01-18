@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('VKY_ADMIN_PESANAN_SERAGAM_V')
+@Entity('VKY_PESANAN_SERAGAM_ADMIN_V')
 @ObjectType()
-export class AdminPesananSeragamView extends BaseEntity {
+export class PesananSeragamAdminView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'EMPLOYEE_ID' })
   employeeId!: string;
@@ -13,14 +13,10 @@ export class AdminPesananSeragamView extends BaseEntity {
   name!: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'DEPARTMENT_ID' })
-  departmentId?: string;
+  @Column({ name: 'ALLOWED_SITE' })
+  allowedSite?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'DEPARTMENT' })
-  department?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'COMPANY_OFFICE' })
-  companyOffice?: string;
+  @Column({ name: 'ALLOWED_DEPARTMENT' })
+  allowedDepartment?: string;
 }

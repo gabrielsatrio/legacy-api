@@ -10,7 +10,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { EmployeeMaterializedViewResolver } from './../human-resources/employee-mv.rv';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
 import { PesananSeragamWarpView } from './entities/pesanan-seragam-warp.vw';
@@ -81,34 +80,25 @@ export class PesananSeragamResolver {
   @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
-    @Arg('nrp', () => String) nrp: string,
-    @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number
+    @Arg('nrp', () => String) nrp: string
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      const isAdmin = await this.isAdmin(nrp);
-      const deptId = await EmployeeMaterializedViewResolver.getDepartmentId(
-        nrp
-      );
-      const companyOffice =
-        await EmployeeMaterializedViewResolver.getCompanyOffice(nrp);
-      if (!isAdmin) {
-        return await PesananSeragamWarpView.findBy({
-          nrp,
-          tahun,
-          periode
-        });
-      } else {
-        return await PesananSeragamWarpView.findBy({
-          deptId,
-          contract: companyOffice,
-          tahun,
-          periode
-        });
-      }
+      return await PesananSeragamWarpView.findBy({ nrp });
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [PesananSeragamWarpView])
+  @UseMiddleware(isAuth)
+  async getPesananSeragamByAdmin(
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('departmentId', () => [String]) departmentId: string[]
+  ): Promise<PesananSeragamWarpView[] | undefined> {
+    return await PesananSeragamWarpView.findBy({
+      contract: In(contract),
+      deptId: In(departmentId)
+    });
   }
 
   @Mutation(() => PesananSeragam)
