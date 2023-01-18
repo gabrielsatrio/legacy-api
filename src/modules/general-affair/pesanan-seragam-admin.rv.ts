@@ -27,7 +27,7 @@ export class PesananSeragamAdminResolver {
       const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
       const sites = admin?.allowedSite;
       const allwoedSites = sites?.split(',');
-      return allwoedSites;
+      return allwoedSites || ['null'];
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -42,7 +42,7 @@ export class PesananSeragamAdminResolver {
       const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
       const departments = admin?.allowedDepartment;
       const allowedDepartments = departments?.split(',');
-      return allowedDepartments;
+      return allowedDepartments || ['null'];
     } catch (err) {
       throw new Error(mapError(err));
     }

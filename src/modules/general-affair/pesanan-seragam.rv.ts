@@ -80,25 +80,22 @@ export class PesananSeragamResolver {
   @Query(() => [PesananSeragamWarpView])
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
-    @Arg('nrp', () => String) nrp: string
+    @Arg('nrp', () => String) nrp: string,
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('departmentId', () => [String])
+    departmentId: string[]
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      return await PesananSeragamWarpView.findBy({ nrp });
+      if (contract[0] === 'null')
+        return await PesananSeragamWarpView.findBy({ nrp });
+      else
+        return await PesananSeragamWarpView.findBy({
+          contract: In(contract),
+          deptId: In(departmentId)
+        });
     } catch (err) {
       throw new Error(mapError(err));
     }
-  }
-
-  @Query(() => [PesananSeragamWarpView])
-  @UseMiddleware(isAuth)
-  async getPesananSeragamByAdmin(
-    @Arg('contract', () => [String]) contract: string[],
-    @Arg('departmentId', () => [String]) departmentId: string[]
-  ): Promise<PesananSeragamWarpView[] | undefined> {
-    return await PesananSeragamWarpView.findBy({
-      contract: In(contract),
-      deptId: In(departmentId)
-    });
   }
 
   @Mutation(() => PesananSeragam)
