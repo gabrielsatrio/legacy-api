@@ -1,3 +1,47 @@
+<a name="2.78.0"></a>
+
+# [2.78.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/347) (2023-01-17)
+
+### Features
+
+- [**M001**] **apm-spare-part-mr-map**: add new additional fields.
+- [**M001**] **apm-maintenance-logs**: can show or hide Non-KS data.
+- [**M001**] **apm-maintenance-logs**: can create multiple logs.
+- [**M001**] **apm-maintenance-logs**: add a new field (`duration`).
+- [**M013**] **apm-sp-requisitions**: can show or hide Non-KS data.
+- [**M013**] **apm-sp-requisitions**: add a new field (`mrStatus`).
+- add a new view and resolver for ifs material requisition.
+
+### Others
+
+- [**M001**] **apm-maintenance-logs**: resolver renaming.
+- [**M001**] **apm-spare-part-mr-map**: argument renaming.
+
+<a name="2.77.0"></a>
+
+# [2.77.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/345) (2023-01-17)
+
+### Features
+
+- [**W001**] **ims**: add new feature for non-ifs inventory management.
+
+<a name="2.76.1"></a>
+
+# [2.76.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/346) (2023-01-13)
+
+### Bug Fixes
+
+- [**G002**] **pesanan-seragam**: fix an issue agt not showing in select box.
+
+<a name="2.76.0"></a>
+
+# [2.76.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/343) (2023-01-10)
+
+### Features
+
+- [**H002**] **disabled-employees**: add new.
+- [**H003**] **master-jabatan**: add new.
+
 <a name="2.75.0"></a>
 
 # [2.75.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/341) (2023-01-04)

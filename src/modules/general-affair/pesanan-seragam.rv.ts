@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { In } from 'typeorm';
 import { EmployeeMaterializedViewResolver } from './../human-resources/employee-mv.rv';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
@@ -42,6 +43,18 @@ export class PesananSeragamResolver {
         tahun,
         periode
       });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [PesananSeragamWarpView])
+  @UseMiddleware(isAuth)
+  async getPesananSeragamBySite(
+    @Arg('site', () => [String]) site: string[]
+  ): Promise<PesananSeragamWarpView[] | undefined> {
+    try {
+      return await PesananSeragamWarpView.findBy({ contract: In(site) });
     } catch (err) {
       throw new Error(mapError(err));
     }
