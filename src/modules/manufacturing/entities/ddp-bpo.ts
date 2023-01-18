@@ -101,6 +101,10 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'QTY_M' })
   qtyM?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'KU_CLICKED' })
+  kuClicked?: number;
+
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {
     nullable: true
