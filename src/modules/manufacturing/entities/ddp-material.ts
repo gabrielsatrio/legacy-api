@@ -112,7 +112,7 @@ export class Material extends BaseEntity {
   totalNetto?: number;
 
   @Field({ nullable: true })
-  @PrimaryColumn({ name: 'JENIS_KU' })
+  @Column({ name: 'JENIS_KU' })
   jenisKu?: string;
 
   @Field({ nullable: true })
