@@ -17,6 +17,18 @@ export class DdpBpoView extends BaseEntity {
   @PrimaryColumn({ name: 'ID_NO' })
   idNo!: string;
 
+  @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'JENIS_KU' })
+  jenisKu!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
+  materialLength!: string;
+
   @Field({ nullable: true })
   @CreateDateColumn({ name: 'TANGGAL' })
   tanggal?: Date;
@@ -64,18 +76,6 @@ export class DdpBpoView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'SENT_TO_AUX' })
   sentToAux?: number;
-
-  @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
-  contract!: string;
-
-  @Field({ nullable: true })
-  @PrimaryColumn({ name: 'JENIS_KU' })
-  jenisKu?: string;
-
-  @Field({ nullable: true })
-  @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
-  materialLength!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'LOT_SIZE' })
