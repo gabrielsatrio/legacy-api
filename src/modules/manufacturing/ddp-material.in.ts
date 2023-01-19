@@ -78,4 +78,13 @@ export class MaterialInput implements Partial<Material> {
   @Field({ nullable: true })
   @MaxLength(300)
   lotBahan?: string;
+
+  @Field({ nullable: true })
+  jenisKu?: string;
+
+  @Field({ nullable: true })
+  defectId?: string;
+
+  @Field({ nullable: true })
+  processNote?: string;
 }
