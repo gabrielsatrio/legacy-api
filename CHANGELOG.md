@@ -1,3 +1,11 @@
+<a name="2.79.0"></a>
+
+# [2.79.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/349) (2023-01-19)
+
+### Features
+
+- [**M002**] **ddp**: add fields at bpo and material for ku requirement.
+
 <a name="2.78.0"></a>
 
 # [2.78.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/347) (2023-01-17)
