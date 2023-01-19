@@ -171,12 +171,51 @@ export class PesananSeragamResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deletePesananSeragam(
-    @Arg('id', () => Int) id: number
+    @Arg('id', () => Int) id: number,
+    @Arg('note', () => String) note: string,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<boolean | undefined> {
     try {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist!');
       if (data.isLocked) throw new Error('Data already locked by GA');
+      const sql = `
+        BEGIN
+          vky_pesanan_seragam_log_api.insert__( :employee_id,
+                                              :tahun,
+                                              :periode,
+                                              :jenis,
+                                              :ukuranKemeja,
+                                              :ukuranCelana,
+                                              :jumlahKemeja,
+                                              :jumlahCelana,
+                                              :newJenis,
+                                              :newUkuranKemeja,
+                                              :newUkuranCelana,
+                                              :newJumlahKemeja,
+                                              :newJumlahCelana,
+                                              'Deleted, Reason: ' || :note,
+                                              :created_by);
+        END;
+      `;
+      await ifs.query(sql, [
+        data.nrp,
+        data.tahun,
+        data.periode,
+        data.idJenis,
+        data.ukuranKemeja,
+        data.ukuranCelana,
+        data.jumlahKemeja,
+        data.jumlahCelana,
+        null,
+        null,
+        null,
+        null,
+        null,
+        note,
+        createdBy
+      ]);
+
       await PesananSeragam.delete({ id });
       return true;
     } catch (err) {
