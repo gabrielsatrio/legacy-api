@@ -19,4 +19,8 @@ export class PesananSeragamAdminView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'ALLOWED_DEPARTMENT' })
   allowedDepartment?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ALLOWED_EMPLOYEE_ID' })
+  allowedEmployeeId?: string;
 }

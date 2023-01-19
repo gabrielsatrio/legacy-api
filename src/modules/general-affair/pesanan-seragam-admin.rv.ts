@@ -47,4 +47,19 @@ export class PesananSeragamAdminResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [String])
+  @UseMiddleware(isAuth)
+  async getPesananSeragamAdminAllowedId(
+    @Arg('employeeId', () => String) employeeId: string
+  ): Promise<string[] | undefined> {
+    try {
+      const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
+      const employees = admin?.allowedEmployeeId;
+      const allowedEmployeeId = employees?.split(',');
+      return allowedEmployeeId || ['null'];
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }

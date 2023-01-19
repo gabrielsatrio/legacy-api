@@ -84,18 +84,40 @@ export class PesananSeragamResolver {
     @Arg('contract', () => [String]) contract: string[],
     @Arg('departmentId', () => [String])
     departmentId: string[],
+    @Arg('allowedNrp', () => [String]) allowedNrp: string[],
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      if (contract[0] === 'null' && departmentId[0] === 'null')
-        return await PesananSeragamWarpView.findBy({ nrp });
+      if (
+        contract[0] === 'null' &&
+        departmentId[0] === 'null' &&
+        allowedNrp[0] === 'null'
+      )
+        return await PesananSeragamWarpView.findBy({ nrp, tahun, periode });
+      else if (allowedNrp[0] === 'null')
+        return await PesananSeragamWarpView.find({
+          where: [
+            { nrp, tahun, periode },
+            { contract: In(contract), deptId: In(departmentId), tahun, periode }
+          ]
+        });
+      else if (contract[0] === 'null' && departmentId[0] === 'null')
+        return await PesananSeragamWarpView.find({
+          where: [{ nrp }, { nrp: In(allowedNrp) }]
+        });
       else
-        return await PesananSeragamWarpView.findBy({
-          contract: In(contract),
-          deptId: In(departmentId),
-          tahun,
-          periode
+        return await PesananSeragamWarpView.find({
+          where: [
+            { nrp, tahun, periode },
+            {
+              contract: In(contract),
+              deptId: In(departmentId),
+              tahun,
+              periode
+            },
+            { nrp: In(allowedNrp), tahun, periode }
+          ]
         });
     } catch (err) {
       throw new Error(mapError(err));
@@ -281,6 +303,7 @@ export class PesananSeragamResolver {
     @Arg('nrp', () => String) nrp: string,
     @Arg('sites', () => [String]) sites: string[],
     @Arg('departments', () => [String]) departents: string[],
+    @Arg('allowedNrp', () => [String]) allowedNrp: string[],
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
@@ -299,6 +322,10 @@ export class PesananSeragamResolver {
       `;
       if (sites[0] === 'null' && departents[0] === 'null') {
         await ifs.query(sql, [nrp, tahun, periode, nrp]);
+        if (allowedNrp[0] !== 'null')
+          await allowedNrp.forEach((employee) => {
+            ifs.query(sql, [employee, tahun, periode, nrp]);
+          });
       } else {
         sql = `
           BEGIN
