@@ -83,15 +83,19 @@ export class PesananSeragamResolver {
     @Arg('nrp', () => String) nrp: string,
     @Arg('contract', () => [String]) contract: string[],
     @Arg('departmentId', () => [String])
-    departmentId: string[]
+    departmentId: string[],
+    @Arg('tahun', () => String) tahun: string,
+    @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      if (contract[0] === 'null')
+      if (contract[0] === 'null' && departmentId[0] === 'null')
         return await PesananSeragamWarpView.findBy({ nrp });
       else
         return await PesananSeragamWarpView.findBy({
           contract: In(contract),
-          deptId: In(departmentId)
+          deptId: In(departmentId),
+          tahun,
+          periode
         });
     } catch (err) {
       throw new Error(mapError(err));
@@ -236,9 +240,10 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async generatePesanan(
     @Arg('nrp', () => String) nrp: string,
+    @Arg('sites', () => [String]) sites: string[],
+    @Arg('departments', () => [String]) departents: string[],
     @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number,
-    @Arg('createdBy', () => String) createdBy: string
+    @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragamView.findOneBy({
@@ -247,12 +252,26 @@ export class PesananSeragamResolver {
       });
       if (!data) throw new Error('Data seragam belum dibuat GA');
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
-      const sql = `
+
+      let sql = `
         BEGIN
-          vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode, :createdBy);
+          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode, :createdBy);
         END;
       `;
-      await ifs.query(sql, [nrp, tahun, periode, createdBy]);
+      if (sites[0] === 'null' && departents[0] === 'null') {
+        await ifs.query(sql, [nrp, tahun, periode, nrp]);
+      } else {
+        sql = `
+          BEGIN
+            vky_pesanan_seragam_api.generate_pesanan_dept(:site, :departmentId, :tahun, :periode, :createdBy);
+          END;
+        `;
+        await sites.forEach((site) => {
+          departents.forEach((department) => {
+            ifs.query(sql, [site, department, tahun, periode, nrp]);
+          });
+        });
+      }
       return true;
     } catch (err) {
       throw new Error(mapError(err));
