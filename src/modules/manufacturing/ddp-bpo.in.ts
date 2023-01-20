@@ -62,4 +62,7 @@ export class BPOInput implements Partial<DDPBPO> {
 
   @Field({ nullable: true })
   processNote?: string;
+
+  @Field({ nullable: true })
+  qtyM?: number;
 }

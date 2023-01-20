@@ -3,17 +3,18 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { ProdWarpingDenier } from './entities/warping-denier';
+import { ProdWarpingDenierView } from './entities/warping-denier.vw';
 import { ProdWarpingDenierInput } from './warping-denier.in';
 
 @Resolver(ProdWarpingDenier)
 export class ProdWarpingDenierResolver {
-  @Query(() => [ProdWarpingDenier], { nullable: true })
+  @Query(() => [ProdWarpingDenierView], { nullable: true })
   @UseMiddleware(isAuth)
   async getProdWarpingDenier(
-    @Arg('id', () => Number) id: number
-  ): Promise<ProdWarpingDenier[] | undefined> {
+    @Arg('id') id: number
+  ): Promise<ProdWarpingDenierView[] | undefined> {
     try {
-      return await ProdWarpingDenier.findBy({
+      return await ProdWarpingDenierView.findBy({
         id
       });
     } catch (err) {

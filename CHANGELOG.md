@@ -1,3 +1,27 @@
+<a name="2.80.0"></a>
+
+# [2.80.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/355) (2023-01-20)
+
+### Features
+
+- [**M019**] **gis**: add new query for report.
+
+<a name="2.79.1"></a>
+
+# [2.79.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/353) (2023-01-19)
+
+### Bug Fixes
+
+- [**G002**] **pesanan-seragam**: fix pesanan seragam general.
+
+<a name="2.79.0"></a>
+
+# [2.79.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/351) (2023-01-19)
+
+### Features
+
+- [**M002**] **ddp**: add fields at bpo and material for ku requirement.
+
 <a name="2.78.0"></a>
 
 # [2.78.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/347) (2023-01-17)
