@@ -1,3 +1,11 @@
+<a name="2.80.0"></a>
+
+# [2.80.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/355) (2023-01-20)
+
+### Features
+
+- [**M019**] **gis**: add new query for report.
+
 <a name="2.79.1"></a>
 
 # [2.79.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/353) (2023-01-19)
