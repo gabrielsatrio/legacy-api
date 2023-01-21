@@ -16,7 +16,6 @@ export class BPOResolver {
     contract: string[]
   ): Promise<DDPBPO[] | undefined> {
     return await DDPBPO.find({
-      relations: { dyestuffsUses: true, auxiliariesUses: true },
       where: { contract: In(contract) }
     });
   }
@@ -63,6 +62,7 @@ export class BPOResolver {
         :note,
         :defectId,
         :processNote,
+        :qtyM,
       :outContract, :outIdNo, :outKuCount);
     END;
   `;
@@ -89,6 +89,7 @@ export class BPOResolver {
         input.note,
         input.defectId,
         input.processNote,
+        input.qtyM,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -142,6 +143,7 @@ export class BPOResolver {
         :note,
         :defectId,
         :processNote,
+        :qtyM,
       :outContract, :outIdNo, :outKuCount);
       END;
     `;
@@ -166,6 +168,7 @@ export class BPOResolver {
         input.note,
         input.defectId,
         input.processNote,
+        input.qtyM,
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.STRING },
         { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }

@@ -1,49 +1,63 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { AdminPesananSeragam } from './entities/pesanan-seragam-admin';
-import { AdminPesananSeragamView } from './entities/pesanan-seragam-admin.vw';
+import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { PesananSeragamAdmin } from './entities/pesanan-seragam-admin';
+import { PesananSeragamAdminView } from './entities/pesanan-seragam-admin.vw';
 
-@Resolver(AdminPesananSeragam)
-export class AdminPesananSeragamResolver {
-  @Query(() => [AdminPesananSeragamView])
+@Resolver(PesananSeragamAdmin)
+export class PesananSeragamAdminResolver {
+  @Query(() => [PesananSeragamAdminView])
   @UseMiddleware(isAuth)
-  async getAllAdminPesananSeragam(): Promise<
-    AdminPesananSeragamView[] | undefined
+  async getAllPesananSeragamAdmin(): Promise<
+    PesananSeragamAdminView[] | undefined
   > {
     try {
-      return await AdminPesananSeragamView.find();
+      return await PesananSeragamAdminView.find();
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => AdminPesananSeragam)
+  @Query(() => [String])
   @UseMiddleware(isAuth)
-  async createAdminPesananSeragam(
+  async getPesananSeragamAdminSite(
     @Arg('employeeId', () => String) employeeId: string
-  ): Promise<AdminPesananSeragam | undefined> {
+  ): Promise<string[] | undefined> {
     try {
-      const exist = await AdminPesananSeragam.findOneBy({ employeeId });
-      if (exist) throw new Error('Data already exist');
-      const result = AdminPesananSeragam.create({ employeeId });
-      await AdminPesananSeragam.save(result);
-      return result;
+      const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
+      const sites = admin?.allowedSite;
+      const allwoedSites = sites?.split(',');
+      return allwoedSites || ['null'];
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => Boolean)
+  @Query(() => [String])
   @UseMiddleware(isAuth)
-  async deleteAdminPesananSeragam(
+  async getPesananSeragamAdminDepartment(
     @Arg('employeeId', () => String) employeeId: string
-  ): Promise<boolean | undefined> {
+  ): Promise<string[] | undefined> {
     try {
-      const exist = await AdminPesananSeragam.findOneBy({ employeeId });
-      if (!exist) throw new Error('Data not exist');
-      await AdminPesananSeragam.delete({ employeeId });
-      return true;
+      const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
+      const departments = admin?.allowedDepartment;
+      const allowedDepartments = departments?.split(',');
+      return allowedDepartments || ['null'];
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [String])
+  @UseMiddleware(isAuth)
+  async getPesananSeragamAdminAllowedId(
+    @Arg('employeeId', () => String) employeeId: string
+  ): Promise<string[] | undefined> {
+    try {
+      const admin = await PesananSeragamAdmin.findOneBy({ employeeId });
+      const employees = admin?.allowedEmployeeId;
+      const allowedEmployeeId = employees?.split(',');
+      return allowedEmployeeId || ['null'];
     } catch (err) {
       throw new Error(mapError(err));
     }
