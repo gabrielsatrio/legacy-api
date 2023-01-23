@@ -10,12 +10,24 @@ import {
 import { BPOAuxiliaries } from './ddp-bpo-auxiliaries';
 import { BPODyestuff } from './ddp-bpo-dyestuff';
 
-@Entity('CHR_DDT_BPO')
+@Entity('CHR_DDP_BPO_V')
 @ObjectType()
-export class DDPBPO extends BaseEntity {
+export class DdpBpoView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'ID_NO' })
   idNo!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'CONTRACT' })
+  contract!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'JENIS_KU' })
+  jenisKu!: string;
+
+  @Field()
+  @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
+  materialLength!: string;
 
   @Field({ nullable: true })
   @CreateDateColumn({ name: 'TANGGAL' })
@@ -65,18 +77,6 @@ export class DDPBPO extends BaseEntity {
   @Column({ name: 'SENT_TO_AUX' })
   sentToAux?: number;
 
-  @Field()
-  @PrimaryColumn({ name: 'CONTRACT' })
-  contract!: string;
-
-  @Field({ nullable: true })
-  @PrimaryColumn({ name: 'JENIS_KU' })
-  jenisKu?: string;
-
-  @Field({ nullable: true })
-  @PrimaryColumn({ name: 'MATERIAL_LENGTH' })
-  materialLength!: string;
-
   @Field({ nullable: true })
   @Column({ name: 'LOT_SIZE' })
   lotSize?: number;
@@ -96,14 +96,6 @@ export class DDPBPO extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PROCESS_NOTE' })
   processNote?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'QTY_M' })
-  qtyM?: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'KU_CLICKED' })
-  kuClicked?: number;
 
   @Field(() => [BPODyestuff], { nullable: true })
   @OneToMany(() => BPODyestuff, (BPODyestuff) => BPODyestuff.dyestuffs, {

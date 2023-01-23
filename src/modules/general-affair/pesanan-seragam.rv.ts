@@ -10,7 +10,6 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { In } from 'typeorm';
-import { EmployeeMaterializedViewResolver } from './../human-resources/employee-mv.rv';
 import { PesananSeragam } from './entities/pesanan-seragam';
 import { DefaultSeragamView } from './entities/pesanan-seragam-default.vw';
 import { PesananSeragamWarpView } from './entities/pesanan-seragam-warp.vw';
@@ -82,30 +81,44 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async getPesananSeragamUser(
     @Arg('nrp', () => String) nrp: string,
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('departmentId', () => [String])
+    departmentId: string[],
+    @Arg('allowedNrp', () => [String]) allowedNrp: string[],
     @Arg('tahun', () => String) tahun: string,
     @Arg('periode', () => Int) periode: number
   ): Promise<PesananSeragamWarpView[] | undefined> {
     try {
-      const isAdmin = await this.isAdmin(nrp);
-      const deptId = await EmployeeMaterializedViewResolver.getDepartmentId(
-        nrp
-      );
-      const companyOffice =
-        await EmployeeMaterializedViewResolver.getCompanyOffice(nrp);
-      if (!isAdmin) {
-        return await PesananSeragamWarpView.findBy({
-          nrp,
-          tahun,
-          periode
+      if (
+        contract[0] === 'null' &&
+        departmentId[0] === 'null' &&
+        allowedNrp[0] === 'null'
+      )
+        return await PesananSeragamWarpView.findBy({ nrp, tahun, periode });
+      else if (allowedNrp[0] === 'null')
+        return await PesananSeragamWarpView.find({
+          where: [
+            { nrp, tahun, periode },
+            { contract: In(contract), deptId: In(departmentId), tahun, periode }
+          ]
         });
-      } else {
-        return await PesananSeragamWarpView.findBy({
-          deptId,
-          contract: companyOffice,
-          tahun,
-          periode
+      else if (contract[0] === 'null' && departmentId[0] === 'null')
+        return await PesananSeragamWarpView.find({
+          where: [{ nrp }, { nrp: In(allowedNrp) }]
         });
-      }
+      else
+        return await PesananSeragamWarpView.find({
+          where: [
+            { nrp, tahun, periode },
+            {
+              contract: In(contract),
+              deptId: In(departmentId),
+              tahun,
+              periode
+            },
+            { nrp: In(allowedNrp), tahun, periode }
+          ]
+        });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -180,12 +193,51 @@ export class PesananSeragamResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deletePesananSeragam(
-    @Arg('id', () => Int) id: number
+    @Arg('id', () => Int) id: number,
+    @Arg('note', () => String) note: string,
+    @Arg('createdBy', () => String) createdBy: string
   ): Promise<boolean | undefined> {
     try {
       const data = await PesananSeragam.findOneBy({ id });
       if (!data) throw new Error('Data not exist!');
       if (data.isLocked) throw new Error('Data already locked by GA');
+      const sql = `
+        BEGIN
+          vky_pesanan_seragam_log_api.insert__( :employee_id,
+                                              :tahun,
+                                              :periode,
+                                              :jenis,
+                                              :ukuranKemeja,
+                                              :ukuranCelana,
+                                              :jumlahKemeja,
+                                              :jumlahCelana,
+                                              :newJenis,
+                                              :newUkuranKemeja,
+                                              :newUkuranCelana,
+                                              :newJumlahKemeja,
+                                              :newJumlahCelana,
+                                              'Deleted, Reason: ' || :note,
+                                              :created_by);
+        END;
+      `;
+      await ifs.query(sql, [
+        data.nrp,
+        data.tahun,
+        data.periode,
+        data.idJenis,
+        data.ukuranKemeja,
+        data.ukuranCelana,
+        data.jumlahKemeja,
+        data.jumlahCelana,
+        null,
+        null,
+        null,
+        null,
+        null,
+        note,
+        createdBy
+      ]);
+
       await PesananSeragam.delete({ id });
       return true;
     } catch (err) {
@@ -249,9 +301,11 @@ export class PesananSeragamResolver {
   @UseMiddleware(isAuth)
   async generatePesanan(
     @Arg('nrp', () => String) nrp: string,
+    @Arg('sites', () => [String]) sites: string[],
+    @Arg('departments', () => [String]) departents: string[],
+    @Arg('allowedNrp', () => [String]) allowedNrp: string[],
     @Arg('tahun', () => String) tahun: string,
-    @Arg('periode', () => Int) periode: number,
-    @Arg('createdBy', () => String) createdBy: string
+    @Arg('periode', () => Int) periode: number
   ): Promise<boolean | undefined> {
     try {
       const data = await DefaultSeragamView.findOneBy({
@@ -260,12 +314,30 @@ export class PesananSeragamResolver {
       });
       if (!data) throw new Error('Data seragam belum dibuat GA');
       if (data.isLocked) throw new Error('Masa pemesanan seragam sudah habis');
-      const sql = `
+
+      let sql = `
         BEGIN
-          vky_pesanan_seragam_api.generate_pesanan_adm(:nrp, :tahun, :periode, :createdBy);
+          vky_pesanan_seragam_api.generate_pesanan(:nrp, :tahun, :periode, :createdBy);
         END;
       `;
-      await ifs.query(sql, [nrp, tahun, periode, createdBy]);
+      if (sites[0] === 'null' && departents[0] === 'null') {
+        await ifs.query(sql, [nrp, tahun, periode, nrp]);
+        if (allowedNrp[0] !== 'null')
+          await allowedNrp.forEach((employee) => {
+            ifs.query(sql, [employee, tahun, periode, nrp]);
+          });
+      } else {
+        sql = `
+          BEGIN
+            vky_pesanan_seragam_api.generate_pesanan_dept(:site, :departmentId, :tahun, :periode, :createdBy);
+          END;
+        `;
+        await sites.forEach((site) => {
+          departents.forEach((department) => {
+            ifs.query(sql, [site, department, tahun, periode, nrp]);
+          });
+        });
+      }
       return true;
     } catch (err) {
       throw new Error(mapError(err));

@@ -57,6 +57,33 @@ export class GisHeaderResolver {
 
   @Query(() => Number, { nullable: true })
   @UseMiddleware(isAuth)
+  async getInspectIdByParam(
+    @Arg('orderNo') orderNo: string,
+    @Arg('contract') contract: string,
+    @Arg('rollNo') rollNo: string,
+    @Arg('lotBatchNo') lotBatchNo: string
+  ): Promise<number> {
+    try {
+      const sql = `SELECT inspect_id as "inspectId"
+      FROM   gbr_gis_header
+      WHERE  nvl(order_no,'x') like :orderNo
+      AND    contract = :contract
+      AND    roll_no LIKE :rollNo
+      AND    NVL(lot_batch_no, 'x') LIKE :lotBatchNo`;
+      const result = await ifs.query(sql, [
+        orderNo,
+        contract,
+        rollNo,
+        lotBatchNo
+      ]);
+      return result[0].inspectId;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
   async getNewRollNo(@Arg('orderNo') orderNo: string): Promise<number> {
     try {
       const sql =
