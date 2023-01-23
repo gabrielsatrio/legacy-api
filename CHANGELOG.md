@@ -1,3 +1,11 @@
+<a name="2.80.1"></a>
+
+# [2.80.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/357) (2023-01-23)
+
+### Bug Fixes
+
+- [**M001**] **apm-maintenance-logs**: fix some fields that should be nullable.
+
 <a name="2.80.0"></a>
 
 # [2.80.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/355) (2023-01-20)
