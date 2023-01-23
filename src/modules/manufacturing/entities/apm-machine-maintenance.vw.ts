@@ -64,21 +64,21 @@ export class MachineMaintenanceView extends BaseEntity {
   @Column({ name: 'DESCRIPTION' })
   description!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'PART_NO' })
-  partNo!: string;
+  partNo?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'PART_DESCRIPTION' })
-  partDescription!: string;
+  partDescription?: string;
 
   @Field()
   @Column({ name: 'QUANTITY' })
   quantity!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ name: 'UNIT_MEAS' })
-  unitMeas!: string;
+  unitMeas?: string;
 
   @Field()
   @Column({ name: 'DURATION' })
