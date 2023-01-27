@@ -1,3 +1,11 @@
+<a name="2.81.0"></a>
+
+# [2.81.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/360) (2023-01-24)
+
+### Features
+
+- **settings**: add department alt menu.
+
 <a name="2.80.1"></a>
 
 # [2.80.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/357) (2023-01-23)
