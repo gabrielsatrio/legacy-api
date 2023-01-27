@@ -39,4 +39,24 @@ export class KpOemSementaraView extends BaseEntity {
   @Field()
   @Column({ name: 'QUANTITY' })
   quantity!: number;
+
+  @Field()
+  @Column({ name: 'STATUS' })
+  status!: string;
+
+  @Field()
+  @Column({ name: 'CREATED_DATE' })
+  createdDate!: Date;
+
+  @Field()
+  @Column({ name: 'CREATED_AT' })
+  createdAt!: string;
+
+  @Field()
+  @Column({ name: 'MODIFIED_DATE' })
+  modifiedDate!: Date;
+
+  @Field()
+  @Column({ name: 'MODIFIED_AT' })
+  modifiedAt!: string;
 }

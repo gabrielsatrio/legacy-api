@@ -1,4 +1,4 @@
-import { IsNumber, MaxLength } from 'class-validator';
+import { IsDate, IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { KpOemSementara } from './entities/kp-oem-sementara';
 
@@ -23,4 +23,24 @@ export class KpOemSementaraInput implements Partial<KpOemSementara> {
   @Field()
   @IsNumber()
   pickAkhir!: number;
+
+  @Field()
+  @MaxLength(10)
+  status!: string;
+
+  @Field()
+  @IsDate()
+  createdDate!: Date;
+
+  @Field()
+  @MaxLength(5)
+  createdAt!: string;
+
+  @Field()
+  @IsDate()
+  modifiedDate!: Date;
+
+  @Field()
+  @MaxLength(5)
+  modifiedAt!: string;
 }

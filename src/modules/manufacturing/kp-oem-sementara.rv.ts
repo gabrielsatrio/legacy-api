@@ -70,7 +70,8 @@ export class KpSementaraOemResolver {
     @Arg('contract', () => String) contract: string,
     @Arg('orderNo', () => String) orderNo: string,
     @Arg('pickAwal', () => Int) pickAwal: number,
-    @Arg('pickAkhir', () => Int) pickAkhir: number
+    @Arg('pickAkhir', () => Int) pickAkhir: number,
+    @Arg('createdAt', () => String) createdAt: string
   ): Promise<boolean | null> {
     try {
       const exist = await KpOemSementaraView.findOneBy({
@@ -86,10 +87,10 @@ export class KpSementaraOemResolver {
         throw new Error('Pick awal harus lebih besar dari pick sebelumnya');
       const sql = `
         BEGIN
-          vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :pickAwal, :pickAkhir);
+          vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :pickAwal, :pickAkhir, :createdAt);
         END;
       `;
-      await ifs.query(sql, [contract, orderNo, pickAwal, pickAkhir]);
+      await ifs.query(sql, [contract, orderNo, pickAwal, pickAkhir, createdAt]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
