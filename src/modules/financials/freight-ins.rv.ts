@@ -1,6 +1,7 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { Like } from 'typeorm';
 import { FreightInsView } from './entities/freight-ins.vw';
 
 @Resolver(FreightInsView)
@@ -11,7 +12,11 @@ export class PurchaseOrderLogResolver {
     @Arg('poNumber') poNumber: string
   ): Promise<FreightInsView[] | undefined> {
     try {
-      return await FreightInsView.findBy({ poNumber });
+      return await FreightInsView.find({
+        where: {
+          poNumber: Like(poNumber)
+        }
+      });
     } catch (err) {
       throw new Error(mapError(err));
     }
