@@ -58,4 +58,10 @@ export class ImportExpeditionInput implements Partial<ImportExpedition> {
 
   @Field({ nullable: true })
   periodeBayar?: string;
+
+  @Field({ nullable: true })
+  createdBy?: string;
+
+  @Field({ nullable: true })
+  emailUser?: string;
 }

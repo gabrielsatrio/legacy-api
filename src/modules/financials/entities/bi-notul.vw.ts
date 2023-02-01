@@ -39,4 +39,12 @@ export class NotulView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'CATEGORY' })
   category?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'SHIPMENT' })
+  shipment?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'NOTES' })
+  notes?: string;
 }

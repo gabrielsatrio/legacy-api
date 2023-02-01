@@ -1,3 +1,12 @@
+<a name="2.82.0"></a>
+
+# [2.82.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/362) (2023-02-01)
+
+### Features
+
+- [**F002**] **buku-import**: add column shipment & notes (pib), view freight-ins, column method & periode bayar (paid-date).
+- [**P001**] **import-expedition**: add column createdBy & emailUser.
+
 <a name="2.81.0"></a>
 
 # [2.81.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/360) (2023-01-24)
