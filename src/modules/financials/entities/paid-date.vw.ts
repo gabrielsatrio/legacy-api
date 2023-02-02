@@ -35,4 +35,12 @@ export class PaidDateView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'TYPE' })
   type?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'METHOD' })
+  method?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PERIODE_BAYAR' })
+  periodeBayar?: string;
 }

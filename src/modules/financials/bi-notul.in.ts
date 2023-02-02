@@ -31,4 +31,10 @@ export class NotulInput implements Partial<Notul> {
 
   @Field({ nullable: true })
   category?: string;
+
+  @Field({ nullable: true })
+  shipment?: string;
+
+  @Field({ nullable: true })
+  notes?: string;
 }

@@ -31,4 +31,10 @@ export class PaidDateInput implements Partial<PaidDate> {
 
   @Field({ nullable: true })
   type?: string;
+
+  @Field({ nullable: true })
+  method?: string;
+
+  @Field({ nullable: true })
+  periodeBayar?: string;
 }
