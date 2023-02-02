@@ -19,10 +19,29 @@ export class KpSementaraOemResolver {
   @Query(() => [KpOemSementaraView])
   @UseMiddleware(isAuth)
   async getKpOemSementara(
-    @Arg('contract', () => [String]) contract: string[]
+    @Arg('contract', () => [String]) contract: string[],
+    @Arg('command', () => Boolean) command: boolean
   ): Promise<KpOemSementaraView[] | undefined> {
     try {
-      return await KpOemSementaraView.findBy({ contract: In(contract) });
+      if (command)
+        return await KpOemSementaraView.findBy({ contract: In(contract) });
+      else
+        return await KpOemSementaraView.findBy({
+          contract: In(contract),
+          status: 'Created'
+        });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => KpOemSementaraView, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getKpOemSementaraByLot(
+    @Arg('lotBatchNo', () => String) lotBatchNo: string
+  ): Promise<KpOemSementaraView | null> {
+    try {
+      return await KpOemSementaraView.findOneBy({ lotBatchNo });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -110,6 +129,46 @@ export class KpSementaraOemResolver {
       KpOemSementara.merge(data, { ...input });
       const result = await KpOemSementara.save(data);
       return result;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async issueKpOemSementara(
+    @Arg('lotBatchNo', () => String) lotBatchNo: string
+  ): Promise<boolean | null> {
+    try {
+      const data = await KpOemSementaraView.findOneBy({ lotBatchNo });
+      if (!data) throw new Error('Data not exist!');
+      const sql = `
+        BEGIN
+          vky_kp_oem_sementara_api.issue__(:lotBatchNo);
+        END;
+      `;
+      await ifs.query(sql, [lotBatchNo]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async unissueKpOemSementara(
+    @Arg('lotBatchNo', () => String) lotBatchNo: string
+  ): Promise<boolean | null> {
+    try {
+      const data = await KpOemSementaraView.findOneBy({ lotBatchNo });
+      if (!data) return false;
+      const sql = `
+        BEGIN
+          vky_kp_oem_sementara_api.unissue__(:lotBatchNo);
+        END;
+      `;
+      await ifs.query(sql, [lotBatchNo]);
+      return true;
     } catch (err) {
       throw new Error(mapError(err));
     }
