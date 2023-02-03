@@ -102,7 +102,7 @@ export class AngkutanResolver {
   @UseMiddleware(isAuth)
   async getIdAngkutan(): Promise<number> {
     try {
-      const sql = `SELECT ANG_ANGKUTAN_SEQ.NEXTVAL AS "newId" FROM DUAL`;
+      const sql = `SELECT nvl(max(id), 0) + 1 as "newId" FROM ang_angkutan`;
       const result = await ifs.query(sql);
       return result[0].newId;
     } catch (err) {
