@@ -1,3 +1,11 @@
+<a name="2.83.0"></a>
+
+# [2.83.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/364) (2023-02-03)
+
+### Features
+
+- [**M023**] **kp-oem-sementara**: add new form and list kp oem sementara.
+
 <a name="2.82.0"></a>
 
 # [2.82.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/362) (2023-02-01)
