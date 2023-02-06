@@ -30,4 +30,26 @@ export class IfsShopOrderResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNoOfReceivedLot(
+    @Arg('contract') contract: string,
+    @Arg('orderNo') orderNo: string
+  ): Promise<number> {
+    let sql;
+    try {
+      if (contract === 'AGT') {
+        sql =
+          'SELECT atj_receiving_api.get_jml_kp@ifs8agt(:contract, :order_no) as "noOfReceivedLot" from dual';
+      } else {
+        sql =
+          'SELECT atj_receiving_api.get_jml_kp(:contract, :order_no) as "noOfReceivedLot" from dual';
+      }
+      const result = await ifs.query(sql, [contract, orderNo]);
+      return result[0].noOfReceivedLot;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
