@@ -33,7 +33,7 @@ export class IfsShopOrderResolver {
 
   @Query(() => Number, { nullable: true })
   @UseMiddleware(isAuth)
-  async getNoOfReceivedLot(
+  async getNoOfLotReceived(
     @Arg('contract') contract: string,
     @Arg('orderNo') orderNo: string
   ): Promise<number> {
