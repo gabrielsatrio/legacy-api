@@ -1,3 +1,11 @@
+<a name="2.84.0"></a>
+
+# [2.84.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/366) (2023-02-06)
+
+### Features
+
+- **menu-user**: add menu user view.
+
 <a name="2.83.0"></a>
 
 # [2.83.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/364) (2023-02-03)
