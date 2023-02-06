@@ -5,6 +5,7 @@
 ### Features
 
 - **menu-user**: add menu user view.
+- **shop-ord**: add query get number of received lot.
 
 <a name="2.83.0"></a>
 
