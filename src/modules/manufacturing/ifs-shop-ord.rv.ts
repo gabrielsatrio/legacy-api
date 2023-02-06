@@ -52,4 +52,32 @@ export class IfsShopOrderResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Query(() => [IfsShopOrderView], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getShopOrderByContractOrderNo(
+    @Arg('contract') contract: string,
+    @Arg('orderNo') orderNo: string
+  ): Promise<IfsShopOrderView[] | undefined> {
+    try {
+      let sql = '';
+      if (contract === 'AGT') {
+        sql = `SELECT contract as "contract",
+                      order_no as "orderNo",
+                      part_no as "partNo",
+                      org_qty_due as "orgQtyDue",
+                      qty_complete as "qtyComplete",
+                      job_order as "jobOrder",
+                      objid as "objId"
+               FROM shop_ord@ifs8agt
+               WHERE contract = :contract
+               and order_no = :orderNo`;
+        return await ifs.query(sql, [contract, orderNo]);
+      } else {
+        return await IfsShopOrderView.findBy({ contract, orderNo });
+      }
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }

@@ -6,6 +6,7 @@
 
 - **menu-user**: add menu user view.
 - **shop-ord**: add query get number of lot received.
+- **shop-ord**: add query get shop ord by contract order no (enable agt).
 
 <a name="2.83.0"></a>
 
