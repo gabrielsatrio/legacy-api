@@ -3,15 +3,16 @@ import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { MenuUser } from './entities/menu-user';
+import { MenuUserView } from './entities/menu-user.vw';
 import { MenuUserInput } from './menu-user.in';
 
 @Resolver(MenuUser)
 export class MenuUserResolver {
-  @Query(() => [MenuUser])
+  @Query(() => [MenuUserView])
   @UseMiddleware(isAuth)
-  async getAllMenuUser(): Promise<MenuUser[]> {
+  async getAllMenuUser(): Promise<MenuUserView[]> {
     try {
-      const result = await MenuUser.find({ order: { username: 'ASC' } });
+      const result = await MenuUserView.find({ order: { username: 'ASC' } });
       return result;
     } catch (err) {
       throw new Error(mapError(err));
