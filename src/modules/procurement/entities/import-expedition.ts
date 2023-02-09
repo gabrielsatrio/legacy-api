@@ -67,4 +67,12 @@ export class ImportExpedition extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'PERIODE_BAYAR' })
   periodeBayar?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'CREATED_BY' })
+  createdBy?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'EMAIL_USER' })
+  emailUser?: string;
 }
