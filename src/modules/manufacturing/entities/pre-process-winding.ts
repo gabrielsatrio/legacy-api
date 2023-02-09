@@ -35,4 +35,8 @@ export class PreProcessWinding extends BaseEntity {
   @Field()
   @Column({ name: 'SCAN_DATE' })
   scanDate!: Date;
+
+  @Field()
+  @Column({ name: 'OBJID' })
+  objid!: string;
 }
