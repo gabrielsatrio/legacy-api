@@ -109,24 +109,4 @@ export class AngkutanResolver {
       throw new Error(mapError(err));
     }
   }
-
-  @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
-  async craeteVoucherAngkutanIfs(
-    @Arg('input') input: AngkutanInput
-  ): Promise<boolean | null> {
-    try {
-      const sql = `begin ateja.ang_angkutan_api.upload(:contract, :angkutan, :startDate, :endDate, :usernameIfs); end;`;
-      await ifs.query(sql, [
-        input.contract,
-        input.angkutan,
-        input.startDate,
-        input.endDate,
-        input.usernameIfs
-      ]);
-      return true;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
 }
