@@ -109,4 +109,46 @@ export class AngkutanResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => [Angkutan], { nullable: true })
+  @UseMiddleware(isAuth)
+  async createVoucherAngkutanIfs(
+    @Arg('contract') contract: string,
+    @Arg('angkutan') angkutan: string,
+    @Arg('startDate') startDate: Date,
+    @Arg('endDate') endDate: Date,
+    @Arg('usernameIfs') usernameIfs: string
+  ): Promise<Angkutan[] | null> {
+    try {
+      const sql = `
+    BEGIN
+    ang_angkutan_api.upload(
+      :contract,
+      :angkutan,
+      :startDate,
+      :endDate,
+      :usernameIfs);
+    END;
+  `;
+      await ifs.query(sql, [
+        contract,
+        angkutan,
+        startDate,
+        endDate,
+        usernameIfs
+      ]);
+
+      const data = await Angkutan.findBy({
+        contract: contract,
+        angkutan: angkutan,
+        startDate: startDate,
+        endDate: endDate,
+        usernameIfs: usernameIfs
+      });
+
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
