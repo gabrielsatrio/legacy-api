@@ -1,3 +1,11 @@
+<a name="2.85.0"></a>
+
+# [2.85.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/368) (2023-02-10)
+
+### Features
+
+- **kp-oem-sementara**: add new table kp oem mesin sortir.
+
 <a name="2.84.0"></a>
 
 # [2.84.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/366) (2023-02-06)
