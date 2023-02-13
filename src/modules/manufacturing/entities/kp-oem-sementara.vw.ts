@@ -21,6 +21,10 @@ export class KpOemSementaraView extends BaseEntity {
   partNo!: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'SERI_BEAM' })
+  seriBeam?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'RESOURCE_ID' })
   resourceId?: string;
 

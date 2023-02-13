@@ -16,6 +16,10 @@ export class KpOemSementara extends BaseEntity {
   @PrimaryColumn({ name: 'LOT_BATCH_NO' })
   lotBatchNo!: string;
 
+  @Field({ nullable: true })
+  @Column({ name: 'SERI_BEAM' })
+  seriBeam?: string;
+
   @Field()
   @Column({ name: 'PICK_AWAL' })
   pickAwal!: number;
