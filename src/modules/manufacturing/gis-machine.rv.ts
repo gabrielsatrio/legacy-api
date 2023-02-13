@@ -27,6 +27,10 @@ export class GisMachineResolver {
     @Arg('input') input: GisMachineInput
   ): Promise<GisMachine | undefined> {
     try {
+      const existingData = await GisMachine.findOneBy({
+        machineId: input.machineId
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = GisMachine.create({
         ...input
       });
