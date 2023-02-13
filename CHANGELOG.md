@@ -1,3 +1,11 @@
+<a name="2.86.0"></a>
+
+# [2.86.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/370) (2023-02-13)
+
+### Features
+
+- **pre-process-winding**: add new feature pre process winding.
+
 <a name="2.85.0"></a>
 
 # [2.85.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/368) (2023-02-10)
