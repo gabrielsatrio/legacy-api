@@ -1,12 +1,12 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_SDL_LOG')
+@Entity('ATJ_ASL_LOG')
 @ObjectType()
-export class SdlLog extends BaseEntity {
+export class AslLog extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'SDL_ID' })
-  sdlId!: number;
+  @PrimaryColumn({ name: 'ASL_ID' })
+  aslId!: number;
 
   @Field()
   @PrimaryColumn({ name: 'LINE_NO' })

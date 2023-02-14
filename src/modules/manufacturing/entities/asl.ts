@@ -1,12 +1,12 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_SDL')
+@Entity('ATJ_ASL')
 @ObjectType()
-export class Sdl extends BaseEntity {
+export class Asl extends BaseEntity {
   @Field()
-  @PrimaryColumn({ name: 'SDL_ID' })
-  sdlId!: number;
+  @PrimaryColumn({ name: 'ASL_ID' })
+  aslId!: number;
 
   @Field()
   @Column({ name: 'NAME' })
@@ -29,12 +29,16 @@ export class Sdl extends BaseEntity {
   description!: string;
 
   @Field()
-  @Column({ name: 'FILE_NAME' })
-  fileName!: string;
+  @Column({ name: 'FILENAME' })
+  filename!: string;
 
   @Field()
   @Column({ name: 'TIER' })
   tier!: string;
+
+  @Field()
+  @Column({ name: 'PARENT_ID' })
+  parentId!: number;
 
   @Field()
   @Column({ name: 'CREATED_BY' })

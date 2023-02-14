@@ -10,38 +10,38 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { Sdl } from './entities/sdl';
-import { SdlInput } from './sdl.in';
+import { AslInput } from './asl.in';
+import { Asl } from './entities/asl';
 
-@Resolver(Sdl)
-export class SdlResolver {
-  @Query(() => Sdl, { nullable: true })
+@Resolver(Asl)
+export class AslResolver {
+  @Query(() => Asl, { nullable: true })
   @UseMiddleware(isAuth)
-  async getSdl(@Arg('sdlId') sdlId: number): Promise<Sdl | null> {
+  async getAsl(@Arg('aslId') aslId: number): Promise<Asl | null> {
     try {
-      return await Sdl.findOneBy({ sdlId });
+      return await Asl.findOneBy({ aslId });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [Sdl], { nullable: true })
+  @Query(() => [Asl], { nullable: true })
   @UseMiddleware(isAuth)
-  async getAllSdl(): Promise<Sdl[] | null> {
+  async getAllAsl(): Promise<Asl[] | null> {
     try {
-      return await Sdl.find();
+      return await Asl.find();
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => [Sdl], { nullable: true })
+  @Query(() => [Asl], { nullable: true })
   @UseMiddleware(isAuth)
-  async getSdlByCategory(
+  async getAslByCategory(
     @Arg('category', () => String) category: string
-  ): Promise<Sdl[] | undefined> {
+  ): Promise<Asl[] | undefined> {
     try {
-      return await Sdl.findBy({
+      return await Asl.findBy({
         category
       });
     } catch (err) {
@@ -51,64 +51,64 @@ export class SdlResolver {
 
   @Query(() => Number, { nullable: true })
   @UseMiddleware(isAuth)
-  async getNewSdlId(): Promise<number> {
+  async getNewAslId(): Promise<number> {
     try {
-      const sql = 'SELECT ATJ_SDL_SEQ.NEXTVAL AS "sdlId" FROM DUAL';
+      const sql = 'SELECT ATJ_ASL_SEQ.NEXTVAL AS "aslId" FROM DUAL';
       const result = await ifs.query(sql);
-      return result[0].sdlId;
+      return result[0].aslId;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => Sdl)
+  @Mutation(() => Asl)
   @UseMiddleware(isAuth)
-  async createSdl(
-    @Arg('input') input: SdlInput,
+  async createAsl(
+    @Arg('input') input: AslInput,
     @Ctx() { req }: Context
-  ): Promise<Sdl> {
+  ): Promise<Asl> {
     try {
-      const existingData = await Sdl.findOneBy({
-        sdlId: input.sdlId
+      const existingData = await Asl.findOneBy({
+        aslId: input.aslId
       });
       if (existingData) throw new Error('Data already exists.');
-      const data = Sdl.create({
+      const data = Asl.create({
         ...input,
         createdBy: req.session.username,
         createdAt: new Date()
       });
-      const results = await Sdl.save(data);
+      const results = await Asl.save(data);
       return results;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => Sdl, { nullable: true })
+  @Mutation(() => Asl, { nullable: true })
   @UseMiddleware(isAuth)
-  async updateSdl(@Arg('input') input: SdlInput): Promise<Sdl | undefined> {
+  async updateAsl(@Arg('input') input: AslInput): Promise<Asl | undefined> {
     try {
-      const data = await Sdl.findOneBy({
-        sdlId: input.sdlId
+      const data = await Asl.findOneBy({
+        aslId: input.aslId
       });
       if (!data) throw new Error('No data found.');
-      Sdl.merge(data, {
+      Asl.merge(data, {
         ...input
       });
-      const result = await Sdl.save(data);
+      const result = await Asl.save(data);
       return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => Sdl)
+  @Mutation(() => Asl)
   @UseMiddleware(isAuth)
-  async deleteSdl(@Arg('sdlId') sdlId: number): Promise<Sdl> {
+  async deleteAsl(@Arg('aslId') aslId: number): Promise<Asl> {
     try {
-      const data = await Sdl.findOneBy({ sdlId });
+      const data = await Asl.findOneBy({ aslId });
       if (!data) throw new Error('No data found.');
-      await Sdl.delete({ sdlId });
+      await Asl.delete({ aslId });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

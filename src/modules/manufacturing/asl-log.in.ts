@@ -1,12 +1,12 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { SdlLog } from './entities/sdl-log';
+import { AslLog } from './entities/asl-log';
 
 @InputType()
-export class SdlLogInput implements Partial<SdlLog> {
+export class AslLogInput implements Partial<AslLog> {
   @Field()
   @IsNumber()
-  sdlId!: number;
+  aslId!: number;
 
   @Field()
   @IsNumber()

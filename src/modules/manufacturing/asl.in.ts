@@ -1,12 +1,12 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { Sdl } from './entities/sdl';
+import { Asl } from './entities/asl';
 
 @InputType()
-export class SdlInput implements Partial<Sdl> {
+export class AslInput implements Partial<Asl> {
   @Field()
   @IsNumber()
-  sdlId!: number;
+  aslId!: number;
 
   @Field()
   @MaxLength(100)
@@ -30,9 +30,13 @@ export class SdlInput implements Partial<Sdl> {
 
   @Field()
   @MaxLength(100)
-  fileName!: string;
+  filename!: string;
 
   @Field()
   @MaxLength(5)
   tier!: string;
+
+  @Field()
+  @IsNumber()
+  parentId!: number;
 }
