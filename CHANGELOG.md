@@ -1,3 +1,11 @@
+<a name="2.87.0"></a>
+
+# [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)
+
+### Features
+
+- **kp-oem-sementara**: add new column seri beam.
+
 <a name="2.86.0"></a>
 
 # [2.86.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/370) (2023-02-13)
