@@ -16,6 +16,10 @@ export class KpOemSementaraInput implements Partial<KpOemSementara> {
   @MaxLength(70)
   lotBatchNo!: string;
 
+  @Field({ nullable: true })
+  @MaxLength(50)
+  seriBeam?: string;
+
   @Field()
   @IsNumber()
   pickAwal!: number;
