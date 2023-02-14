@@ -1,3 +1,62 @@
+<a name="2.87.0"></a>
+
+# [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)
+
+### Features
+
+- **kp-oem-sementara**: add new column seri beam.
+
+<a name="2.86.0"></a>
+
+# [2.86.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/370) (2023-02-13)
+
+### Features
+
+- **pre-process-winding**: add new feature pre process winding.
+
+<a name="2.85.0"></a>
+
+# [2.85.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/368) (2023-02-10)
+
+### Features
+
+- **kp-oem-sementara**: add new table kp oem mesin sortir.
+
+<a name="2.84.0"></a>
+
+# [2.84.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/366) (2023-02-06)
+
+### Features
+
+- **menu-user**: add menu user view.
+- **shop-ord**: add query get number of lot received.
+- **shop-ord**: add query get shop ord by contract order no (enable agt).
+
+<a name="2.83.0"></a>
+
+# [2.83.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/364) (2023-02-03)
+
+### Features
+
+- [**M023**] **kp-oem-sementara**: add new form and list kp oem sementara.
+
+<a name="2.82.0"></a>
+
+# [2.82.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/362) (2023-02-01)
+
+### Features
+
+- [**F002**] **buku-import**: add column shipment & notes (pib), view freight-ins, column method & periode bayar (paid-date).
+- [**P001**] **import-expedition**: add column createdBy & emailUser.
+
+<a name="2.81.0"></a>
+
+# [2.81.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/360) (2023-01-24)
+
+### Features
+
+- **settings**: add department alt menu.
+
 <a name="2.80.1"></a>
 
 # [2.80.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/357) (2023-01-23)
