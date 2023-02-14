@@ -72,7 +72,32 @@ export class EmployeeMaterializedViewResolver {
 
   @Query(() => [EmployeeMaterializedView])
   @UseMiddleware(isAuth)
-  async getEmployeesByGradeWorkLocation(
+  async getEmployeesMvByGrade(
+    @Arg('grade', () => [String]) grade: string[]
+  ): Promise<EmployeeMaterializedView[]> {
+    try {
+      const employees = await EmployeeMaterializedView.find({
+        where: { grade: In(grade) },
+        order: { name: 'ASC' }
+      });
+      await Promise.all(
+        employees.map(
+          async (employee) =>
+            (employee.email = await getEmail(
+              employee.email,
+              employee.employeeId
+            ))
+        )
+      );
+      return employees;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [EmployeeMaterializedView])
+  @UseMiddleware(isAuth)
+  async getEmployeesMvByGradeWorkLocation(
     @Arg('grade', () => [String]) grade: string[],
     @Arg('workLocation', () => [String]) workLocation: string[]
   ): Promise<EmployeeMaterializedView[]> {
