@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_SDL_ROOT_V')
+@Entity('ATJ_ASL_ROOT_V')
 @ObjectType()
 export class AslRootView extends BaseEntity {
   @Field({ nullable: true })
