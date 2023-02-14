@@ -21,8 +21,8 @@ export class AslSourceInput implements Partial<AslSource> {
   category!: string;
 
   @Field()
-  @MaxLength(100)
-  name!: string;
+  @IsNumber()
+  sourceId!: number;
 
   @Field()
   @MaxLength(1000)

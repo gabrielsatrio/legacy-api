@@ -37,6 +37,19 @@ export class AslResolver {
 
   @Query(() => [Asl], { nullable: true })
   @UseMiddleware(isAuth)
+  async getAslByPlatformCategory(
+    @Arg('platform', () => String) platform: string,
+    @Arg('category', () => String) category: string
+  ): Promise<Asl[] | null> {
+    try {
+      return await Asl.findBy({ platform, category });
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Query(() => [Asl], { nullable: true })
+  @UseMiddleware(isAuth)
   async getAslByCategory(
     @Arg('category', () => String) category: string
   ): Promise<Asl[] | undefined> {

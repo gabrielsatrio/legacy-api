@@ -21,8 +21,8 @@ export class AslSource extends BaseEntity {
   category!: string;
 
   @Field()
-  @Column({ name: 'NAME' })
-  name!: string;
+  @Column({ name: 'SOURCE_ID' })
+  sourceId!: number;
 
   @Field()
   @Column({ name: 'DESCRIPTION' })
