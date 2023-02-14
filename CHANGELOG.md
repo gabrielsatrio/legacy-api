@@ -1,3 +1,27 @@
+<a name="2.87.0"></a>
+
+# [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)
+
+### Features
+
+- **kp-oem-sementara**: add new column seri beam.
+
+<a name="2.86.0"></a>
+
+# [2.86.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/370) (2023-02-13)
+
+### Features
+
+- **pre-process-winding**: add new feature pre process winding.
+
+<a name="2.85.0"></a>
+
+# [2.85.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/368) (2023-02-10)
+
+### Features
+
+- **kp-oem-sementara**: add new table kp oem mesin sortir.
+
 <a name="2.84.0"></a>
 
 # [2.84.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/366) (2023-02-06)

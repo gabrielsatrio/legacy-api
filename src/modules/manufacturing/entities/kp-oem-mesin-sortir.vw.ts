@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('VKY_KP_OEM_SEMENTARA')
+@Entity('VKY_KP_OEM_MESIN_SORTIR_V')
 @ObjectType()
-export class KpOemSementara extends BaseEntity {
+export class KpOemMesinSortirView extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: 'CONTRACT' })
   contract!: string;
@@ -13,20 +13,28 @@ export class KpOemSementara extends BaseEntity {
   orderNo!: string;
 
   @Field()
+  @Column({ name: 'PART_NO' })
+  partNo!: string;
+
+  @Field()
   @PrimaryColumn({ name: 'LOT_BATCH_NO' })
   lotBatchNo!: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'SERI_BEAM' })
-  seriBeam?: string;
+  @Field()
+  @Column({ name: 'QUANTITY' })
+  quantity!: number;
 
   @Field()
-  @Column({ name: 'PICK_AWAL' })
-  pickAwal!: number;
+  @Column({ name: 'QTY_OOREC' })
+  qtyOorec!: number;
 
   @Field()
-  @Column({ name: 'PICK_AKHIR' })
-  pickAkhir!: number;
+  @Column({ name: 'QTY_SORTIR' })
+  qtySortir!: number;
+
+  @Field()
+  @Column({ name: 'QTY_OESHIP' })
+  qtyOeship!: number;
 
   @Field()
   @Column({ name: 'STATUS' })
@@ -37,14 +45,6 @@ export class KpOemSementara extends BaseEntity {
   createdDate!: Date;
 
   @Field()
-  @Column({ name: 'CREATED_AT' })
-  createdAt!: string;
-
-  @Field()
   @Column({ name: 'MODIFIED_DATE' })
   modifiedDate!: Date;
-
-  @Field()
-  @Column({ name: 'MODIFIED_AT' })
-  modifiedAt!: string;
 }
