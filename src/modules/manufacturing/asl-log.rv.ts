@@ -44,8 +44,8 @@ export class AslLogResolver {
   @UseMiddleware(isAuth)
   async getNewLineAslLog(@Arg('aslId') aslId: number): Promise<number> {
     try {
-      const sql = `SELECT NVL(MAX(LINE_NO)+1,1) AS "lineNo" FROM ATJ_SDL_LOG
-                   WHERE SDL_ID = :aslId`;
+      const sql = `SELECT NVL(MAX(LINE_NO)+1,1) AS "lineNo" FROM ATJ_ASL_LOG
+                   WHERE ASL_ID = :aslId`;
       const result = await ifs.query(sql, [aslId]);
       return result[0].lineNo;
     } catch (err) {
