@@ -35,4 +35,8 @@ export class Angkutan extends BaseEntity {
   @Field()
   @Column({ name: 'CREATED_AT' })
   createdAt!: Date;
+
+  @Field({ nullable: true })
+  @Column({ name: 'VOUCHER_DATE' })
+  voucherDate?: Date;
 }
