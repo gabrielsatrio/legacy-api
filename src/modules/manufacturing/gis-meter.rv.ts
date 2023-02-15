@@ -52,6 +52,11 @@ export class GisMeterResolver {
   @UseMiddleware(isAuth)
   async createGisMeter(@Arg('input') input: GisMeterInput): Promise<GisMeter> {
     try {
+      const existingData = await GisMeter.findOneBy({
+        inspectId: input.inspectId,
+        lineNo: input.lineNo
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = GisMeter.create({
         ...input
       });

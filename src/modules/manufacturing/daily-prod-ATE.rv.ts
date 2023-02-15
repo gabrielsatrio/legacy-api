@@ -27,6 +27,10 @@ export class DailyProdATEResolver {
     @Arg('input') input: DailyProdATEInput
   ): Promise<DailyProdATE | undefined> {
     try {
+      const existingData = await DailyProdATE.findOneBy({
+        objId: input.objId
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = DailyProdATE.create({
         ...input
       });

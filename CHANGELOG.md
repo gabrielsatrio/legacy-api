@@ -1,3 +1,16 @@
+<a name="2.89.0"></a>
+
+# [2.89.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/378) (2023-02-15)
+
+### Features
+
+- [**M024**] **asl**: add new module "App Source Library"
+
+### Bug Fixes
+
+- [**M007**] **daily-prod**: add existing data validation.
+- [**M019**] **gis**: add existing data validation.
+
 <a name="2.88.0"></a>
 
 # [2.88.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/374) (2023-02-14)
