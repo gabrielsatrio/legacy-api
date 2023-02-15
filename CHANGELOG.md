@@ -1,3 +1,28 @@
+<a name="2.87.1"></a>
+
+# [2.87.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/375) (2023-02-14)
+
+### Features
+
+- **employee-mv**: rename the resolver from `getEmployeesByGradeWorkLocation` to `getEmployeesMvByGradeWorkLocation`.
+- **employee-mv**: add new resolver `getEmployeesMvByGrade`.
+
+<a name="2.87.0"></a>
+
+# [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)
+
+### Features
+
+- **kp-oem-sementara**: add new column seri beam.
+
+<a name="2.86.0"></a>
+
+# [2.86.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/370) (2023-02-13)
+
+### Features
+
+- **pre-process-winding**: add new feature pre process winding.
+
 <a name="2.85.0"></a>
 
 # [2.85.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/368) (2023-02-10)

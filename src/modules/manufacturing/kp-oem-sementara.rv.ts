@@ -88,6 +88,7 @@ export class KpSementaraOemResolver {
   async createKpOemSementara(
     @Arg('contract', () => String) contract: string,
     @Arg('orderNo', () => String) orderNo: string,
+    @Arg('seriBeam', () => String) seriBeam: string,
     @Arg('pickAwal', () => Int) pickAwal: number,
     @Arg('pickAkhir', () => Int) pickAkhir: number,
     @Arg('createdAt', () => String) createdAt: string
@@ -106,10 +107,17 @@ export class KpSementaraOemResolver {
         throw new Error('Pick awal harus lebih besar dari pick sebelumnya');
       const sql = `
         BEGIN
-          vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :pickAwal, :pickAkhir, :createdAt);
+          vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :seriBeam, :pickAwal, :pickAkhir, :createdAt);
         END;
       `;
-      await ifs.query(sql, [contract, orderNo, pickAwal, pickAkhir, createdAt]);
+      await ifs.query(sql, [
+        contract,
+        orderNo,
+        seriBeam,
+        pickAwal,
+        pickAkhir,
+        createdAt
+      ]);
       return true;
     } catch (err) {
       throw new Error(mapError(err));
