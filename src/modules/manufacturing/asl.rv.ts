@@ -62,6 +62,24 @@ export class AslResolver {
     }
   }
 
+  @Query(() => [Asl], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getAslByDept(
+    @Arg('dept', () => String) dept: string
+  ): Promise<Asl[] | undefined> {
+    try {
+      if (dept === 'MIS') {
+        return await Asl.find();
+      } else {
+        return await Asl.createQueryBuilder('ASL')
+          .where(`ASL.PLATFORM NOT LIKE '%DBO%'`)
+          .getMany();
+      }
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Query(() => Number, { nullable: true })
   @UseMiddleware(isAuth)
   async getNewAslId(): Promise<number> {

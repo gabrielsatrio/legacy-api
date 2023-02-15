@@ -12,6 +12,7 @@ import {
 import { Context } from '../../types/context';
 import { AslSourceInput } from './asl-source.in';
 import { AslSource } from './entities/asl-source';
+import { AslSourceView } from './entities/asl-source.vw';
 
 @Resolver(AslSource)
 export class AslSourceResolver {
@@ -28,13 +29,13 @@ export class AslSourceResolver {
     }
   }
 
-  @Query(() => [AslSource], { nullable: true })
+  @Query(() => [AslSourceView], { nullable: true })
   @UseMiddleware(isAuth)
   async getAslSourceById(
     @Arg('aslId') aslId: number
-  ): Promise<AslSource[] | undefined> {
+  ): Promise<AslSourceView[] | undefined> {
     try {
-      return await AslSource.findBy({ aslId });
+      return await AslSourceView.findBy({ aslId });
     } catch (err) {
       throw new Error(mapError(err));
     }
