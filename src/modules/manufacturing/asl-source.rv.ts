@@ -1,5 +1,6 @@
 import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
+import { Context } from '@/types/context';
 import { mapError } from '@/utils/map-error';
 import {
   Arg,
@@ -9,7 +10,6 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { Context } from '../../types/context';
 import { AslSourceInput } from './asl-source.in';
 import { AslSource } from './entities/asl-source';
 import { AslSourceView } from './entities/asl-source.vw';

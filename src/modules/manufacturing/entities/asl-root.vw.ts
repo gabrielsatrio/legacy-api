@@ -4,9 +4,9 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('ATJ_ASL_ROOT_V')
 @ObjectType()
 export class AslRootView extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ name: 'MENU_ID' })
-  menuId?: string;
+  menuId!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'PLATFORM' })
