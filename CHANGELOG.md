@@ -6,6 +6,15 @@
 
 - [**F006**] **angkutan**: add new module transfer voucher entry IFS angkutan.
 
+<a name="2.87.1"></a>
+
+# [2.87.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/375) (2023-02-14)
+
+### Features
+
+- **employee-mv**: rename the resolver from `getEmployeesByGradeWorkLocation` to `getEmployeesMvByGradeWorkLocation`.
+- **employee-mv**: add new resolver `getEmployeesMvByGrade`.
+
 <a name="2.87.0"></a>
 
 # [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)
