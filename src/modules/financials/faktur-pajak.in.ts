@@ -9,13 +9,7 @@ export class FakturPajakInput implements Partial<FakturPajak> {
   id!: number;
 
   @Field({ nullable: true })
-  kodeFakturA?: string;
-
-  @Field({ nullable: true })
-  kodeFakturB?: string;
-
-  @Field({ nullable: true })
-  kodeFakturC?: string;
+  kodeFaktur?: string;
 
   @Field({ nullable: true })
   contract?: string;

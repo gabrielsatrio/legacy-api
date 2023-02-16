@@ -9,16 +9,8 @@ export class FakturPajak extends BaseEntity {
   id!: number;
 
   @Field({ nullable: true })
-  @Column({ name: 'KODE_FAKTUR_A' })
-  kodeFakturA?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'KODE_FAKTUR_B' })
-  kodeFakturB?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'KODE_FAKTUR_C' })
-  kodeFakturC?: string;
+  @Column({ name: 'KODE_FAKTUR' })
+  kodeFaktur?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'CONTRACT' })
