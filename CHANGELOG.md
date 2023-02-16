@@ -4,7 +4,7 @@
 
 ### Features
 
-- [**M023**] **kp-oem-sementara**: add new function.
+- [**M019**] **gis**: add new function generate new roll no by lot sementara.
 
 <a name="2.89.1"></a>
 
