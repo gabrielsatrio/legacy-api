@@ -1,3 +1,11 @@
+<a name="2.89.1"></a>
+
+# [2.89.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/380) (2023-02-16)
+
+### Bug Fixes
+
+- [**F006**] **angkutan**: add column voucher date.
+
 <a name="2.89.0"></a>
 
 # [2.89.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/378) (2023-02-15)
