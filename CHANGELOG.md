@@ -1,3 +1,11 @@
+<a name="2.90.0"></a>
+
+# [2.90.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/381) (2023-02-16)
+
+### Features
+
+- [**M023**] **kp-oem-sementara**: add new function.
+
 <a name="2.89.0"></a>
 
 # [2.89.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/378) (2023-02-15)
