@@ -1,3 +1,11 @@
+<a name="2.90.0"></a>
+
+# [2.90.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/381) (2023-02-16)
+
+### Features
+
+- [**M019**] **gis**: add new function generate new roll no by lot sementara.
+
 <a name="2.89.1"></a>
 
 # [2.89.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/380) (2023-02-16)
