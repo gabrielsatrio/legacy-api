@@ -56,6 +56,11 @@ export class GisOperatorResolver {
     @Arg('input') input: GisOperatorInput
   ): Promise<GisOperator> {
     try {
+      const existingData = await GisOperator.findOneBy({
+        inspectId: input.inspectId,
+        lineNo: input.lineNo
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = GisOperator.create({
         ...input
       });

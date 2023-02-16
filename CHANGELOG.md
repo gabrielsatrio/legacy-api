@@ -1,3 +1,33 @@
+<a name="2.89.0"></a>
+
+# [2.89.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/378) (2023-02-15)
+
+### Features
+
+- [**M024**] **asl**: add new module "App Source Library"
+
+### Bug Fixes
+
+- [**M007**] **daily-prod**: add existing data validation.
+- [**M019**] **gis**: add existing data validation.
+
+<a name="2.88.0"></a>
+
+# [2.88.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/374) (2023-02-14)
+
+### Features
+
+- [**F006**] **angkutan**: add new module transfer voucher entry IFS angkutan.
+
+<a name="2.87.1"></a>
+
+# [2.87.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/375) (2023-02-14)
+
+### Features
+
+- **employee-mv**: rename the resolver from `getEmployeesByGradeWorkLocation` to `getEmployeesMvByGradeWorkLocation`.
+- **employee-mv**: add new resolver `getEmployeesMvByGrade`.
+
 <a name="2.87.0"></a>
 
 # [2.87.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/372) (2023-02-14)

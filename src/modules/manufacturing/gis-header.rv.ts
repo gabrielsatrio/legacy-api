@@ -117,6 +117,10 @@ export class GisHeaderResolver {
     @Ctx() { req }: Context
   ): Promise<GisHeader> {
     try {
+      const existingData = await GisHeader.findOneBy({
+        inspectId: input.inspectId
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = GisHeader.create({
         ...input,
         createdBy: req.session.username,
