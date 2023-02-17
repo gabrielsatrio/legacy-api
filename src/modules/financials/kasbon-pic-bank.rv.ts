@@ -1,6 +1,13 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import {
+  Arg,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import { PicBank } from './entities/kasbon-pic-bank';
 import { PicBankView } from './entities/kasbon-pic-bank.vw';
 import { PicBankInput } from './kasbon-pic-bank.in';
@@ -9,7 +16,7 @@ import { PicBankInput } from './kasbon-pic-bank.in';
 export class PicBankResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkPicBankExist(@Arg('id') id: number): Promise<boolean> {
+  async checkPicBankExist(@Arg('id', () => Int) id: number): Promise<boolean> {
     try {
       return (await this.getPicBank(id)) ? true : false;
     } catch (err) {
@@ -77,7 +84,7 @@ export class PicBankResolver {
 
   @Mutation(() => PicBank)
   @UseMiddleware(isAuth)
-  async deletePicBank(@Arg('id') id: number): Promise<PicBank> {
+  async deletePicBank(@Arg('id', () => Int) id: number): Promise<PicBank> {
     try {
       const data = await PicBank.findOneBy({ id });
       if (!data) throw new Error('No data found.');
