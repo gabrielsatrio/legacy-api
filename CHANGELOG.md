@@ -1,3 +1,11 @@
+<a name="2.90.1"></a>
+
+# [2.90.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/383) (2023-02-16)
+
+### Bug Fixes
+
+- [**Z001**] **asl**: fix asl root fragment
+
 <a name="2.90.0"></a>
 
 # [2.90.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/381) (2023-02-16)
