@@ -28,4 +28,7 @@ export class AngkutanInput implements Partial<Angkutan> {
 
   @Field()
   createdAt!: Date;
+
+  @Field({ nullable: true })
+  voucherDate?: Date;
 }

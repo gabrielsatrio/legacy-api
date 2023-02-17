@@ -95,6 +95,21 @@ export class GisHeaderResolver {
     }
   }
 
+  @Query(() => Number, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getNewRollNoByLotSementara(
+    @Arg('lotBatchNo') lotBatchNo: string
+  ): Promise<number> {
+    try {
+      const sql =
+        'SELECT nvl(max(roll_no)+1,1) as "rollNo" from GBR_GIS_HEADER where lot_batch_no = :lotBatchNo';
+      const result = await ifs.query(sql, [lotBatchNo]);
+      return result[0].rollNo;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
   @Mutation(() => GisHeader)
   @UseMiddleware(isAuth)
   async createGisHeader(
@@ -102,6 +117,10 @@ export class GisHeaderResolver {
     @Ctx() { req }: Context
   ): Promise<GisHeader> {
     try {
+      const existingData = await GisHeader.findOneBy({
+        inspectId: input.inspectId
+      });
+      if (existingData) throw new Error('Data already exists.');
       const data = GisHeader.create({
         ...input,
         createdBy: req.session.username,
