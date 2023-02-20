@@ -1,13 +1,6 @@
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
-import {
-  Arg,
-  Int,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { PicBank } from './entities/kasbon-pic-bank';
 import { PicBankView } from './entities/kasbon-pic-bank.vw';
 import { PicBankInput } from './kasbon-pic-bank.in';
@@ -16,9 +9,9 @@ import { PicBankInput } from './kasbon-pic-bank.in';
 export class PicBankResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
-  async checkPicBankExist(@Arg('id', () => Int) id: number): Promise<boolean> {
+  async checkPicBankExist(@Arg('contract') contract: string): Promise<boolean> {
     try {
-      return (await this.getPicBank(id)) ? true : false;
+      return (await this.getPicBank(contract)) ? true : false;
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -36,9 +29,11 @@ export class PicBankResolver {
 
   @Query(() => PicBankView, { nullable: true })
   @UseMiddleware(isAuth)
-  async getPicBank(@Arg('id') id: number): Promise<PicBankView | null> {
+  async getPicBank(
+    @Arg('contract') contract: string
+  ): Promise<PicBankView | null> {
     try {
-      return await PicBankView.findOneBy({ id });
+      return await PicBankView.findOneBy({ contract });
     } catch (err) {
       throw new Error(mapError(err));
     }
@@ -51,7 +46,7 @@ export class PicBankResolver {
   ): Promise<PicBank | undefined> {
     try {
       const existingData = await PicBank.findOneBy({
-        id: input.id
+        contract: input.contract
       });
       if (existingData) throw new Error('Data already exists.');
       const data = PicBank.create({
@@ -71,7 +66,7 @@ export class PicBankResolver {
   ): Promise<PicBank | undefined> {
     try {
       const data = await PicBank.findOneBy({
-        id: input.id
+        contract: input.contract
       });
       if (!data) throw new Error('No data found.');
       PicBank.merge(data, { ...input });
@@ -84,11 +79,11 @@ export class PicBankResolver {
 
   @Mutation(() => PicBank)
   @UseMiddleware(isAuth)
-  async deletePicBank(@Arg('id', () => Int) id: number): Promise<PicBank> {
+  async deletePicBank(@Arg('contract') contract: string): Promise<PicBank> {
     try {
-      const data = await PicBank.findOneBy({ id });
+      const data = await PicBank.findOneBy({ contract });
       if (!data) throw new Error('No data found.');
-      await PicBank.delete({ id });
+      await PicBank.delete({ contract });
       return data;
     } catch (err) {
       throw new Error(mapError(err));

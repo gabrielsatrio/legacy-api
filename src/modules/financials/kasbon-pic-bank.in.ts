@@ -1,16 +1,14 @@
-import { IsNumber } from 'class-validator';
-import { Field, InputType, Int } from 'type-graphql';
+import { Field, InputType } from 'type-graphql';
 import { PicBank } from './entities/kasbon-pic-bank';
 
 @InputType()
 export class PicBankInput implements Partial<PicBank> {
-  @Field(() => Int)
-  @IsNumber()
-  id!: number;
+  @Field()
+  contract!: string;
 
   @Field()
   username!: string;
 
   @Field()
-  contract!: string;
+  name!: string;
 }
