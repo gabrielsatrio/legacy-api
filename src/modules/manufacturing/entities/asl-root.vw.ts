@@ -9,6 +9,10 @@ export class AslRootView extends BaseEntity {
   menuId!: string;
 
   @Field({ nullable: true })
+  @PrimaryColumn({ name: 'FILENAME' })
+  filename?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'PLATFORM' })
   platform?: string;
 
@@ -19,8 +23,4 @@ export class AslRootView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'NAME' })
   name?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'FILENAME' })
-  filename?: string;
 }
