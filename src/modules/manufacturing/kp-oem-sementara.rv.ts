@@ -181,4 +181,24 @@ export class KpSementaraOemResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generatePlanWeavTmp(): Promise<boolean | null> {
+    try {
+      const sql = `
+      BEGIN
+        chr_plan_weav_tmp_api.generate(1,
+                                      144,
+                                      0,
+                                      20,
+                                      'W');
+      END;
+      `;
+      await ifs.query(sql);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
