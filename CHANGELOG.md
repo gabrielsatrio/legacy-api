@@ -1,3 +1,11 @@
+<a name="2.92.0"></a>
+
+# [2.92.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/388) (2023-02-21)
+
+### Features
+
+- [**M023**] **kp-oem**: add new function generate plan weav tmp.
+
 <a name="2.91.0"></a>
 
 # [2.91.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/385) (2023-02-20)
