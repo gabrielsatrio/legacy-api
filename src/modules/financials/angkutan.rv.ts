@@ -117,7 +117,8 @@ export class AngkutanResolver {
     @Arg('angkutan') angkutan: string,
     @Arg('startDate') startDate: Date,
     @Arg('endDate') endDate: Date,
-    @Arg('usernameIfs') usernameIfs: string
+    @Arg('usernameIfs') usernameIfs: string,
+    @Arg('voucherDate') voucherDate: Date
   ): Promise<Angkutan[] | null> {
     try {
       const sql = `
@@ -127,7 +128,8 @@ export class AngkutanResolver {
       :angkutan,
       :startDate,
       :endDate,
-      :usernameIfs);
+      :usernameIfs,
+      :voucherDate);
     END;
   `;
       await ifs.query(sql, [
@@ -135,7 +137,8 @@ export class AngkutanResolver {
         angkutan,
         startDate,
         endDate,
-        usernameIfs
+        usernameIfs,
+        voucherDate
       ]);
 
       const data = await Angkutan.findBy({
@@ -143,7 +146,8 @@ export class AngkutanResolver {
         angkutan: angkutan,
         startDate: startDate,
         endDate: endDate,
-        usernameIfs: usernameIfs
+        usernameIfs: usernameIfs,
+        voucherDate: voucherDate
       });
 
       return data;

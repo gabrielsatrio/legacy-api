@@ -1,3 +1,56 @@
+<a name="2.92.0"></a>
+
+# [2.92.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/388) (2023-02-21)
+
+### Features
+
+- [**M023**] **kp-oem**: add new function generate plan weav tmp.
+
+<a name="2.91.0"></a>
+
+# [2.91.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/385) (2023-02-20)
+
+### Features
+
+- [**M024**] **pre-process-winding**: add new primary column.
+
+<a name="2.90.1"></a>
+
+# [2.90.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/384) (2023-02-20)
+
+### Bug Fixes
+
+- [**Z001**] **asl**: fix asl root fragment
+
+<a name="2.90.0"></a>
+
+# [2.90.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/381) (2023-02-16)
+
+### Features
+
+- [**M019**] **gis**: add new function generate new roll no by lot sementara.
+
+<a name="2.89.1"></a>
+
+# [2.89.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/380) (2023-02-16)
+
+### Bug Fixes
+
+- [**F006**] **angkutan**: add column voucher date.
+
+<a name="2.89.0"></a>
+
+# [2.89.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/378) (2023-02-15)
+
+### Features
+
+- [**M024**] **asl**: add new module "App Source Library"
+
+### Bug Fixes
+
+- [**M007**] **daily-prod**: add existing data validation.
+- [**M019**] **gis**: add existing data validation.
+
 <a name="2.88.0"></a>
 
 # [2.88.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/374) (2023-02-14)
