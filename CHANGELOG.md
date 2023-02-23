@@ -1,3 +1,11 @@
+<a name="2.93.0"></a>
+
+# [2.93.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/388) (2023-02-23)
+
+### Features
+
+- [**C001**] **faktur-pajak**: add new modeule faktur pajak.
+
 <a name="2.92.0"></a>
 
 # [2.92.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/388) (2023-02-21)
