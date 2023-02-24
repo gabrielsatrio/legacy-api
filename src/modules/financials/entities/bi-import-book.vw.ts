@@ -59,4 +59,12 @@ export class ImportBookView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'LC_BANK' })
   lcBank?: string;
+
+  @Field()
+  @Column({ name: 'CREATED_AT' })
+  createdAt!: Date;
+
+  @Field()
+  @Column({ name: 'CREATED_BY' })
+  createdBy!: string;
 }
