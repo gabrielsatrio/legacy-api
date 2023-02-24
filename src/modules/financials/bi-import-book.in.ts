@@ -46,4 +46,10 @@ export class ImportBookInput implements Partial<ImportBook> {
 
   @Field({ nullable: true })
   lcBank?: string;
+
+  @Field({ nullable: true })
+  createdAt?: Date;
+
+  @Field({ nullable: true })
+  createdBy?: string;
 }
