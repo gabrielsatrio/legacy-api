@@ -101,10 +101,6 @@ export class KpSementaraOemResolver {
         pickAkhir
       });
       if (exist) throw new Error('Data already exist!');
-      if (pickAwal >= pickAkhir)
-        throw new Error('Pick akhir harus lebih besar dari pick awal');
-      if ((await this.getPickAkhir(contract, orderNo)) > pickAwal)
-        throw new Error('Pick awal harus lebih besar dari pick sebelumnya');
       const sql = `
         BEGIN
           vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :seriBeam, :pickAwal, :pickAkhir, :createdAt);
@@ -176,6 +172,26 @@ export class KpSementaraOemResolver {
         END;
       `;
       await ifs.query(sql, [lotBatchNo]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generatePlanWeavTmp(): Promise<boolean | null> {
+    try {
+      const sql = `
+      BEGIN
+        chr_plan_weav_tmp_api.generate(1,
+                                      144,
+                                      0,
+                                      20,
+                                      'W');
+      END;
+      `;
+      await ifs.query(sql);
       return true;
     } catch (err) {
       throw new Error(mapError(err));

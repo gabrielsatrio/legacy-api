@@ -11,22 +11,22 @@ export class FakturPajakInput implements Partial<FakturPajak> {
   @Field({ nullable: true })
   kodeFaktur?: string;
 
-  @Field({ nullable: true })
-  contract?: string;
+  @Field()
+  contract!: string;
 
   @Field({ nullable: true })
   associationNo?: string;
 
-  @Field({ nullable: true })
-  customerNo?: string;
+  @Field()
+  customerNo!: string;
 
   @Field({ nullable: true })
   customerName?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsDate()
-  dateDelivered?: Date;
+  dateDelivered!: Date;
 
-  @Field({ nullable: true })
-  noSj?: string;
+  @Field()
+  noSj!: string;
 }

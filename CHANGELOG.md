@@ -1,3 +1,51 @@
+<a name="2.94.0"></a>
+
+# [2.94.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/394) (2023-02-24)
+
+### Features
+
+- [**F003**] **buku-import**: add column createdAt & createdBy.
+
+<a name="2.93.1"></a>
+
+# [2.93.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/392) (2023-02-24)
+
+### Bug Fixes
+
+- [**M023**] **kp-oem-sementara**: fix remove pick awal & akhir lock
+
+<a name="2.93.0"></a>
+
+# [2.93.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/390) (2023-02-23)
+
+### Features
+
+- [**C001**] **faktur-pajak**: add new module faktur pajak.
+
+<a name="2.92.0"></a>
+
+# [2.92.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/388) (2023-02-21)
+
+### Features
+
+- [**M023**] **kp-oem**: add new function generate plan weav tmp.
+
+<a name="2.91.0"></a>
+
+# [2.91.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/385) (2023-02-20)
+
+### Features
+
+- [**M024**] **pre-process-winding**: add new primary column.
+
+<a name="2.90.1"></a>
+
+# [2.90.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/384) (2023-02-20)
+
+### Bug Fixes
+
+- [**Z001**] **asl**: fix asl root fragment
+
 <a name="2.90.0"></a>
 
 # [2.90.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/381) (2023-02-16)

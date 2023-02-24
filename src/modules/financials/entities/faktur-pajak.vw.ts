@@ -12,27 +12,27 @@ export class FakturPajakView extends BaseEntity {
   @Column({ name: 'KODE_FAKTUR' })
   kodeFaktur?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'CONTRACT' })
-  contract?: string;
+  contract!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'ASSOCIATION_NO' })
   associationNo?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'CUSTOMER_NO' })
-  customerNo?: string;
+  customerNo!: string;
 
   @Field({ nullable: true })
   @Column({ name: 'CUSTOMER_NAME' })
   customerName?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'DATE_DELIVERED' })
-  dateDelivered?: Date;
+  dateDelivered!: Date;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ name: 'NO_SJ' })
-  noSj?: string;
+  noSj!: string;
 }

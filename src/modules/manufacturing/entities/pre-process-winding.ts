@@ -16,6 +16,10 @@ export class PreProcessWinding extends BaseEntity {
   @PrimaryColumn({ name: 'LOT_BATCH_NO' })
   lotBatchNo!: string;
 
+  @Field()
+  @PrimaryColumn({ name: 'OBJID' })
+  objid!: string;
+
   @Field({ nullable: true })
   @Column({ name: 'PIECE_NO' })
   pieceNo?: string;
@@ -35,8 +39,4 @@ export class PreProcessWinding extends BaseEntity {
   @Field()
   @Column({ name: 'SCAN_DATE' })
   scanDate!: Date;
-
-  @Field()
-  @Column({ name: 'OBJID' })
-  objid!: string;
 }
