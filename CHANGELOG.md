@@ -1,3 +1,11 @@
+<a name="2.93.1"></a>
+
+# [2.93.1](https://gitlab.com/atjdev/ezio-api/-/merge_requests/392) (2023-02-24)
+
+### Bug Fixes
+
+- [**M023**] **kp-oem-sementara**: fix remove pick awal & akhir lock
+
 <a name="2.93.0"></a>
 
 # [2.93.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/390) (2023-02-23)

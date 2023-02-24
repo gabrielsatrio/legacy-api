@@ -2,7 +2,7 @@
   "name": "ezio-api",
   "author": "ATJDEV Team",
   "description": "EZIO - API Server",
-  "version": "2.93.0",
+  "version": "2.93.1",
   "private": true,
   "license": "ATJ",
   "main": "dist/src/index.js",
