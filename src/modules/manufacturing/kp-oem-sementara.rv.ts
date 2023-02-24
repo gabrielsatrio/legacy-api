@@ -101,10 +101,6 @@ export class KpSementaraOemResolver {
         pickAkhir
       });
       if (exist) throw new Error('Data already exist!');
-      if (pickAwal >= pickAkhir)
-        throw new Error('Pick akhir harus lebih besar dari pick awal');
-      if ((await this.getPickAkhir(contract, orderNo)) > pickAwal)
-        throw new Error('Pick awal harus lebih besar dari pick sebelumnya');
       const sql = `
         BEGIN
           vky_kp_oem_sementara_api.insert__(:contract, :orderNo, :seriBeam, :pickAwal, :pickAkhir, :createdAt);
