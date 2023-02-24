@@ -20,7 +20,7 @@ export class KasbonInput implements Partial<Kasbon> {
   @Field()
   nomorPo!: string;
 
-  @Field(() => Int)
+  @Field()
   @IsNumber()
   jumlah!: number;
 
