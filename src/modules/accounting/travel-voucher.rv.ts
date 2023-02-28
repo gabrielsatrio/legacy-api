@@ -148,4 +148,33 @@ export class TravelVoucherResolver {
       throw new Error(mapError(err));
     }
   }
+
+  @Mutation(() => [TravelVoucher], { nullable: true })
+  @UseMiddleware(isAuth)
+  async createTravelVoucherIfs(
+    @Arg('voucherDate') voucherDate: Date,
+    @Arg('voucherType') voucherType: string,
+    @Arg('contract') contract: string,
+    @Arg('username') username: string
+  ): Promise<TravelVoucher[] | null> {
+    try {
+      let sql = '';
+
+      if (contract === 'AGT') {
+        sql = `BEGIN ang_travel_api.upload_agt(:voucherDate, :voucherType, :contract, :username); END;`;
+      } else {
+        sql = `BEGIN ang_travel_api.upload(:voucherDate, :voucherType, :contract, :username); END;`;
+      }
+
+      await ifs.query(sql, [voucherDate, voucherType, contract, username]);
+
+      const data = await TravelVoucher.findBy({
+        contract: contract
+      });
+
+      return data;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
+  }
 }
