@@ -4,8 +4,8 @@
 
 ### Features
 
-- [**IFS**] **ifs-trans-hist-vw**: add column order no.
-- [**M019**] **gis**: add column additional notes on gis meter.
+- [**IFS**] **ifs-trans-hist-vw**: add column "order no".
+- [**M019**] **gis**: add column "additional notes" on gis meter.
 
 <a name="2.94.0"></a>
 
