@@ -1,5 +1,7 @@
+import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
-import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { mapError } from '@/utils/map-error';
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { IfsInventoryTransactionHistoryView } from '../inventory/entities/ifs-inv-trans-hist.vw';
 
 @Resolver(IfsInventoryTransactionHistoryView)
@@ -39,5 +41,23 @@ export class IfsTransactionHistoryResolver {
       })
       .andWhere(`TH.QTY_REVERSED= 0`)
       .getMany();
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async generateKainPremiumTmp(
+    @Arg('date', () => Date) date: Date
+  ): Promise<boolean | null> {
+    try {
+      const sql = `
+        BEGIN
+          vky_kain_premium_tmp_api.insert__( :p_from);
+        END;
+      `;
+      await ifs.query(sql, [date]);
+      return true;
+    } catch (err) {
+      throw new Error(mapError(err));
+    }
   }
 }
