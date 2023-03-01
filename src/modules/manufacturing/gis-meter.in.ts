@@ -34,4 +34,7 @@ export class GisMeterInput implements Partial<GisMeter> {
 
   @Field({ nullable: true })
   inspectOrder?: number;
+
+  @Field({ nullable: true })
+  additionalNotes?: string;
 }
