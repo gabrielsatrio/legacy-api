@@ -1,3 +1,11 @@
+<a name="2.96.0"></a>
+
+# [2.96.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/398) (2023-03-01)
+
+### Features
+
+- [**A001**] **travel-voucher**: add new module travel voucher GL.
+
 <a name="2.95.0"></a>
 
 # [2.95.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/396) (2023-03-01)
