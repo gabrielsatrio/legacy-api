@@ -35,4 +35,8 @@ export class GisMeter extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'INSPECT_ORDER' })
   inspectOrder?: number;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ADDITIONAL_NOTES' })
+  additionalNotes?: string;
 }

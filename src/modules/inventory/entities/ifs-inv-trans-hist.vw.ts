@@ -51,4 +51,8 @@ export class IfsInventoryTransactionHistoryView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'CTM_JOB_ORDER' })
   ctmJobOrder?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'ORDER_NO' })
+  orderNo?: string;
 }
