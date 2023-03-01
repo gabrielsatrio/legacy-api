@@ -1,3 +1,20 @@
+<a name="2.96.0"></a>
+
+# [2.96.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/398) (2023-03-01)
+
+### Features
+
+- [**A001**] **travel-voucher**: add new module travel voucher GL.
+
+<a name="2.95.0"></a>
+
+# [2.95.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/396) (2023-03-01)
+
+### Features
+
+- [**IFS**] **ifs-trans-hist-vw**: add column "order no".
+- [**M019**] **gis**: add column "additional notes" on gis meter.
+
 <a name="2.94.0"></a>
 
 # [2.94.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/394) (2023-02-24)
