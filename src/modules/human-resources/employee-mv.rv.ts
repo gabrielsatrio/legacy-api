@@ -158,20 +158,4 @@ export class EmployeeMaterializedViewResolver {
       throw new Error(mapError(err));
     }
   }
-
-  @Query(() => [EmployeeMaterializedView])
-  @UseMiddleware(isAuth)
-  async getEmployeeMvByPosName(
-    @Arg('posName', () => String) posName: string
-  ): Promise<EmployeeMaterializedView[] | undefined> {
-    try {
-      return await EmployeeMaterializedView.createQueryBuilder('employee')
-        .where('lower(employee.jobTitle) like lower(:posName)', {
-          posName: `%${posName}%`
-        })
-        .getMany();
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
 }
