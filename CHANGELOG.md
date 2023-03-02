@@ -1,3 +1,11 @@
+<a name="2.97.0"></a>
+
+# [2.97.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/400) (2023-03-02)
+
+### Features
+
+- **kain-premium**: add new table and resolver.
+
 <a name="2.96.0"></a>
 
 # [2.96.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/398) (2023-03-01)
