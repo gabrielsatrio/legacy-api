@@ -1,10 +1,10 @@
 <a name="2.97.0"></a>
 
-# [2.97.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/400) (2023-03-01)
+# [2.97.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/400) (2023-03-02)
 
 ### Features
 
-- [**IFS**] **ifs-trans-hist-rv**: add new mutation to insert ifs history to temporary table.
+- **kain-premium**: add new table and resolver.
 
 <a name="2.96.0"></a>
 
