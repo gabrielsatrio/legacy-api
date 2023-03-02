@@ -13,6 +13,10 @@ export class KainPremiumTmp extends BaseEntity {
   lotBatchNo!: string;
 
   @Field()
+  @Column({ name: 'LOCATION_NO' })
+  locationNo!: string;
+
+  @Field()
   @Column({ name: 'GROSS_LENGTH' })
   grossLength!: number;
 
@@ -29,20 +33,16 @@ export class KainPremiumTmp extends BaseEntity {
   jobOrder?: string;
 
   @Field({ nullable: true })
+  @Column({ name: 'LOT_BATCH_SOURCE' })
+  lotBatchSource?: string;
+
+  @Field({ nullable: true })
   @Column({ name: 'CUT_QTY' })
   cutQty?: number;
 
   @Field({ nullable: true })
   @Column({ name: 'DEFECT_QTY' })
   defectQty?: number;
-
-  @Field({ nullable: true })
-  @Column({ name: 'LOT_BATCH_SOURCE' })
-  lotBatchSource?: string;
-
-  @Field({ nullable: true })
-  @Column({ name: 'LOCATION_NO' })
-  locationNo?: string;
 
   @Field({ nullable: true })
   @Column({ name: 'JENIS_KAIN' })
