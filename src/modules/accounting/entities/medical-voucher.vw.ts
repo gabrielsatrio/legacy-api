@@ -36,7 +36,7 @@ export class MedicalVoucherView extends BaseEntity {
   @Column({ name: 'NOTE' })
   note?: string;
 
-  @Field()
-  @Column({ name: 'CLAIM_NO' })
-  claimNo!: string;
+  @Field({ nullable: true })
+  @Column({ name: 'TGL_SETTLED' })
+  tglSettled?: Date;
 }

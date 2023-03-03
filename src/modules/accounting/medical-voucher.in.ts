@@ -30,6 +30,6 @@ export class MedicalVoucherInput implements Partial<MedicalVoucher> {
   @Field({ nullable: true })
   note?: string;
 
-  @Field()
-  claimNo!: string;
+  @Field({ nullable: true })
+  tglSettled?: Date;
 }
