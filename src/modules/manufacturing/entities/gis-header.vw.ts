@@ -132,6 +132,10 @@ export class GisHeaderView extends BaseEntity {
   @Column({ name: 'MID_WIDTH_6' })
   midWidth6?: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'BATCHING_NO' })
+  batchingNo?: string;
+
   @Field()
   @Column({ name: 'CREATED_BY' })
   createdBy!: string;
