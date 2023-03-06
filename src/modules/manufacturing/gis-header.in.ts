@@ -116,4 +116,7 @@ export class GisHeaderInput implements Partial<GisHeader> {
 
   @Field({ nullable: true })
   midWidth6?: number;
+
+  @Field({ nullable: true })
+  batchingNo?: string;
 }
