@@ -33,7 +33,7 @@ export class ExpeditionPaidDateResolver {
     ExpeditionPaidDateView[] | undefined
   > {
     try {
-      return await ExpeditionPaidDate.find();
+      return await ExpeditionPaidDateView.find();
     } catch (err) {
       throw new Error(mapError(err));
     }
