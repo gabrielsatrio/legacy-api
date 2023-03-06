@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { ImportBookInput } from './bi-import-book.in';
 import { ImportBook } from './entities/bi-import-book';
 import { ImportBookView } from './entities/bi-import-book.vw';
@@ -112,5 +113,17 @@ export class ImportBookResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [ImportBookView])
+  @UseMiddleware(isAuth)
+  async getImportBookByContract(
+    @Arg('contract') contract: string
+  ): Promise<ImportBookView[] | undefined> {
+    return await ImportBookView.find({
+      where: {
+        contract: Like(contract)
+      }
+    });
   }
 }

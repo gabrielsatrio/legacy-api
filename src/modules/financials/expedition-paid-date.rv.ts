@@ -9,6 +9,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { ExpeditionPaidDate } from './entities/expedition-paid-date';
 import { ExpeditionPaidDateView } from './entities/expedition-paid-date.vw';
 import { ExpeditionPaidDateInput } from './expedition-paid-date.in';
@@ -116,5 +117,17 @@ export class ExpeditionPaidDateResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [ExpeditionPaidDateView])
+  @UseMiddleware(isAuth)
+  async getExpeditionPaidDateByContract(
+    @Arg('contract') contract: string
+  ): Promise<ExpeditionPaidDateView[] | undefined> {
+    return await ExpeditionPaidDateView.find({
+      where: {
+        plant: Like(contract)
+      }
+    });
   }
 }
