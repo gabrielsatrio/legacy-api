@@ -1,11 +1,10 @@
-import { IsEmail, Length, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { User } from './entities/user';
 
 @InputType()
 export class UserInput implements Partial<User> {
   @Field()
-  @Length(5)
   username!: string;
 
   @Field()
@@ -16,25 +15,9 @@ export class UserInput implements Partial<User> {
   password!: string;
 
   @Field()
+  name!: string;
+
+  @Field()
   @IsEmail()
   email!: string;
-
-  @Field()
-  @Length(3)
-  departmentId!: string;
-
-  @Field({ nullable: true })
-  @Length(3)
-  departmentAlt!: string;
-
-  @Field()
-  usernameDb!: 'AT' | 'AG';
-
-  @Field()
-  @MinLength(5)
-  @MaxLength(8)
-  ifsUsername!: string;
-
-  @Field()
-  forceChgPassw!: boolean;
 }

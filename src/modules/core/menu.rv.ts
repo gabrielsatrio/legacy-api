@@ -123,10 +123,10 @@ export class MenuResolver {
   ): Promise<Record<string, unknown>[]> {
     let result;
     let sql = `
-      SELECT  department_alt  AS "departmentId",
-              username        AS "ifsUsername"
-      FROM    atj_app_user
-      WHERE username = :username
+      SELECT  role_id,
+              username
+      FROM    user
+      WHERE username = ?
     `;
     const res = await ifs.query(sql, [req.session.username]);
     if (res[0].departmentId === 'MIS') {

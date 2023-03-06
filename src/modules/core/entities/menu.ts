@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('ATJ_APP_MENU')
+@Entity('MENU')
 @ObjectType()
 export class Menu extends BaseEntity {
   @Field()
