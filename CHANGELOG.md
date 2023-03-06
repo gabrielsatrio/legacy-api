@@ -1,3 +1,15 @@
+<a name="2.99.0"></a>
+
+# [2.99.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/404) (2023-03-06)
+
+### Features
+
+- [**A003**] **medical-voucher**: add new module.
+- [**F002**] **expedition-paid-date**: add column periode bayar, add akses AT & AMI.
+- [**P001**] **import-expedition**: add akses AT & AMI.
+- [**P002**] **courier-fee-prepaid**: add akses AT & AMI.
+- [**F003**] **buku-import**: add akses AT & AMI.
+
 <a name="2.98.0"></a>
 
 # [2.98.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/402) (2023-03-06)
