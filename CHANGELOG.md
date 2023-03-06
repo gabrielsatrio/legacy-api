@@ -1,3 +1,19 @@
+<a name="2.98.0"></a>
+
+# [2.98.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/402) (2023-03-06)
+
+### Features
+
+- [**M019**] **gis**: add batching no for AT2 (requested by Mira Herlina ticket number 4194).
+
+<a name="2.97.0"></a>
+
+# [2.97.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/400) (2023-03-02)
+
+### Features
+
+- **kain-premium**: add new table and resolver.
+
 <a name="2.96.0"></a>
 
 # [2.96.0](https://gitlab.com/atjdev/ezio-api/-/merge_requests/398) (2023-03-01)
