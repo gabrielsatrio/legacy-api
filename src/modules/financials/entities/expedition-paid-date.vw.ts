@@ -63,4 +63,8 @@ export class ExpeditionPaidDateView extends BaseEntity {
   @Field({ nullable: true })
   @Column({ name: 'BUKTI_TRANSFER' })
   buktiTransfer?: string;
+
+  @Field({ nullable: true })
+  @Column({ name: 'PERIODE_BAYAR' })
+  periodeBayar?: string;
 }

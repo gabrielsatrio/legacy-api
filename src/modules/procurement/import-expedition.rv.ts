@@ -8,6 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { ImportExpedition } from './entities/import-expedition';
 import { ImportExpeditionView } from './entities/import-expedition.vw';
 import { ImportExpeditionInput } from './import-expedition.in';
@@ -99,5 +100,17 @@ export class ImportExpeditionResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [ImportExpeditionView])
+  @UseMiddleware(isAuth)
+  async getImportExpeditionByContract(
+    @Arg('contract') contract: string
+  ): Promise<ImportExpeditionView[] | undefined> {
+    return await ImportExpeditionView.find({
+      where: {
+        plant: Like(contract)
+      }
+    });
   }
 }

@@ -8,6 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
+import { Like } from 'typeorm';
 import { CourierFeePrepaidInput } from './courier-fee-prepaid.in';
 import { CourierFeePrepaid } from './entities/courier-fee-prepaid';
 import { CourierFeePrepaidView } from './entities/courier-fee-prepaid.vw';
@@ -101,5 +102,17 @@ export class CourierFeePrepaidResolver {
     } catch (err) {
       throw new Error(mapError(err));
     }
+  }
+
+  @Query(() => [CourierFeePrepaidView])
+  @UseMiddleware(isAuth)
+  async getCourierFeePrepaidByContract(
+    @Arg('contract') contract: string
+  ): Promise<CourierFeePrepaidView[] | undefined> {
+    return await CourierFeePrepaidView.find({
+      where: {
+        contract: Like(contract)
+      }
+    });
   }
 }
