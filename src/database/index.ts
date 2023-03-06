@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import oracledb from 'oracledb';
+import { mysql } from 'mysql';
+import { env } from 'process';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { ifs } from './data-sources';
@@ -10,27 +11,27 @@ db.initialize = async (): Promise<DataSource> => {
   return await ifs.initialize();
 };
 
-db.execute = async (
-  statement: string,
-  binds = [],
-  opts: Record<string, unknown>
-): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
+db.execute = async (): Promise<any> => {
+  return new Promise(async (reject) => {
     let conn;
 
-    opts.outFormat = oracledb.DB_TYPE_OBJECT;
-    opts.autoCommit = true;
-
     try {
-      conn = await oracledb.getConnection();
-      const result = await conn.execute(statement, binds, opts);
-      resolve(result);
+      conn = await mysql.createConnection({
+        host: env.DATABASE_HOST,
+        username: env.DATABASE_USERNAME,
+        password: env.DATABASE_PASSWORD,
+        database: env.DATABASE_NAME
+      });
+      conn.connect((err) => {
+        if (err) throw err;
+        console.log('Connected!');
+      });
     } catch (error) {
       reject(error);
     } finally {
       if (conn) {
         try {
-          await conn.close();
+          await conn.end();
         } catch (error) {
           console.error(chalk.red(error));
         }

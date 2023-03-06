@@ -24,10 +24,10 @@ export default {
     port:
       process.env.DATABASE_PORT === 'number'
         ? +process.env.DATABASE_PORT
-        : 1521,
+        : 3306,
+    database: 'legacy',
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
-    sid: process.env.DATABASE_SID,
     logging: process.env.DATABASE_LOGGING === 'true' ? true : false
   },
   deploy: process.env.DEPLOY === 'true' ? true : false,
@@ -41,9 +41,6 @@ export default {
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT || (25 as any),
     sender: process.env.MAIL_SENDER
-  },
-  redis: {
-    url: process.env.REDIS_URL
   },
   session: {
     secret: process.env.SESSION_SECRET

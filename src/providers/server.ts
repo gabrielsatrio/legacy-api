@@ -2,7 +2,6 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import { ApolloServer } from 'apollo-server-express';
 import chalk from 'chalk';
 import compression from 'compression';
-import connectRedis from 'connect-redis';
 import cors from 'cors';
 import crypto from 'crypto';
 import express from 'express';
@@ -18,7 +17,6 @@ import { buildSchema } from 'type-graphql';
 import config from '../config/main';
 import { createUserLoader } from '../utils/create-user-loader';
 import { getReport } from '../utils/get-report';
-import { redis } from './redis';
 
 const isProd = config.env === 'production';
 const isTest = config.env === 'test';
@@ -27,7 +25,6 @@ let server: http.Server | https.Server;
 export default class apolloServer {
   static initialize = async (): Promise<void> => {
     const app = express();
-    const RedisStore = connectRedis(session);
 
     app.set('trust proxy', 1);
     app.use(
@@ -48,10 +45,6 @@ export default class apolloServer {
     );
     app.use(
       session({
-        store: new RedisStore({
-          client: redis as any,
-          disableTouch: true
-        }),
         name: config.cookie.name,
         secret: config.session.secret,
         resave: false,

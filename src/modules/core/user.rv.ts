@@ -1,75 +1,59 @@
-import { ifs } from '@/database/data-sources';
 import { isAuth } from '@/middlewares/is-auth';
 import { mapError } from '@/utils/map-error';
 import argon2 from 'argon2';
-import oracledb from 'oracledb';
 import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { User } from './entities/user';
-import { UserView } from './entities/user.vw';
 import { UserInput } from './user.in';
 
 @Resolver(User)
 export class UserResolver {
-  @Query(() => [UserView])
+  @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getUsers(): Promise<UserView[]> {
+  async getUsers(): Promise<User[]> {
     try {
-      return await UserView.find({ order: { username: 'ASC' } });
+      return await User.find({ order: { username: 'ASC' } });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Query(() => UserView, { nullable: true })
+  @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
-  async getUser(@Arg('username') username: string): Promise<UserView | null> {
+  async getUser(@Arg('username') username: string): Promise<User | null> {
     try {
-      return await UserView.findOneBy({ username });
+      return await User.findOneBy({ username });
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => UserView)
+  @Mutation(() => User)
   @UseMiddleware(isAuth)
-  async createUser(@Arg('input') input: UserInput): Promise<UserView | null> {
+  async createUser(@Arg('input') input: UserInput): Promise<User | null> {
     try {
-      const response = await UserView.findOneBy({ username: input.username });
+      const response = await User.findOneBy({ username: input.username });
       if (response) throw new Error('User already exist.');
       const hashedPassword = await argon2.hash(input.password);
-      const sql = `
-        BEGIN
-          ATJ_AUTH_API.Register(:username,
-            :password,
-            :email,
-            :departmentId,
-            :departmentAlt,
-            :usernameDb,
-            :ifsUsername,
-            :outUsername);
-        END;
-      `;
-      const result = await ifs.query(sql, [
-        input.username,
-        hashedPassword,
-        input.email.trim(),
-        input.departmentId,
-        input.departmentAlt,
-        input.usernameDb,
-        input.ifsUsername,
-        { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-      ]);
-      const outUsername = result[0] as string;
-      const data = UserView.findOneBy({ username: outUsername });
-      return data;
+      const existingData = await User.findOneBy({
+        username: input.username
+      });
+      if (existingData) throw new Error('Data already exists.');
+      const data = User.create({
+        username: input.username,
+        password: hashedPassword,
+        name: input.name,
+        email: input.email
+      });
+      const results = await User.save(data);
+      return results;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => UserView)
+  @Mutation(() => User)
   @UseMiddleware(isAuth)
-  async updateUser(@Arg('input') input: UserInput): Promise<UserView | null> {
+  async updateUser(@Arg('input') input: UserInput): Promise<User | null> {
     try {
       if (input.password.length < 3) {
         throw new Error(
@@ -85,18 +69,18 @@ export class UserResolver {
         password: hashedPassword
       });
       const response = await User.save(data);
-      const result = await UserView.findOneBy({ username: response.username });
+      const result = await User.findOneBy({ username: response.username });
       return result;
     } catch (err) {
       throw new Error(mapError(err));
     }
   }
 
-  @Mutation(() => UserView)
+  @Mutation(() => User)
   @UseMiddleware(isAuth)
-  async deleteUser(@Arg('username') username: string): Promise<UserView> {
+  async deleteUser(@Arg('username') username: string): Promise<User> {
     try {
-      const data = await UserView.findOneBy({ username });
+      const data = await User.findOneBy({ username });
       if (!data) throw new Error('No data found.');
       await User.delete(username);
       return data;
