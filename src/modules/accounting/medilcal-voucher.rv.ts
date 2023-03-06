@@ -144,7 +144,7 @@ export class MedicalVoucherResolver {
                tgl_settled AS "tglSettled"
         FROM   ang_medical_v
         WHERE  contract = :companyOffice
-               AND tgl_settled between trunc(period) and trunc(until)`;
+               AND tgl_settled between trunc(:period) and trunc(:until)`;
 
       const result = await ifs.query(sql, [companyOffice, period, until]);
       return result;
