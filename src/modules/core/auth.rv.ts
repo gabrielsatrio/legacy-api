@@ -4,7 +4,7 @@ import { mapError } from '@/utils/map-error';
 import { sendEmail } from '@/utils/send-email';
 import argon2 from 'argon2';
 import oracledb from 'oracledb';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Resolver } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from 'vm';
 import { User } from './entities/user';
@@ -12,26 +12,26 @@ import { LoginInput } from './login.in';
 
 @Resolver(User)
 export class AuthResolver {
-  @Query(() => User, { nullable: true })
-  async currentUser(@Ctx() { req }: Context): Promise<User | null> {
-    try {
-      const username = req.session.username;
-      if (!username) {
-        throw new Error('You need to login first.');
-      }
-      const user = await User.findOneBy({ username });
-      if (!user || user?.status === 'Inactive') return null;
-      if (['ATEJA', 'CCU'].includes(user.ifsUsername)) {
-        user.allowedContract = `${user.allowedContract};AGT`;
-      }
-      if (username === '05251') {
-        user.allowedContract = `${user.allowedContract};ATD`;
-      }
-      return user;
-    } catch (err) {
-      throw new Error(mapError(err));
-    }
-  }
+  // @Query(() => User, { nullable: true })
+  // async currentUser(@Ctx() { req }: Context): Promise<User | null> {
+  //   try {
+  //     const username = req.session.username;
+  //     if (!username) {
+  //       throw new Error('You need to login first.');
+  //     }
+  //     const user = await User.findOneBy({ username });
+  //     if (!user || user?.status === 'Inactive') return null;
+  //     // if (['ATEJA', 'CCU'].includes(user.ifsUsername)) {
+  //     //   user.allowedContract = `${user.allowedContract};AGT`;
+  //     // }
+  //     // if (username === '05251') {
+  //     //   user.allowedContract = `${user.allowedContract};ATD`;
+  //     // }
+  //     // return user;
+  //   } catch (err) {
+  //     throw new Error(mapError(err));
+  //   }
+  // }
 
   @Mutation(() => User)
   async login(
